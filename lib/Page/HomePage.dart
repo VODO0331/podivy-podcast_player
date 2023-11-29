@@ -20,73 +20,7 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          Container(
-            padding: EdgeInsets.all(8),
-            width: 360.w,
-            height: 180.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Color.fromARGB(160, 73, 57, 34),
-              border: Border.all(color: Colors.white70),
-            ),
-            child: Flex(direction: Axis.horizontal, children: [
-              Expanded(
-                flex: 3,
-                child: Column(
-                  children: [
-                    Text('podcaster'),
-                    SizedBox(
-                      height: 4.h,
-                    ),
-                    CircleAvatar(
-                      radius: 55,
-                      backgroundImage:
-                          AssetImage('images/turnTable/record.png'),
-                      child: CircleAvatar(
-                        radius: 40,
-                        child: Image.asset(
-                          'images/drawer/people2.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              const VerticalDivider(
-                thickness: 1,
-                color: Color.fromARGB(255, 237, 186, 145),
-              ),
-              Expanded(
-                  flex: 6,
-                  child: Container(
-                      width: 200.w,
-                      height: 165.h,
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(96, 76, 74, 74),
-                          border: Border.all(color: Colors.white60),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: ListView(
-                        children: const [
-                          Text('tile1'),
-                          Divider(
-                            thickness: 1,
-                            color: Colors.white,
-                          ),
-                          Text('tile2'),
-                          Divider(
-                            thickness: 1,
-                            color: Colors.white,
-                          ),
-                          Text('tile3'),
-                          Divider(
-                            thickness: 1,
-                            color: Colors.white,
-                          ),
-                        ],
-                      )))
-            ]),
-          ),
+          turnTable(),
         ],
       ),
     );
@@ -148,5 +82,135 @@ Widget appBar() {
         ),
       )
     ],
+  );
+}
+
+Widget podcastLatestContent() {
+  return ListView(
+    padding: EdgeInsets.zero,
+    semanticChildCount: 3,
+    children: const [
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        child: Text(
+          'tile1',
+          style: TextStyle(fontSize: 17.0),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 40.0),
+        child: Divider(
+          thickness: 1,
+          color: Colors.white,
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        child: Text(
+          'tile1',
+          style: TextStyle(fontSize: 17.0),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 40.0),
+        child: Divider(
+          thickness: 1,
+          color: Colors.white,
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        child: Text(
+          'tile1',
+          style: TextStyle(fontSize: 17.0),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget turnTable() {
+  return Container(
+    padding: const EdgeInsets.all(8),
+    width: 360.w,
+    height: 190.h,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(20),
+      color: const Color.fromARGB(160, 73, 57, 34),
+      border: Border.all(color: Colors.white70),
+    ),
+    child: Flex(direction: Axis.horizontal, children: [
+      Expanded(
+        flex: 3,
+        child: Column(
+          children: [
+            Text('podcaster'),
+            SizedBox(
+              height: 4.h,
+            ),
+            //podcaster
+            CircleAvatar(
+              radius: 55,
+              backgroundImage: AssetImage('images/turnTable/record.png'),
+              child: CircleAvatar(
+                radius: 40,
+                child: Image.asset(
+                  'images/drawer/people2.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 4.h,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.share),
+                    constraints: BoxConstraints(maxHeight: 30.h, maxWidth: 30.w),
+                  ),
+                ),
+                Expanded(
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.favorite_outline),
+                    constraints: BoxConstraints(maxHeight: 30.h, maxWidth: 30.w),
+                  ),
+                ),
+                Expanded(
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.notifications_active_outlined),
+                    constraints: BoxConstraints(maxHeight: 30.h, maxWidth: 30.w),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+      const VerticalDivider(
+        thickness: 1,
+        color: Color.fromARGB(255, 237, 186, 145),
+      ),
+      Expanded(
+          flex: 6,
+          child: Container(
+              width: 200.w,
+              height: 165.h,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(96, 76, 74, 74),
+                border: Border.all(color: Colors.white60),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(5.0),
+                  topRight: Radius.circular(16.0),
+                  bottomLeft: Radius.circular(5.0),
+                  bottomRight: Radius.circular(16.0),
+                ),
+              ),
+              child: podcastLatestContent()))
+    ]),
   );
 }

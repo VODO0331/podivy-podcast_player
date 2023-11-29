@@ -13,11 +13,11 @@ class MyBackGround extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color.fromARGB(255, 237, 186, 145),
+              Color(0xFF7B7060),
               Color(0xFF2C271D),
             ],
             stops: [
-              0.1,
+              0.4,
               1
             ]),
       ),
