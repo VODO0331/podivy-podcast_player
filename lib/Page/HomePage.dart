@@ -76,7 +76,7 @@ Widget appBar() {
             ),
             label: const Text(""),
             onPressed: () {
-              dev.log('sarch');
+              Get.toNamed('/search');
             },
           ),
         ),
@@ -133,7 +133,7 @@ Widget turnTable() {
   return Container(
     padding: const EdgeInsets.all(8),
     width: 360.w,
-    height: 190.h,
+    height: 200.h,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(20),
       color: const Color.fromARGB(160, 73, 57, 34),
@@ -169,21 +169,24 @@ Widget turnTable() {
                   child: IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.share),
-                    constraints: BoxConstraints(maxHeight: 30.h, maxWidth: 30.w),
+                    constraints:
+                        BoxConstraints(maxHeight: 40.h, maxWidth: 40.w),
                   ),
                 ),
                 Expanded(
                   child: IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.favorite_outline),
-                    constraints: BoxConstraints(maxHeight: 30.h, maxWidth: 30.w),
+                    constraints:
+                        BoxConstraints(maxHeight: 40.h, maxWidth: 40.w),
                   ),
                 ),
                 Expanded(
                   child: IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.notifications_active_outlined),
-                    constraints: BoxConstraints(maxHeight: 30.h, maxWidth: 30.w),
+                    constraints:
+                        BoxConstraints(maxHeight: 40.h, maxWidth: 40.w),
                   ),
                 ),
               ],
