@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class MyBackGround extends StatelessWidget {
-  final Widget myWiget;
+  final Widget child;
 
-  const MyBackGround({super.key, required this.myWiget});
+  const MyBackGround({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class MyBackGround extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Image.asset("images/background/backGroundVine.png"),
           ),
-          myWiget
+          child
         ],
       ),
     );
