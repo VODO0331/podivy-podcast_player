@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:podivy/Page/HomePage.dart';
 import 'package:podivy/Page/backgound.dart';
-import 'package:podivy/Page/media.dart';
+import 'package:podivy/Page/mediaPage.dart';
+import 'package:podivy/widget/drawer.dart';
 
 class Tabs extends StatefulWidget {
   const Tabs({super.key});
@@ -14,12 +15,13 @@ class Tabs extends StatefulWidget {
 class _TabsState extends State<Tabs> {
   late int _currentIndex = 0;
 
-  final List<Widget> _pages = const [HomePage(), MediaPage()];
-
+  final List<Widget> _pages = [HomePage(), const MediaPage()];
+  
   @override
   void initState() {
     super.initState();
   }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +41,14 @@ class _TabsState extends State<Tabs> {
               _currentIndex = index;
             });
           },
+          useLegacyColorScheme: false,
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home_rounded), label: 'home'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.density_medium_sharp), label: 'media')
+                icon: Icon(Icons.all_inbox), label: 'media')
           ]),
-      drawer: drawer(),
+      drawer: MyDrawer(),
 
       body: GestureDetector(
         onHorizontalDragUpdate: (details) {
@@ -61,109 +64,4 @@ class _TabsState extends State<Tabs> {
   }
 }
 
-Widget drawer() {
-  return Drawer(
-      child: Stack(
-    children: [
-      Align(
-        alignment: Alignment.topRight,
-        child: Image.asset(
-          "images/drawer/vine1.png",
-          width: 200.0.w,
-          height: 200.0.h,
-          fit: BoxFit.cover,
-          color: const Color.fromARGB(255, 146, 146, 146),
-        ),
-      ),
-      Align(
-        alignment: Alignment.bottomRight,
-        child: Image.asset(
-          "images/drawer/vine2.png",
-          width: 150.0.w,
-          height: 150.0.h,
-          fit: BoxFit.cover,
-          color: const Color.fromARGB(255, 146, 146, 146),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 90.h,
-            ),
-            CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 26.h,
-              child: CircleAvatar(
-                radius: 25.h,
-                child: Image.asset("images/drawer/people1.png"),
-              ),
-            ),
-            SizedBox(
-              height: 12.h,
-            ),
-            const Text('User Name'),
-            SizedBox(
-              height: 12.h,
-            ),
-            Container(
-              height: 0.6.h,
-              width: 200.w,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.white,
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 25.h,
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.settings,
-                size: 25.w,
-              ),
-              title: const Text("設定"),
-              //onTap: () { },
-            ),
-            const Divider(
-              height: 1,
-              thickness: 2.0,
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.account_box,
-                size: 25.w,
-              ),
-              title: const Text("選項一"),
-              //onTap: () { },
-            ),
-            const Divider(
-              height: 1,
-              thickness: 2.0,
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.alarm,
-                size: 25.w,
-              ),
-              title: const Text("選項2"),
-              //onTap: () { },
-            ),
-            const Divider(
-              height: 1,
-              thickness: 2.0,
-            ),
-          ],
-        ),
-      ),
-    ],
-  ));
-}
+

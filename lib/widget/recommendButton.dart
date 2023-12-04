@@ -8,8 +8,12 @@ class RecommendButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        style: const ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Color(0xFFABC4AA))),
+        style: TextButton.styleFrom(
+          backgroundColor: const Color(0xFFABC4AA),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0), 
+          ),
+        ),
         onPressed: onPress,
         child: Text(
           text,

@@ -2,9 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:developer' as dev show log;
+import 'package:podivy/widget/UserAvatar.dart';
+import 'package:podivy/widget/carousel.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +29,7 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          turnTable(),
+          MyCarousel()
         ],
       ),
     );
@@ -43,16 +52,11 @@ Widget appBar() {
               height: 40.h,
             ),
             Align(
-              alignment: Alignment.center,
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 17.h,
-                child: CircleAvatar(
-                  radius: 16.h,
-                  child: Image.asset("images/drawer/people1.png"),
-                ),
-              ),
-            )
+                alignment: Alignment.center,
+                child: UserAvatar(
+                  user: Image.asset("images/drawer/people1.png"),
+                  radius: 17,
+                ))
           ]),
         ),
       ),
@@ -85,135 +89,4 @@ Widget appBar() {
   );
 }
 
-Widget podcastLatestContent() {
-  return ListView(
-    padding: EdgeInsets.zero,
-    semanticChildCount: 3,
-    children: const [
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        child: Text(
-          'tile1',
-          style: TextStyle(fontSize: 17.0),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 40.0),
-        child: Divider(
-          thickness: 1,
-          color: Colors.white,
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        child: Text(
-          'tile1',
-          style: TextStyle(fontSize: 17.0),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 40.0),
-        child: Divider(
-          thickness: 1,
-          color: Colors.white,
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-        child: Text(
-          'tile1',
-          style: TextStyle(fontSize: 17.0),
-        ),
-      ),
-    ],
-  );
-}
 
-Widget turnTable() {
-  return Container(
-    padding: const EdgeInsets.all(8),
-    width: 360.w,
-    height: 200.h,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(20),
-      color: const Color.fromARGB(160, 73, 57, 34),
-      border: Border.all(color: Colors.white70),
-    ),
-    child: Flex(direction: Axis.horizontal, children: [
-      Expanded(
-        flex: 3,
-        child: Column(
-          children: [
-            Text('podcaster'),
-            SizedBox(
-              height: 4.h,
-            ),
-            //podcaster
-            CircleAvatar(
-              radius: 55,
-              backgroundImage: AssetImage('images/turnTable/record.png'),
-              child: CircleAvatar(
-                radius: 40,
-                child: Image.asset(
-                  'images/drawer/people2.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 4.h,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.share),
-                    constraints:
-                        BoxConstraints(maxHeight: 40.h, maxWidth: 40.w),
-                  ),
-                ),
-                Expanded(
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.favorite_outline),
-                    constraints:
-                        BoxConstraints(maxHeight: 40.h, maxWidth: 40.w),
-                  ),
-                ),
-                Expanded(
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.notifications_active_outlined),
-                    constraints:
-                        BoxConstraints(maxHeight: 40.h, maxWidth: 40.w),
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-      const VerticalDivider(
-        thickness: 1,
-        color: Color.fromARGB(255, 237, 186, 145),
-      ),
-      Expanded(
-          flex: 6,
-          child: Container(
-              width: 200.w,
-              height: 165.h,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(96, 76, 74, 74),
-                border: Border.all(color: Colors.white60),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(5.0),
-                  topRight: Radius.circular(16.0),
-                  bottomLeft: Radius.circular(5.0),
-                  bottomRight: Radius.circular(16.0),
-                ),
-              ),
-              child: podcastLatestContent()))
-    ]),
-  );
-}

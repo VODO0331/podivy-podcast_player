@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:podivy/Page/backgound.dart';
 import 'package:podivy/widget/recommendButton.dart';
 
 class SerchPage extends StatefulWidget {
@@ -12,15 +11,14 @@ class SerchPage extends StatefulWidget {
 class _SerchPageState extends State<SerchPage> {
   @override
   Widget build(BuildContext context) {
-    return MyBackGround(
-      child: Scaffold(
-        appBar: AppBar(),
+    return Scaffold(
+        
         body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          color: Colors.black,
+          color: Color.fromARGB(196, 5, 8, 5),
           child: const Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: EdgeInsets.fromLTRB(20, 90, 20, 20),
             child: Column(children: [
               TextField(
                 cursorColor: Color(0xFFABC4AA),
@@ -69,7 +67,7 @@ class _SerchPageState extends State<SerchPage> {
             ]),
           ),
         ),
-      ),
-    );
+      );
+    
   }
 }
