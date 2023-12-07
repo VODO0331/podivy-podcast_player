@@ -6,7 +6,7 @@ import 'package:podivy/Page/tabs.dart';
 import '../Page/playerPage.dart';
 
 class RouterPage {
-  final List myList=[];
+  final List myList = [];
   static final routes = [
     GetPage(
       name: "/",
@@ -20,12 +20,9 @@ class RouterPage {
       name: "/search",
       page: () => const SerchPage(),
     ),
-    GetPage(
-        name: "/ListPage",
-        page: () => const ListPage(),
-        parameters: {
-          'listTitle': 'YourListTitle',
-          'myList': $mylist,
-        }),
+    GetPage(name: "/ListPage", page: () => const ListPage(), parameters: {
+      'listTitle': 'YourListTitle',
+      'myList': '',
+    }),
   ];
 }
