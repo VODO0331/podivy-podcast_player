@@ -5,24 +5,10 @@ class ListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final myList = [
-      'podcast1',
-      'podcast2',
-      'podcast3',
-      'podcast2',
-      'podcast3',
-      'podcast2',
-      'podcast3',
-      'podcast2',
-      'podcast3',
-      'podcast2',
-      'podcast3',
-      'podcast2',
-      'podcast3',
-      'podcast2',
-      'podcast3'
-    ];
-    final listLength = myList.length.toString();
+    final Map<String, dynamic> params = Get.parameters;
+    final String listTitle = params['listTitle'];
+    final List myList = params['myList'];
+
     return Scaffold(
       appBar: AppBar(),
       backgroundColor: const Color.fromARGB(255, 25, 25, 25),
@@ -31,23 +17,23 @@ class ListPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(4, 20, 0, 10),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(4, 20, 0, 10),
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.bookmark_border_outlined,
                     size: 80,
                     shadows: [Shadow()],
                   ),
                   Text(
-                    '標籤清單',
-                    style: TextStyle(fontSize: 29),
+                    listTitle,
+                    style: const TextStyle(fontSize: 29),
                   )
                 ],
               ),
             ),
-            Text('$listLength 部'),
+            Text('${myList.length} 部'),
             const Divider(
               thickness: 1,
             ),

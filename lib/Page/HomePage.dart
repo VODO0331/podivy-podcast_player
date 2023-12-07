@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 100),
+      padding: const EdgeInsets.only(top: 100, bottom: 10),
       child: Column(
         children: [
           appBar(),
@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 8),
             scrollDirection: Axis.horizontal,
             child: Row(
               children: <Widget>[
@@ -55,13 +56,15 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: GridView.count(
               scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
               crossAxisCount: 2,
-              childAspectRatio: 1.0,
-              children: const <Widget>[
-                Icon(Icons.home),
+              mainAxisSpacing: 8.0,
+              crossAxisSpacing: 8.0,
+              children: <Widget>[
+                Image.asset('images/userPic/people4Rect.png'),
                 Icon(Icons.ac_unit),
                 Icon(Icons.search),
-                Icon(Icons.settings),
+                Image.asset('images/userPic/people4Rect.png'),
               ],
             ),
           )
@@ -73,7 +76,7 @@ class _HomePageState extends State<HomePage> {
 
 Widget cusButton() {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 3),
+    padding: const EdgeInsets.symmetric(horizontal: 3),
     child: TextButton(
         style: ButtonStyle(
             backgroundColor:

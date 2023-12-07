@@ -20,8 +20,8 @@ class RouterPage {
       page: () => const SerchPage(),
     ),
     GetPage(
-      name: "/ListPage",
-      page: () => const ListPage(),
-    ),
+        name: "/ListPage",
+        page: () => const ListPage(),
+        parameters: const {'listTitle': 'YourListTitle', 'myList': 'youlist'}),
   ];
 }
