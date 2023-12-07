@@ -38,7 +38,7 @@ class MediaPage extends StatelessWidget {
               ),
               OutlinedButton(
                   onPressed: () {
-                    Get.toNamed('/ListPage');
+                    Get.toNamed('/ListPage',parameters:{'listTitle': '標籤清單', 'myList': 'mylist'} );
                   },
                   style: OutlinedButton.styleFrom(
                     side: BorderSide.none, // 取消边框
