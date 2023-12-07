@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:podivy/Page/HomePage.dart';
 import 'package:podivy/Page/backgound.dart';
 import 'package:podivy/Page/mediaPage.dart';
@@ -16,12 +15,11 @@ class _TabsState extends State<Tabs> {
   late int _currentIndex = 0;
 
   final List<Widget> _pages = [HomePage(), const MediaPage()];
-  
+
   @override
   void initState() {
     super.initState();
   }
- 
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +43,7 @@ class _TabsState extends State<Tabs> {
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home_rounded), label: 'home'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.all_inbox), label: 'media')
+            BottomNavigationBarItem(icon: Icon(Icons.all_inbox), label: 'media')
           ]),
       drawer: MyDrawer(),
 
@@ -63,5 +60,3 @@ class _TabsState extends State<Tabs> {
     );
   }
 }
-
-

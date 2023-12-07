@@ -9,21 +9,21 @@ class MyCarousel extends StatefulWidget {
   MyCarousel({Key? key})
       : items = [
           TurnTable(
-            isCentered: false,
-            name: 'josh',
-            image: Image.asset('images/drawer/people2.png'),
+            isCentered: true,
+            name: '百靈果',
+            image: Image.asset('images/userPic/people2.png'),
             latestList: ['time1', 'time2', 'time3'],
           ),
           TurnTable(
             isCentered: false,
             name: 'mike',
-            image: Image.asset('images/drawer/people2.png'),
+            image: Image.asset('images/userPic/people3.png'),
             latestList: ['time1', 'time2', 'time3'],
           ),
           TurnTable(
             isCentered: false,
             name: 'jane',
-            image: Image.asset('images/drawer/people2.png'),
+            image: Image.asset('images/userPic/people2.png'),
             latestList: ['time1', 'time2', 'time3'],
           ),
         ],
@@ -61,20 +61,7 @@ class _MyCarouselState extends State<MyCarousel> {
             onPageChanged: (index, reason) {
               // 更新 isCentered 的值
               setState(() {
-                print(index);
                 currentIndex = index.toDouble();
-                isCentered = isElementCentered(index);
-                for (int itemsIndex = 0;
-                    itemsIndex < widget.items.length;
-                    itemsIndex++) {
-                  if (itemsIndex == index) {
-                    widget.items[itemsIndex] =
-                        changeCentered(itemsIndex, widget.items, isCentered);
-                  } else {
-                    widget.items[itemsIndex] =
-                        changeCentered(itemsIndex, widget.items, isCentered);
-                  }
-                }
               });
 
               // 更新 TurnTable 中的 isCentered
@@ -100,15 +87,6 @@ class _MyCarouselState extends State<MyCarousel> {
 
   bool isElementCentered(int currentIndex) {
     return currentIndex == (widget.items.length ~/ 2);
-  }
-
-  Widget changeCentered(int index, List items, bool isCenter) {
-    var itemsWidget = items[index];
-    print(isCenter);
-    if (isCentered) {
-      return itemsWidget.updateIsCentered(true);
-    }
-    return itemsWidget.updateIsCentered(false);
   }
 }
 
@@ -157,13 +135,10 @@ class _TurnTableState extends State<TurnTable> {
 
   @override
   Widget build(BuildContext context) {
-    final mixH = widget.isCentered ? 30.h : 5.h;
-    final mixW = widget.isCentered ? 30.w : 5.w;
-    print('${widget.name} :${widget.isCentered}');
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(5),
       width: 360.w,
-      height: 200.h,
+      height: 210.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: const Color.fromARGB(160, 73, 57, 34),
@@ -184,6 +159,7 @@ class _TurnTableState extends State<TurnTable> {
                   ),
                   //podcaster
                   Stack(
+                    alignment: Alignment.bottomRight,
                     children: [
                       CircleAvatar(
                         radius: 55,
@@ -199,23 +175,19 @@ class _TurnTableState extends State<TurnTable> {
                         child: Image.asset(
                           'images/turnTable/record2.png',
                         ),
-                      )
+                      ),
                     ],
                   ),
-                  SizedBox(
-                    height: 4.h,
-                  ),
+
                   Row(
                     children: [
-                      Expanded(
+                      Flexible(
                         child: IconButton(
                           onPressed: () {},
                           icon: const Icon(Icons.share),
-                          constraints:
-                              BoxConstraints(maxHeight: mixH, maxWidth: mixW),
                         ),
                       ),
-                      Expanded(
+                      Flexible(
                         child: IconButton(
                           onPressed: () {
                             setState(() {
@@ -228,26 +200,21 @@ class _TurnTableState extends State<TurnTable> {
                                 : Icons.favorite_border,
                             color: isLiked == true ? Colors.red : null,
                           ),
-                          constraints:
-                              BoxConstraints(maxHeight: mixH, maxWidth: mixW),
                         ),
                       ),
-                      Expanded(
+                      Flexible(
                         child: IconButton(
                           onPressed: () {
                             setState(() {
                               reminder = !reminder!;
                             });
                           },
-                          
                           icon: Icon(
                             reminder == true
                                 ? Icons.notifications_active
                                 : Icons.notifications_active_outlined,
                             color: reminder == true ? Colors.yellow : null,
                           ),
-                          constraints:
-                              BoxConstraints(maxHeight: mixH, maxWidth: mixW),
                         ),
                       ),
                     ],
@@ -258,7 +225,7 @@ class _TurnTableState extends State<TurnTable> {
           ),
           const VerticalDivider(
             thickness: 1,
-            color: Color.fromARGB(255, 237, 186, 145),
+            color: Color.fromARGB(255, 146, 114, 88),
           ),
           Expanded(
             flex: 6,

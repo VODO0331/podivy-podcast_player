@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final ThemeData myTheme = ThemeData(
     brightness: Brightness.dark,
@@ -19,10 +20,10 @@ final ThemeData myTheme = ThemeData(
     drawerTheme: const DrawerThemeData(
       backgroundColor: Color(0xFF24211C),
     ),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData( 
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Color.fromARGB(147, 45, 39, 34),
       selectedItemColor: Color.fromARGB(255, 230, 215, 197),
       unselectedItemColor: Color(0xFFAEA9A3),
       unselectedIconTheme: IconThemeData(size: 25.0, color: Color(0xFFAEA9A3)),
-    )
-    );
+    ),
+    textTheme: const TextTheme(titleLarge: TextStyle(fontSize: 19)));

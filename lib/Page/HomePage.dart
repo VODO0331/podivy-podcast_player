@@ -13,8 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,14 +24,63 @@ class _HomePageState extends State<HomePage> {
             thickness: 2,
             color: Color.fromARGB(123, 255, 255, 255),
           ),
-          const SizedBox(
-            height: 20,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: MyCarousel(),
           ),
-          MyCarousel()
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: Divider(
+              thickness: 0.5,
+              color: Color.fromARGB(137, 65, 65, 65),
+            ),
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: <Widget>[
+                cusButton(),
+                cusButton(),
+                cusButton(),
+                cusButton(),
+                cusButton(),
+                cusButton(),
+                cusButton(),
+                cusButton(),
+                cusButton(),
+                cusButton(),
+              ],
+            ),
+          ),
+          Expanded(
+            child: GridView.count(
+              scrollDirection: Axis.horizontal,
+              crossAxisCount: 2,
+              childAspectRatio: 1.0,
+              children: const <Widget>[
+                Icon(Icons.home),
+                Icon(Icons.ac_unit),
+                Icon(Icons.search),
+                Icon(Icons.settings),
+              ],
+            ),
+          )
         ],
       ),
     );
   }
+}
+
+Widget cusButton() {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 3),
+    child: TextButton(
+        style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all(const Color(0xFFABC4AA))),
+        onPressed: () {},
+        child: const Text('類型')),
+  );
 }
 
 Widget appBar() {
@@ -54,7 +101,7 @@ Widget appBar() {
             Align(
                 alignment: Alignment.center,
                 child: UserAvatar(
-                  user: Image.asset("images/drawer/people1.png"),
+                  user: Image.asset("images/userPic/people1.png"),
                   radius: 17,
                 ))
           ]),
@@ -88,5 +135,3 @@ Widget appBar() {
     ],
   );
 }
-
-

@@ -38,7 +38,7 @@ class MediaPage extends StatelessWidget {
               ),
               OutlinedButton(
                   onPressed: () {
-                    dev.log('標籤清單');
+                    Get.toNamed('/ListPage');
                   },
                   style: OutlinedButton.styleFrom(
                     side: BorderSide.none, // 取消边框
@@ -56,9 +56,8 @@ class MediaPage extends StatelessWidget {
                         style: TextStyle(color: Colors.white, fontSize: 20.sp),
                       ), // 文本
                     ],
-                  )
-                  ),
-                  const Divider(
+                  )),
+              const Divider(
                 thickness: 1,
                 color: Colors.white24,
               ),
@@ -82,9 +81,8 @@ class MediaPage extends StatelessWidget {
                         style: TextStyle(color: Colors.white, fontSize: 20.sp),
                       ), // 文本
                     ],
-                  )
-                  ),
-                  const Divider(
+                  )),
+              const Divider(
                 thickness: 1,
                 color: Colors.white24,
               ),
@@ -108,8 +106,7 @@ class MediaPage extends StatelessWidget {
                         style: TextStyle(color: Colors.white, fontSize: 20.sp),
                       ), // 文本
                     ],
-                  )
-                  ),
+                  )),
             ],
           )),
     );

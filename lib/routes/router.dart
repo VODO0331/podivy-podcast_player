@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:podivy/Page/ListPage.dart';
 import 'package:podivy/Page/searchPage.dart';
 import 'package:podivy/Page/tabs.dart';
 
@@ -14,6 +15,13 @@ class RouterPage {
       name: "/player",
       page: () => const PlayerPage(),
     ),
-    GetPage(name: "/search", page: () => const SerchPage())
+    GetPage(
+      name: "/search",
+      page: () => const SerchPage(),
+    ),
+    GetPage(
+      name: "/ListPage",
+      page: () => const ListPage(),
+    ),
   ];
 }
