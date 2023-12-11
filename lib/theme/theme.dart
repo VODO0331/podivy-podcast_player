@@ -6,7 +6,7 @@ final ThemeData myTheme = ThemeData(
     scaffoldBackgroundColor: const Color(0xFF7B7060),
     colorScheme: const ColorScheme(
         brightness: Brightness.dark,
-        primary: Color(0xFF493922),
+        primary: Color.fromARGB(255, 221, 209, 190),
         onPrimary: Color(0xFF212121),
         secondary: Color(0xFF24211C),
         onSecondary: Color(0xFF9A8F7E),
@@ -14,7 +14,7 @@ final ThemeData myTheme = ThemeData(
         onError: Colors.white,
         background: Color(0xFF7B7060),
         onBackground: Colors.white,
-        surface: Color(0xFF24211C),
+        surface: Color.fromARGB(255, 204, 202, 199),
         onSurface: Colors.white),
     drawerTheme: const DrawerThemeData(
       backgroundColor: Color(0xFF24211C),

@@ -2,17 +2,26 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:podivy/widget/turnTableAnimation.dart';
+import 'package:podivy/widget/userAvatar.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 class MyCarousel extends StatefulWidget {
-  final List<Widget> items;
+  final List<TurnTable> items;
 
   MyCarousel({Key? key})
       : items = [
           TurnTable(
             isCentered: true,
             name: '百靈果',
-            image: Image.asset('images/userPic/people2.png'),
-            latestList: ['time1', 'time2', 'time3'],
+            image:
+                UserAvatar(imgPath: 'images/podcaster/BLG.jpg', radius: 40.r),
+            latestList: [
+              'overflowoverflowoverflowoverflowoverflowoverflow',
+              'time2',
+              'time3'
+            ],
           ),
           TurnTable(
             isCentered: false,
@@ -34,7 +43,6 @@ class MyCarousel extends StatefulWidget {
 }
 
 class _MyCarouselState extends State<MyCarousel> {
-  late final bool isCentered;
   late CarouselController controller;
   double currentIndex = 0;
 
@@ -62,6 +70,13 @@ class _MyCarouselState extends State<MyCarousel> {
               // 更新 isCentered 的值
               setState(() {
                 currentIndex = index.toDouble();
+                for (int i = 0; i < widget.items.length; i++) {
+                  if (i == index) {
+                    widget.items[i] = widget.items[i].updateIsCentered(true);
+                  } else {
+                    widget.items[i] = widget.items[i].updateIsCentered(false);
+                  }
+                }
               });
 
               // 更新 TurnTable 中的 isCentered
@@ -85,9 +100,7 @@ class _MyCarouselState extends State<MyCarousel> {
     );
   }
 
-  bool isElementCentered(int currentIndex) {
-    return currentIndex == (widget.items.length ~/ 2);
-  }
+ 
 }
 
 class TurnTable extends StatefulWidget {
@@ -111,6 +124,7 @@ class TurnTable extends StatefulWidget {
   State<TurnTable> createState() => _TurnTableState();
 
   TurnTable updateIsCentered(bool value) {
+    
     return TurnTable(
       isCentered: value,
       name: name,
@@ -125,18 +139,65 @@ class TurnTable extends StatefulWidget {
 class _TurnTableState extends State<TurnTable> {
   bool? isLiked;
   bool? reminder;
-
+  late bool isCentered;
+  late UniqueKey _key;
   @override
   void initState() {
     super.initState();
     isLiked = widget.isLiked ?? false;
     reminder = widget.reminder ?? false;
+    isCentered = widget.isCentered;
+    _key = UniqueKey();
+  }
+
+  Widget buttonGroup(bool? isLiked, bool? reminder) {
+    return Row(
+      children: [
+        Flexible(
+          child: IconButton(
+            onPressed: () {
+              Share.share("分享此podcaster");
+            },
+            icon: const Icon(Icons.share),
+          ),
+        ),
+        Flexible(
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                isLiked = !isLiked!;
+              });
+            },
+            icon: Icon(
+              isLiked == true ? Icons.favorite : Icons.favorite_border,
+              color: isLiked == true ? Colors.red : null,
+            ),
+          ),
+        ),
+        Flexible(
+          child: IconButton(
+            onPressed: () {
+              setState(() {
+                reminder = !reminder!;
+              });
+            },
+            icon: Icon(
+              reminder == true
+                  ? Icons.notifications_active
+                  : Icons.notifications_active_outlined,
+              color: reminder == true ? Colors.yellow : null,
+            ),
+          ),
+        ),
+      ],
+    );
+    
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5).r,
       width: 360.w,
       height: 210.h,
       decoration: BoxDecoration(
@@ -153,72 +214,40 @@ class _TurnTableState extends State<TurnTable> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(widget.name),
+                  TextScroll(
+                    widget.name,
+                    intervalSpaces: 5,
+                    velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
+                    delayBefore: const Duration(seconds: 2),
+                    pauseBetween: const Duration(seconds: 2),
+                  ), //dcaster Name
                   SizedBox(
                     height: 5.h,
                   ),
-                  //podcaster
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      CircleAvatar(
-                        radius: 55,
-                        backgroundImage:
-                            const AssetImage('images/turnTable/record.png'),
-                        child: CircleAvatar(
-                          radius: 40,
-                          child: widget.image,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Image.asset(
-                          'images/turnTable/record2.png',
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  Row(
-                    children: [
-                      Flexible(
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.share),
-                        ),
-                      ),
-                      Flexible(
-                        child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isLiked = !isLiked!;
-                            });
-                          },
-                          icon: Icon(
-                            isLiked == true
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color: isLiked == true ? Colors.red : null,
+                  //podcaster avatar
+                  Expanded(
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        TurntableAnimation(
+                          key: _key,
+                          isCentered: widget.isCentered,
+                          child: CircleAvatar(
+                            radius: 37,
+                            child: widget.image,
+                            
                           ),
                         ),
-                      ),
-                      Flexible(
-                        child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              reminder = !reminder!;
-                            });
-                          },
-                          icon: Icon(
-                            reminder == true
-                                ? Icons.notifications_active
-                                : Icons.notifications_active_outlined,
-                            color: reminder == true ? Colors.yellow : null,
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Image.asset(
+                            'images/turnTable/record2.png',
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  buttonGroup(isLiked, reminder),
                 ],
               ),
             ),
@@ -227,6 +256,7 @@ class _TurnTableState extends State<TurnTable> {
             thickness: 1,
             color: Color.fromARGB(255, 146, 114, 88),
           ),
+          //podcaster 播放清單內容
           Expanded(
             flex: 6,
             child: Container(
@@ -248,8 +278,17 @@ class _TurnTableState extends State<TurnTable> {
         ],
       ),
     );
+    
+  }
+   @override
+  void didUpdateWidget(covariant TurnTable oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isCentered) {
+      _key = UniqueKey(); // 如果 isCentered 变为 true，更新 UniqueKey
+    }
   }
 }
+
 
 Widget podcastLatestContent(List latestList) {
   return ListView.builder(
@@ -258,11 +297,19 @@ Widget podcastLatestContent(List latestList) {
     itemBuilder: (BuildContext context, int index) {
       return Column(
         children: [
-          ListTile(title: Text(latestList[index])),
+          ListTile(
+            title: TextScroll(
+              latestList[index],
+              intervalSpaces: 12,
+              velocity: const Velocity(pixelsPerSecond: Offset(90, 0)),
+              delayBefore: const Duration(seconds: 3),
+              pauseBetween: const Duration(seconds: 5),
+            ),
+          ),
           if (index < 2)
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.0),
-              child: Divider(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0).w,
+              child: const Divider(
                 thickness: 1,
                 color: Colors.white,
               ),

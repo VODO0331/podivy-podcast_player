@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:podivy/Page/HomePage.dart';
-import 'package:podivy/Page/backgound.dart';
+import 'package:podivy/Page/homePage.dart';
+import 'package:podivy/widget/backgound.dart';
 import 'package:podivy/Page/mediaPage.dart';
 import 'package:podivy/widget/drawer.dart';
 
@@ -14,7 +14,7 @@ class Tabs extends StatefulWidget {
 class _TabsState extends State<Tabs> {
   late int _currentIndex = 0;
 
-  final List<Widget> _pages = [HomePage(), const MediaPage()];
+  final List<Widget> _pages = [const HomePage(), const MediaPage()];
 
   @override
   void initState() {

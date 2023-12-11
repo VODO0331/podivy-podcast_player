@@ -1,5 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:podivy/service/auth/authProvider.dart.dart';
+import 'package:podivy/service/auth/bloc/authBLOC.dart';
 import 'package:podivy/theme/theme.dart';
 import './routes/router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,17 +24,20 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown, // 竖屏向下
     ]);
 
-    return ScreenUtilInit(
-      designSize: const Size(393, 852),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      child: GetMaterialApp(
-        title: 'Podivy',
-        theme: myTheme,
-        initialRoute: '/',
-        unknownRoute:
-            GetPage(name: '/notfound', page: () => const UnknownRoutePage()),
-        getPages: RouterPage.routes,
+    return BlocProvider<AuthBloc>(
+      create: (context) => AuthBloc(FirebaseAuthProvider()),
+      child: ScreenUtilInit(
+        designSize: const Size(393, 852),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        child: GetMaterialApp(
+          title: 'Podivy',
+          theme: myTheme,
+          initialRoute: '/',
+          unknownRoute:
+              GetPage(name: '/notfound', page: () => const UnknownRoutePage()),
+          getPages: RouterPage.routes,
+        ),
       ),
     );
   }

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:podivy/widget/UserAvatar.dart';
+import 'package:podivy/service/auth/bloc/authBLOC.dart';
+import 'package:podivy/service/auth/bloc/authEvent.dart';
+import 'package:podivy/util/dialogs/logout_dialog.dart';
+import 'package:podivy/widget/userAvatar.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -31,19 +35,19 @@ class MyDrawer extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(8, 8, 8, 60).r,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
                 height: 90.h,
               ),
-              UserAvatar(
-                  user: Image.asset("images/userPic/people1.png"), radius: 27),
+              const UserAvatar(
+                  imgPath: "images/userPic/people1.png", radius: 27),
               SizedBox(
                 height: 12.h,
               ),
-              const Text('User Name'),
+              const Text('User Name',overflow: TextOverflow.ellipsis,),
               SizedBox(
                 height: 12.h,
               ),
@@ -72,9 +76,10 @@ class MyDrawer extends StatelessWidget {
                 title: Text("設定"),
                 //onTap: () { },
               ),
-              Divider(
+              const Divider(
                 height: 1,
                 thickness: 2.0,
+                color: Colors.white38,
               ),
               ListTile(
                 leading: Icon(
@@ -84,9 +89,10 @@ class MyDrawer extends StatelessWidget {
                 title: Text("選項一"),
                 //onTap: () { },
               ),
-              Divider(
+              const Divider(
                 height: 1,
                 thickness: 2.0,
+                color: Colors.white38,
               ),
               ListTile(
                 leading: Icon(
@@ -96,12 +102,43 @@ class MyDrawer extends StatelessWidget {
                 title: Text("選項2"),
                 //onTap: () { },
               ),
-              Divider(
+              const Divider(
                 height: 1,
                 thickness: 2.0,
+                color: Colors.white38,
+              ),
+              Expanded(
+                child: Container(),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: ListTile(
+                
+                  leading: const Icon(Icons.logout, size: 35, color: Colors.red),
+                  title: const Text(
+                    "登出",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  onTap: () async {
+                    final result = await showLogOutDialog(context);
+                    if(result){
+                      context.read<AuthBloc>().add(const AuthEventLogOut());
+                      
+                    }
+                  },
+                ),
+              ),
+               Padding(
+                padding:const EdgeInsets.only(right: 60,left: 10).w,
+                child:const  Divider(
+                  height: 1,
+                  thickness: 2.0,
+                  color: Colors.white10,
+                ),
               ),
             ],
           ),
+          
         ),
       ],
     ));

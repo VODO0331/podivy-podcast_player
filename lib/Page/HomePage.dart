@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'dart:developer' as dev show log;
-import 'package:podivy/widget/UserAvatar.dart';
+import 'package:podivy/widget/exploreContent.dart';
+import 'package:podivy/widget/userAvatar.dart';
 import 'package:podivy/widget/carousel.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 100, bottom: 10),
+      padding: const EdgeInsets.only(top: 100).h,
       child: Column(
         children: [
           appBar(),
@@ -25,66 +25,23 @@ class _HomePageState extends State<HomePage> {
             color: Color.fromARGB(123, 255, 255, 255),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10).h,
             child: MyCarousel(),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            child: Divider(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30).w,
+            child: const Divider(
               thickness: 0.5,
               color: Color.fromARGB(137, 65, 65, 65),
             ),
           ),
-          SingleChildScrollView(
-            padding: const EdgeInsets.only(bottom: 8),
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: <Widget>[
-                cusButton(),
-                cusButton(),
-                cusButton(),
-                cusButton(),
-                cusButton(),
-                cusButton(),
-                cusButton(),
-                cusButton(),
-                cusButton(),
-                cusButton(),
-              ],
-            ),
-          ),
-          Expanded(
-            child: GridView.count(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 8.0,
-              children: <Widget>[
-                Image.asset('images/userPic/people4Rect.png'),
-                Icon(Icons.ac_unit),
-                Icon(Icons.search),
-                Image.asset('images/userPic/people4Rect.png'),
-              ],
-            ),
-          )
+          const ExploreContent(),
         ],
       ),
     );
   }
 }
 
-Widget cusButton() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 3),
-    child: TextButton(
-        style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all(const Color(0xFFABC4AA))),
-        onPressed: () {},
-        child: const Text('類型')),
-  );
-}
 
 Widget appBar() {
   return Flex(
@@ -94,26 +51,27 @@ Widget appBar() {
         flex: 2,
         child: GestureDetector(
           onTap: () {
-            dev.log('open user page');
+            Get.toNamed('/user');
           },
           child: Stack(alignment: Alignment.centerLeft, children: [
             SvgPicture.asset(
               "images/homePage/userBackground.svg",
               height: 40.h,
             ),
-            Align(
-                alignment: Alignment.center,
-                child: UserAvatar(
-                  user: Image.asset("images/userPic/people1.png"),
-                  radius: 17,
-                ))
+            const Align(
+              alignment: Alignment.center,
+              child: UserAvatar(
+                imgPath: "images/userPic/people1.png",
+                radius: 17,
+              ),
+            )
           ]),
         ),
       ),
       Expanded(
         flex: 7,
         child: Padding(
-          padding: const EdgeInsets.only(right: 8.0),
+          padding: const EdgeInsets.only(right: 8.0).w,
           child: ElevatedButton.icon(
             style: ButtonStyle(
               alignment: Alignment.centerLeft,

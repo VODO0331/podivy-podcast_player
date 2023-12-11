@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:podivy/widget/recommendButton.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:podivy/util/recommendButton.dart';
 
 class SerchPage extends StatefulWidget {
   const SerchPage({super.key});
@@ -17,9 +18,9 @@ class _SerchPageState extends State<SerchPage> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           color: Color.fromARGB(196, 5, 8, 5),
-          child: const Padding(
-            padding: EdgeInsets.fromLTRB(20, 90, 20, 20),
-            child: Column(children: [
+          child:  Padding(
+            padding:const EdgeInsets.fromLTRB(20, 90, 20, 20).r,
+            child:const Column(children: [
               TextField(
                 cursorColor: Color(0xFFABC4AA),
                 decoration: InputDecoration(

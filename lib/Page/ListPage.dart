@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ListPage extends StatelessWidget {
   const ListPage({super.key});
@@ -7,18 +8,40 @@ class ListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, dynamic> params = Get.parameters;
     final String listTitle = params['listTitle'];
-    final List myList = params['myList'];
+    final List myList = Get.arguments as List;
 
     return Scaffold(
-      appBar: AppBar(),
       backgroundColor: const Color.fromARGB(255, 25, 25, 25),
       body: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.fromLTRB(12, 50, 12, 10).r,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  iconSize: 35.r,
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back_ios_rounded,
+                    
+                  ),
+                ),
+                IconButton(
+                  iconSize: 30.r,
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.more_vert_sharp
+                  ),
+                ),
+              ],
+            ),
+            const Divider(color: Colors.white10,),
             Padding(
-              padding: const EdgeInsets.fromLTRB(4, 20, 0, 10),
+              padding: const EdgeInsets.fromLTRB(4, 20, 0, 10).r,
               child: Row(
                 children: [
                   const Icon(
@@ -50,11 +73,11 @@ class ListPage extends StatelessWidget {
                   return Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10).h,
                         child: ListTile(
-                          title: Text(myList[index]),
+                          title: Text(myList[index],overflow: TextOverflow.ellipsis,),
                           leading:
-                              Image.asset('images/userPic/people4Rect.png'),
+                              Image.asset('images/podcaster/77.png'),
                           trailing: const Icon(Icons.more_vert),
                         ),
                       )
