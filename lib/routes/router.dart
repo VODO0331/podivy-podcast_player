@@ -30,7 +30,7 @@ class RouterPage {
     ),
     GetPage(
       name: "/test",
-      page: () =>  TestPage(),
+      page: () => TestPage(),
     ),
     GetPage(
       name: "/user",
@@ -38,7 +38,8 @@ class RouterPage {
     ),
     GetPage(
       name: "/podcaster",
-      page: () => const PodcasterPage(),
+      page: () => PodcasterPage(),
     ),
+    GetPage(name: "/player", page: () => const PlayerPage())
   ];
 }

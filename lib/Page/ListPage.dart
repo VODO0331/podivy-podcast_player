@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:podivy/widget/drawer.dart';
 
 class ListPage extends StatelessWidget {
   const ListPage({super.key});
@@ -11,6 +12,7 @@ class ListPage extends StatelessWidget {
     final List myList = Get.arguments as List;
 
     return Scaffold(
+      drawer: const MyDrawer(),
       backgroundColor: const Color.fromARGB(255, 25, 25, 25),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(12, 50, 12, 10).r,
@@ -27,19 +29,18 @@ class ListPage extends StatelessWidget {
                   },
                   icon: const Icon(
                     Icons.arrow_back_ios_rounded,
-                    
                   ),
                 ),
                 IconButton(
                   iconSize: 30.r,
                   onPressed: () {},
-                  icon: const Icon(
-                    Icons.more_vert_sharp
-                  ),
+                  icon: const Icon(Icons.more_vert_sharp),
                 ),
               ],
             ),
-            const Divider(color: Colors.white10,),
+            const Divider(
+              color: Colors.white10,
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(4, 20, 0, 10).r,
               child: Row(
@@ -75,9 +76,11 @@ class ListPage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10).h,
                         child: ListTile(
-                          title: Text(myList[index],overflow: TextOverflow.ellipsis,),
-                          leading:
-                              Image.asset('images/podcaster/77.png'),
+                          title: Text(
+                            myList[index],
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          leading: Image.asset('images/podcaster/77.png'),
                           trailing: const Icon(Icons.more_vert),
                         ),
                       )

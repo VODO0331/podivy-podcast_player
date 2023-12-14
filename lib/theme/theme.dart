@@ -20,9 +20,9 @@ final ThemeData myTheme = ThemeData(
       backgroundColor: Color(0xFF24211C),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: Color.fromARGB(147, 45, 39, 34),
-      selectedItemColor: Color.fromARGB(255, 230, 215, 197),
+      backgroundColor: Color(0x922D2722),
+      selectedItemColor: Color(0xFFE6D7C5),
       unselectedItemColor: Color(0xFFAEA9A3),
-      unselectedIconTheme: IconThemeData(size: 25.0, color: Color(0xFFAEA9A3)),
+      // unselectedIconTheme: IconThemeData(size: 25.0, color: Color(0xFFAEA9A3)),
     ),
     textTheme: const TextTheme(titleLarge: TextStyle(fontSize: 19)));

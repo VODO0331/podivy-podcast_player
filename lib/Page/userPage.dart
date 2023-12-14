@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glass/glass.dart';
+import 'package:podivy/widget/drawer.dart';
 import 'package:podivy/widget/userAvatar.dart';
 
 class UserPage extends StatelessWidget {
@@ -9,6 +10,7 @@ class UserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const MyDrawer(),
       backgroundColor: const Color.fromARGB(221, 15, 20, 15),
       body: Column(children: [
         Stack(

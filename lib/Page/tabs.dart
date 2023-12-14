@@ -1,3 +1,4 @@
+import 'package:bottom_bar_page_transition/bottom_bar_page_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:podivy/Page/homePage.dart';
 import 'package:podivy/widget/backgound.dart';
@@ -5,16 +6,28 @@ import 'package:podivy/Page/mediaPage.dart';
 import 'package:podivy/widget/drawer.dart';
 
 class Tabs extends StatefulWidget {
-  const Tabs({super.key});
-
   @override
-  State<Tabs> createState() => _TabsState();
+  _TabsState createState() => _TabsState();
 }
 
-class _TabsState extends State<Tabs> {
-  late int _currentIndex = 0;
+class _TabsState extends State<Tabs> with TickerProviderStateMixin {
+  static const int totalPage = 2;
+  final GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
+  int _currentPage = 0;
+  static const List<String> names = [
+    'Home',
+    'Media',
+  ];
 
-  final List<Widget> _pages = [const HomePage(), const MediaPage()];
+  List<IconData> icons = [
+    Icons.home_rounded,
+    Icons.all_inbox,
+  ];
+
+  final List<Widget> _pages = [
+    const HomePage(),
+    const MediaPage(),
+  ];
 
   @override
   void initState() {
@@ -23,40 +36,49 @@ class _TabsState extends State<Tabs> {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
-
     return Scaffold(
       key: sKey,
+      body: BottomBarPageTransition(
+        builder: (_, index) => _getBody(index),
+        currentIndex: _currentPage,
+        totalLength: 2,
+        transitionType: TransitionType.circular,
+        transitionDuration: const Duration(milliseconds: 500),
+        transitionCurve: Curves.easeInOut,
+      ),
+      bottomNavigationBar: _getBottomBar(),
+      drawer: const MyDrawer(),
+    );
+  }
 
-      //bottomNavigationBar
-      bottomNavigationBar: BottomNavigationBar(
-          iconSize: 35.0,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          useLegacyColorScheme: false,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home_rounded), label: 'home'),
-            BottomNavigationBarItem(icon: Icon(Icons.all_inbox), label: 'media')
-          ]),
-      drawer: MyDrawer(),
+  Widget _getBottomBar() {
+    return BottomNavigationBar(
+      iconSize: 35.0,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      currentIndex: _currentPage,
+      onTap: (index) {
+        _currentPage = index;
+        setState(() {});
+      },
+      type: BottomNavigationBarType.fixed,
+      items: List.generate(
+        totalPage,
+        (index) => BottomNavigationBarItem(
+          icon: Icon(icons[index]),
+          label: names[index],
+        ),
+      ),
+    );
+  }
 
-      body: GestureDetector(
+  Widget _getBody(int index) {
+    return GestureDetector(
         onHorizontalDragUpdate: (details) {
           if (details.primaryDelta != 0 && details.primaryDelta! > 10) {
             sKey.currentState?.openDrawer();
           }
         },
-        child: Center(
-          child: MyBackGround(child: _pages[_currentIndex]),
-        ),
-      ),
-    );
+        child: MyBackGround(child: _pages[index]));
   }
 }

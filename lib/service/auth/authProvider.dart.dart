@@ -105,8 +105,10 @@ class FirebaseAuthProvider implements AuthProvider {
         throw ChannelWorngAuthException();
       } else if (e.code == 'too-many-requests') {
         throw TooManyRequestsAuthException();
+      } else if (e.code == 'invalid-credential') {
+        throw WrongPasswordAuthException();
       } else {
-        devtool.log('${e.code}');
+        devtool.log(e.code);
         throw GenericAuthException();
       }
     } catch (_) {
@@ -135,7 +137,6 @@ class FirebaseAuthProvider implements AuthProvider {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: toEmail);
     } on FirebaseAuthException catch (e) {
-      
       switch (e.code) {
         case 'invalid-email':
           throw InvalidEmailAuthException();

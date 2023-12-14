@@ -30,13 +30,13 @@ class AuthMiddleWare extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is AuthStateLoggedIn) {
-          return const Tabs();
+          return Tabs();
         } else if (state is AuthStateNeedVerification) {
           return const LoginBackGround(child: VerifyEmailPage());
         } else if (state is AuthStateLoggedOut) {
-          return const LoginBackGround(child:  LoginPage());
+          return const LoginBackGround(child: LoginPage());
         } else if (state is AuthStateRegistering) {
-          return const LoginBackGround(child:RegisterPage());
+          return const LoginBackGround(child: RegisterPage());
         } else if (state is AuthStateForgotPassword) {
           return const LoginBackGround(child: ForgotPasswordPage());
         } else {

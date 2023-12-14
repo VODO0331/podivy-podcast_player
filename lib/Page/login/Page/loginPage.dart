@@ -50,10 +50,8 @@ class _loginPageState extends State<LoginPage> {
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
             hintText: '輸入電子郵件',
-            focusedBorder:UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFABC4AA))
-            ),
-            
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFFABC4AA))),
           ),
         ),
         const SizedBox(
@@ -69,8 +67,7 @@ class _loginPageState extends State<LoginPage> {
           decoration: const InputDecoration(
             hintText: '輸入密碼',
             focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFABC4AA))
-            ),
+                borderSide: BorderSide(color: Color(0xFFABC4AA))),
           ),
         ),
       ],
@@ -146,6 +143,11 @@ class _loginPageState extends State<LoginPage> {
               await showErrorDialog(
                 context,
                 '輸入多次，請稍後再試',
+              );
+            } else if (state.exception is WrongPasswordAuthException) {
+              await showErrorDialog(
+                context,
+                'Email 或 密碼 錯誤',
               );
             } else if (state.exception is GenericAuthException) {
               await showErrorDialog(

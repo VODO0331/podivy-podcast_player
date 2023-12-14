@@ -1,34 +1,81 @@
+import 'package:bottom_bar_page_transition/bottom_bar_page_transition.dart';
 import 'package:flutter/material.dart';
+import 'package:podivy/Page/HomePage.dart';
+import 'package:podivy/Page/mediaPage.dart';
+import 'package:podivy/widget/backgound.dart';
+import 'package:podivy/widget/drawer.dart';
 
-class TestPage extends StatelessWidget {
-  const TestPage({super.key});
+class TestPage extends StatefulWidget {
+  @override
+  _TestPageState createState() => _TestPageState();
+}
+
+class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
+  static const int totalPage = 2;
+  final GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
+  int _currentPage = 0;
+  static const List<String> names = [
+    'Home',
+    'Media',
+  ];
+
+  List<IconData> icons = [
+    Icons.home_rounded,
+    Icons.all_inbox,
+  ];
+
+  final List<Widget> _pages = [const HomePage(), const MediaPage()];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title:const Text('Image Gradient Transition'),
-        ),
-        body: Center(
-          child: ShaderMask(
-            shaderCallback: (Rect bounds) {
-              return const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.transparent, Colors.black],
-              ).createShader(bounds);
-            },
-            blendMode: BlendMode.dstIn,
-            child: Image.network(
-              'images/background/userPageBackGround.jpg',
-              fit: BoxFit.cover,
-              width: 300.0,
-              height: 400.0,
-            ),
-          ),
-        ),
-      );
+      key: sKey,
+      body: BottomBarPageTransition(
+        builder: (_, index) => _getBody(index),
+        currentIndex: _currentPage,
+        totalLength: 2,
+        transitionType: TransitionType.circular,
+        transitionDuration: Duration(milliseconds: 500),
+        transitionCurve: Curves.linear,
+      ),
+      bottomNavigationBar: _getBottomBar(),
+      drawer: MyDrawer(),
+    );
   }
 
-  
+  Widget _getBottomBar() {
+    return BottomNavigationBar(
+      iconSize: 35.0,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      currentIndex: _currentPage,
+      onTap: (index) {
+        _currentPage = index;
+        setState(() {});
+      },
+      type: BottomNavigationBarType.fixed,
+      items: List.generate(
+        totalPage,
+        (index) => BottomNavigationBarItem(
+          icon: Icon(icons[index]),
+          label: names[index],
+        ),
+      ),
+    );
+  }
+
+  Widget _getBody(int index) {
+    return GestureDetector(
+        onHorizontalDragUpdate: (details) {
+          if (details.primaryDelta != 0 && details.primaryDelta! > 10) {
+            sKey.currentState?.openDrawer();
+          }
+        },
+        child: MyBackGround(child: _pages[index]));
+  }
 }

@@ -24,6 +24,7 @@ class _TurntableAnimationState extends State<TurntableAnimation>
   @override
   void initState() {
     super.initState();
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
@@ -53,6 +54,16 @@ class _TurntableAnimationState extends State<TurntableAnimation>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant TurntableAnimation oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.isCentered) {
+      _controller.reset();
+      _controller.forward();
+    }
   }
 
   @override

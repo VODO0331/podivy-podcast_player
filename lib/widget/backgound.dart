@@ -13,11 +13,13 @@ class MyBackGround extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
+              Color.fromARGB(255, 169, 155, 134),
               Color(0xFF7B7060),
               Color(0xFF2C271D),
             ],
             stops: [
               0.4,
+              0.6,
               1
             ]),
       ),
@@ -25,7 +27,8 @@ class MyBackGround extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.topCenter,
-            child: Image.asset("images/background/backGroundVine.png",color:  bkColor ),
+            child: Image.asset("images/background/backGroundVine.png",
+                color: bkColor),
           ),
           child
         ],
