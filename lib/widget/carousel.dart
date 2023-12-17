@@ -95,8 +95,8 @@ class _MyCarouselState extends State<MyCarousel> {
           dotsCount: widget.items.length,
           position: currentIndex.round().toDouble(),
           decorator: DotsDecorator(
-            color: const Color.fromARGB(255, 43, 49, 42),
-            activeColor: const Color(0xFFABC4AA),
+            color: const Color(0xFF2B312A),
+            activeColor: const Color(0xFFF0FDF0),
             size: const Size.square(12.0),
             activeSize: const Size(24.0, 12.0),
             activeShape: RoundedRectangleBorder(
@@ -228,7 +228,7 @@ class _TurnTableState extends State<TurnTable> {
       height: 210.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: const Color.fromARGB(160, 73, 57, 34),
+        color: Color.fromARGB(159, 34, 38, 31),
         border: Border.all(color: Colors.white70),
       ),
       child: Flex(
@@ -277,7 +277,7 @@ class _TurnTableState extends State<TurnTable> {
           ),
           const VerticalDivider(
             thickness: 1,
-            color: Color.fromARGB(255, 146, 114, 88),
+            color: Color.fromARGB(255, 129, 145, 122),
           ),
           Expanded(
             flex: 6,

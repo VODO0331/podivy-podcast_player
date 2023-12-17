@@ -40,11 +40,11 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
         currentIndex: _currentPage,
         totalLength: 2,
         transitionType: TransitionType.circular,
-        transitionDuration: Duration(milliseconds: 500),
+        transitionDuration: const Duration(milliseconds: 500),
         transitionCurve: Curves.linear,
       ),
       bottomNavigationBar: _getBottomBar(),
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
     );
   }
 

@@ -119,7 +119,7 @@ class _ExploreContentState extends State<ExploreContent> {
           alignment: Alignment.bottomCenter,
           child: Container(
             width: double.infinity,
-            color: const Color(0xDBA08E75),
+            color: const Color(0x7C191B18),
             child: Text(
               podcaster.name,
               overflow: TextOverflow.ellipsis,

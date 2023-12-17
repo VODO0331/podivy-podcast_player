@@ -53,6 +53,7 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
 
   Widget _getBottomBar() {
     return BottomNavigationBar(
+      backgroundColor: const Color(0xFF141513),
       iconSize: 35.0,
       showSelectedLabels: false,
       showUnselectedLabels: false,
