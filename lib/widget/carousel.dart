@@ -6,7 +6,7 @@ import 'package:podivy/widget/turnTableAnimation.dart';
 import 'package:podivy/widget/userAvatar.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:text_scroll/text_scroll.dart';
-
+import 'package:get/get.dart';
 class MyCarousel extends StatefulWidget {
   final List<TurnTable> items;
 

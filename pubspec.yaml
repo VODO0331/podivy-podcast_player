@@ -51,6 +51,8 @@ dependencies:
   google_fonts: ^6.1.0
   text_scroll: ^0.2.0
   bottom_bar_page_transition: ^2.0.0
+  http: ^1.1.2
+  spotify: ^0.12.0
 
 dev_dependencies:
   flutter_test:

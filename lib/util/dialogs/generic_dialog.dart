@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 typedef DialogOptoinBuilder<T> = Map<String, T?> Function();
 Future<T?> showGenericDialog<T>({
   required BuildContext context,

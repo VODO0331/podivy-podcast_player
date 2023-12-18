@@ -5,7 +5,7 @@ import 'package:podivy/Page/podcasterPage.dart';
 import 'package:podivy/Page/searchPage.dart';
 import 'package:podivy/Page/test.dart';
 import 'package:podivy/Page/userPage.dart';
-
+import 'package:get/get.dart';
 import '../Page/playerPage.dart';
 
 class RouterPage {

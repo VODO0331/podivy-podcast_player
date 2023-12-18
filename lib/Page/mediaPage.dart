@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:developer' as dev show log;
-
+import 'package:get/get.dart';
 import 'package:podivy/widget/backgound.dart';
 
 class MediaPage extends StatelessWidget {

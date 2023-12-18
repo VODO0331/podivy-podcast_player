@@ -6,7 +6,7 @@ import 'package:podivy/service/auth/bloc/authBLOC.dart';
 import 'package:podivy/theme/theme.dart';
 import './routes/router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:get/get.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();

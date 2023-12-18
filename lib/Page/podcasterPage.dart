@@ -5,7 +5,7 @@ import 'package:podivy/service/auth/podcaster/podcasterData.dart';
 import 'package:podivy/widget/drawer.dart';
 import 'package:podivy/widget/userAvatar.dart';
 import 'package:text_scroll/text_scroll.dart';
-
+import 'package:get/get.dart';
 class PodcasterPage extends StatelessWidget {
   PodcasterPage({super.key});
 

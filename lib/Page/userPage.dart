@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glass/glass.dart';
 import 'package:podivy/widget/drawer.dart';
 import 'package:podivy/widget/userAvatar.dart';
-
+import 'package:get/get.dart';
 class UserPage extends StatelessWidget {
   const UserPage({super.key});
 

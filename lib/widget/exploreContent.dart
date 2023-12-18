@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:podivy/service/auth/podcaster/podcasterData.dart';
 import 'package:podivy/util/recommendButton.dart';
 import 'dart:developer'as dev ;
-
+import 'package:get/get.dart';
 
 class ExploreContent extends StatefulWidget {
   const ExploreContent({Key? key}) : super(key: key);
