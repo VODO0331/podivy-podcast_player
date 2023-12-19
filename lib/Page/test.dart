@@ -1,5 +1,6 @@
 import 'package:bottom_bar_page_transition/bottom_bar_page_transition.dart';
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:podivy/Page/HomePage.dart';
 import 'package:podivy/Page/mediaPage.dart';
 import 'package:podivy/widget/backgound.dart';
@@ -34,20 +35,49 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: sKey,
-      body: BottomBarPageTransition(
-        builder: (_, index) => _getBody(index),
-        currentIndex: _currentPage,
-        totalLength: 2,
-        transitionType: TransitionType.circular,
-        transitionDuration: const Duration(milliseconds: 500),
-        transitionCurve: Curves.linear,
-      ),
-      bottomNavigationBar: _getBottomBar(),
-      drawer: const MyDrawer(),
-    );
+        appBar: AppBar(),
+        key: sKey,
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Query(
+            options: QueryOptions(document: gql(readRepositories)),
+            builder: (result, {fetchMore, refetch}) {
+              if (result.hasException) {
+                return Text(result.exception.toString());
+              }
+
+              if (result.isLoading) {
+                return const CircularProgressIndicator();
+              }
+
+              List? repositories = result.data?['getbrands'];
+
+              if (repositories == null) {
+                return const Text('No repositories');
+              }
+
+              return ListView.builder(
+                  itemCount: repositories.length,
+                  itemBuilder: (context, index) {
+                    final repository = repositories[index];
+
+                    return Text(repository['searchTerm'] ?? '');
+                  });
+            },
+          ),
+        ));
   }
 
+  String readRepositories = """
+  query getbrands{
+  searchTerm: String
+  sort: BrandSort
+  paginationType: PaginationType
+  cursor: String
+  }
+    
+  
+""";
   Widget _getBottomBar() {
     return BottomNavigationBar(
       iconSize: 35.0,
