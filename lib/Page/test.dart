@@ -1,10 +1,9 @@
-import 'package:bottom_bar_page_transition/bottom_bar_page_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:podivy/Page/HomePage.dart';
 import 'package:podivy/Page/mediaPage.dart';
 import 'package:podivy/widget/backgound.dart';
-import 'package:podivy/widget/drawer.dart';
+import 'dart:developer' as dev show log;
 
 class TestPage extends StatefulWidget {
   @override
@@ -40,7 +39,15 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Query(
-            options: QueryOptions(document: gql(readRepositories)),
+            options: QueryOptions(
+              document: gql(readRepositories),
+              variables: {
+                'podcastId': '554412', 
+                'identifierType': 'PODCHASER', 
+              }
+                
+              ,
+            ),
             builder: (result, {fetchMore, refetch}) {
               if (result.hasException) {
                 return Text(result.exception.toString());
@@ -50,34 +57,38 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
                 return const CircularProgressIndicator();
               }
 
-              List? repositories = result.data?['getbrands'];
+              Map? getPodcastById = result.data?['podcast'];
 
-              if (repositories == null) {
+              if (getPodcastById == null) {
                 return const Text('No repositories');
               }
 
-              return ListView.builder(
-                  itemCount: repositories.length,
-                  itemBuilder: (context, index) {
-                    final repository = repositories[index];
+              return Text(getPodcastById['title']+getPodcastById['id']+'\n'+getPodcastById['webUrl']);
+              // ListView.builder(
+              //     itemCount: getPodcastById.length,
+              //     itemBuilder: (context, index) {
+              //       final repository = getPodcastById[index];
 
-                    return Text(repository['searchTerm'] ?? '');
-                  });
+              //       return TextButton(onPressed: (){
+              //         dev.log(repository);
+              //       }, child: Text(repository['title'] ?? ''));
+              //     });
             },
           ),
         ));
   }
 
   String readRepositories = """
-  query getbrands{
-  searchTerm: String
-  sort: BrandSort
-  paginationType: PaginationType
-  cursor: String
+  query GetPodcastById(\$podcastId: String!, \$identifierType: PodcastIdentifierType!) {
+  podcast(identifier: { id: \$podcastId, type: \$identifierType }) {
+    id
+    title
+    description
+    webUrl
   }
-    
-  
+}
 """;
+
   Widget _getBottomBar() {
     return BottomNavigationBar(
       iconSize: 35.0,

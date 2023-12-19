@@ -19,7 +19,7 @@ void main() async {
   final AuthLink authLink =
       AuthLink(getToken: () => 'Bearer $myDevAccessToken');
   final Link link = authLink.concat(httpLink);
-  final ValueNotifier<GraphQLClient>? client = ValueNotifier<GraphQLClient>(
+  final ValueNotifier<GraphQLClient> client = ValueNotifier<GraphQLClient>(
     GraphQLClient(
       link: link,
       cache: GraphQLCache(),
