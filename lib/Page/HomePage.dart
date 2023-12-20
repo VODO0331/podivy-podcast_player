@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,8 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:podivy/widget/exploreContent.dart';
 import 'package:podivy/widget/userAvatar.dart';
 import 'package:podivy/widget/carousel.dart';
-
-import 'dart:developer' as dev show log;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

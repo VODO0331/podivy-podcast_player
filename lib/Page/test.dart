@@ -40,16 +40,18 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
           padding: const EdgeInsets.all(16.0),
           child: Query(
             options: QueryOptions(
-              document: gql(readRepositories),
-              variables: {
-                'podcastId': '554412', 
-                'identifierType': 'PODCHASER', 
-              }
-                
-              ,
+              document: gql(getPodcasts),
+              variables: const {
+                'laguageFilter': 'zh',
+                // 'countryFilter': 'rs',
+                'first': 10,
+                'sortBy': 'TRENDING',
+                'sortdirection': 'DESCENDING'
+              },
             ),
             builder: (result, {fetchMore, refetch}) {
               if (result.hasException) {
+                dev.log(result.exception.toString());
                 return Text(result.exception.toString());
               }
 
@@ -57,27 +59,45 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
                 return const CircularProgressIndicator();
               }
 
-              Map? getPodcastById = result.data?['podcast'];
-
-              if (getPodcastById == null) {
+              List? getPodcasts = result.data?['podcasts']?['data'];
+              var getResult = result.data;
+              print(getResult);
+              if (getPodcasts == null) {
                 return const Text('No repositories');
               }
 
-              return Text(getPodcastById['title']+getPodcastById['id']+'\n'+getPodcastById['webUrl']);
-              // ListView.builder(
-              //     itemCount: getPodcastById.length,
-              //     itemBuilder: (context, index) {
-              //       final repository = getPodcastById[index];
+              return ListView.builder(
+                  itemCount: getPodcasts.length,
+                  itemBuilder: (context, index) {
+                    final repository = getPodcasts[index];
 
-              //       return TextButton(onPressed: (){
-              //         dev.log(repository);
-              //       }, child: Text(repository['title'] ?? ''));
-              //     });
+                    return TextButton(
+                        onPressed: () {
+                          // dev.log(repository);
+                        },
+                        child: Text(repository['title'] ?? ''));
+                  });
             },
           ),
         ));
   }
 
+  String getPodcasts = """
+  query GetPodcasts(
+     \$languageFilter: String,
+     \$first : Int, 
+     \$sortBy: PodcastSortType!,
+     \$sortdirection: SortDirection){
+    podcasts(
+      filters: {language: \$languageFilter}
+      first: \$first, 
+      sort: {sortBy: \$sortBy, direction: \$sortdirection}){
+        data{
+          title
+        }
+    }
+  }
+""";
   String readRepositories = """
   query GetPodcastById(\$podcastId: String!, \$identifierType: PodcastIdentifierType!) {
   podcast(identifier: { id: \$podcastId, type: \$identifierType }) {
