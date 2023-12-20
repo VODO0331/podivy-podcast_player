@@ -2,27 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserAvatar extends StatelessWidget {
-  final String imgPath;
+  final String? imgPath;
   final double radius;
-  final double? boraderthinness;
+  final double? borderThickness;
   final Color? color;
+  final bool isNetwork;
+
   const UserAvatar({
-    super.key,
+    Key? key,
     required this.imgPath,
     required this.radius,
-    this.color, 
-    this.boraderthinness
-  });
-  
+    this.color,
+    this.borderThickness,
+    required this.isNetwork,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      backgroundColor: color?? Colors.white,
-      radius: boraderthinness ?? radius+1.h,
+      backgroundColor: color ?? Colors.white,
+      radius: borderThickness ?? radius + 1.h,
       child: CircleAvatar(
         radius: radius,
-        backgroundImage: AssetImage(imgPath),
+        backgroundImage: imageProvider(imgPath, isNetwork),
+        
       ),
     );
   }
 }
+ImageProvider<Object> imageProvider(String? imagePath, bool isNetwork){
+  if(imagePath == null) return const AssetImage('images/userPic/default_user.png');
+  if(isNetwork){
+      return NetworkImage(imagePath);
+  }else{
+     return AssetImage(imagePath);
+  }
+}
+

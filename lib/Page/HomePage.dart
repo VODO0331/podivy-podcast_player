@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
               color: Color.fromARGB(255, 255, 255, 255),
             ),
           ),
-          const ExploreContent(),
+           ExploreContent(),
         ],
       ),
     );
@@ -63,6 +63,7 @@ Widget appBar() {
               child: UserAvatar(
                 imgPath: "images/userPic/people1.png",
                 radius: 17,
+                isNetwork: false,
               ),
             )
           ]),

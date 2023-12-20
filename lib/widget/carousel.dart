@@ -2,11 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:podivy/service/auth/podcaster/podcasterData.dart';
 import 'package:podivy/widget/turnTableAnimation.dart';
 import 'package:podivy/widget/userAvatar.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'package:get/get.dart';
+
 class MyCarousel extends StatefulWidget {
   final List<TurnTable> items;
 
@@ -16,30 +18,33 @@ class MyCarousel extends StatefulWidget {
             isCentered: true,
             isLiked: false.obs,
             reminder: false.obs,
-            name: '百靈果',
-            image:
-                UserAvatar(imgPath: 'images/podcaster/BLG.jpg', radius: 40.r),
+                // UserAvatar(imgPath: 'images/podcaster/BLG.jpg', radius: 40.r),
             latestList: [
               'overflowoverflowoverflowoverflowoverflowoverflow',
               'time2',
               'time3'
             ],
+            podcaster: PodcasterData(name: '志祺七七', imagePath: 'images/podcaster/77.png'),
           ),
           TurnTable(
             isLiked: false.obs,
             reminder: false.obs,
             isCentered: false,
-            name: 'mike',
-            image: Image.asset('images/userPic/people3.png'),
             latestList: ['time1', 'time2', 'time3'],
+            podcaster: PodcasterData(
+              name: '百靈果',
+              imagePath: 'images/podcaster/BLG.jpg',
+            ),
           ),
           TurnTable(
             isLiked: false.obs,
             reminder: false.obs,
             isCentered: false,
-            name: 'jane',
-            image: Image.asset('images/userPic/people2.png'),
             latestList: ['time1', 'time2', 'time3'],
+            podcaster: PodcasterData(
+              name: '百靈果',
+              imagePath: 'images/podcaster/BLG.jpg',
+            ),
           ),
         ],
         super(key: key);
@@ -111,8 +116,8 @@ class _MyCarouselState extends State<MyCarousel> {
 
 class TurnTable extends StatefulWidget {
   final bool isCentered;
-  final String name;
-  final Widget image;
+  final PodcasterData podcaster;
+  
   final List latestList;
   final RxBool isLiked;
   final RxBool reminder;
@@ -120,20 +125,19 @@ class TurnTable extends StatefulWidget {
   TurnTable({
     Key? key,
     required this.isCentered,
-    required this.name,
-    required this.image,
     required this.latestList,
     required this.isLiked,
     required this.reminder,
+    required this.podcaster,
   }) : super(key: key);
+
   TurnTable updateIsCentered(bool value) {
     return TurnTable(
       isCentered: value,
-      name: name,
-      image: image,
       latestList: latestList,
       reminder: reminder,
       isLiked: isLiked,
+      podcaster: podcaster,
     );
   }
 
@@ -228,7 +232,7 @@ class _TurnTableState extends State<TurnTable> {
       height: 210.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Color.fromARGB(159, 34, 38, 31),
+        color: const Color(0x9F22261F),
         border: Border.all(color: Colors.white70),
       ),
       child: Flex(
@@ -241,7 +245,7 @@ class _TurnTableState extends State<TurnTable> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextScroll(
-                    widget.name,
+                    widget.podcaster.name,
                     intervalSpaces: 5,
                     velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
                     delayBefore: const Duration(seconds: 2),
@@ -254,11 +258,18 @@ class _TurnTableState extends State<TurnTable> {
                     child: Stack(
                       alignment: Alignment.bottomRight,
                       children: [
-                        TurntableAnimation(
-                          isCentered: widget.isCentered,
-                          child: CircleAvatar(
-                            radius: 37,
-                            child: widget.image,
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed('/podcaster',
+                                arguments: widget.podcaster);
+                          },
+                          child: TurntableAnimation(
+                            isCentered: widget.isCentered,
+                            child: CircleAvatar(
+                              radius: 37,
+                              child: UserAvatar(imgPath: widget.podcaster.imagePath, radius: 40.r, isNetwork: false,),
+                             
+                            ),
                           ),
                         ),
                         Align(
@@ -270,7 +281,7 @@ class _TurnTableState extends State<TurnTable> {
                       ],
                     ),
                   ),
-                  buttonGroup(isLiked, reminder, widget.name)
+                  buttonGroup(isLiked, reminder, widget.podcaster.name)
                 ],
               ),
             ),

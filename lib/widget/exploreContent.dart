@@ -1,22 +1,17 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:podivy/service/auth/podcaster/podcasterData.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:podivy/util/recommendButton.dart';
-import 'dart:developer'as dev ;
+import 'dart:developer' as dev show log;
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
-class ExploreContent extends StatefulWidget {
-  const ExploreContent({Key? key}) : super(key: key);
+// ignore: must_be_immutable
+class ExploreContent extends StatelessWidget {
+  ExploreContent({Key? key}) : super(key: key);
 
-  @override
-  _ExploreContentState createState() => _ExploreContentState();
-}
-
-class _ExploreContentState extends State<ExploreContent> {
-  String selectedType = 'type1'; // 預設選擇 'type1'
-
+  RxString selectedType = 'News'.obs;
+  RxBool imgError = true.obs;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -28,138 +23,187 @@ class _ExploreContentState extends State<ExploreContent> {
             child: Row(
               children: <Widget>[
                 RecommendButton(
-                  text: 'type1',
+                  text: '時事',
                   onPressed: () {
-                    updateSelectedType('type1');
+                    selectedType.value = 'News';
                   },
                 ),
                 RecommendButton(
-                  text: 'type2',
+                  text: '喜劇',
                   onPressed: () {
-                    updateSelectedType('type2');
+                    selectedType.value = 'Comedy';
                   },
                 ),
                 RecommendButton(
-                  text: 'type3',
+                  text: '社會',
                   onPressed: () {
-                    updateSelectedType('type3');
+                    selectedType.value = 'Society';
                   },
                 ),
                 RecommendButton(
-                  text: 'type4',
+                  text: '文化',
                   onPressed: () {
-                    updateSelectedType('type4');
+                    selectedType.value = 'Culture';
                   },
                 ),
                 RecommendButton(
-                  text: 'type5',
+                  text: '電影',
                   onPressed: () {
-                    updateSelectedType('type5');
+                    selectedType.value = 'Film';
                   },
                 ),
               ],
             ),
           ),
           Expanded(
-            child: buildGridView(),
+            child: Obx(() {
+
+              return buildGridView(selectedType, imgError);
+            }),
           ),
         ],
       ),
     );
   }
 
-  void updateSelectedType(String type) {
-    setState(() {
-      selectedType = type;
-    });
-  }
-
-  Widget buildGridView() {
+  Widget buildGridView(RxString type, RxBool imgError) {
     // 根據 selectedType 選擇顯示的資料
-    List<PodcasterData> podcasterList = getPodcastersByType(selectedType);
 
-    return GridView.builder(
-      physics:const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.only(left: 50, right: 50, bottom: 50).h,
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 12.0,
-        crossAxisSpacing: 12.0,
-      ),
-      itemCount: podcasterList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return buildPodcasterCard(podcasterList[index]);
-      },
-    );
+    return Query(
+        options: QueryOptions(
+          document: gql(getPodcasts),
+          variables: {
+            'languageFilter': 'zh',
+            'first': 4,
+            'sortBy': 'FOLLOWER_COUNT',
+            'sortdirection': 'DESCENDING',
+            'categoriesFilter': [type.value],
+          },
+        ),
+        builder: (result, {fetchMore, refetch}) {
+          if (result.hasException) {
+            dev.log(result.exception.toString());
+            return Text(result.exception.toString());
+          }
+
+          if (result.isLoading) {
+            return const SizedBox(
+              height: 50,
+              width: 50,
+              child: Center(child: CircularProgressIndicator(),),
+            );
+          }
+
+          List? getPodcasts = result.data?['podcasts']?['data'];
+          if (getPodcasts == null) {
+            return const Text('No repositories');
+          }
+          return GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.only(left: 50, right: 50, bottom: 50).h,
+            shrinkWrap: true,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 12.0,
+              crossAxisSpacing: 12.0,
+            ),
+            itemCount: getPodcasts.length,
+            itemBuilder: (BuildContext context, int index) {
+              final Map podcaster = getPodcasts[index];
+              return GestureDetector(
+                onTap: () {
+                  dev.log("進入${podcaster['title']}的頁面");
+                  Get.toNamed('/podcaster', arguments: podcaster['id']);
+                },
+                child: Container(
+                    key: UniqueKey(),
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black54,
+                          offset: Offset(2, 5),
+                          blurRadius: 4,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        FutureBuilder(
+                          future: loadImage(podcaster['imageUrl']),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              if (snapshot.hasError) {
+                                return Image.asset(
+                                  'images/podcaster/defaultPodcaster.jpg',
+                                  fit: BoxFit.fill,
+                                );
+                              } else {
+                                return Image.network(podcaster['imageUrl']);
+                              }
+                            } else {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                          },
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            width: double.infinity,
+                            color: const Color(0x7C191B18),
+                            child: Text(
+                              podcaster['title'],
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style:
+                                  TextStyle(fontSize: ScreenUtil().setSp(16)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+              );
+            },
+          );
+        });
   }
 
-  Widget buildPodcasterCard(PodcasterData podcaster) {
-    return GestureDetector(
-      onTap: () {
-        dev.log("進入${podcaster.name}的頁面");
-        Get.toNamed('/podcaster',arguments: podcaster);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(podcaster.imagePath),
-            fit: BoxFit.cover,
-          ),
-          boxShadow: const[
-             BoxShadow(
-              color: Colors.black54,
-              offset: Offset(2, 5),
-              blurRadius: 4,
-              spreadRadius: 1,
-            ),
-          ],
-        ),
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            width: double.infinity,
-            color: const Color(0x7C191B18),
-            child: Text(
-              podcaster.name,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: ScreenUtil().setSp(16)),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  Future<Image> loadImage(String imageUrl) async {
+    final response = await http.get(Uri.parse(imageUrl));
 
-  List<PodcasterData> getPodcastersByType(String type) {
-    // 根據不同的 type 返回對應的資料
-    // 這裡的 PodcasterData 是一個自定義的類，代表每位主持人的資料
-    // 你需要根據實際情況修改
-    
-    switch(type){
-      case 'type1':
-        return [
-        PodcasterData(name: '百靈果', imagePath: 'images/podcaster/BLG.jpg'),
-        PodcasterData(name: '志祺七七', imagePath: 'images/podcaster/77.png'),
-        PodcasterData(name: '台灣通勤第一品牌', imagePath: 'images/podcaster/TT.jpg'),
-        PodcasterData(name: '呱吉', imagePath: 'images/podcaster/GG.jpeg'),
-        ];
-      case 'type2':
-        return [
-        PodcasterData.defaultPodcaster(),
-        PodcasterData.defaultPodcaster(),
-        PodcasterData.defaultPodcaster(),
-        PodcasterData.defaultPodcaster(),
-      ];
-      default:
-        return [
-        PodcasterData.defaultPodcaster(),
-        PodcasterData.defaultPodcaster(),
-        PodcasterData.defaultPodcaster(),
-        PodcasterData.defaultPodcaster(),
-      ];
+    if (response.statusCode == 200) {
+      return Image.memory(response.bodyBytes);
+    } else {
+      throw Exception('Failed to load image');
     }
   }
 }
 
+String getPodcasts = """
+  query GetPodcasts(
+     \$languageFilter: String,
+     \$first : Int, 
+     \$categoriesFilter :[String],
+     \$sortBy: PodcastSortType!,
+     \$sortdirection: SortDirection,
+  ){
+    podcasts(
+      filters: {
+        language: \$languageFilter,
+        categories: \$categoriesFilter
+      },
+      first: \$first, 
+      sort: {sortBy: \$sortBy, direction: \$sortdirection},
+    ){
+      data {
+        id
+        title
+        imageUrl
+
+      }
+    }
+  }
+""";

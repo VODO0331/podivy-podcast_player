@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:podivy/Page/HomePage.dart';
-import 'package:podivy/Page/mediaPage.dart';
-import 'package:podivy/widget/backgound.dart';
 import 'dart:developer' as dev show log;
 
 class TestPage extends StatefulWidget {
@@ -11,20 +8,9 @@ class TestPage extends StatefulWidget {
 }
 
 class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
-  static const int totalPage = 2;
   final GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
-  int _currentPage = 0;
-  static const List<String> names = [
-    'Home',
-    'Media',
-  ];
+ 
 
-  List<IconData> icons = [
-    Icons.home_rounded,
-    Icons.all_inbox,
-  ];
-
-  final List<Widget> _pages = [const HomePage(), const MediaPage()];
 
   @override
   void initState() {
@@ -37,16 +23,19 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
         appBar: AppBar(),
         key: sKey,
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Query(
+          padding: const EdgeInsets.all(8.0),
+          child: 
+          Query(
             options: QueryOptions(
               document: gql(getPodcasts),
               variables: const {
-                'laguageFilter': 'zh',
-                // 'countryFilter': 'rs',
-                'first': 10,
-                'sortBy': 'TRENDING',
-                'sortdirection': 'DESCENDING'
+                'languageFilter': 'zh',
+                'first': 6,
+                'sortBy': 'FOLLOWER_COUNT',
+                'sortdirection': 'DESCENDING',
+                'episodesFirst':1,
+                'categoriesFilter': ['News'],
+                //FOLLOWER_COUNT ASCENDING
               },
             ),
             builder: (result, {fetchMore, refetch}) {
@@ -60,8 +49,7 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
               }
 
               List? getPodcasts = result.data?['podcasts']?['data'];
-              var getResult = result.data;
-              print(getResult);
+              print(getPodcasts);
               if (getPodcasts == null) {
                 return const Text('No repositories');
               }
@@ -70,73 +58,57 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
                   itemCount: getPodcasts.length,
                   itemBuilder: (context, index) {
                     final repository = getPodcasts[index];
-
+                    // print(repository);
+                    // final slug = getPodcasts[index]['categories'];s
                     return TextButton(
                         onPressed: () {
                           // dev.log(repository);
                         },
-                        child: Text(repository['title'] ?? ''));
+                        child: Text(repository['title']?? 'fail'));
                   });
             },
           ),
         ));
   }
 
-  String getPodcasts = """
+}
+String getPodcasts = """
   query GetPodcasts(
      \$languageFilter: String,
      \$first : Int, 
+     \$episodesFirst: Int,
+     \$categoriesFilter :[String],
      \$sortBy: PodcastSortType!,
-     \$sortdirection: SortDirection){
+     \$sortdirection: SortDirection,
+  ){
     podcasts(
-      filters: {language: \$languageFilter}
+      filters: {
+        language: \$languageFilter,
+        categories: \$categoriesFilter
+      },
       first: \$first, 
-      sort: {sortBy: \$sortBy, direction: \$sortdirection}){
-        data{
-          title
+      sort: {sortBy: \$sortBy, direction: \$sortdirection},
+    ){
+      data {
+        id
+        title
+        imageUrl
+        categories {
+          slug
         }
+        episodes(first: \$episodesFirst) {
+          data {
+            title
+            audioUrl
+          }
+        }
+      }
     }
   }
 """;
-  String readRepositories = """
-  query GetPodcastById(\$podcastId: String!, \$identifierType: PodcastIdentifierType!) {
-  podcast(identifier: { id: \$podcastId, type: \$identifierType }) {
-    id
-    title
-    description
-    webUrl
-  }
-}
-""";
 
-  Widget _getBottomBar() {
-    return BottomNavigationBar(
-      iconSize: 35.0,
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      currentIndex: _currentPage,
-      onTap: (index) {
-        _currentPage = index;
-        setState(() {});
-      },
-      type: BottomNavigationBarType.fixed,
-      items: List.generate(
-        totalPage,
-        (index) => BottomNavigationBarItem(
-          icon: Icon(icons[index]),
-          label: names[index],
-        ),
-      ),
-    );
-  }
+// \$categoriesFilter :[String] categories: \$categoriesFilter
+// sort: {sortBy: \$sortBy, direction: \$sortdirection},
+//\$sortBy: PodcastSortType!,
+//  \$sortdirection: SortDirection,
 
-  Widget _getBody(int index) {
-    return GestureDetector(
-        onHorizontalDragUpdate: (details) {
-          if (details.primaryDelta != 0 && details.primaryDelta! > 10) {
-            sKey.currentState?.openDrawer();
-          }
-        },
-        child: MyBackGround(child: _pages[index]));
-  }
-}

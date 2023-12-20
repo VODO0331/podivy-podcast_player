@@ -43,7 +43,7 @@ class MyDrawer extends StatelessWidget {
                 height: 90.h,
               ),
               const UserAvatar(
-                  imgPath: "images/userPic/people1.png", radius: 27),
+                  imgPath: "images/userPic/people1.png", radius: 27,isNetwork: false,),
               SizedBox(
                 height: 12.h,
               ),
@@ -79,7 +79,7 @@ class MyDrawer extends StatelessWidget {
               const Divider(
                 height: 1,
                 thickness: 2.0,
-                color: Colors.white38,
+                color: Color(0x0DFFFFFF),
               ),
               ListTile(
                 leading: Icon(
@@ -92,7 +92,7 @@ class MyDrawer extends StatelessWidget {
               const Divider(
                 height: 1,
                 thickness: 2.0,
-                color: Colors.white38,
+                color: Color(0x0DFFFFFF),
               ),
               ListTile(
                 leading: Icon(
@@ -105,7 +105,7 @@ class MyDrawer extends StatelessWidget {
               const Divider(
                 height: 1,
                 thickness: 2.0,
-                color: Colors.white38,
+                color: Color(0x0DFFFFFF),
               ),
               Expanded(
                 child: Container(),

@@ -1,15 +1,20 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glass/glass.dart';
-import 'package:podivy/service/auth/podcaster/podcasterData.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:podivy/widget/drawer.dart';
 import 'package:podivy/widget/userAvatar.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'package:get/get.dart';
+import 'dart:developer' as dev show log;
+
 class PodcasterPage extends StatelessWidget {
   PodcasterPage({super.key});
+  final String podcasterId = Get.arguments;
 
-  Widget profileInformation(PodcasterData podcasterdata) {
+  Widget profileInformation(Map? podcasterdata) {
     return Stack(
       children: [
         ShaderMask(
@@ -21,8 +26,8 @@ class PodcasterPage extends StatelessWidget {
             ).createShader(bounds);
           },
           blendMode: BlendMode.dstIn,
-          child: Image.asset(
-            podcasterdata.imagePath,
+          child: Image.network(
+            podcasterdata!['imageUrl'],
             fit: BoxFit.cover,
             height: 300.h,
             width: double.infinity,
@@ -61,15 +66,16 @@ class PodcasterPage extends StatelessWidget {
                   child: Row(
                     children: [
                       UserAvatar(
-                        imgPath: podcasterdata.imagePath,
+                        imgPath: podcasterdata['imageUrl'],
                         radius: 60,
-                        boraderthinness: 65,
+                        borderThickness: 65,
+                        isNetwork: true,
                         color: const Color(0xFFABC4AA),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30).w,
                         child: TextScroll(
-                          podcasterdata.name,
+                          podcasterdata['title'] ?? 'Unknown Title',
                           style: TextStyle(
                             fontSize: ScreenUtil().setSp(20),
                           ),
@@ -95,14 +101,6 @@ class PodcasterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleList = [
-      'overflowoverflowoverflowoverflowoverflowoverflow',
-      'title2',
-      'title2',
-      'title2',
-      'title2'
-    ];
-    final podcasterdata = Get.arguments;
     return GestureDetector(
       onHorizontalDragUpdate: (details) {
         if (details.primaryDelta != 0 && details.primaryDelta! > 10) {
@@ -111,79 +109,137 @@ class PodcasterPage extends StatelessWidget {
         }
       },
       child: Scaffold(
-        key: sKey,
-        drawer: const MyDrawer(),
-        body: Column(children: [
-          profileInformation(podcasterdata),
-          Expanded(
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color(0xFF7B7060),
-                      Color(0xFF2C271D),
-                    ],
-                    stops: [
-                      0.7,
-                      1
-                    ]),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0).r,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              print('sort');
-                            },
-                            icon: const Icon(Icons.sort_sharp)),
-                        Text('${titleList.length} 部'),
-                      ],
+          key: sKey,
+          drawer: const MyDrawer(),
+          body: Query(
+            options: QueryOptions(
+              document: gql(getPodcast),
+              variables: {
+                'podcastId': podcasterId,
+                'identifierType': 'PODCHASER',
+                'episodesFirst': 30,
+                'episodesortBy': 'AIR_DATE',
+                'episodedirection': 'DESCENDING'
+              },
+            ),
+            builder: (result, {fetchMore, refetch}) {
+              if (result.hasException) {
+                dev.log(result.exception.toString());
+                return Text(result.exception.toString());
+              }
+
+              if (result.isLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              Map? getPodcast = result.data?['podcast'];
+              List? getEpisodes = getPodcast?['episodes']['data'];
+              
+              if (getPodcast == null) {
+                return const Text('No repositories');
+              }
+              return Column(children: [
+                profileInformation(getPodcast),
+                Expanded(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xFF7B7060),
+                            Color(0xFF2C271D),
+                          ],
+                          stops: [
+                            0.7,
+                            1
+                          ]),
                     ),
-                    const Divider(
-                      thickness: 1,
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        padding: EdgeInsets.zero,
-                        itemCount: titleList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0).r,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10).h,
-                                child: ListTile(
-                                  title: Text(
-                                    titleList[index],
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  trailing: const Icon(Icons.more_vert),
-                                  onTap: () {
-                                    Get.toNamed("/player", arguments: {
-                                      'title': titleList[index],
-                                      'podcasterData': podcasterdata
-                                    });
+                              IconButton(
+                                  onPressed: () {
+                                    print('sort');
                                   },
-                                ),
-                              )
+                                  icon: const Icon(Icons.sort_sharp)),
+                              Text('${getEpisodes!.length} 部'),
                             ],
-                          );
-                        },
+                          ),
+                          const Divider(
+                            thickness: 1,
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              itemCount: getEpisodes.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final getEpisode = getEpisodes[index];
+
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10)
+                                          .h,
+                                  child: ListTile(
+                                    title: Text(
+                                      getEpisode['title'] ?? 'Unknown Title',
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    trailing: const Icon(Icons.more_vert),
+                                    onTap: () {
+                                      Get.toNamed("/player", arguments: getEpisode['id']);
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          )
-        ]),
-      ),
+                  ),
+                )
+              ]);
+            },
+          )),
     );
   }
 }
+
+String getPodcast = """
+  query GetPodcast(
+    \$podcastId : String!,
+    \$identifierType : PodcastIdentifierType!,
+    \$episodesFirst : Int,
+    \$episodesortBy : EpisodeSortType!,
+    \$episodedirection : SortDirection,
+){
+    podcast(identifier : {id : \$podcastId , type: \$identifierType}){
+      title
+      imageUrl
+      language
+      socialLinks{
+        twitter
+        facebook
+        instagram
+      } 
+      episodes(first : \$episodesFirst, 
+      sort:{sortBy: \$episodesortBy, direction: \$episodedirection}){
+        data {
+          id
+          title
+          imageUrl
+        }
+      }
+    }
+  }
+     
+  
+  
+""";

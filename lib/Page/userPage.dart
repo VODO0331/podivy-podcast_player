@@ -56,8 +56,9 @@ class UserPage extends StatelessWidget {
                     child: UserAvatar(
                       imgPath: 'images/userPic/people1.png',
                       radius: 60,
-                      boraderthinness: 65,
+                      isNetwork: false,
                       color: Color(0xFFABC4AA),
+                      borderThickness: 65,
                     ),
                   )
                 ],
