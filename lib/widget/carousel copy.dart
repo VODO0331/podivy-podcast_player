@@ -2,59 +2,27 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:podivy/service/auth/podcaster/podcasterData.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:podivy/Page/playerPage.dart';
+
 import 'package:podivy/widget/turnTableAnimation.dart';
 import 'package:podivy/widget/userAvatar.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'package:get/get.dart';
 
-class MyCarousel extends StatefulWidget {
+class MyCarouseltest extends StatefulWidget {
   final List<TurnTable> items;
 
-  MyCarousel({Key? key})
-      : items = [
-          TurnTable(
-            isCentered: true,
-            isLiked: false.obs,
-            reminder: false.obs,
-            // UserAvatar(imgPath: 'images/podcaster/BLG.jpg', radius: 40.r),
-            latestList: [
-              'overflowoverflowoverflowoverflowoverflowoverflow',
-              'time2',
-              'time3'
-            ],
-            podcaster: PodcasterData(
-                name: '志祺七七', imagePath: 'images/podcaster/77.png'),
-          ),
-          TurnTable(
-            isLiked: false.obs,
-            reminder: false.obs,
-            isCentered: false,
-            latestList: ['time1', 'time2', 'time3'],
-            podcaster: PodcasterData(
-              name: '百靈果',
-              imagePath: 'images/podcaster/BLG.jpg',
-            ),
-          ),
-          TurnTable(
-            isLiked: false.obs,
-            reminder: false.obs,
-            isCentered: false,
-            latestList: ['time1', 'time2', 'time3'],
-            podcaster: PodcasterData(
-              name: '百靈果',
-              imagePath: 'images/podcaster/BLG.jpg',
-            ),
-          ),
-        ],
+  MyCarouseltest({Key? key})
+      : items = [],
         super(key: key);
 
   @override
-  State<MyCarousel> createState() => _MyCarouselState();
+  State<MyCarouseltest> createState() => _MyCarouseltestState();
 }
 
-class _MyCarouselState extends State<MyCarousel> {
+class _MyCarouseltestState extends State<MyCarouseltest> {
   late CarouselController controller;
   double currentIndex = 0;
 
@@ -117,19 +85,19 @@ class _MyCarouselState extends State<MyCarousel> {
 
 class TurnTable extends StatefulWidget {
   final bool isCentered;
-  final PodcasterData podcaster;
-
   final List latestList;
   final RxBool isLiked;
   final RxBool reminder;
-
+  final Map podcasterData;
+  final List leastEpisode;
   TurnTable({
     Key? key,
     required this.isCentered,
     required this.latestList,
     required this.isLiked,
     required this.reminder,
-    required this.podcaster,
+    required this.podcasterData,
+    required this.leastEpisode,
   }) : super(key: key);
 
   TurnTable updateIsCentered(bool value) {
@@ -138,7 +106,8 @@ class TurnTable extends StatefulWidget {
       latestList: latestList,
       reminder: reminder,
       isLiked: isLiked,
-      podcaster: podcaster,
+      podcasterData: podcasterData,
+      leastEpisode: leastEpisode,
     );
   }
 
@@ -162,93 +131,122 @@ class _TurnTableState extends State<TurnTable> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(5).r,
-      width: 360.w,
-      height: 210.h,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: const Color(0x9F22261F),
-        border: Border.all(color: Colors.white70),
-      ),
-      child: Flex(
-        direction: Axis.horizontal,
-        children: [
-          Expanded(
-            flex: 3,
-            child: IntrinsicHeight(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextScroll(
-                    widget.podcaster.name,
-                    intervalSpaces: 5,
-                    velocity: const Velocity(pixelsPerSecond: Offset(50, 0)),
-                    delayBefore: const Duration(seconds: 2),
-                    pauseBetween: const Duration(seconds: 2),
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Expanded(
-                    child: Stack(
-                      alignment: Alignment.bottomRight,
+        padding: const EdgeInsets.all(5).r,
+        width: 360.w,
+        height: 210.h,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: const Color(0x9F22261F),
+          border: Border.all(color: Colors.white70),
+        ),
+        child: Query(
+          options: QueryOptions(
+            document: gql(getPodcasts),
+            variables: const {
+              'languageFilter': 'zh',
+              'first': 3,
+              'sortBy': 'RELEVANCE',
+              'sortdirection': 'DESCENDING',
+              'episodesFirst': 3,
+              'episodesortBy': 'AIR_DATE',
+              'episodedirection': 'DESCENDING',
+            },
+          ),
+          builder: (result, {fetchMore, refetch}) {
+            if (result.hasException) {
+              return Text(result.exception.toString());
+            }
+            if (result.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            Map? getPodcasts = result.data?['podcasts']?['data'];
+            if (getPodcasts == null) {
+              return const Text('NO repositoryies');
+            }
+            List? gerEpisodes = getPodcasts['episodes']['data'];
+            return Flex(
+              direction: Axis.horizontal,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: IntrinsicHeight(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed('/podcaster',
-                                arguments: widget.podcaster);
-                          },
-                          child: TurntableAnimation(
-                            isCentered: widget.isCentered,
-                            child: CircleAvatar(
-                              radius: 37,
-                              child: UserAvatar(
-                                imgPath: widget.podcaster.imagePath,
-                                radius: 40.r,
-                                isNetwork: false,
+                        TextScroll(
+                          getPodcasts['title'],
+                          intervalSpaces: 5,
+                          velocity:
+                              const Velocity(pixelsPerSecond: Offset(50, 0)),
+                          delayBefore: const Duration(seconds: 2),
+                          pauseBetween: const Duration(seconds: 2),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Expanded(
+                          child: Stack(
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Get.toNamed('/podcaster',
+                                      arguments: getPodcasts['id']);
+                                },
+                                child: TurntableAnimation(
+                                  isCentered: widget.isCentered,
+                                  child: CircleAvatar(
+                                    radius: 37,
+                                    child: UserAvatar(
+                                      imgPath: getPodcasts['imageUrl'],
+                                      radius: 40.r,
+                                      isNetwork: true,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Image.asset(
+                                  'images/turnTable/record2.png',
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Image.asset(
-                            'images/turnTable/record2.png',
-                          ),
-                        ),
+                        buttonGroup(isLiked, reminder, getPodcasts['title'])
                       ],
                     ),
                   ),
-                  buttonGroup(isLiked, reminder, widget.podcaster.name)
-                ],
-              ),
-            ),
-          ),
-          const VerticalDivider(
-            thickness: 1,
-            color: Color.fromARGB(255, 129, 145, 122),
-          ),
-          Expanded(
-            flex: 6,
-            child: Container(
-              width: 200.w,
-              height: 165.h,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(96, 76, 74, 74),
-                border: Border.all(color: Colors.white60),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(5.0),
-                  topRight: Radius.circular(16.0),
-                  bottomLeft: Radius.circular(5.0),
-                  bottomRight: Radius.circular(16.0),
                 ),
-              ),
-              child: podcastLatestContent(widget.latestList),
-            ),
-          ),
-        ],
-      ),
-    );
+                const VerticalDivider(
+                  thickness: 1,
+                  color: Color.fromARGB(255, 129, 145, 122),
+                ),
+                Expanded(
+                  flex: 6,
+                  child: Container(
+                    width: 200.w,
+                    height: 165.h,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(96, 76, 74, 74),
+                      border: Border.all(color: Colors.white60),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(5.0),
+                        topRight: Radius.circular(16.0),
+                        bottomLeft: Radius.circular(5.0),
+                        bottomRight: Radius.circular(16.0),
+                      ),
+                    ),
+                    child: podcastLatestContent(gerEpisodes!),
+                  ),
+                ),
+              ],
+            );
+          },
+        ));
   }
 
   Widget buttonGroup(RxBool isLiked, RxBool reminder, String name) {
@@ -292,11 +290,12 @@ class _TurnTableState extends State<TurnTable> {
       padding: EdgeInsets.zero,
       itemCount: 3,
       itemBuilder: (BuildContext context, int index) {
+        final getEpisode = latestList[index];
         return Column(
           children: [
             ListTile(
               title: TextScroll(
-                latestList[index],
+                getEpisode['title'],
                 intervalSpaces: 12,
                 velocity: const Velocity(pixelsPerSecond: Offset(90, 0)),
                 delayBefore: const Duration(seconds: 3),
@@ -338,7 +337,13 @@ String getPodcasts = """
         id
         title
         imageUrl
-
+        episodes(first : \$episodesFirst, 
+                sort:{sortBy: \$episodesortBy, direction: \$episodedirection}){
+          data {
+            id
+            title
+        }
+      }
       }
     }
   }

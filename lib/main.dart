@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:podivy/AccessToken.dart';
 import 'package:podivy/service/auth/authProvider.dart.dart';
@@ -8,7 +10,6 @@ import 'package:podivy/service/auth/bloc/authBLOC.dart';
 import 'package:podivy/theme/theme.dart';
 import './routes/router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
