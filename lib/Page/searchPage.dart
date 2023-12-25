@@ -105,6 +105,7 @@ class _SerchPageState extends State<SerchPage> {
                   setState(() {
                     searched = true;
                     keywords = '123';
+                    
                   });
                 },
               ),
