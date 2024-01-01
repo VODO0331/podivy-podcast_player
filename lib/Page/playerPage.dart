@@ -1,11 +1,9 @@
 import 'dart:async';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:get/get.dart';
-import 'dart:developer' as dev show log;
+// import 'dart:developer' as dev show log;
 
 class PlayerPage extends StatefulWidget {
   const PlayerPage({Key? key});
@@ -15,36 +13,70 @@ class PlayerPage extends StatefulWidget {
 }
 
 class _PlayerPageState extends State<PlayerPage> {
-  final String getEpisodeID = Get.arguments['id'];
-  final String getUrl = Get.arguments['url'];
+  
+  final List getEpisodeList = Get.arguments['episodes'];
+  final Map podcasterData = Get.arguments['podcaster'];
+  final int getIndex = Get.arguments['index'];
+  
+  late int currentIndex ;
+  late String getUrl;
+  late Map getEpisodeData;
+
   bool isPlaying = false;
   double progress = 0.0;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
   AudioPlayer _audioPlayer = AudioPlayer();
 
-  @override
-  void initState() {
-    super.initState();
-    setAudio(getUrl);
+
+Future<void> _playEpisode(int index) async {
+
+  setState(() {
+    currentIndex = index; // 更新 currentIndex
+    final newEpisodeData = getEpisodeList[index];
+    getEpisodeData = newEpisodeData;
+    getUrl = newEpisodeData['audioUrl'];
+    isPlaying = false; // Pause the player while loading the new episode
+  });
+  await setAudio(getUrl);
+  await _audioPlayer.resume(); // Start playing the new episode
+}
+
+ @override
+void initState() {
+  super.initState();
+
+    currentIndex =  getIndex;
+    getEpisodeData = getEpisodeList[currentIndex];
+    getUrl = getEpisodeData['audioUrl'];
+     
+    Future.delayed(Duration.zero,(){
+      setAudio(getUrl);
+    });
     _audioPlayer.onPlayerStateChanged.listen((state) {
-      setState(() {
-        isPlaying = state == PlayerState.playing;
-      });
+      if (mounted) {
+        setState(() {
+          isPlaying = state == PlayerState.playing;
+        });
+      }
     });
 
     _audioPlayer.onDurationChanged.listen((newDuration) {
-      setState(() {
-        duration = newDuration;
-      });
+      if (mounted) {
+        setState(() {
+          duration = newDuration;
+        });
+      }
     });
-    _audioPlayer.onPositionChanged.listen((newPosition) {
-      setState(() {
-        position = newPosition;
-      });
-    });
-  }
 
+    _audioPlayer.onPositionChanged.listen((newPosition) {
+      if (mounted) {
+        setState(() {
+          position = newPosition;
+        });
+      }
+    });
+}
   @override
   void dispose() {
     _audioPlayer.dispose();
@@ -53,80 +85,55 @@ class _PlayerPageState extends State<PlayerPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Music Player'),
       ),
-      body: Query(
-        options: QueryOptions(
-          document: gql(getEpisode),
-          variables: {'episodeID': getEpisodeID, 'identifierType': 'PODCHASER'},
-        ),
-        builder: (result, {fetchMore, refetch}) {
-          if (result.hasException) {
-            dev.log(result.exception.toString());
-            return Text(result.exception.toString());
-          }
-
-          if (result.isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          Map? getEpisodeData = result.data?['episode'];
-
-          if (getEpisodeData == null) {
-            return const Text('No repositories');
-          }
-          Map getPodcast = getEpisodeData['podcast'];
-
-          return Column(
+      body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _buildSongCover(getPodcast),
-              _buildSongInfo(getEpisodeData,getPodcast),
+              _buildSongCover(podcasterData),
+              _buildSongInfo(getEpisodeData['title'],podcasterData),
               const SizedBox(height: 20),
               _buildProgressBar(),
               _buildTimeLabels(),
               const SizedBox(height: 20),
               _buildControlButtons(),
-              const SizedBox(height: 20),
-              _buildNavigationButtons(),
             ],
-          );
-        },
-      ),
-    );
+          ));
+        
+      
+    
   }
 
-  Widget _buildSongCover(Map? getPodcast) {
+  Widget _buildSongCover(Map? getPodcaster) {
     return Container(
       width: 200,
       height: 200,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         image: DecorationImage(
-          image: NetworkImage(getPodcast!['imageUrl']),
+          image: NetworkImage(getPodcaster!['imageUrl']),
         ),
       ),
     );
   }
 
-  Widget _buildSongInfo(Map getEpisodeData, Map getPodcast) {
+  Widget _buildSongInfo(String episodeTitle, Map getPodcaster) {
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 6).w,
           child: Text(
-            getEpisodeData['title'],
+            episodeTitle,
             style: TextStyle(fontSize: ScreenUtil().setSp(15)),
             overflow: TextOverflow.ellipsis,
           ),
         ),
         Text(
-          getPodcast['title'],
+          getPodcaster['title'],
           style: const TextStyle(fontSize: 16, color: Colors.grey),
         ),
         const SizedBox(height: 20),
@@ -161,57 +168,45 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   Widget _buildControlButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          icon: const Icon(Icons.replay_10),
-          onPressed: () {
-            // Handle rewind logic
-          },
-        ),
-        const SizedBox(width: 20),
-        IconButton(
-          icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
-          iconSize: 50,
-          onPressed: () async {
-            if (isPlaying) {
-              await _audioPlayer.pause();
-            } else {
-              await _audioPlayer.resume();
-            }
-          },
-        ),
-        const SizedBox(width: 20),
-        IconButton(
-          icon: const Icon(Icons.forward_10),
-          onPressed: () {
-            // Handle fast forward logic
-          },
-        ),
-      ],
-    );
-  }
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      IconButton(
+        icon: const Icon(Icons.skip_previous),
+        onPressed: currentIndex == 0 ? null : _playPreviousEpisode,
+      ),
+      const SizedBox(width: 20),
+      IconButton(
+        icon: const Icon(Icons.replay_10),
+        onPressed: () {
+          _rewind();
+        },
+      ),
+      const SizedBox(width: 20),
+      IconButton(
+        icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+        iconSize: 50,
+        onPressed: () async {
+          _togglePlayPause();
+        },
+      ),
+      const SizedBox(width: 20),
+      IconButton(
+        icon: const Icon(Icons.forward_10),
+        onPressed: () {
+          _fastForward();
+        },
+      ),
+      const SizedBox(width: 20),
+      IconButton(
+        icon: const Icon(Icons.skip_next),
+        onPressed: currentIndex == getEpisodeList.length - 1 ? null : _playNextEpisode,
+      ),
+    ],
+  );
+}
 
-  Widget _buildNavigationButtons() {
-    return Column(
-      children: [
-        IconButton(
-          icon: const Icon(Icons.skip_previous),
-          onPressed: () {
-            // Handle previous track logic
-          },
-        ),
-        const SizedBox(height: 20),
-        IconButton(
-          icon: const Icon(Icons.skip_next),
-          onPressed: () {
-            // Handle next track logic
-          },
-        ),
-      ],
-    );
-  }
+  
 
   String formatTime(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
@@ -229,25 +224,42 @@ class _PlayerPageState extends State<PlayerPage> {
     _audioPlayer.setReleaseMode(ReleaseMode.stop);
     await _audioPlayer.play(UrlSource(url));
   }
+  void _rewind() async {
+  final newPosition = position - const Duration(seconds: 10);
+  await _audioPlayer.seek(newPosition);
 }
 
-String getEpisode = """
-  query  getEpisode(
-    \$episodeID : String!
-    \$identifierType : EpisodeIdentifierType!
-  ){
-   episode(identifier:{id: \$episodeID, type:\$identifierType}){
-        id,
-        title,
-        airDate,
-        audioUrl,
-        length,
-        podcast{
-            title
-            imageUrl
-        }
-   }
+void _fastForward() async {
+  final newPosition = position + const Duration(seconds: 10);
+  await _audioPlayer.seek(newPosition);
 }
 
-""";
+void _togglePlayPause() async {
+  if (isPlaying) {
+    await _audioPlayer.pause();
+  } else {
+    await _audioPlayer.resume();
+  }
+}
+
+void _playPreviousEpisode() async {
+  if (currentIndex > 0) {
+    // Ensure there is a previous episode
+    await _playEpisode(currentIndex - 1);
+  }else{
+
+  }
+}
+
+void _playNextEpisode() async {
+  if (currentIndex < getEpisodeList.length - 1) {
+    // Ensure there is a next episode
+    await _playEpisode(currentIndex + 1);
+    
+  }
+}
+
+
+}
+
 

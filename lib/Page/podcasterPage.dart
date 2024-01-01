@@ -57,7 +57,7 @@ class PodcasterPage extends StatelessWidget {
             return Column(
               children: [
                 _buildProfileInformation(getPodcast),
-                _buildEpisodesSection(getEpisodes),
+                _buildEpisodesSection(getEpisodes, getPodcast),
               ],
             );
           },
@@ -156,7 +156,7 @@ class PodcasterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildEpisodesSection(List? getEpisodes) {
+  Widget _buildEpisodesSection(List? getEpisodes, Map podcasterDate) {
     return Expanded(
       child: Container(
         decoration: const BoxDecoration(
@@ -192,7 +192,7 @@ class PodcasterPage extends StatelessWidget {
               const Divider(
                 thickness: 1,
               ),
-              _buildEpisodesList(getEpisodes),
+              _buildEpisodesList(getEpisodes,podcasterDate),
             ],
           ),
         ),
@@ -200,7 +200,7 @@ class PodcasterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildEpisodesList(List? getEpisodes) {
+  Widget _buildEpisodesList(List? getEpisodes,Map podcasterDate ) {
     return Expanded(
       child: ListView.builder(
         padding: EdgeInsets.zero,
@@ -218,8 +218,9 @@ class PodcasterPage extends StatelessWidget {
               trailing: const Icon(Icons.more_vert),
               onTap: () {
                 Get.toNamed("/player", arguments: {
-                  'id':getEpisode['id'],
-                  'url':getEpisode['audioUrl'],
+                  'podcaster': podcasterDate,
+                  'episodes': getEpisodes,
+                  'index': index
                 });
               },
             ),
