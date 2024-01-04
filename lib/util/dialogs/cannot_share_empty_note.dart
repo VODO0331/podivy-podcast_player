@@ -8,7 +8,7 @@ Future<void> showCanNotShareDialog(
   return showGenericDialog(
     context: context,
     title: '分享錯誤',
-    content: '不能分享空筆記',
+    content: '不能分享',
     optoinBuilder: () => {
       'OK': null,
     },

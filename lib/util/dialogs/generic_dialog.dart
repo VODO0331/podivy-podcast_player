@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 typedef DialogOptoinBuilder<T> = Map<String, T?> Function();
+
 Future<T?> showGenericDialog<T>({
   required BuildContext context,
   required String title,
@@ -12,7 +14,7 @@ Future<T?> showGenericDialog<T>({
     context: context,
     builder: (context) {
       return AlertDialog(
-        backgroundColor: Color.fromARGB(230, 49, 49, 49),
+        backgroundColor: const Color.fromARGB(230, 49, 49, 49),
         title: Text(title),
         content: Text(content),
         actions: options.keys.map((optionTile) {

@@ -1,9 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glass/glass.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:podivy/util/dialogs/description_dialog.dart';
 import 'package:podivy/widget/drawer.dart';
 import 'package:podivy/widget/userAvatar.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -56,7 +55,7 @@ class PodcasterPage extends StatelessWidget {
             }
             return Column(
               children: [
-                _buildProfileInformation(getPodcast),
+                _buildProfileInformation(context, getPodcast),
                 _buildEpisodesSection(getEpisodes, getPodcast),
               ],
             );
@@ -66,7 +65,7 @@ class PodcasterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileInformation(Map? podcasterdata) {
+  Widget _buildProfileInformation(BuildContext context, Map? podcasterdata) {
     return Stack(
       children: [
         ShaderMask(
@@ -113,15 +112,28 @@ class PodcasterPage extends StatelessWidget {
                   ],
                 ),
                 const Divider(),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8, top: 5).r,
-                  child: Row(
-                    children: [
-                      _buildUserAvatar(podcasterdata),
-                      Flexible(
-                        child: _buildTextScroll(podcasterdata),
-                      ),
-                    ],
+                GestureDetector(
+                  onTap: () async {
+                    await showDescriptionDialog(
+                        context, podcasterdata['htmlDescription']);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20, top: 5).r,
+                    child: Row(
+                      children: [
+                        _buildUserAvatar(podcasterdata),
+                        SizedBox(
+                          width: 15.w,
+                        ),
+                        Flexible(
+                          child: _buildTextScroll(podcasterdata),
+                        ),
+                        SizedBox(
+                          width: 25.w,
+                        ),
+                        const Icon(Icons.arrow_forward_ios_rounded)
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -167,10 +179,7 @@ class PodcasterPage extends StatelessWidget {
               Color(0xFF7B7060),
               Color(0xFF2C271D),
             ],
-            stops: [
-              0.7,
-              1
-            ],
+            stops: [0.7, 1],
           ),
         ),
         child: Padding(
@@ -192,7 +201,7 @@ class PodcasterPage extends StatelessWidget {
               const Divider(
                 thickness: 1,
               ),
-              _buildEpisodesList(getEpisodes,podcasterDate),
+              _buildEpisodesList(getEpisodes, podcasterDate),
             ],
           ),
         ),
@@ -200,9 +209,10 @@ class PodcasterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildEpisodesList(List? getEpisodes,Map podcasterDate ) {
+  Widget _buildEpisodesList(List? getEpisodes, Map podcasterDate) {
     return Expanded(
       child: ListView.builder(
+        key: UniqueKey(),
         padding: EdgeInsets.zero,
         itemCount: getEpisodes!.length,
         itemBuilder: (BuildContext context, int index) {
@@ -243,6 +253,7 @@ String getPodcast = """
       title
       imageUrl
       language
+      htmlDescription
       socialLinks{
         twitter
         facebook
@@ -254,6 +265,7 @@ String getPodcast = """
           id
           title
           audioUrl
+          htmlDescription
         }
       }
     }

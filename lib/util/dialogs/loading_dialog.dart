@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 typedef CloseDialog = void Function();
 
 CloseDialog showLoadingDialog({
@@ -11,8 +13,8 @@ CloseDialog showLoadingDialog({
       mainAxisSize: MainAxisSize.min,
       children: [
         const CircularProgressIndicator(),
-        const SizedBox(
-          height: 10.0,
+        SizedBox(
+          height: ScreenUtil().setHeight(10),
         ),
         Text(text),
       ],

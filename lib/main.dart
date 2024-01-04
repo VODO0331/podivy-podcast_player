@@ -17,7 +17,7 @@ void main() async {
   await initHiveForFlutter();
 
   final HttpLink httpLink = HttpLink("https://api.podchaser.com/graphql");
-  final AuthLink authLink = AuthLink(getToken: () => 'Bearer $myProdutionToken');
+  final AuthLink authLink = AuthLink(getToken: () => 'Bearer $myDevelopToken');
   final Link link = authLink.concat(httpLink);
   final ValueNotifier<GraphQLClient> client = ValueNotifier<GraphQLClient>(
     GraphQLClient(

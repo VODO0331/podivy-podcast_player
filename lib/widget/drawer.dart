@@ -43,11 +43,17 @@ class MyDrawer extends StatelessWidget {
                 height: 90.h,
               ),
               const UserAvatar(
-                  imgPath: "images/userPic/people1.png", radius: 27,isNetwork: false,),
+                imgPath: "images/userPic/people1.png",
+                radius: 27,
+                isNetwork: false,
+              ),
               SizedBox(
                 height: 12.h,
               ),
-              const Text('User Name',overflow: TextOverflow.ellipsis,),
+              const Text(
+                'User Name',
+                overflow: TextOverflow.ellipsis,
+              ),
               SizedBox(
                 height: 12.h,
               ),
@@ -68,79 +74,78 @@ class MyDrawer extends StatelessWidget {
               SizedBox(
                 height: 25.h,
               ),
-              ListTile(
-                leading: Icon(
-                  Icons.settings,
-                  size: 25.w,
-                ),
-                title: Text("設定"),
-                //onTap: () { },
-              ),
-              const Divider(
-                height: 1,
-                thickness: 2.0,
-                color: Color(0x0DFFFFFF),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.account_box,
-                  size: 25.w,
-                ),
-                title: Text("選項一"),
-                //onTap: () { },
-              ),
-              const Divider(
-                height: 1,
-                thickness: 2.0,
-                color: Color(0x0DFFFFFF),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.alarm,
-                  size: 25.w,
-                ),
-                title: Text("選項2"),
-                //onTap: () { },
-              ),
-              const Divider(
-                height: 1,
-                thickness: 2.0,
-                color: Color(0x0DFFFFFF),
-              ),
+              DrawerItem(icon: Icons.abc, title: 'test1', tileOption: () {}),
+              DrawerItem(
+                  icon: Icons.access_alarm_rounded,
+                  title: 'test2',
+                  tileOption: () {}),
+              DrawerItem(icon: Icons.settings, title: '設定', tileOption: () {}),
               Expanded(
                 child: Container(),
               ),
               Align(
                 alignment: Alignment.center,
                 child: ListTile(
-                
-                  leading: const Icon(Icons.logout, size: 35, color: Colors.red),
+                  leading:
+                      const Icon(Icons.logout, size: 35, color: Colors.red),
                   title: const Text(
                     "登出",
                     style: TextStyle(color: Colors.red),
                   ),
                   onTap: () async {
                     final result = await showLogOutDialog(context);
-                    if(result){
+                    if (result) {
                       context.read<AuthBloc>().add(const AuthEventLogOut());
-                      
                     }
                   },
                 ),
               ),
-               Padding(
-                padding:const EdgeInsets.only(right: 60,left: 10).w,
-                child:const  Divider(
-                  height: 1,
-                  thickness: 2.0,
-                  color: Colors.white10,
-                ),
+              Divider(
+                indent: ScreenUtil().setWidth(10),
+                endIndent: ScreenUtil().setWidth(120),
+                height: 1,
+                thickness: 2.0,
+                color: Colors.white10,
               ),
             ],
           ),
-          
         ),
       ],
     ));
+  }
+}
+
+class DrawerItem extends StatelessWidget {
+  const DrawerItem({
+    Key? key,
+    required this.icon,
+    required this.title,
+    required this.tileOption,
+
+    // Add any other parameters you may need
+  }) : super(key: key);
+
+  final IconData icon;
+  final String title;
+  final Function()? tileOption;
+  // Add any other parameters you may need
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          leading: Icon(icon, size: 25.w),
+          title: Text(title),
+          onTap: tileOption,
+          // Add any other ListTile properties or callbacks you need
+        ),
+        const Divider(
+          height: 1,
+          thickness: 2.0,
+          color: Color(0x0DFFFFFF),
+        ),
+      ],
+    );
   }
 }

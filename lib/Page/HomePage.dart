@@ -2,8 +2,9 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:podivy/widget/carousel.dart';
-import 'package:podivy/widget/exploreContent.dart';
+//節省token
+// import 'package:podivy/widget/carousel.dart';
+// import 'package:podivy/widget/exploreContent.dart';
 import 'package:podivy/widget/userAvatar.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,10 +26,10 @@ class _HomePageState extends State<HomePage> {
             thickness: 2,
             color: Color.fromARGB(123, 255, 255, 255),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10).h,
-            child: const LatestPodcast(),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(vertical: 10).h,
+          //   child: const LatestPodcast(),
+          // ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30).w,
             child: const Divider(
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
               color: Color.fromARGB(255, 255, 255, 255),
             ),
           ),
-           ExploreContent(),
+          //  ExploreContent(),
         ],
       ),
     );
@@ -116,7 +117,6 @@ Widget appBar() {
 //   // dev.log('Access Token: ${credentials.accessToken}');
 //   // dev.log('Credentials Expired: ${credentials.isExpired}');
 
-  
 //   // await spotify.shows
 //   //     .get('5Vv32KtHB3peVZ8TeacUty')
 //   //     .then((podcast) => dev.log(podcast.uri.toString()))

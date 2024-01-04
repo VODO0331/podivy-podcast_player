@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:podivy/util/recommendButton.dart';
+
+import 'dart:developer' as dev show log;
 
 class SerchPage extends StatefulWidget {
   const SerchPage({super.key});
@@ -29,9 +32,10 @@ class _SerchPageState extends State<SerchPage> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 90, 20, 20).r,
           child: Column(children: [
-            const TextField(
-              cursorColor: Color(0xFFABC4AA),
-              decoration: InputDecoration(
+            TextField(
+              cursorColor: const Color(0xFFABC4AA),
+              textInputAction: TextInputAction.search,
+              decoration: const InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
                 ),
@@ -47,6 +51,12 @@ class _SerchPageState extends State<SerchPage> {
                   borderRadius: BorderRadius.all(Radius.circular(20)),
                 ),
               ),
+              onSubmitted: (value) {
+                setState(() {
+                  keywords = value;
+                  searched = true;
+                });
+              },
             ),
             const SizedBox(
               height: 15,
@@ -54,67 +64,182 @@ class _SerchPageState extends State<SerchPage> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                keywords ?? "類型",
+                "search:${keywords ?? "類型"}",
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(25),
                 ),
               ),
             ),
-            const Divider(),
-            searchContent(keywords)
+            Divider(
+              endIndent: ScreenUtil().setWidth(170),
+              color: const Color(0xFFABC4AA),
+            ),
+            Query(
+              options: QueryOptions(
+                document: gql(searchQuery),
+                variables: {
+                  'podcastFirst': 5,
+                  'episodesFirst': 12,
+                  'searchTerm': keywords,
+                  'episodesSortBy': 'RELEVANCE'
+                },
+              ),
+              builder: (result, {fetchMore, refetch}) {
+                if (result.hasException) {
+                  dev.log(result.exception.toString());
+                  return Text(result.exception.toString());
+                }
+
+                if (result.isLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                List? getPodcasts = result.data?['podcasts']['data'];
+                List? getEpisodes = result.data?['episodes']['data'];
+                if (getEpisodes == null) return const Text('no episodes');
+                if (getPodcasts == null) return const Text('no podcasts');
+
+                return Expanded(child: searchContent(getPodcasts, getEpisodes));
+              },
+            ),
           ]),
         ),
       ),
     );
   }
 
-  Widget searchContent(String? keyword) {
-    print(
-        'SearchContent method called. Searched: $searched, Keywords: $keywords');
+  Widget searchContent(List podcasts, List episodes) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double appBarHeight = AppBar().preferredSize.height;
 
-    return searched
-        ? Expanded(
-            child: ListView.builder(
-              itemCount: 1,
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10).h,
-                      child: ListTile(
-                        title: const Text(
-                          'title1',
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        leading: Image.asset('images/podcaster/77.png'),
-                        trailing: const Icon(Icons.more_vert),
-                      ),
-                    )
-                  ],
-                );
-              },
+    Widget episodesBuiler = ListView.builder(
+      key: UniqueKey(),
+      itemCount: episodes.length,
+      itemBuilder: (BuildContext context, int index) {
+        Map episode = episodes[index];
+        Map podcast = episode['podcast'];
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10).h,
+          child: ListTile(
+            title: Text(
+              episode['title'] ?? 'error',
+              overflow: TextOverflow.ellipsis,
             ),
-          )
-        : Wrap(
-            spacing: 10,
-            runSpacing: 5,
-            children: [
-              RecommendButton(
-                text: '123',
-                onPressed: () {
-                  setState(() {
-                    searched = true;
-                    keywords = '123';
-                    
-                  });
-                },
-              ),
-              RecommendButton(text: '237923478'),
-              RecommendButton(text: '123'),
-              RecommendButton(text: '123123rwe'),
-              RecommendButton(text: 'test123231123'),
-              RecommendButton(text: '123'),
-            ],
+            leading: Image.network(podcast['imageUrl']),
+            trailing: const Icon(Icons.more_vert),
+            onTap: () {},
+          ),
+        );
+      },
+    );
+    Widget podcastBuilder = ListView.builder(
+        key: UniqueKey(),
+        itemCount: podcasts.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (BuildContext context, int index) {
+          Map podcast = podcasts[index];
+          return Padding(
+            padding: const EdgeInsets.all(7.0).r,
+            child: Flex(
+              direction: Axis.vertical,
+              children: [
+                Expanded(
+                  flex: 8,
+                  child: Image.network(podcast['imageUrl'] ??
+                      Image.asset('images/podcaster/defaultPodcaster.jpg')),
+                ),
+                Expanded(
+                    flex: 2,
+                    child: SizedBox(
+                      width: 120.w,
+                      child: Text(
+                        podcast['title'],
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
+                    )),
+              ],
+            ),
           );
+        });
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: searched
+          ? Expanded(
+              child: SizedBox(
+                height: screenHeight - appBarHeight,
+                child: Column(
+                  children: [
+                    Text(
+                      'Podcast',
+                      style: TextStyle(fontSize: ScreenUtil().setSp(20)),
+                    ),
+                    const Divider(),
+                    Expanded(flex: 3, child: podcastBuilder),
+                    Text(
+                      'Episodes',
+                      style: TextStyle(fontSize: ScreenUtil().setSp(20)),
+                    ),
+                    const Divider(),
+                    Expanded(flex: 7, child: episodesBuiler),
+                  ],
+                ),
+              ),
+            )
+          : Wrap(
+              spacing: 10,
+              runSpacing: 5,
+              children: [
+                RecommendButton(
+                  text: '123',
+                  onPressed: () {
+                    setState(() {
+                      searched = true;
+                      keywords = '123';
+                    });
+                  },
+                ),
+                RecommendButton(text: '237923478'),
+                RecommendButton(text: '123'),
+              ],
+            ),
+    );
   }
 }
+
+String searchQuery = """
+query  search(
+    \$podcastFirst: Int,
+    \$episodesFirst: Int,
+    \$searchTerm: String,
+    \$episodesSortBy: EpisodeSortType!
+  ){
+    podcasts(
+      first: \$podcastFirst, 
+      searchTerm: \$searchTerm){
+      data{
+        id
+        title
+        imageUrl
+      }
+    }
+    episodes(
+      first: \$episodesFirst, 
+      searchTerm: \$searchTerm, 
+      sort:{sortBy: \$episodesSortBy}){
+        data{
+          id
+          title
+          audioUrl
+          htmlDescription 
+            podcast{
+              imageUrl
+              }
+        }
+    }
+
+}
+
+""";

@@ -11,6 +11,60 @@ import 'package:text_scroll/text_scroll.dart';
 import 'package:get/get.dart';
 import 'dart:developer' as dev show log;
 
+class LatestPodcast extends StatelessWidget {
+  const LatestPodcast({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Query(
+      options: QueryOptions(
+        document: gql(getPodcasts),
+        variables: const {
+          'languageFilter': 'ZH',
+          'first': 3,
+          'podcastsSortBy': 'DATE_OF_FIRST_EPISODE',
+          'episodeDirection': 'DESCENDING',
+          'episodesortBy': 'AIR_DATE',
+        },
+      ),
+      builder: _buildQueryResult,
+    );
+  }
+
+  Widget _buildQueryResult(result, {fetchMore, refetch}) {
+    if (result.hasException) {
+      dev.log(result.exception.toString());
+      return Text(result.exception.toString());
+    }
+    if (result.isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    List<Map<String, dynamic>>? podcastsData =
+        result.data?['podcasts']?['data']?.cast<Map<String, dynamic>>();
+    if (podcastsData == null) {
+      return const Text('NO repositories');
+    }
+
+    List<TurnTable> turnTables = [];
+    for (var podcastData in podcastsData) {
+      List<Map<String, dynamic>>? latestEpisode =
+          podcastData['episodes']['data']?.cast<Map<String, dynamic>>();
+      if (latestEpisode != null) {
+        turnTables.add(TurnTable(
+          isCentered: false,
+          isLiked: false.obs,
+          reminder: false.obs,
+          podcasterData: podcastData,
+          latestEpisode: latestEpisode,
+        ));
+      }
+    }
+    return MyCarousel(items: turnTables);
+  }
+}
+
 class MyCarousel extends StatefulWidget {
   final List<TurnTable> items;
 
@@ -220,7 +274,7 @@ class _TurnTableState extends State<TurnTable> {
           bottomRight: Radius.circular(16.0),
         ),
       ),
-      child: podcastLatestContent(widget.latestEpisode),
+      child: podcastLatestContent(widget.latestEpisode, widget.podcasterData),
     );
   }
 
@@ -272,7 +326,7 @@ Widget buttonGroup(RxBool isLiked, RxBool reminder, String name) {
   );
 }
 
-Widget podcastLatestContent(List<Map> latestList) {
+Widget podcastLatestContent(List<Map> latestList, Map podcasterDate) {
   return ListView.builder(
     padding: EdgeInsets.zero,
     itemCount: 3,
@@ -289,7 +343,11 @@ Widget podcastLatestContent(List<Map> latestList) {
               pauseBetween: const Duration(seconds: 5),
             ),
             onTap: () {
-              Get.toNamed('/player', arguments: episodeData['id']);
+              Get.toNamed('/player', arguments: {
+                'podcaster': podcasterDate,
+                'episodes': latestList,
+                'index': index
+              });
             },
           ),
           if (index < 2)
@@ -304,60 +362,6 @@ Widget podcastLatestContent(List<Map> latestList) {
       );
     },
   );
-}
-
-class LatestPodcast extends StatelessWidget {
-  const LatestPodcast({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Query(
-      options: QueryOptions(
-        document: gql(getPodcasts),
-        variables: const {
-          'languageFilter': 'ZH',
-          'first': 3,
-          'podcastsSortBy': 'DATE_OF_FIRST_EPISODE',
-          'episodeDirection': 'DESCENDING',
-          'episodesortBy': 'AIR_DATE',
-        },
-      ),
-      builder: _buildQueryResult,
-    );
-  }
-
-  Widget _buildQueryResult(result, {fetchMore, refetch}) {
-    if (result.hasException) {
-      dev.log(result.exception.toString());
-      return Text(result.exception.toString());
-    }
-    if (result.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-    List<Map<String, dynamic>>? podcastsData =
-        result.data?['podcasts']?['data']?.cast<Map<String, dynamic>>();
-    if (podcastsData == null) {
-      return const Text('NO repositories');
-    }
-
-    List<TurnTable> turnTables = [];
-    for (var podcastData in podcastsData) {
-      List<Map<String, dynamic>>? latestEpisode =
-          podcastData['episodes']['data']?.cast<Map<String, dynamic>>();
-      if (latestEpisode != null) {
-        turnTables.add(TurnTable(
-          isCentered: false,
-          isLiked: false.obs,
-          reminder: false.obs,
-          podcasterData: podcastData,
-          latestEpisode: latestEpisode,
-        ));
-      }
-    }
-    return MyCarousel(items: turnTables);
-  }
 }
 
 String getPodcasts = """
@@ -378,12 +382,13 @@ String getPodcasts = """
         title
         imageUrl
         episodes(
-          first:\$first,
           sort:{sortBy: \$episodesortBy, direction:\$episodeDirection}
         ){
             data{
               id
               title
+              audioUrl
+              htmlDescription
             }
         }
       }
