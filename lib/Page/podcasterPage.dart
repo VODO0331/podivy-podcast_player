@@ -30,7 +30,7 @@ class PodcasterPage extends StatelessWidget {
             variables: {
               'podcastId': podcasterId,
               'identifierType': 'PODCHASER',
-              'episodesFirst': 30,
+              'episodesFirst': 4,
               'episodesortBy': 'AIR_DATE',
               'episodedirection': 'DESCENDING'
             },

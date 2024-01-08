@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:podivy/util/recommendButton.dart';
 
@@ -128,7 +129,13 @@ class _SerchPageState extends State<SerchPage> {
             ),
             leading: Image.network(podcast['imageUrl']),
             trailing: const Icon(Icons.more_vert),
-            onTap: () {},
+            onTap: () {
+              Get.toNamed('/player',arguments: {
+                'episodes':  episodes,
+                'podcaster': podcast,
+                'index': index,
+              });
+            },
           ),
         );
       },
@@ -139,27 +146,30 @@ class _SerchPageState extends State<SerchPage> {
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
           Map podcast = podcasts[index];
-          return Padding(
-            padding: const EdgeInsets.all(7.0).r,
-            child: Flex(
-              direction: Axis.vertical,
-              children: [
-                Expanded(
-                  flex: 8,
-                  child: Image.network(podcast['imageUrl'] ??
-                      Image.asset('images/podcaster/defaultPodcaster.jpg')),
-                ),
-                Expanded(
-                    flex: 2,
-                    child: SizedBox(
-                      width: 120.w,
-                      child: Text(
-                        podcast['title'],
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                      ),
-                    )),
-              ],
+          return GestureDetector(
+            onTap: () => Get.toNamed('/podcaster',arguments: podcast['id']),
+            child: Padding(
+              padding: const EdgeInsets.all(7.0).r,
+              child: Flex(
+                direction: Axis.vertical,
+                children: [
+                  Expanded(
+                    flex: 8,
+                    child: Image.network(podcast['imageUrl'] ??
+                        Image.asset('images/podcaster/defaultPodcaster.jpg')),
+                  ),
+                  Expanded(
+                      flex: 2,
+                      child: SizedBox(
+                        width: 120.w,
+                        child: Text(
+                          podcast['title'],
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      )),
+                ],
+              ),
             ),
           );
         });
