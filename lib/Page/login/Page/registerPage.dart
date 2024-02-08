@@ -111,7 +111,7 @@ class _registerPageState extends State<RegisterPage> {
               context: context,
               title: '郵件驗證',
               content: '驗證郵件已發送...',
-              optoinBuilder: () => {'ok': null},
+              optionBuilder: () => {'ok': null},
             );
           },
         ),

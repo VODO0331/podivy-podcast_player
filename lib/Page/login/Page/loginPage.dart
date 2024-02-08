@@ -79,6 +79,7 @@ class _loginPageState extends State<LoginPage> {
       children: [
         RecommendButton(
           text: '登入',
+          size: 15,
           onPressed: () async {
             final email = _email.text;
             final password = _password.text;
@@ -92,18 +93,24 @@ class _loginPageState extends State<LoginPage> {
               onPressed: () {
                 context.read<AuthBloc>().add(const AuthEventShouldRegister());
               },
-              child: const Text(
+              child: Text(
                 "註冊",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: ScreenUtil().setSp(12),
+                ),
               ),
             ),
             TextButton(
               onPressed: () {
                 context.read<AuthBloc>().add(const AuthEventForgotPassword());
               },
-              child: const Text(
+              child: Text(
                 "忘記密碼?",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: ScreenUtil().setSp(12),
+                ),
               ),
             ),
           ],
@@ -187,7 +194,7 @@ class _loginPageState extends State<LoginPage> {
                 color: Colors.black54, borderRadius: BorderRadius.circular(30)),
             padding: const EdgeInsets.all(12.0).r,
             width: 500.w,
-            height: 359.h,
+            height: 395.h,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

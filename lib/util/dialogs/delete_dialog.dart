@@ -7,7 +7,7 @@ Future<bool> showDeleteDialog(BuildContext context) {
     context: context,
     title: '刪除提醒',
     content: '確定要刪除?',
-    optoinBuilder: () => {
+    optionBuilder: () => {
       'Cancel': false,
       'Ok': true,
     },

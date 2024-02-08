@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:podivy/model/Podcaster.dart';
+import 'package:podivy/model/Search.dart';
+import 'package:podivy/service/search/searchService.dart';
 import 'package:podivy/util/recommendButton.dart';
-import 'dart:developer' as dev show log;
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
+import 'package:podivy/widget/loadImage.dart';
 
 // ignore: must_be_immutable
 class ExploreContent extends StatelessWidget {
@@ -57,8 +58,7 @@ class ExploreContent extends StatelessWidget {
           ),
           Expanded(
             child: Obx(() {
-
-              return buildGridView(selectedType, imgError);
+              return buildGridView(selectedType);
             }),
           ),
         ],
@@ -66,37 +66,31 @@ class ExploreContent extends StatelessWidget {
     );
   }
 
-  Widget buildGridView(RxString type, RxBool imgError) {
+  Widget buildGridView(RxString type) {
     // 根據 selectedType 選擇顯示的資料
+    SearchServiceForExploreContent exploreContent =
+        SearchServiceForExploreContent(
+      keywords: type.value,
+    );
+    return FutureBuilder(
+      future: getSearchData(exploreContent),
+      builder: (context, snapshot) {
 
-    return Query(
-        options: QueryOptions(
-          document: gql(getPodcasts),
-          variables: {
-            'languageFilter': 'zh',
-            'first': 4,
-            'sortBy': 'FOLLOWER_COUNT',
-            'sortdirection': 'DESCENDING',
-            'categoriesFilter': [type.value],
-          },
-        ),
-        builder: (result, {fetchMore, refetch}) {
-          if (result.hasException) {
-            dev.log(result.exception.toString());
-            return Text(result.exception.toString());
+        
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            
+            return Text('snapshot Error:${snapshot.error}');
           }
-
-          if (result.isLoading) {
-            return const SizedBox(
-              height: 50,
-              width: 50,
-              child: Center(child: CircularProgressIndicator(),),
+          final Map? data = snapshot.data;
+          List<Podcaster>? getPodcasts = data?['podcastList'];
+          if (data == null || getPodcasts == null) {
+            return Center(
+              child: Text(
+                '接收資料錯誤',
+                style: TextStyle(fontSize: ScreenUtil().setSp(14)),
+              ),
             );
-          }
-
-          List? getPodcasts = result.data?['podcasts']?['data'];
-          if (getPodcasts == null) {
-            return const Text('No repositories');
           }
           return GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
@@ -109,11 +103,10 @@ class ExploreContent extends StatelessWidget {
             ),
             itemCount: getPodcasts.length,
             itemBuilder: (BuildContext context, int index) {
-              final Map podcaster = getPodcasts[index];
+              final Podcaster podcaster = getPodcasts[index];
               return GestureDetector(
                 onTap: () {
-                  dev.log("進入${podcaster['title']}的頁面");
-                  Get.toNamed('/podcaster', arguments: podcaster['id']);
+                  Get.toNamed('/podcaster', arguments: podcaster.id);
                 },
                 child: Container(
                     key: UniqueKey(),
@@ -129,25 +122,8 @@ class ExploreContent extends StatelessWidget {
                     ),
                     child: Stack(
                       children: [
-                        FutureBuilder(
-                          future: loadImage(podcaster['imageUrl']),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              if (snapshot.hasError) {
-                                return Image.asset(
-                                  'images/podcaster/defaultPodcaster.jpg',
-                                  fit: BoxFit.fill,
-                                );
-                              } else {
-                                return Image.network(podcaster['imageUrl']);
-                              }
-                            } else {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }
-                          },
+                        LoadImageWidget(
+                          imageUrl: podcaster.imageUrl,
                         ),
                         Align(
                           alignment: Alignment.bottomCenter,
@@ -155,7 +131,7 @@ class ExploreContent extends StatelessWidget {
                             width: double.infinity,
                             color: const Color(0x7C191B18),
                             child: Text(
-                              podcaster['title'],
+                              podcaster.title!,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
                               style:
@@ -168,42 +144,13 @@ class ExploreContent extends StatelessWidget {
               );
             },
           );
-        });
-  }
-
-  Future<Image> loadImage(String imageUrl) async {
-    final response = await http.get(Uri.parse(imageUrl));
-
-    if (response.statusCode == 200) {
-      return Image.memory(response.bodyBytes);
-    } else {
-      throw Exception('Failed to load image');
-    }
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
   }
 }
-
-String getPodcasts = """
-  query GetPodcasts(
-     \$languageFilter: String,
-     \$first : Int, 
-     \$categoriesFilter :[String],
-     \$sortBy: PodcastSortType!,
-     \$sortdirection: SortDirection,
-  ){
-    podcasts(
-      filters: {
-        language: \$languageFilter,
-        categories: \$categoriesFilter
-      },
-      first: \$first, 
-      sort: {sortBy: \$sortBy, direction: \$sortdirection},
-    ){
-      data {
-        id
-        title
-        imageUrl
-
-      }
-    }
-  }
-""";
+ 

@@ -1,5 +1,6 @@
 import 'package:bottom_bar_page_transition/bottom_bar_page_transition.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:podivy/Page/homePage.dart';
 import 'package:podivy/widget/backgound.dart';
 import 'package:podivy/Page/mediaPage.dart';
@@ -54,7 +55,7 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
   Widget _getBottomBar() {
     return BottomNavigationBar(
       backgroundColor: const Color(0xFF141513),
-      iconSize: 35.0,
+      iconSize: ScreenUtil().setHeight(35),
       showSelectedLabels: false,
       showUnselectedLabels: false,
       currentIndex: _currentPage,

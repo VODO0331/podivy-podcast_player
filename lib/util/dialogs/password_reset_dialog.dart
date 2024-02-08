@@ -6,7 +6,7 @@ Future<void> showPasswordResetSentDialog(BuildContext context) {
       context: context,
       title: '密碼重製',
       content: '郵件已發送，請確認',
-      optoinBuilder: ()=>{
+      optionBuilder: ()=>{
         'OK': null
       });
 }

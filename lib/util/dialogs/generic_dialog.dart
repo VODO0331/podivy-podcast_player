@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-typedef DialogOptoinBuilder<T> = Map<String, T?> Function();
+typedef DialogOptionBuilder<T> = Map<String, T?> Function();
 
 Future<T?> showGenericDialog<T>({
   required BuildContext context,
   required String title,
   required String content,
-  required DialogOptoinBuilder optoinBuilder,
+  required DialogOptionBuilder optionBuilder,
 }) {
-  final options = optoinBuilder();
+  final options = optionBuilder();
   return showDialog(
     context: context,
     builder: (context) {

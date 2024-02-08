@@ -13,7 +13,7 @@ import 'dart:developer' as dev show log;
 
 class LatestPodcast extends StatelessWidget {
   const LatestPodcast({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return Query(

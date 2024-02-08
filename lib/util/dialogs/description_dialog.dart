@@ -10,5 +10,5 @@ Future<void> showDescriptionDialog(
       context: context,
       title: '介紹',
       content: document.body!.text,
-      optoinBuilder: () => {'關閉': null});
+      optionBuilder: () => {'關閉': null});
 }

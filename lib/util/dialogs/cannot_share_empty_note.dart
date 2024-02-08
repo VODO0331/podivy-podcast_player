@@ -9,7 +9,7 @@ Future<void> showCanNotShareDialog(
     context: context,
     title: '分享錯誤',
     content: '不能分享',
-    optoinBuilder: () => {
+    optionBuilder: () => {
       'OK': null,
     },
   );

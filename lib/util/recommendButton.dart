@@ -4,7 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class RecommendButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
-  const RecommendButton({super.key, required this.text, this.onPressed});
+  final int? size;
+  const RecommendButton({super.key, required this.text, this.onPressed, this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +17,12 @@ class RecommendButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
+            
           ),
           onPressed: onPressed,
           child: Text(
             text,
-            style: const TextStyle(color: Colors.black54),
+            style:  TextStyle(color: Colors.black54,fontSize: ScreenUtil().setSp(size?? 12)),
           )),
     );
   }

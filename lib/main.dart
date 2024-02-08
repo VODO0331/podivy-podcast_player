@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:podivy/AccessToken.dart';
+import 'package:podivy/Controller/ClientGlobalController.dart';
 import 'package:podivy/service/auth/authProvider.dart.dart';
 import 'package:podivy/service/auth/bloc/authBLOC.dart';
 import 'package:podivy/theme/theme.dart';
@@ -16,22 +15,13 @@ void main() async {
   await ScreenUtil.ensureScreenSize();
   await initHiveForFlutter();
 
-  final HttpLink httpLink = HttpLink("https://api.podchaser.com/graphql");
-  final AuthLink authLink = AuthLink(getToken: () => 'Bearer $myDevelopToken');
-  final Link link = authLink.concat(httpLink);
-  final ValueNotifier<GraphQLClient> client = ValueNotifier<GraphQLClient>(
-    GraphQLClient(
-      link: link,
-      cache: GraphQLCache(),
-    ),
-  );
-  runApp(MyApp(
-    client: client,
-  ));
+  final ClientGlobalController clientController = ClientGlobalController();
+  Get.put(clientController);
+  runApp(MyApp(client: clientController.client));
 }
 
 class MyApp extends StatelessWidget {
-  final ValueNotifier<GraphQLClient>? client;
+  final GraphQLClient? client;
   const MyApp({super.key, required this.client});
 
   @override
@@ -44,7 +34,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider<AuthBloc>(
       create: (context) => AuthBloc(FirebaseAuthProvider()),
       child: GraphQLProvider(
-        client: client,
+        client: ValueNotifier(client!),
         child: ScreenUtilInit(
           designSize: const Size(393, 852),
           minTextAdapt: true,

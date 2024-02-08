@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glass/glass.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:podivy/util/dialogs/description_dialog.dart';
+import 'package:podivy/model/Episode.dart';
+import 'package:podivy/model/Podcaster.dart';
+import 'package:podivy/service/search/searchService.dart';
 import 'package:podivy/widget/drawer.dart';
 import 'package:podivy/widget/userAvatar.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -11,8 +12,11 @@ import 'dart:developer' as dev show log;
 
 class PodcasterPage extends StatelessWidget {
   PodcasterPage({super.key});
-  final String podcasterId = Get.arguments;
   final GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
+  final Podcaster podcaster =
+      Podcaster(id: Get.arguments); //Get.arguments => catch podcaster id
+  final RxBool openedDescription = false.obs;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -22,50 +26,46 @@ class PodcasterPage extends StatelessWidget {
         }
       },
       child: Scaffold(
-        key: sKey,
-        drawer: const MyDrawer(),
-        body: Query(
-          options: QueryOptions(
-            document: gql(getPodcast),
-            variables: {
-              'podcastId': podcasterId,
-              'identifierType': 'PODCHASER',
-              'episodesFirst': 4,
-              'episodesortBy': 'AIR_DATE',
-              'episodedirection': 'DESCENDING'
+          key: sKey,
+          drawer: const MyDrawer(),
+          body: FutureBuilder(
+            future: getSinglePodcasterData(podcaster),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  dev.log(snapshot.error.toString());
+                  return Text('snapshot Error:${snapshot.error}');
+                }
+                final Podcaster? data = snapshot.data;
+                if (data == null) {
+                  return Center(
+                    child: Text(
+                      '顯示錯誤',
+                      style: TextStyle(fontSize: ScreenUtil().setSp(14)),
+                    ),
+                  );
+                }
+                List<Episode>? episodeList = data.episodesList;
+                return Column(
+                  children: [
+                    Obx(() => _buildProfileInformation(context, data)),
+                    _buildEpisodesSection(episodeList, data),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
             },
-          ),
-          builder: (result, {fetchMore, refetch}) {
-            if (result.hasException) {
-              dev.log(result.exception.toString());
-              return Text(result.exception.toString());
-            }
-
-            if (result.isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            Map? getPodcast = result.data?['podcast'];
-            List? getEpisodes = getPodcast?['episodes']['data'];
-
-            if (getPodcast == null) {
-              return const Text('No repositories');
-            }
-            return Column(
-              children: [
-                _buildProfileInformation(context, getPodcast),
-                _buildEpisodesSection(getEpisodes, getPodcast),
-              ],
-            );
-          },
-        ),
-      ),
+          )),
     );
   }
 
-  Widget _buildProfileInformation(BuildContext context, Map? podcasterdata) {
+  Widget _buildProfileInformation(
+      BuildContext context, Podcaster podcasterData) {
+    final RxDouble profileHeight =
+        openedDescription.value ? 500.h.obs : 220.h.obs;
     return Stack(
       children: [
         ShaderMask(
@@ -78,7 +78,7 @@ class PodcasterPage extends StatelessWidget {
           },
           blendMode: BlendMode.dstIn,
           child: Image.network(
-            podcasterdata!['imageUrl'],
+            podcasterData.imageUrl!,
             fit: BoxFit.cover,
             height: 300.h,
             width: double.infinity,
@@ -86,12 +86,10 @@ class PodcasterPage extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(15, 60, 15, 0).r,
-          child: Container(
-            height: 220.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: Colors.black45,
-            ),
+          child: AnimatedContainer(
+            height: profileHeight.value,
+            duration: const Duration(milliseconds: 200),
+            color: Colors.black45,
             child: Column(
               children: [
                 Row(
@@ -113,20 +111,20 @@ class PodcasterPage extends StatelessWidget {
                 ),
                 const Divider(),
                 GestureDetector(
-                  onTap: () async {
-                    await showDescriptionDialog(
-                        context, podcasterdata['htmlDescription']);
+                  onTap: () {
+                    openedDescription.value =
+                        openedDescription.value ? false : true;
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20, top: 5).r,
                     child: Row(
                       children: [
-                        _buildUserAvatar(podcasterdata),
+                        _buildUserAvatar(podcasterData.imageUrl!),
                         SizedBox(
                           width: 15.w,
                         ),
                         Flexible(
-                          child: _buildTextScroll(podcasterdata),
+                          child: _buildTitleTextScroll(podcasterData.title),
                         ),
                         SizedBox(
                           width: 25.w,
@@ -138,15 +136,17 @@ class PodcasterPage extends StatelessWidget {
                 ),
               ],
             ),
-          ).asGlass(),
+          ).asGlass(
+            clipBorderRadius: BorderRadius.circular(30),
+          ),
         )
       ],
     );
   }
 
-  Widget _buildUserAvatar(Map? podcasterdata) {
+  Widget _buildUserAvatar(String imageUrl) {
     return UserAvatar(
-      imgPath: podcasterdata!['imageUrl'],
+      imgPath: imageUrl,
       radius: 60,
       borderThickness: 65,
       isNetwork: true,
@@ -154,9 +154,9 @@ class PodcasterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextScroll(Map? podcasterdata) {
+  Widget _buildTitleTextScroll(String? title) {
     return TextScroll(
-      podcasterdata!['title'] ?? 'Unknown Title',
+      title ?? 'Unknown Title',
       style: TextStyle(
         fontSize: ScreenUtil().setSp(20),
       ),
@@ -168,7 +168,11 @@ class PodcasterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildEpisodesSection(List? getEpisodes, Map podcasterDate) {
+  Widget _buildEpisodesSection(
+      List<Episode>? getEpisodes, Podcaster podcasterDate) {
+    if (getEpisodes == null) {
+      return const Expanded(child: Text("無內容"));
+    }
     return Expanded(
       child: Container(
         decoration: const BoxDecoration(
@@ -195,7 +199,7 @@ class PodcasterPage extends StatelessWidget {
                     },
                     icon: const Icon(Icons.sort_sharp),
                   ),
-                  Text('${getEpisodes!.length} 部'),
+                  Text('${getEpisodes.length} 部'),
                 ],
               ),
               const Divider(
@@ -209,20 +213,21 @@ class PodcasterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildEpisodesList(List? getEpisodes, Map podcasterDate) {
+  Widget _buildEpisodesList(
+      List<Episode>? getEpisodes, Podcaster podcasterDate) {
     return Expanded(
       child: ListView.builder(
         key: UniqueKey(),
         padding: EdgeInsets.zero,
         itemCount: getEpisodes!.length,
         itemBuilder: (BuildContext context, int index) {
-          final getEpisode = getEpisodes[index];
+          final Episode getEpisode = getEpisodes[index];
 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 10).h,
             child: ListTile(
               title: Text(
-                getEpisode['title'] ?? 'Unknown Title',
+                getEpisode.title,
                 overflow: TextOverflow.ellipsis,
               ),
               trailing: const Icon(Icons.more_vert),
@@ -240,37 +245,3 @@ class PodcasterPage extends StatelessWidget {
     );
   }
 }
-
-String getPodcast = """
-  query GetPodcast(
-    \$podcastId : String!,
-    \$identifierType : PodcastIdentifierType!,
-    \$episodesFirst : Int,
-    \$episodesortBy : EpisodeSortType!,
-    \$episodedirection : SortDirection,
-){
-    podcast(identifier : {id : \$podcastId , type: \$identifierType}){
-      title
-      imageUrl
-      language
-      htmlDescription
-      socialLinks{
-        twitter
-        facebook
-        instagram
-      } 
-      episodes(first : \$episodesFirst, 
-      sort:{sortBy: \$episodesortBy, direction: \$episodedirection}){
-        data {
-          id
-          title
-          audioUrl
-          htmlDescription
-        }
-      }
-    }
-  }
-     
-  
-  
-""";

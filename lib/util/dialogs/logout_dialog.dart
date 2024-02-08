@@ -8,7 +8,7 @@ Future<bool> showLogOutDialog(
     context: context,
     title: 'Log Out',
     content: '確定要登出嗎',
-    optoinBuilder: () => {
+    optionBuilder: () => {
       'Cancel': false,
       'Log Out': true,
     },

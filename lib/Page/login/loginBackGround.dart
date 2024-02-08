@@ -10,15 +10,17 @@ class LoginBackGround extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,////当键盘弹出时，Scaffold 不会调整底部的 body 区域
       body: Stack(
+        alignment: AlignmentDirectional.center,
+        fit:StackFit.expand,
         children: [
           Image.asset(
             "images/background/loginBackGround.png",
-            
+            fit: BoxFit.cover,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15).w,
             child: child,
-          )
+          ),
         ],
       ),
     );
