@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 //節省token
 // import 'package:podivy/widget/carousel.dart';
-import 'package:podivy/widget/exploreContent.dart';
+import 'package:podivy/Page/common/homePage/build/buildExploreContent.dart';
 import 'package:podivy/widget/userAvatar.dart';
 
 class HomePage extends StatefulWidget {
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
               color: Color.fromARGB(255, 255, 255, 255),
             ),
           ),
-           ExploreContent(),
+          //  ExploreContent(),
         ],
       ),
     );

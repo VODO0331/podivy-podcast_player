@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:podivy/model/Episode.dart';
 import 'package:podivy/model/Podcaster.dart';
 import 'package:podivy/widget/loadImage.dart';
-import 'package:podivy/widget/playerControl.dart';
+import 'package:podivy/Page/personal/playerPage/build/buildPlayerControl.dart';
 
 
 class PlayerPage extends StatefulWidget {

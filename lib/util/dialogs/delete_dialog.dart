@@ -5,11 +5,11 @@ import './generic_dialog.dart';
 Future<bool> showDeleteDialog(BuildContext context) {
   return showGenericDialog(
     context: context,
-    title: '刪除提醒',
-    content: '確定要刪除?',
+    title: '取消提醒',
+    content: '確定取消追蹤?',
     optionBuilder: () => {
       'Cancel': false,
-      'Ok': true,
+      'Yes': true,
     },
   ).then((value) => value ?? false);
 }

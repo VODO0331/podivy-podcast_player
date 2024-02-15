@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-import 'package:podivy/widget/turnTableAnimation.dart';
+import 'package:podivy/Page/common/homePage/build/buildTurnTableAnimation.dart';
 import 'package:podivy/widget/userAvatar.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:text_scroll/text_scroll.dart';

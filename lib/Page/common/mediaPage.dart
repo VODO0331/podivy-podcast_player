@@ -16,7 +16,8 @@ class MediaPage extends StatelessWidget {
     return MyBackGround(
       bkColor: Colors.white,
       child: Container(
-        color: Colors.black87,
+        decoration:const BoxDecoration(
+            color: Colors.black87),
         height: height,
         width: width,
         child: Padding(

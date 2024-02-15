@@ -1,12 +1,13 @@
 
-import 'package:podivy/Page/listPage.dart';
+import 'package:podivy/Page/personal/followedPage/followedPage.dart';
+import 'package:podivy/Page/personal/listPage.dart';
 import 'package:podivy/Page/login/authMidleware.dart';
-import 'package:podivy/Page/podcasterPage.dart';
-import 'package:podivy/Page/searchPage.dart';
+import 'package:podivy/Page/common/podcasterPage/podcasterPage.dart';
+import 'package:podivy/Page/common/searchPage.dart';
 import 'package:podivy/Page/test.dart';
-import 'package:podivy/Page/userPage.dart';
+import 'package:podivy/Page/personal/userPage.dart';
 import 'package:get/get.dart';
-import '../Page/playerPage.dart';
+import '../Page/personal/playerPage/playerPage.dart';
 
 class RouterPage {
   final List myList = [];
@@ -39,6 +40,10 @@ class RouterPage {
     GetPage(
       name: "/podcaster",
       page: () => PodcasterPage(),
+    ),
+    GetPage(
+      name: "/followed",
+      page: () =>const FollowedPage(),
     ),
   ];
 }

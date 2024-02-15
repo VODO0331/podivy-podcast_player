@@ -20,6 +20,8 @@ class UserPage extends StatelessWidget {
               width: double.infinity,
               height: 280.h,
               fit: BoxFit.cover,
+              cacheHeight: 100,
+              cacheWidth: 100,
             ),
             SizedBox(
               width: double.infinity,

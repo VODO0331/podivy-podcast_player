@@ -1,9 +1,9 @@
 import 'package:bottom_bar_page_transition/bottom_bar_page_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:podivy/Page/homePage.dart';
+import 'package:podivy/Page/common/homePage/homePage.dart';
 import 'package:podivy/widget/backgound.dart';
-import 'package:podivy/Page/mediaPage.dart';
+import 'package:podivy/Page/common/mediaPage.dart';
 import 'package:podivy/widget/drawer.dart';
 
 class Tabs extends StatefulWidget {

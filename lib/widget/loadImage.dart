@@ -35,9 +35,7 @@ class _LoadImageWidgetState extends State<LoadImageWidget> {
   void didUpdateWidget(covariant LoadImageWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.imageUrl != oldWidget.imageUrl) {
-      setState(() {
-        imageUrl = widget.imageUrl;
-      });
+      imageUrl = widget.imageUrl;
     }
   }
 
@@ -61,8 +59,11 @@ class _LoadImageWidgetState extends State<LoadImageWidget> {
               );
             } else {
               return Image.network(
+                
                 imageUrl!,
                 fit: BoxFit.cover,
+                cacheHeight: 170,
+                cacheWidth: 170,
               );
             }
           } else {

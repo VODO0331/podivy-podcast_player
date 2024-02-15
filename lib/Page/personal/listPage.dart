@@ -80,7 +80,7 @@ class ListPage extends StatelessWidget {
                             myList[index],
                             overflow: TextOverflow.ellipsis,
                           ),
-                          leading: Image.asset('images/podcaster/77.png'),
+                          leading: Image.asset('images/podcaster/defaultPodcaster.jpg'),
                           trailing: const Icon(Icons.more_vert),
                         ),
                       )
