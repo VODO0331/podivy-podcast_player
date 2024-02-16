@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'dart:developer' as dev show log;
 
+
+
 class TestPage extends StatefulWidget {
+  const TestPage({super.key});
+
   @override
-  _TestPageState createState() => _TestPageState();
+  State<TestPage> createState() => _TestPageState();
 }
 
 class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
@@ -49,7 +53,6 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
               }
 
               List? getPodcasts = result.data?['podcasts']?['data'];
-              print(getPodcasts);
               if (getPodcasts == null) {
                 return const Text('No repositories');
               }

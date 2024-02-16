@@ -1,0 +1,32 @@
+name: modify_widget_repository
+description: Dart package which manages the modify widget package.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_screenutil: ^5.9.0
+  carousel_slider: ^4.2.1
+  dots_indicator: ^2.1.1
+  glass: ^1.0.2+1
+  google_fonts: ^6.1.0
+  text_scroll: ^0.2.0
+  bottom_bar_page_transition: ^2.0.0
+  flutter_flip_card: ^0.0.5
+  flutter_svg: ^2.0.9
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true

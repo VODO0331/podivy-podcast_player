@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 typedef CloseDialog = void Function();
 

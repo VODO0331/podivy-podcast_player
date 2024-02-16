@@ -1,21 +1,23 @@
-import 'package:bottom_bar_page_transition/bottom_bar_page_transition.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:podivy/Page/common/homePage/homePage.dart';
-import 'package:podivy/widget/backgound.dart';
-import 'package:podivy/Page/common/mediaPage.dart';
+import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:podivy/Page/common/homePage/home_page.dart';
+import 'package:podivy/widget/background.dart';
+import 'package:podivy/Page/common/media_page.dart';
 import 'package:podivy/widget/drawer.dart';
 
 class Tabs extends StatefulWidget {
+  const Tabs({super.key});
+
   @override
-  _TabsState createState() => _TabsState();
+  State<Tabs> createState() => _TabsState();
 }
 
 class _TabsState extends State<Tabs> with TickerProviderStateMixin {
-  static const int totalPage = 2;
+  final int totalPage = 2;
   final GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
   int _currentPage = 0;
-  static const List<String> names = [
+  final List<String> names = [
     'Home',
     'Media',
   ];

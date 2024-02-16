@@ -1,14 +1,14 @@
+import 'package:authentication_repository/authentication_repository.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:podivy/Controller/ClientGlobalController.dart';
-import 'package:podivy/service/auth/authProvider.dart.dart';
-import 'package:podivy/service/auth/bloc/authBLOC.dart';
+import 'package:graphql_service_repository/graphql_service_repository.dart';
+import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/theme/theme.dart';
 import './routes/router.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
     ]);
 
     return BlocProvider<AuthBloc>(
-      create: (context) => AuthBloc(FirebaseAuthProvider()),
+      create: (context) =>  AuthBloc(FirebaseAuthProvider()),
       child: GraphQLProvider(
         client: ValueNotifier(client!),
         child: ScreenUtilInit(
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
             theme: myTheme,
             initialRoute: '/',
             unknownRoute: GetPage(
-                name: '/notfound', page: () => const UnknownRoutePage()),
+                name: '/notFound', page: () => const UnknownRoutePage()),
             getPages: RouterPage.routes,
           ),
         ),

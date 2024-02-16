@@ -1,11 +1,9 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:podivy/service/auth/bloc/authBLOC.dart';
-import 'package:podivy/service/auth/bloc/authEvent.dart';
+import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/dialogs/logout_dialog.dart';
-import 'package:podivy/widget/userAvatar.dart';
+import 'package:podivy/widget/user_avatar.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -109,8 +107,16 @@ class MyDrawer extends StatelessWidget {
   Widget _buildDrawerItems() {
     return Column(
       children: [
-        DrawerItem(icon: Icons.mic, title: '追隨', tileOption: () {Get.toNamed("/followed");}),
-        DrawerItem(icon: Icons.access_alarm_rounded, title: 'test2', tileOption: () {}),
+        DrawerItem(
+            icon: Icons.mic,
+            title: '追隨',
+            tileOption: () {
+              Get.toNamed("/followed");
+            }),
+        DrawerItem(
+            icon: Icons.access_alarm_rounded,
+            title: 'test2',
+            tileOption: () {}),
         DrawerItem(icon: Icons.settings, title: '設定', tileOption: () {}),
       ],
     );
@@ -128,7 +134,9 @@ class MyDrawer extends StatelessWidget {
         onTap: () async {
           final result = await showLogOutDialog(context);
           if (result) {
-            context.read<AuthBloc>().add(const AuthEventLogOut());
+            context.mounted
+                ? context.read<AuthBloc>().add(const AuthEventLogOut())
+                : null;
           }
         },
       ),
@@ -170,4 +178,3 @@ class DrawerItem extends StatelessWidget {
     );
   }
 }
-
