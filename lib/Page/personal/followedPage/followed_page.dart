@@ -1,5 +1,7 @@
-import 'package:firestore_service_repository/follow_service/follow_service.dart';
+
+
 import 'package:flutter/material.dart';
+import 'package:followed_management/followed_management.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/personal/followedPage/build/build_followed_list.dart';
@@ -12,12 +14,12 @@ class FollowedPage extends StatefulWidget {
 }
 
 class _FollowedPageState extends State<FollowedPage> {
-   late PodcastFollowedStorage _followedStorageService;
+   late FollowedManagement _followedStorageService;
 
   @override
   void initState() {
     super.initState();
-    _followedStorageService =PodcastFollowedStorage();
+    _followedStorageService =FollowedManagement();
   }
   @override
   void dispose() {
@@ -45,7 +47,7 @@ class _FollowedPageState extends State<FollowedPage> {
           Align(
             alignment: Alignment.bottomRight,
             child: Image.asset(
-              "images/background/followed.png",
+              "assets/images/background/followed.png",
               
               height: 270,
               width: 270,

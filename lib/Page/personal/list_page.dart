@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:podivy/widget/drawer.dart';
 import 'package:get/get.dart';
 class ListPage extends StatelessWidget {
   const ListPage({super.key});
@@ -12,7 +11,6 @@ class ListPage extends StatelessWidget {
     final List myList = Get.arguments as List;
 
     return Scaffold(
-      drawer: const MyDrawer(),
       backgroundColor: const Color.fromARGB(255, 25, 25, 25),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(12, 50, 12, 10).r,

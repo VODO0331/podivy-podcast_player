@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<Uint8List?> vineImage() async {
     final list = await imageCompressor.compressImage(
-        'images/background/bkvine3.png',
+        'assets/images/background/bkvine3.png',
         minh: 80,
         minw: 80,
         quality: 60,
@@ -184,8 +184,8 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
           Container(
-            decoration: BoxDecoration(
-                color: Colors.black54, borderRadius: BorderRadius.circular(30)),
+            decoration: const BoxDecoration(
+                color: Colors.black54, ),
             padding: const EdgeInsets.all(12.0).r,
             width: 500.w,
             height: 395.h,
@@ -206,7 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                 buttonGroup(),
               ],
             ),
-          ).asGlass(tintColor: Colors.orange),
+          ).asGlass(tintColor: Colors.orange,clipBorderRadius: BorderRadius.circular(30)),
         ],
       ),
     );

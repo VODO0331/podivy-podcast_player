@@ -101,6 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     repassword,
                   ),
                 );
+                
             await showGenericDialog(
               context: context,
               title: '郵件驗證',
@@ -163,8 +164,8 @@ class _RegisterPageState extends State<RegisterPage> {
       },
       child: Center(
         child: Container(
-          decoration: BoxDecoration(
-              color: Colors.black54, borderRadius: BorderRadius.circular(30)),
+          decoration:const BoxDecoration(
+              color: Colors.black54),
           padding: const EdgeInsets.all(12.0).r,
           width: 500.w,
           height: 450.h,
@@ -185,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
               buttonGroup(),
             ],
           ),
-        ).asGlass(tintColor: Colors.orange),
+        ).asGlass(tintColor: Colors.orange,clipBorderRadius: BorderRadius.circular(30)),
       ),
     );
   }

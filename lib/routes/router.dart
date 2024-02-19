@@ -3,9 +3,9 @@ import 'package:podivy/Page/personal/followedPage/followed_page.dart';
 import 'package:podivy/Page/personal/list_page.dart';
 import 'package:podivy/Page/login/auth_middleware.dart';
 import 'package:podivy/Page/common/podcasterPage/podcaster_page.dart';
-import 'package:podivy/Page/common/search_page.dart';
+import 'package:podivy/Page/common/search/page/search_page.dart';
 import 'package:podivy/Page/test.dart';
-import 'package:podivy/Page/personal/user_page.dart';
+import 'package:podivy/Page/personal/user_page/user_page.dart';
 import 'package:get/get.dart';
 import '../Page/personal/playerPage/player_page.dart';
 
@@ -35,7 +35,7 @@ class RouterPage {
     ),
     GetPage(
       name: "/user",
-      page: () => const UserPage(),
+      page: () =>  UserPage(),
     ),
     GetPage(
       name: "/podcaster",

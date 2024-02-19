@@ -1,8 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'dart:developer' as dev show log;
-
-
 
 class TestPage extends StatefulWidget {
   const TestPage({super.key});
@@ -13,8 +13,26 @@ class TestPage extends StatefulWidget {
 
 class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
- 
 
+  Future<Uint8List> imgCompress() async {
+    try {
+      XFile data = XFile("assets/images/userPic/defaultUser.png");
+      Uint8List imageData = await data.readAsBytes();
+      final imgData = await FlutterImageCompress.compressWithList(
+        imageData,
+        minHeight: 400,
+        minWidth: 400,
+        format: CompressFormat.png,
+      );
+      return imgData;
+    } on CompressError catch (e) {
+      dev.log(e.message);
+      throw Exception();
+    } catch (e) {
+      dev.log(e.toString());
+      throw Exception();
+    }
+  }
 
   @override
   void initState() {
@@ -27,54 +45,25 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
         appBar: AppBar(),
         key: sKey,
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: 
-          Query(
-            options: QueryOptions(
-              document: gql(getPodcasts),
-              variables: const {
-                'languageFilter': 'zh',
-                'first': 6,
-                'sortBy': 'FOLLOWER_COUNT',
-                'sortdirection': 'DESCENDING',
-                'episodesFirst':1,
-                'categoriesFilter': ['News'],
-                //FOLLOWER_COUNT ASCENDING
+            padding: const EdgeInsets.all(8.0),
+            child: FutureBuilder(
+              future: imgCompress(),
+              builder: (context, snapshot) {
+                if(snapshot.connectionState == ConnectionState.done){
+                  if(snapshot.hasError || !snapshot.hasData){
+                  return const Center( child: Text("error"),);
+                }else{
+                  final data=  snapshot.data;
+                  return Center(child: Image.memory(data!),);
+                }
+                }else{
+                  return const Center(child: CircularProgressIndicator(),);
+                }
               },
-            ),
-            builder: (result, {fetchMore, refetch}) {
-              if (result.hasException) {
-                dev.log(result.exception.toString());
-                return Text(result.exception.toString());
-              }
-
-              if (result.isLoading) {
-                return const CircularProgressIndicator();
-              }
-
-              List? getPodcasts = result.data?['podcasts']?['data'];
-              if (getPodcasts == null) {
-                return const Text('No repositories');
-              }
-
-              return ListView.builder(
-                  itemCount: getPodcasts.length,
-                  itemBuilder: (context, index) {
-                    final repository = getPodcasts[index];
-                    // print(repository);
-                    // final slug = getPodcasts[index]['categories'];s
-                    return TextButton(
-                        onPressed: () {
-                          // dev.log(repository);
-                        },
-                        child: Text(repository['title']?? 'fail'));
-                  });
-            },
-          ),
-        ));
+            )));
   }
-
 }
+
 String getPodcasts = """
   query GetPodcasts(
      \$languageFilter: String,

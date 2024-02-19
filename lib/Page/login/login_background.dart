@@ -14,7 +14,7 @@ class LoginBackGround extends StatelessWidget {
         fit:StackFit.expand,
         children: [
           Image.asset(
-            "images/background/loginBackGround.png",
+            "assets/images/background/loginBackGround.png",
             fit: BoxFit.cover,
           ),
           Padding(

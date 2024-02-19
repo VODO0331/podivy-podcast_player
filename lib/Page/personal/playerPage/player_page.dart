@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:graphql_service_repository/graphql_service_repository.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/widget/load_image.dart';
 import 'package:podivy/Page/personal/playerPage/build/build_player_control.dart';
+import 'package:search_service/search_service_repository.dart';
 
 
 class PlayerPage extends StatefulWidget {

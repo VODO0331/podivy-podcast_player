@@ -47,8 +47,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         },
         child: Center(
           child: Container(
-            decoration: BoxDecoration(
-                color: Colors.black54, borderRadius: BorderRadius.circular(30)),
+            decoration:const BoxDecoration(
+                color: Colors.black54,),
             padding: const EdgeInsets.all(12.0).r,
             width: 500.w,
             height: 359.h,
@@ -89,7 +89,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
               )
             ]),
-          ).asGlass(tintColor: Colors.orange),
+          ).asGlass(tintColor: Colors.orange,clipBorderRadius: BorderRadius.circular(30)),
         ));
   }
 }

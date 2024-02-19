@@ -1,0 +1,125 @@
+{
+    // 使用 IntelliSense 以得知可用的屬性。
+    // 暫留以檢視現有屬性的描述。
+    // 如需詳細資訊，請瀏覽: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "podivy",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "podivy (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "podivy (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "authentication_repository",
+            "cwd": "packages\\authentication_repository",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "authentication_repository (profile mode)",
+            "cwd": "packages\\authentication_repository",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "authentication_repository (release mode)",
+            "cwd": "packages\\authentication_repository",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "modify_widget_repository",
+            "cwd": "packages\\modify_widget_repository",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "modify_widget_repository (profile mode)",
+            "cwd": "packages\\modify_widget_repository",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "modify_widget_repository (release mode)",
+            "cwd": "packages\\modify_widget_repository",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "followed_management",
+            "cwd": "packages\\firestore_service_repository\\followed_management",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "followed_management (profile mode)",
+            "cwd": "packages\\firestore_service_repository\\followed_management",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "followed_management (release mode)",
+            "cwd": "packages\\firestore_service_repository\\followed_management",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "personal_information_management",
+            "cwd": "packages\\firestore_service_repository\\personal_information_management",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "personal_information_management (profile mode)",
+            "cwd": "packages\\firestore_service_repository\\personal_information_management",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "personal_information_management (release mode)",
+            "cwd": "packages\\firestore_service_repository\\personal_information_management",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "search_service_fp",
+            "cwd": "packages\\graphql_service_repository\\search_service_fp",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "search_service_fp (profile mode)",
+            "cwd": "packages\\graphql_service_repository\\search_service_fp",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "search_service_fp (release mode)",
+            "cwd": "packages\\graphql_service_repository\\search_service_fp",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

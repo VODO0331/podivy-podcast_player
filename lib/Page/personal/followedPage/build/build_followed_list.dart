@@ -1,5 +1,6 @@
-import 'package:firestore_service_repository/follow_service/follow_service.dart';
+
 import 'package:flutter/material.dart';
+import 'package:followed_management/followed_management.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 

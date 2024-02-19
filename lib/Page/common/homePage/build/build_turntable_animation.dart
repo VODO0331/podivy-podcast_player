@@ -77,14 +77,14 @@ class _TurntableAnimationState extends State<TurntableAnimation>
                 child: CircleAvatar(
                   radius: 55,
                   backgroundImage:
-                      const AssetImage('images/turnTable/record.png'),
+                      const AssetImage('assets/images/turnTable/record.png'),
                   child: widget.child,
                 ),
               )
             : CircleAvatar(
                 radius: 55,
                 backgroundImage:
-                    const AssetImage('images/turnTable/record.png'),
+                    const AssetImage('assets/images/turnTable/record.png'),
                 child: widget.child,
               );
       },

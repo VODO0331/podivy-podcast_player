@@ -28,7 +28,7 @@ class _LoadImageWidgetState extends State<LoadImageWidget> {
     super.initState();
     imageUrl = widget.imageUrl;
     replaceImageToAssetImage = widget.replaceImageToAssetImage ??
-        "images/podcaster/defaultPodcaster.jpg";
+        "assets/images/podcaster/defaultPodcaster.jpg";
   }
 
   @override

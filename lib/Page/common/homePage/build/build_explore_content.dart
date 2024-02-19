@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:graphql_service_repository/graphql_service_repository.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/recommend_bt.dart';
 import 'package:get/get.dart';
 import 'package:podivy/widget/load_image.dart';
+import 'package:search_service/search_service_repository.dart';
 
 // ignore: must_be_immutable
 class ExploreContent extends StatelessWidget {

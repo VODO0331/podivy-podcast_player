@@ -1,15 +1,17 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:information_management_service/personal_information_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/dialogs/logout_dialog.dart';
-import 'package:podivy/widget/user_avatar.dart';
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({super.key});
+  final UserInfo result;
+  const MyDrawer({super.key, required this.result});
 
   @override
   Widget build(BuildContext context) {
+    // final InformationManagement userController = Get.find();
     return Drawer(
       child: Stack(
         children: [
@@ -19,10 +21,8 @@ class MyDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildUserProfile(),
-                SizedBox(height: 12.h),
-                _buildDivider(),
-                SizedBox(height: 25.h),
+                _buildUserProfile(result),
+                SizedBox(height: 30.h),
                 _buildDrawerItems(),
                 Expanded(child: Container()),
                 _buildLogoutButton(context),
@@ -40,11 +40,11 @@ class MyDrawer extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.topRight,
-          child: _buildVineImage("images/drawer/vine1.png", 200.0),
+          child: _buildVineImage("assets/images/drawer/vine1.png", 200.0),
         ),
         Align(
           alignment: Alignment.bottomRight,
-          child: _buildVineImage("images/drawer/vine2.png", 150.0),
+          child: _buildVineImage("assets/images/drawer/vine2.png", 150.0),
         ),
       ],
     );
@@ -60,20 +60,32 @@ class MyDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildUserProfile() {
+  Widget _buildUserProfile(
+      UserInfo info
+      ) {
     return Column(
+      
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 90.h),
-        const UserAvatar(
-          imgPath: "images/userPic/people1.png",
-          radius: 27,
-          isNetwork: false,
+        GestureDetector(
+          onTap: () => Get.toNamed('/user', arguments: result),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              backgroundImage: MemoryImage(info.userImg),
+              radius: 27.r,
+            ),
+          ),
         ),
         SizedBox(height: 12.h),
-        const Text(
-          'User Name',
-          overflow: TextOverflow.ellipsis,
+        SizedBox(
+          width: 200.r,
+          child: Text(
+            info.userName,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
         ),
         SizedBox(height: 12.h),
         Container(

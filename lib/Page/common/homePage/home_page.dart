@@ -1,25 +1,21 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:information_management_service/personal_information_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 //節省token
 // import 'package:podivy/widget/carousel.dart';
-import 'package:podivy/widget/user_avatar.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class HomePage extends StatelessWidget {
+  final UserInfo userData;
+  const HomePage({super.key, required this.userData});
   @override
   Widget build(BuildContext context) {
+    // final InformationManagement userController = Get.find();
     return Padding(
       padding: const EdgeInsets.only(top: 100).h,
       child: Column(
         children: [
-          appBar(),
+          appBar(userData),
           const Divider(
             thickness: 2,
             color: Color.fromARGB(123, 255, 255, 255),
@@ -42,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget appBar() {
+Widget appBar(UserInfo userData) {
   return Flex(
     direction: Axis.horizontal,
     children: [
@@ -54,17 +50,18 @@ Widget appBar() {
           },
           child: Stack(alignment: Alignment.centerLeft, children: [
             SvgPicture.asset(
-              "images/homePage/userBackground.svg",
+              "assets/images/homePage/userBackground.svg",
               height: 40.h,
             ),
-            const Align(
-              alignment: Alignment.center,
-              child: UserAvatar(
-                imgPath: "images/userPic/people1.png",
-                radius: 17,
-                isNetwork: false,
-              ),
-            )
+            Align(
+                alignment: Alignment.center,
+                child: GestureDetector(
+                  onTap: () => Get.toNamed('/user',arguments: userData),
+                  child: CircleAvatar(
+                  backgroundImage: MemoryImage(userData.userImg),
+                  radius: 15.r,
+                ),)
+                )
           ]),
         ),
       ),
@@ -97,4 +94,3 @@ Widget appBar() {
     ],
   );
 }
-

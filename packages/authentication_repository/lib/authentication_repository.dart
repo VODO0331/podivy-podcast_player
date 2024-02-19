@@ -1,7 +1,10 @@
 
 library authentication_repository;
 
-export './models/models.dart';
-export 'service/auth_service.dart';
-export './bloc/bloc.dart';
-export 'exception/auth_error_exception.dart';
+export 'package:flutter_bloc/flutter_bloc.dart';
+
+
+export 'src/models/models.dart'show AuthUser, AuthProvider,FirebaseAuthProvider;
+export 'src/service/auth_service.dart' show AuthService; 
+export 'src/bloc/bloc.dart'; 
+export 'src/exception/auth_error_exception.dart';

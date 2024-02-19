@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:graphql_service_repository/graphql_service_repository.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/common/podcasterPage/build/build_episodes_section.dart';
 import 'package:podivy/Page/common/podcasterPage/build/build_profile_information.dart';
-import 'package:podivy/widget/drawer.dart';
 import 'package:get/get.dart';
 import 'dart:developer' as dev show log;
+
+import 'package:search_service/search_service_repository.dart';
 
 class PodcasterPage extends StatelessWidget {
   PodcasterPage({super.key});
@@ -15,15 +15,8 @@ class PodcasterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onHorizontalDragUpdate: (details) {
-        if (details.primaryDelta != 0 && details.primaryDelta! > 10) {
-          sKey.currentState?.openDrawer();
-        }
-      },
-      child: Scaffold(
+    return Scaffold(
           key: sKey,
-          drawer: const MyDrawer(),
           body: FutureBuilder(
             future: getSinglePodcasterData(podcaster),
             builder: (context, snapshot) {
@@ -55,7 +48,7 @@ class PodcasterPage extends StatelessWidget {
                 );
               }
             },
-          )),
-    );
+          ));
+    
   }
 }

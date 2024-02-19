@@ -45,18 +45,22 @@ dependencies:
   audioplayers: ^5.2.1
   html: ^0.15.4
   cloud_firestore: ^4.15.4
-
+  image_picker: ^1.0.7
+  
   modify_widget_repository:
     path: packages/modify_widget_repository
 
   authentication_repository:
     path: packages/authentication_repository
   
-  graphql_service_repository:
-    path: packages/graphql_service_repository
+  followed_management:
+    path: packages/firestore_service_repository/followed_management
+  
+  search_service:
+    path: packages/graphql_service_repository/search_service_fp
 
-  firestore_service_repository:
-    path: packages/firestore_service_repository
+  information_management_service:
+    path: packages/firestore_service_repository/personal_information_management
   
   
     
@@ -76,19 +80,20 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+      - assets/images/drawer/
+      - assets/images/background/
+      - assets/images/homePage/
+      - assets/images/turnTable/
+      - assets/images/user_pic/
+      - assets/images/podcaster/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
 
-  assets:
-      - images/drawer/
-      - images/background/
-      - images/homePage/
-      - images/turnTable/
-      - images/userPic/
-      - images/podcaster/
+  
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

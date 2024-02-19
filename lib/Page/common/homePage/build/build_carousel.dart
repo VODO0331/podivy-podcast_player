@@ -4,7 +4,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 import 'package:podivy/Page/common/homePage/build/build_turntable_animation.dart';
-import 'package:podivy/widget/user_avatar.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:get/get.dart';
 import 'dart:developer' as dev show log;
@@ -235,10 +234,9 @@ class _TurnTableState extends State<TurnTable> {
                     isCentered: widget.isCentered,
                     child: CircleAvatar(
                       radius: 37,
-                      child: UserAvatar(
-                        imgPath: widget.podcasterData['imageUrl'],
+                      child: CircleAvatar(
+                        backgroundImage: widget.podcasterData['imageUrl'],
                         radius: 40.r,
-                        isNetwork: true,
                       ),
                     ),
                   ),
@@ -246,7 +244,7 @@ class _TurnTableState extends State<TurnTable> {
                 Align(
                   alignment: Alignment.topRight,
                   child: Image.asset(
-                    'images/turnTable/record2.png',
+                    'assets/images/turnTable/record2.png',
                   ),
                 ),
               ],

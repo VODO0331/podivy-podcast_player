@@ -14,7 +14,7 @@ final ThemeData myTheme = ThemeData(
         onError: Colors.white,
         background: Color(0xFF7B7060),
         onBackground: Colors.white,
-        surface: Color.fromARGB(255, 204, 202, 199),
+        surface: Color.fromARGB(255, 25, 24, 22),
         onSurface: Colors.white),
     drawerTheme: const DrawerThemeData(
       backgroundColor: Color(0xFF24211C),

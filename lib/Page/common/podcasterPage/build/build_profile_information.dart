@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:followed_management/followed_management.dart';
+
 import 'package:get/get.dart';
-import 'package:graphql_service_repository/graphql_service_repository.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Controller/widget_animation_controller.dart';
-import 'package:firestore_service_repository/follow_service/service/firebase_cloud_storage.dart';
-import 'package:podivy/widget/user_avatar.dart';
+import 'package:search_service/search_service_repository.dart';
 
 // import 'dart:developer' as dev show log;
 
@@ -19,11 +19,11 @@ class ProfileInformation extends StatefulWidget {
 class _ProfileInformationState extends State<ProfileInformation> {
   final _widgetController = Get.put(WidgetController());
   final RxBool isFollowed = false.obs;
-  late PodcastFollowedStorage _followedStorageService;
+  late FollowedManagement _followedStorageService;
   @override
   void initState() {
     super.initState();
-    _followedStorageService = PodcastFollowedStorage();
+    _followedStorageService = FollowedManagement();
   }
 
   @override
@@ -125,7 +125,7 @@ Widget _buildDescription(
   Podcaster podcasterData,
   double opacity,
   RxBool isFollowed,
-  PodcastFollowedStorage followedStorageService,
+  FollowedManagement followedStorageService,
 ) {
   return Opacity(
     opacity: opacity,
@@ -219,7 +219,7 @@ Widget _buildDescription(
 }
 
 Future<void> changeBtState(
-  PodcastFollowedStorage followedController,
+  FollowedManagement followedController,
   Podcaster podcasterData,
   bool value,
 ) async {
@@ -242,12 +242,9 @@ Widget _buildUserAvatar(String imageUrl, double size, double opacity) {
       opacity: 1 - opacity,
       child: Padding(
         padding: const EdgeInsets.only(right: 20).r,
-        child: UserAvatar(
-          imgPath: imageUrl,
+        child: CircleAvatar(
+          backgroundImage: NetworkImage(imageUrl),
           radius: size,
-          borderThickness: size + 5,
-          isNetwork: true,
-          color: const Color(0xFFABC4AA),
         ),
       ),
     ),

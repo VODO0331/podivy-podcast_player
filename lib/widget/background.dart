@@ -31,12 +31,12 @@ class MyBackGround extends StatelessWidget {
               bottom: 0,
               left: 0,
               right: 0,
-              child: Image.asset('images/background/test.png',fit: BoxFit.cover,),
+              child: Image.asset('assets/images/background/test.png',fit: BoxFit.cover,),
             ),
           
           Align(
             alignment: Alignment.topCenter,
-            child: Image.asset("images/background/backGroundVine.png",
+            child: Image.asset("assets/images/background/backGroundVine.png",
                 color: bkColor),
           ),
           child

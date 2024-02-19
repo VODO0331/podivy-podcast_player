@@ -1,10 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:graphql_service_repository/graphql_service_repository.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/dialogs/cannot_play.dart';
 import 'package:podivy/util/dialogs/description_dialog.dart';
 import 'dart:developer' as dev show log;
+
+import 'package:search_service/search_service_repository.dart';
 
 class PlayerControl extends StatefulWidget {
   final List<Episode> getEpisodeList;
