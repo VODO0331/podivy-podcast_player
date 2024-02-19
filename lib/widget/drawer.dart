@@ -6,12 +6,11 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/dialogs/logout_dialog.dart';
 
 class MyDrawer extends StatelessWidget {
-  final UserInfo result;
-  const MyDrawer({super.key, required this.result});
+  const MyDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // final InformationManagement userController = Get.find();
+    final InformationManagementWithGetX userController = Get.find();
     return Drawer(
       child: Stack(
         children: [
@@ -21,7 +20,7 @@ class MyDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildUserProfile(result),
+                _buildUserProfile(userController),
                 SizedBox(height: 30.h),
                 _buildDrawerItems(),
                 Expanded(child: Container()),
@@ -40,53 +39,63 @@ class MyDrawer extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.topRight,
-          child: _buildVineImage("assets/images/drawer/vine1.png", 200.0),
+          child: _buildVineImage("assets/images/drawer/vine1.png"),
         ),
         Align(
           alignment: Alignment.bottomRight,
-          child: _buildVineImage("assets/images/drawer/vine2.png", 150.0),
+          child: _buildVineImage("assets/images/drawer/vine2.png"),
         ),
       ],
     );
   }
 
-  Widget _buildVineImage(String imagePath, double size) {
+  Widget _buildVineImage(String imagePath) {
     return Image.asset(
       imagePath,
-      width: size.w,
-      height: size.h,
+      cacheHeight: 200,
+      cacheWidth: 150,
       fit: BoxFit.cover,
       color: const Color.fromARGB(255, 146, 146, 146),
     );
   }
 
-  Widget _buildUserProfile(
-      UserInfo info
-      ) {
+  Widget _buildUserProfile(InformationManagementWithGetX userController) {
     return Column(
-      
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 90.h),
         GestureDetector(
-          onTap: () => Get.toNamed('/user', arguments: result),
+          onTap: () => Get.toNamed('/user'),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              backgroundImage: MemoryImage(info.userImg),
-              radius: 27.r,
-            ),
+            child: Obx(() {
+              final UserInfo? data = userController.userData;
+              if (data != null) {
+                return CircleAvatar(
+                  backgroundImage:
+                      MemoryImage(data.img!),
+                  radius: 35.r,
+                );
+              } else {
+                return const CircularProgressIndicator();
+              }
+            }),
           ),
         ),
         SizedBox(height: 12.h),
         SizedBox(
-          width: 200.r,
-          child: Text(
-            info.userName,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-        ),
+            width: 200.r,
+            child: Obx(() {
+              if (userController.userData != null) {
+                return Text(
+                  userController.userData!.name,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                );
+              } else {
+                return const Text("loading...");
+              }
+            })),
         SizedBox(height: 12.h),
         Container(
           height: 0.6.h,
@@ -146,6 +155,7 @@ class MyDrawer extends StatelessWidget {
         onTap: () async {
           final result = await showLogOutDialog(context);
           if (result) {
+            Get.delete<InformationManagementWithGetX>();
             context.mounted
                 ? context.read<AuthBloc>().add(const AuthEventLogOut())
                 : null;
@@ -163,13 +173,11 @@ class DrawerItem extends StatelessWidget {
     required this.title,
     required this.tileOption,
 
-    // Add any other parameters you may need
   }) : super(key: key);
 
   final IconData icon;
   final String title;
   final Function()? tileOption;
-  // Add any other parameters you may need
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +187,6 @@ class DrawerItem extends StatelessWidget {
           leading: Icon(icon, size: 25.w),
           title: Text(title),
           onTap: tileOption,
-          // Add any other ListTile properties or callbacks you need
         ),
         const Divider(
           height: 1,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/recommend_bt.dart';
-import 'package:podivy/widget/load_image.dart';
 import 'package:search_service/search_service_repository.dart';
 
 class SearchResult extends StatelessWidget {
@@ -128,41 +127,60 @@ Widget podcastBuilder(List<Podcaster>? podcasts) {
   } else {
     return GridView.builder(
       key: UniqueKey(),
-      gridDelegate:
-          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:1,),
-          // padding:const EdgeInsets.all(8).r,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 1,
+      ),
+      // padding:const EdgeInsets.all(8).r,
       itemCount: podcasts.length,
       scrollDirection: Axis.horizontal,
       itemBuilder: (BuildContext context, int index) {
         Podcaster podcast = podcasts[index];
         return GestureDetector(
           onTap: () => Get.toNamed('/podcaster', arguments: podcast.id),
-          child:  Flex(
-              direction: Axis.vertical,
-              children: [
-                Expanded(
-                  flex: 8,
-                  child: Center(
-                      child: SizedBox(
-                          height: 120.h,
-                          width: 120.w,
-                          child: LoadImageWidget(
-                            imageUrl: podcast.imageUrl,
-                          ))),
-                ),
-                Expanded(
-                    flex: 2,
+          child: Flex(
+            direction: Axis.vertical,
+            children: [
+              Expanded(
+                flex: 8,
+                child: Center(
                     child: SizedBox(
-                      width: 120.w,
-                      child: Text(
-                        podcast.title ?? 'error',
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                      ),
-                    )),
-              ],
-            ),
-          
+                  height: 120.h,
+                  width: 120.w,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    child: FadeInImage.assetNetwork(
+                      placeholderCacheWidth: 50,
+                      placeholderCacheHeight: 50,
+                      imageCacheHeight: 250,
+                      imageCacheWidth: 250,
+                      fit: BoxFit.cover,
+                      placeholderFit: BoxFit.cover,
+                      placeholder: "assets/images/generic/search_loading.gif",
+                      image: podcast.imageUrl!,
+                      imageErrorBuilder: (context, _, __) {
+                        return Image.asset(
+                          "assets/images/podcaster/defaultPodcaster.jpg",
+                          fit: BoxFit.cover,
+                          cacheHeight: 150,
+                          cacheWidth: 150,
+                        );
+                      },
+                    ),
+                  ),
+                )),
+              ),
+              Expanded(
+                  flex: 2,
+                  child: SizedBox(
+                    width: 120.w,
+                    child: Text(
+                      podcast.title ?? 'error',
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
+            ],
+          ),
         );
       },
     );
@@ -194,8 +212,23 @@ Widget episodesBuilder(
             leading: SizedBox(
               height: 60.h,
               width: 60.w,
-              child: LoadImageWidget(
-                imageUrl: episode.imageUrl,
+              child: FadeInImage.assetNetwork(
+                placeholderCacheWidth: 50,
+                placeholderCacheHeight: 50,
+                imageCacheHeight: 130,
+                imageCacheWidth: 130,
+                fit: BoxFit.cover,
+                placeholderFit: BoxFit.cover,
+                placeholder: "assets/images/generic/search_loading.gif",
+                image: episode.imageUrl,
+                imageErrorBuilder: (context, _, __) {
+                  return Image.asset(
+                    "assets/images/podcaster/defaultPodcaster.jpg",
+                    fit: BoxFit.cover,
+                    cacheHeight: 100,
+                    cacheWidth: 100,
+                  );
+                },
               ),
             ),
             trailing: const Icon(Icons.more_vert),
@@ -223,14 +256,27 @@ Widget _prototypeItemForEpisodeBuilder() {
       leading: SizedBox(
         height: 60.h,
         width: 60.w,
-        child: const LoadImageWidget(
-          imageUrl: "episode.imageUrl",
-        ),
+        child: FadeInImage.assetNetwork(
+                placeholderCacheWidth: 50,
+                placeholderCacheHeight: 50,
+                imageCacheHeight: 100,
+                imageCacheWidth: 100,
+                fit: BoxFit.cover,
+                placeholderFit: BoxFit.cover,
+                placeholder: "assets/images/generic/search_loading.gif",
+                image: "episode.imageUrl",
+                imageErrorBuilder: (context, _, __) {
+                  return Image.asset(
+                    "assets/images/podcaster/defaultPodcaster.jpg",
+                    fit: BoxFit.cover,
+                    cacheHeight: 100,
+                    cacheWidth: 100,
+                  );
+                },
+              ),
       ),
       trailing: const Icon(Icons.more_vert),
       onTap: null,
     ),
   );
 }
-
-

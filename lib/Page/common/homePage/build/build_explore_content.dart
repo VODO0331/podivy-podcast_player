@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/recommend_bt.dart';
 import 'package:get/get.dart';
-import 'package:podivy/widget/load_image.dart';
 import 'package:search_service/search_service_repository.dart';
 
 // ignore: must_be_immutable
@@ -73,11 +72,8 @@ class ExploreContent extends StatelessWidget {
     return FutureBuilder(
       future: getSearchData(exploreContent),
       builder: (context, snapshot) {
-
-        
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
-            
             return Text('snapshot Error:${snapshot.error}');
           }
           final Map? data = snapshot.data;
@@ -120,8 +116,24 @@ class ExploreContent extends StatelessWidget {
                     ),
                     child: Stack(
                       children: [
-                        LoadImageWidget(
-                          imageUrl: podcaster.imageUrl,
+                        FadeInImage.assetNetwork(
+                          placeholderCacheWidth: 50,
+                          placeholderCacheHeight: 50,
+                          imageCacheHeight: 150,
+                          imageCacheWidth: 150,
+                          fit: BoxFit.cover,
+                          placeholderFit: BoxFit.cover,
+                          placeholder:
+                              "assets/images/generic/search_loading.gif",
+                          image: podcaster.imageUrl!,
+                          imageErrorBuilder: (context, _, __) {
+                            return Image.asset(
+                              "assets/images/podcaster/defaultPodcaster.jpg",
+                              fit: BoxFit.cover,
+                              cacheHeight: 100,
+                              cacheWidth: 100,
+                            );
+                          },
                         ),
                         Align(
                           alignment: Alignment.bottomCenter,
@@ -151,4 +163,3 @@ class ExploreContent extends StatelessWidget {
     );
   }
 }
- 

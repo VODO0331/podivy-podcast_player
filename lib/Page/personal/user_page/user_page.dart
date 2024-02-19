@@ -8,15 +8,15 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+// import 'dart:developer' as dev show log;
 class UserPage extends StatelessWidget {
   UserPage({Key? key}) : super(key: key);
 
-  final UserInfo userData = Get.arguments;
+  // final UserInfo userData = Get.arguments;
   final TextEditingController _textEditingController =
       Get.put(TextEditingController());
   final ImagePicker _imagePicker = Get.put(ImagePicker());
-  final InformationManagement informationManagement =
-      Get.put(InformationManagement());
+  final InformationManagementWithGetX userController = Get.find();
   final RxBool _isEdit = false.obs;
 
   Future<Uint8List?> selectImage() async {
@@ -26,7 +26,7 @@ class UserPage extends StatelessWidget {
     if (image != null) {
       final Uint8List newImg =
           Uint8List.fromList(await File(image.path).readAsBytes());
-      if (newImg != userData.userImg) {
+      if (newImg != userController.userData!.img) {
         return newImg;
       }
     }
@@ -37,7 +37,7 @@ class UserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // 獲取用戶email
     final userEmail = AuthService.firebase().currentUser!.email;
-    final Rx<Uint8List> imgData = userData.userImg.obs;
+    final Rx<Uint8List?> imgData = userController.userData!.img.obs;
     return Scaffold(
       key: UniqueKey(),
       resizeToAvoidBottomInset: false,
@@ -100,12 +100,16 @@ class UserPage extends StatelessWidget {
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
-                            Obx(
-                              () => CircleAvatar(
-                                backgroundImage: MemoryImage(imgData.value),
-                                radius: 68.r,
-                              ),
-                            ),
+                            Obx(() {
+                              if (imgData.value != null) {
+                                return CircleAvatar(
+                                  backgroundImage: MemoryImage(imgData.value!),
+                                  radius: 68.r,
+                                );
+                              } else {
+                                return const CircularProgressIndicator();
+                              }
+                            }),
                             Obx(() {
                               return _isEdit.value
                                   ? Positioned(
@@ -115,6 +119,7 @@ class UserPage extends StatelessWidget {
                                         onPressed: () async {
                                           final Uint8List? result =
                                               await selectImage();
+                                              
                                           if (result != null) {
                                             imgData.value = result;
                                           }
@@ -145,7 +150,8 @@ class UserPage extends StatelessWidget {
               children: [
                 // 顯示用戶名稱的ListTile
                 Obx(() {
-                  _textEditingController.text = userData.userName;
+                  _textEditingController.text =
+                      userController.userData!.userName.value;
                   return _isEdit.value
                       ? TextField(
                           controller: _textEditingController,
@@ -156,7 +162,7 @@ class UserPage extends StatelessWidget {
                       : ListTile(
                           leading: const Icon(Icons.person),
                           title: Text(
-                            "名稱 :   ${userData.userName}",
+                            "名稱 :   ${userController.userData!.userName}",
                             style: TextStyle(fontSize: ScreenUtil().setSp(15)),
                           ),
                         );
@@ -178,13 +184,14 @@ class UserPage extends StatelessWidget {
                               _isEdit.value = false;
                               final List<dynamic> updates = [null, null];
                               if (_textEditingController.text !=
-                                  userData.userName) {
+                                  userController.userData!.name) {
                                 updates[0] = _textEditingController.text;
                               }
-                              if (userData.userImg != imgData.value) {
+                              if (userController.userData!.img !=
+                                  imgData.value) {
                                 updates[1] = imgData.value;
                               }
-                              informationManagement.updateInfo(
+                              userController.updateInfo(
                                 userName: updates[0],
                                 userImg: updates[1],
                               );
@@ -193,8 +200,9 @@ class UserPage extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () async {
-                              _textEditingController.text = userData.userName;
-                              imgData.value = userData.userImg;
+                              _textEditingController.text =
+                                  userController.userData!.userName.value;
+                              imgData.value = userController.userData!.userImg.value;
                               _isEdit.value = false;
                             },
                             child: const Text("取消"),

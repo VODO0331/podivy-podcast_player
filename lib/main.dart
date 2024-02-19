@@ -10,7 +10,6 @@ import 'package:search_service/search_service_repository.dart';
 
 import './routes/router.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
@@ -28,8 +27,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp, // 竖屏向上
-      DeviceOrientation.portraitDown, // 竖屏向下
+      DeviceOrientation.portraitUp, 
+      DeviceOrientation.portraitDown, 
     ]);
 
     return BlocProvider<AuthBloc>(

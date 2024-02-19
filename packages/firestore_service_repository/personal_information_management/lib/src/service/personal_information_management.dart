@@ -1,116 +1,107 @@
-// use GetX
-
-import 'dart:typed_data';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:get/get.dart';
-import 'package:information_management_service/src/error_exception/cloud_storage_exception.dart';
-import 'package:information_management_service/src/models/user_info.dart';
-import '../constants.dart';
+import 'package:information_management_service/src/constants.dart';
+
 import 'dart:developer' as dev show log;
 
-class InformationManagementWithGet extends GetxController {
-  final RxString userId = AuthService.firebase().currentUser!.id.obs;
-  Rx<UserInfo?> get userData => userInfoResult;
-  final Rx<CollectionReference<Map<String, dynamic>>> user =
-      FirebaseFirestore.instance.collection("user").obs;
+import '../../personal_information_management.dart';
+import '../error_exception/cloud_storage_exception.dart';
 
-  late final Rx<DocumentReference<Map<String, dynamic>>> userInfo;
-  late final Rx<UserInfo?> userInfoResult;
-  late final Future initFuture;
-  InformationManagementWithGet() {
-    userInfo = user.value
-        .doc(userId.value)
-        .collection('information')
-        .doc("personalInfo")
-        .obs;
-  }
-  @override
-  void onInit() async {
-    super.onInit();
-    initFuture = _init();
-  }
+class InformationManagement {
+  get userId => AuthService.firebase().currentUser!.id;
+  final CollectionReference<Map<String, dynamic>> _userTable =
+      FirebaseFirestore.instance.collection("user");
+  late final DocumentReference<Map<String, dynamic>> _userInfo;
 
-  Future _init() async {
-    await haveInfo();
-    userInfoResult.value = await readInfo();
-    update();
+  static final InformationManagement _shard =
+      InformationManagement._shardInstance();
+  InformationManagement._shardInstance() {
+    _userInfo = _userTable.doc(userId);
   }
+  factory InformationManagement() => _shard;
 
-  Future<void> haveInfo() async {
-    final result =
-        await user.value.doc(userId.value).get().then((value) => value.data());
-    if (result == null || result.isEmpty) {
-      XFile imgData = XFile('assets/images/userPic/default_user.png');
-      await addInfo(userImg: imgData, userName: "Nobody");
-    }
-  }
-
-  Future<Uint8List> imgCompress(XFile img) async {
+  Future<Uint8List> _imgCompress(Uint8List img) async {
     try {
-      XFile? imgOO = XFile('assets/images/userPic/default_user.png');
-      final imgData = await FlutterImageCompress.compressWithFile(
-        imgOO.path,
-        minHeight: 400,
-        minWidth: 400,
+      final imgData = await FlutterImageCompress.compressWithList(
+        img,
+        minHeight: 200,
+        minWidth: 200,
         format: CompressFormat.png,
       );
-      if (imgData != null) {
-        return imgData;
-      } else {
-        throw ImageErrorException();
-      }
+      return imgData;
     } on CompressError catch (e) {
       dev.log(e.message);
+      throw ImageErrorException();
+    } catch (e) {
+      dev.log(e.toString());
       throw ImageErrorException();
     }
   }
 
-  Future<void> addInfo(
-      {required String userName, required XFile userImg}) async {
-    final imgData = await imgCompress(userImg);
+  Future<void> haveInfo() async {
+    final result =
+        await _userTable.doc(userId).get().then((value) => value.data());
+    if (result == null || result.isEmpty) {
+      await addInfo(userName: "Nobody");
+    }
+  }
 
-    await userInfo.value
-        .set({personalName: userName, personalImg: imgData}).then((value) {
+  //僅在初始化使用
+  Future<void> addInfo({required String userName}) async {
+    ByteData data =
+        await rootBundle.load("assets/images/user_pic/default_user.png");
+    final imgData = await _imgCompress(data.buffer.asUint8List());
+
+    await _userInfo.set({
+      personalName: userName,
+      personalImg: imgData,
+    }).then((value) {
       dev.log("info added successfully!");
-      dev.log('right here');
-      update([userInfoResult]);
     }).catchError((error) => throw CloudNotCreateException());
   }
 
   //註銷用戶
   Future<void> deleteInfo() async {
     try {
-      await userInfo.value.delete();
-      await user.value
-          .doc(userId.value)
+      // await userInfo.delete();
+      await _userTable
+          .doc(userId)
           .delete()
-          .then((value) => update([userInfoResult]));
+          .then((value) => dev.log("delete successfully"));
     } catch (_) {
       throw CloudDeleteException();
     }
   }
 
-  Future<void> updateInfo({String? userName, XFile? userImg}) async {
-    final Map<Object, Object?> updates = <Object, Object?>{}.obs;
-    userName != null ? updates.addAll({personalName: userName}) : null;
+  Future<void> updateInfo({String? userName, Uint8List? userImg}) async {
+    final Map<Object, Object?> updates = <Object, Object?>{};
+
+    if (userName != null) {
+      updates.addAll({personalName: userName});
+    }
     if (userImg != null) {
-      final imgData = await imgCompress(userImg);
-      updates.addAll({personalImg: imgData});
+      final result = await _imgCompress(userImg);
+      updates.addAll({personalImg: result});
     }
 
-    await userInfo.value.update(updates).then((value) {
+    await _userInfo.update(updates).then((value) {
       dev.log("DocumentSnapshot successfully updated!");
-      update([userInfoResult]);
-    }).catchError(throw CloudNotUpdateException());
+    }).catchError((e){
+      dev.log(e.toString());
+      throw CloudNotUpdateException();
+    });
   }
 
-  Future<UserInfo> readInfo() async {
-    return await userInfo.value
-        .get()
-        .then((value) => UserInfo.fromSnapshot(value))
-        .catchError(throw CloudNotGetException());
+  Stream<UserInfo> readInfo() {
+    try {
+      final result =
+          _userInfo.snapshots().map((event) => UserInfo.fromSnapshot(event));
+      return result;
+    } catch (e) {
+      dev.log(e.toString());
+      throw CloudNotGetException();
+    }
   }
-
 }

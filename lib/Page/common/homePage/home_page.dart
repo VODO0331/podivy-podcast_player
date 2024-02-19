@@ -6,16 +6,15 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 // import 'package:podivy/widget/carousel.dart';
 
 class HomePage extends StatelessWidget {
-  final UserInfo userData;
-  const HomePage({super.key, required this.userData});
+  const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
-    // final InformationManagement userController = Get.find();
+    final InformationManagementWithGetX userController = Get.find();
     return Padding(
       padding: const EdgeInsets.only(top: 100).h,
       child: Column(
         children: [
-          appBar(userData),
+          appBar(userController),
           const Divider(
             thickness: 2,
             color: Color.fromARGB(123, 255, 255, 255),
@@ -38,7 +37,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
-Widget appBar(UserInfo userData) {
+Widget appBar(InformationManagementWithGetX userController) {
   return Flex(
     direction: Axis.horizontal,
     children: [
@@ -56,12 +55,24 @@ Widget appBar(UserInfo userData) {
             Align(
                 alignment: Alignment.center,
                 child: GestureDetector(
-                  onTap: () => Get.toNamed('/user',arguments: userData),
-                  child: CircleAvatar(
-                  backgroundImage: MemoryImage(userData.userImg),
-                  radius: 15.r,
-                ),)
-                )
+                  onTap: () => Get.toNamed('/user'),
+                  child: Obx(() {
+                    final UserInfo? data = userController.userData;
+                    if (data != null && data.img != null) {
+                      return CircleAvatar(
+                        backgroundImage: MemoryImage(data.img!),
+                        radius: 15.r,
+                      );
+                    } else {
+                      return SizedBox(
+                          width: 20.r,
+                          height: 20.r,
+                          child: const CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ));
+                    }
+                  }),
+                ))
           ]),
         ),
       ),

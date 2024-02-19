@@ -26,18 +26,23 @@ class MyBackGround extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Image.asset('assets/images/background/test.png',fit: BoxFit.cover,),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Image.asset(
+              'assets/images/background/test.png',
+              fit: BoxFit.cover,
+              cacheHeight: 500,
+              cacheWidth: 400,
             ),
-          
+          ),
           Align(
             alignment: Alignment.topCenter,
             child: Image.asset("assets/images/background/backGroundVine.png",
-                color: bkColor),
+                color: bkColor,
+                cacheHeight: 200,
+                cacheWidth: 450,),
           ),
           child
         ],

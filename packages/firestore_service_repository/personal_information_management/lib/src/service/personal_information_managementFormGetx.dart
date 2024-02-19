@@ -1,26 +1,33 @@
+// use GetX
+
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:information_management_service/src/constants.dart';
-
+import 'package:get/get.dart';
+import 'package:information_management_service/src/error_exception/cloud_storage_exception.dart';
+import 'package:information_management_service/src/models/user_info.dart';
+import '../constants.dart';
 import 'dart:developer' as dev show log;
 
-import '../../personal_information_management.dart';
-import '../error_exception/cloud_storage_exception.dart';
-
-class InformationManagement {
+class InformationManagementWithGetX extends GetxController {
   get userId => AuthService.firebase().currentUser!.id;
   final CollectionReference<Map<String, dynamic>> _userTable =
       FirebaseFirestore.instance.collection("user");
-  late final DocumentReference<Map<String, dynamic>> _userInfo;
+  late final DocumentReference<Map<String, dynamic>> _userDocs;
+  final Rx<UserInfo> _userInfo = UserInfo.forDefault().obs;
+  UserInfo? get userData => _userInfo.value;
 
-  static final InformationManagement _shard =
-      InformationManagement._shardInstance();
-  InformationManagement._shardInstance() {
-    _userInfo = _userTable.doc(userId);
+  InformationManagementWithGetX() {
+    _userDocs = _userTable.doc(userId);
+    haveInfo();
+    _userInfo.bindStream(readInfo());
+    
   }
-  factory InformationManagement() => _shard;
+  @override
+  onClose(){
+    super.onClose();
+  }
 
   Future<Uint8List> _imgCompress(Uint8List img) async {
     try {
@@ -45,6 +52,14 @@ class InformationManagement {
         await _userTable.doc(userId).get().then((value) => value.data());
     if (result == null || result.isEmpty) {
       await addInfo(userName: "Nobody");
+    } else {
+      String name = result[personalName];
+      _userInfo.value = UserInfo(
+          userName: name.obs,
+          userImg:
+              (Uint8List.fromList((result[personalImg] as List).cast<int>()))
+                  .obs);
+      update([_userInfo.value]);
     }
   }
 
@@ -54,7 +69,7 @@ class InformationManagement {
         await rootBundle.load("assets/images/user_pic/default_user.png");
     final imgData = await _imgCompress(data.buffer.asUint8List());
 
-    await _userInfo.set({
+    await _userDocs.set({
       personalName: userName,
       personalImg: imgData,
     }).then((value) {
@@ -77,18 +92,21 @@ class InformationManagement {
 
   Future<void> updateInfo({String? userName, Uint8List? userImg}) async {
     final Map<Object, Object?> updates = <Object, Object?>{};
-
+    if(userName==null && userImg==null) return;
     if (userName != null) {
       updates.addAll({personalName: userName});
+      _userInfo.value.userName.value = userName;
     }
     if (userImg != null) {
       final result = await _imgCompress(userImg);
       updates.addAll({personalImg: result});
+      _userInfo.value.userImg.value = result;
     }
-
-    await _userInfo.update(updates).then((value) {
+    update([_userInfo]);
+    
+    await _userDocs.update(updates).then((value) {
       dev.log("DocumentSnapshot successfully updated!");
-    }).catchError((e){
+    }).catchError((e) {
       dev.log(e.toString());
       throw CloudNotUpdateException();
     });
@@ -96,9 +114,7 @@ class InformationManagement {
 
   Stream<UserInfo> readInfo() {
     try {
-      final result =
-          _userInfo.snapshots().map((event) => UserInfo.fromSnapshot(event));
-      return result;
+      return _userDocs.snapshots().map((event) => UserInfo.fromSnapshot(event));
     } catch (e) {
       dev.log(e.toString());
       throw CloudNotGetException();

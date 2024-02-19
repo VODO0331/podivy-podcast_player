@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:followed_management/followed_management.dart';
 import 'package:get/get.dart';
@@ -46,26 +45,17 @@ class FollowedList extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
-                child: Image.network(
-                  followed.podcastImg,
+                child: FadeInImage.assetNetwork(
+                  placeholderCacheWidth: 200,
+                  placeholderCacheHeight: 200,
+                  imageCacheHeight: 200,
+                  imageCacheWidth: 200,
                   fit: BoxFit.cover,
-                  cacheHeight: 200,
-                  cacheWidth: 200,
-                  color: const Color(0x77433101),
-                  colorBlendMode: BlendMode.color,
-                  frameBuilder:
-                      (context, child, frame, wasSynchronouslyLoaded) {
-                    if (wasSynchronouslyLoaded) {
-                      return child;
-                    }
-                    return AnimatedOpacity(
-                      opacity: frame == null ? 0 : 1,
-                      duration: const Duration(milliseconds: 400),
-                      curve: Curves.easeOut,
-                      child: child,
-                    );
-                  },
+                  placeholderFit: BoxFit.cover,
+                  placeholder: "assets/images/generic/loading.gif",
+                  image: followed.podcastImg,
                 ),
+                
               ),
             ),
           ),
