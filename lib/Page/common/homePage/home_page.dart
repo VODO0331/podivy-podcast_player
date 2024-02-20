@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
   @override
   Widget build(BuildContext context) {
-    final InformationManagementWithGetX userController = Get.find();
+    final InformationController userController = Get.find();
     return Padding(
       padding: const EdgeInsets.only(top: 100).h,
       child: Column(
@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
-Widget appBar(InformationManagementWithGetX userController) {
+Widget appBar(InformationController userController) {
   return Flex(
     direction: Axis.horizontal,
     children: [

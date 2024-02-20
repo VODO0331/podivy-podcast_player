@@ -1,6 +1,3 @@
-
-
-
 import 'podcaster.dart';
 
 class Episode {
@@ -9,7 +6,7 @@ class Episode {
   final String audioUrl;
   final String imageUrl;
   final String description;
-  final String airDate;
+  final DateTime airDate;
   final Podcaster? podcast;
 
   Episode(

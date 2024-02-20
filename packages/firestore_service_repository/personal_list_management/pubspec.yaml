@@ -1,5 +1,5 @@
-name: information_management_service
-description:  Services for managing personal information.
+name: list_management_service
+description:  Services for managing personal list.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
@@ -11,12 +11,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get: 
+  flutter_bloc: ^8.1.3
+  bloc: ^8.1.3
   cloud_firestore: ^4.15.4
-  flutter_image_compress: ^2.1.0
-  
+
   authentication_repository:
       path: ../../authentication_repository
+  
+  search_service:
+     path: ../../graphql_service_repository/search_service_fp
   
 dev_dependencies:
   flutter_test:
@@ -26,5 +29,3 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  assets:
-      - assets/images/userPic/

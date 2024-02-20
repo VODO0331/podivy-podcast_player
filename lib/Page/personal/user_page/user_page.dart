@@ -16,7 +16,9 @@ class UserPage extends StatelessWidget {
   final TextEditingController _textEditingController =
       Get.put(TextEditingController());
   final ImagePicker _imagePicker = Get.put(ImagePicker());
-  final InformationManagementWithGetX userController = Get.find();
+  final InformationController userController = Get.find();
+  final InformationManagement informationManagement =
+      Get.put(InformationManagement());
   final RxBool _isEdit = false.obs;
 
   Future<Uint8List?> selectImage() async {
@@ -119,7 +121,7 @@ class UserPage extends StatelessWidget {
                                         onPressed: () async {
                                           final Uint8List? result =
                                               await selectImage();
-                                              
+
                                           if (result != null) {
                                             imgData.value = result;
                                           }
@@ -191,7 +193,7 @@ class UserPage extends StatelessWidget {
                                   imgData.value) {
                                 updates[1] = imgData.value;
                               }
-                              userController.updateInfo(
+                              informationManagement.updateInfo(
                                 userName: updates[0],
                                 userImg: updates[1],
                               );
@@ -202,7 +204,8 @@ class UserPage extends StatelessWidget {
                             onPressed: () async {
                               _textEditingController.text =
                                   userController.userData!.userName.value;
-                              imgData.value = userController.userData!.userImg.value;
+                              imgData.value =
+                                  userController.userData!.userImg.value;
                               _isEdit.value = false;
                             },
                             child: const Text("取消"),

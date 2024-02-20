@@ -4,29 +4,21 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:get/get.dart';
+// import 'package:get/get.dart';
 import 'package:information_management_service/src/error_exception/cloud_storage_exception.dart';
 import 'package:information_management_service/src/models/user_info.dart';
 import '../constants.dart';
 import 'dart:developer' as dev show log;
 
-class InformationManagementWithGetX extends GetxController {
+class InformationManagement {
   get userId => AuthService.firebase().currentUser!.id;
   final CollectionReference<Map<String, dynamic>> _userTable =
       FirebaseFirestore.instance.collection("user");
   late final DocumentReference<Map<String, dynamic>> _userDocs;
-  final Rx<UserInfo> _userInfo = UserInfo.forDefault().obs;
-  UserInfo? get userData => _userInfo.value;
 
-  InformationManagementWithGetX() {
+  InformationManagement() {
     _userDocs = _userTable.doc(userId);
     haveInfo();
-    _userInfo.bindStream(readInfo());
-    
-  }
-  @override
-  onClose(){
-    super.onClose();
   }
 
   Future<Uint8List> _imgCompress(Uint8List img) async {
@@ -52,15 +44,16 @@ class InformationManagementWithGetX extends GetxController {
         await _userTable.doc(userId).get().then((value) => value.data());
     if (result == null || result.isEmpty) {
       await addInfo(userName: "Nobody");
-    } else {
-      String name = result[personalName];
-      _userInfo.value = UserInfo(
-          userName: name.obs,
-          userImg:
-              (Uint8List.fromList((result[personalImg] as List).cast<int>()))
-                  .obs);
-      update([_userInfo.value]);
     }
+    // else {
+    // String name = result[personalName];
+    // _userInfo.value = UserInfo(
+    //     userName: name.obs,
+    //     userImg:
+    //         (Uint8List.fromList((result[personalImg] as List).cast<int>()))
+    //             .obs);
+    // update([_userInfo.value]);
+    // }
   }
 
   //僅在初始化使用
@@ -92,18 +85,18 @@ class InformationManagementWithGetX extends GetxController {
 
   Future<void> updateInfo({String? userName, Uint8List? userImg}) async {
     final Map<Object, Object?> updates = <Object, Object?>{};
-    if(userName==null && userImg==null) return;
+    if (userName == null && userImg == null) return;
     if (userName != null) {
       updates.addAll({personalName: userName});
-      _userInfo.value.userName.value = userName;
+      // _userInfo.value.userName.value = userName;
     }
     if (userImg != null) {
       final result = await _imgCompress(userImg);
       updates.addAll({personalImg: result});
-      _userInfo.value.userImg.value = result;
+      // _userInfo.value.userImg.value = result;
     }
-    update([_userInfo]);
-    
+    // update([_userInfo]);
+
     await _userDocs.update(updates).then((value) {
       dev.log("DocumentSnapshot successfully updated!");
     }).catchError((e) {

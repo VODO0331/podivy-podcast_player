@@ -10,7 +10,7 @@ class MyDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final InformationManagementWithGetX userController = Get.find();
+    final InformationController userController = Get.find();
     return Drawer(
       child: Stack(
         children: [
@@ -59,7 +59,7 @@ class MyDrawer extends StatelessWidget {
     );
   }
 
-  Widget _buildUserProfile(InformationManagementWithGetX userController) {
+  Widget _buildUserProfile(InformationController userController) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -72,8 +72,7 @@ class MyDrawer extends StatelessWidget {
               final UserInfo? data = userController.userData;
               if (data != null) {
                 return CircleAvatar(
-                  backgroundImage:
-                      MemoryImage(data.img!),
+                  backgroundImage: MemoryImage(data.img!),
                   radius: 35.r,
                 );
               } else {
@@ -155,7 +154,7 @@ class MyDrawer extends StatelessWidget {
         onTap: () async {
           final result = await showLogOutDialog(context);
           if (result) {
-            Get.delete<InformationManagementWithGetX>();
+            Get.delete<InformationController>();
             context.mounted
                 ? context.read<AuthBloc>().add(const AuthEventLogOut())
                 : null;
@@ -172,7 +171,6 @@ class DrawerItem extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.tileOption,
-
   }) : super(key: key);
 
   final IconData icon;

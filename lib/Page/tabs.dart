@@ -21,8 +21,7 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
   int _currentPage = 0;
   final List<String> _names = ['Home', 'Media'];
   final List<IconData> _icons = [Icons.home_rounded, Icons.all_inbox];
-  final InformationManagementWithGetX controllerFromGetX =
-      Get.put(InformationManagementWithGetX());
+  final InformationController controller = Get.put(InformationController());
   @override
   void initState() {
     super.initState();
@@ -38,8 +37,7 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<InformationManagementWithGetX>(
-      
+    return GetBuilder<InformationController>(
       builder: (controller) {
         if (controller.userData != null) {
           return Scaffold(
