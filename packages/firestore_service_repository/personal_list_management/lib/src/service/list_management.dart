@@ -24,7 +24,9 @@ class ListManagement {
 
   //**注意** firestore 再刪除doc時 不會刪除子集合
   //所以List被刪除時其內容還會存在
-  Future<void> deleteList() async {}
+  Future<void> deleteList() async {
+    
+  }
 
   Future<void> addEpisodeToList(String listTitle, Episode episode) async {
     final DocumentReference<Map<String, dynamic>> targetDoc =

@@ -1,5 +1,7 @@
 // use GetX
 
+import 'dart:convert';
+
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +23,7 @@ class InformationManagement {
     haveInfo();
   }
 
-  Future<Uint8List> _imgCompress(Uint8List img) async {
+  Future<String> _imgCompress(Uint8List img) async {
     try {
       final imgData = await FlutterImageCompress.compressWithList(
         img,
@@ -29,7 +31,8 @@ class InformationManagement {
         minWidth: 200,
         format: CompressFormat.png,
       );
-      return imgData;
+      final result = base64Encode(imgData);
+      return result;
     } on CompressError catch (e) {
       dev.log(e.message);
       throw ImageErrorException();
@@ -51,6 +54,7 @@ class InformationManagement {
   Future<void> addInfo({required String userName}) async {
     ByteData data =
         await rootBundle.load("assets/images/user_pic/default_user.png");
+
     final imgData = await _imgCompress(data.buffer.asUint8List());
 
     await _userDocs.set({

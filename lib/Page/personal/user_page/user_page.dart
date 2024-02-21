@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -39,7 +40,7 @@ class UserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // 獲取用戶email
     final userEmail = AuthService.firebase().currentUser!.email;
-    final Rx<Uint8List?> imgData = userController.userData!.img.obs;
+    final Rx<String?> imgData = userController.userData!.img.obs;
     return Scaffold(
       key: UniqueKey(),
       resizeToAvoidBottomInset: false,
@@ -105,7 +106,8 @@ class UserPage extends StatelessWidget {
                             Obx(() {
                               if (imgData.value != null) {
                                 return CircleAvatar(
-                                  backgroundImage: MemoryImage(imgData.value!),
+                                  backgroundImage:
+                                      MemoryImage(base64Decode(imgData.value!)),
                                   radius: 68.r,
                                 );
                               } else {
@@ -123,7 +125,8 @@ class UserPage extends StatelessWidget {
                                               await selectImage();
 
                                           if (result != null) {
-                                            imgData.value = result;
+                                            imgData.value =
+                                                base64Encode(result);
                                           }
                                         },
                                         style: OutlinedButton.styleFrom(

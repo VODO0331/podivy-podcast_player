@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:information_management_service/personal_information_management.dart';
@@ -60,7 +62,7 @@ Widget appBar(InformationController userController) {
                     final UserInfo? data = userController.userData;
                     if (data != null && data.img != null) {
                       return CircleAvatar(
-                        backgroundImage: MemoryImage(data.img!),
+                        backgroundImage: MemoryImage(base64Decode(data.img!)),
                         radius: 15.r,
                       );
                     } else {

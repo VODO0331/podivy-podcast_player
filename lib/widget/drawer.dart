@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -72,7 +74,7 @@ class MyDrawer extends StatelessWidget {
               final UserInfo? data = userController.userData;
               if (data != null) {
                 return CircleAvatar(
-                  backgroundImage: MemoryImage(data.img!),
+                  backgroundImage: MemoryImage(base64Decode(data.img!)),
                   radius: 35.r,
                 );
               } else {

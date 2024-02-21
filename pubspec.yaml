@@ -61,6 +61,9 @@ dependencies:
 
   information_management_service:
     path: packages/firestore_service_repository/personal_information_management
+
+  list_management_service:
+    path: packages/firestore_service_repository/personal_list_management
   
   
     
