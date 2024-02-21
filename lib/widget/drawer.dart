@@ -72,9 +72,10 @@ class MyDrawer extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Obx(() {
               final UserInfo? data = userController.userData;
-              if (data != null) {
+              final img = data?.img;
+              if (data != null && img != null) {
                 return CircleAvatar(
-                  backgroundImage: MemoryImage(base64Decode(data.img!)),
+                  backgroundImage: MemoryImage(base64Decode(img)),
                   radius: 35.r,
                 );
               } else {

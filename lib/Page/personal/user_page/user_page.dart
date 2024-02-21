@@ -28,8 +28,8 @@ class UserPage extends StatelessWidget {
     );
     if (image != null) {
       final Uint8List newImg =
-          Uint8List.fromList(await File(image.path).readAsBytes());
-      if (newImg != userController.userData!.img) {
+          (Uint8List.fromList(await File(image.path).readAsBytes()));
+      if (base64Encode(newImg) != userController.userData!.img) {
         return newImg;
       }
     }
@@ -194,7 +194,7 @@ class UserPage extends StatelessWidget {
                               }
                               if (userController.userData!.img !=
                                   imgData.value) {
-                                updates[1] = imgData.value;
+                                updates[1] = base64Decode(imgData.value!);
                               }
                               informationManagement.updateInfo(
                                 userName: updates[0],
