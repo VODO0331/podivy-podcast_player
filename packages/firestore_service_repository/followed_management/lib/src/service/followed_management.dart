@@ -23,7 +23,7 @@ class FollowedManagement {
     required String? podcastImg,
     required String? podcastName,
   }) async {
-    try {
+  
       await followed
           .doc(podcastId)
           .set({
@@ -32,22 +32,21 @@ class FollowedManagement {
             followingPodcastImg: podcastImg,
           })
           .then((value) => dev.log("Podcast added successfully!"))
-          .catchError((error) => dev.log(error));
-    } catch (_) {
-      throw CloudNotCreateException();
-    }
+          .catchError((error) {
+            dev.log(error);
+            throw CloudNotCreateException();
+          });
+    
   }
 
   Future<void> deleteFollowed({required String podcastId}) async {
-    try {
+
       await followed
           .doc(podcastId)
           .delete()
           .then((value) => dev.log("Podcast delete successfully!"))
-          .catchError((error) => dev.log(error));
-    } catch (_) {
-      throw CloudDeleteException();
-    }
+          .catchError((error){ dev.log(error);throw CloudDeleteException();});
+    
   }
 
   Future<void> updateFollowed() async {
@@ -70,12 +69,12 @@ class FollowedManagement {
 
   Stream<Iterable<Followed>> allFollowed() {
     try {
-  final allFollowed = followed
-      .snapshots()
-      .map((event) => event.docs.map((doc) => Followed.fromSnapshot(doc)));
-  return allFollowed;
-} catch (_) {
-  throw CloudNotGetException();
-}
+      final allFollowed = followed
+          .snapshots()
+          .map((event) => event.docs.map((doc) => Followed.fromSnapshot(doc)));
+      return allFollowed;
+    } catch (_) {
+      throw CloudNotGetException();
+    }
   }
 }

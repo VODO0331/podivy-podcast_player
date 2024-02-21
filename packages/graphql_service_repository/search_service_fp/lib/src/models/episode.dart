@@ -17,4 +17,5 @@ class Episode {
       required this.description,
       required this.airDate,
       this.podcast});
+
 }

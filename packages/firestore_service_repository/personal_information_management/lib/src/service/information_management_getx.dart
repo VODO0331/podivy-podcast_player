@@ -45,15 +45,6 @@ class InformationManagement {
     if (result == null || result.isEmpty) {
       await addInfo(userName: "Nobody");
     }
-    // else {
-    // String name = result[personalName];
-    // _userInfo.value = UserInfo(
-    //     userName: name.obs,
-    //     userImg:
-    //         (Uint8List.fromList((result[personalImg] as List).cast<int>()))
-    //             .obs);
-    // update([_userInfo.value]);
-    // }
   }
 
   //僅在初始化使用
