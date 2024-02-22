@@ -24,8 +24,9 @@ class ListManagement {
 
   //**注意** firestore 再刪除doc時 不會刪除子集合
   //所以List被刪除時其內容還會存在
-  Future<void> deleteList() async {
-    
+  Future<void> deleteList() async {}
+  Future<void> test() async {
+    await _lists.doc('test').set({listName: "testName"});
   }
 
   Future<void> addEpisodeToList(String listTitle, Episode episode) async {
@@ -52,11 +53,10 @@ class ListManagement {
   }
 
   Future<void> deleteEpisodeFromList(String listTitle, Episode episode) async {
-    final CollectionReference<Map<String, dynamic>> targetCollection =
-        _lists.doc(listTitle).collection('content');
-
-    await targetCollection
-        .doc(episode.id)
+    final DocumentReference<Map<String, dynamic>> targetDoc =
+        _lists.doc(listTitle).collection('content').doc(episode.id);
+    dev.log(episode.id);
+    await targetDoc
         .delete()
         .then((value) => dev.log("Episode delete successfully!"))
         .catchError((e) {

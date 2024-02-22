@@ -8,7 +8,8 @@ class MyBackGround extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints.expand(),
+      // padding: EdgeInsets.zero,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -39,10 +40,12 @@ class MyBackGround extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.topCenter,
-            child: Image.asset("assets/images/background/backGroundVine.png",
-                color: bkColor,
-                cacheHeight: 200,
-                cacheWidth: 450,),
+            child: Image.asset(
+              "assets/images/background/backGroundVine.png",
+              color: bkColor,
+              cacheHeight: 200,
+              cacheWidth: 450,
+            ),
           ),
           child
         ],

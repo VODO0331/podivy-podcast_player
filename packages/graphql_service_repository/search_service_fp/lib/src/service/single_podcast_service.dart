@@ -43,20 +43,21 @@ Podcaster? singlePodcastDataProcessing(
   Map? podcast,
   List? episodes,
 ) {
-  if (podcast == null ) return null;
-  
+  if (podcast == null) return null;
+
   try {
     List<Episode> episodeList = [];
     if (episodes != null) {
-      episodeList = episodes.map((episode) => Episode(
-          id: episode['id'],
-          title: episode['title'],
-          imageUrl: podcast['imageUrl'],
-          audioUrl: episode['audioUrl'],
-          description: episode['description'],
-          airDate: episode['airDate'],
-        )
-      ).toList();
+      episodeList = episodes
+          .map((episode) => Episode(
+                id: episode['id'],
+                title: episode['title'],
+                imageUrl: podcast['imageUrl'],
+                audioUrl: episode['audioUrl'],
+                description: episode['description'],
+                airDate: DateTime.parse(episode['airDate']),
+              ))
+          .toList();
     }
 
     final Podcaster podcaster = Podcaster(

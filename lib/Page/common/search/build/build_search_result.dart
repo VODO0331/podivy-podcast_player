@@ -74,6 +74,7 @@ class _SearchResults extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
+              snapshot.error.printInfo;
               return Text('snapshot Error:${snapshot.error}');
             }
             final Map? data = snapshot.data;
@@ -257,23 +258,23 @@ Widget _prototypeItemForEpisodeBuilder() {
         height: 60.h,
         width: 60.w,
         child: FadeInImage.assetNetwork(
-                placeholderCacheWidth: 50,
-                placeholderCacheHeight: 50,
-                imageCacheHeight: 100,
-                imageCacheWidth: 100,
-                fit: BoxFit.cover,
-                placeholderFit: BoxFit.cover,
-                placeholder: "assets/images/generic/search_loading.gif",
-                image: "episode.imageUrl",
-                imageErrorBuilder: (context, _, __) {
-                  return Image.asset(
-                    "assets/images/podcaster/defaultPodcaster.jpg",
-                    fit: BoxFit.cover,
-                    cacheHeight: 100,
-                    cacheWidth: 100,
-                  );
-                },
-              ),
+          placeholderCacheWidth: 50,
+          placeholderCacheHeight: 50,
+          imageCacheHeight: 100,
+          imageCacheWidth: 100,
+          fit: BoxFit.cover,
+          placeholderFit: BoxFit.cover,
+          placeholder: "assets/images/generic/search_loading.gif",
+          image: "episode.imageUrl",
+          imageErrorBuilder: (context, _, __) {
+            return Image.asset(
+              "assets/images/podcaster/defaultPodcaster.jpg",
+              fit: BoxFit.cover,
+              cacheHeight: 100,
+              cacheWidth: 100,
+            );
+          },
+        ),
       ),
       trailing: const Icon(Icons.more_vert),
       onTap: null,

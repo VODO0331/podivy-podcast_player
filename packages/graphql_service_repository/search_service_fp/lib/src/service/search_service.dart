@@ -33,7 +33,7 @@ Future<Object?> _getData({required SearchService searchService}) async {
         ? result.data!['episodes']['data']
         : null;
     return searchDataProcessing(podcasts, episodes);
-  } on Exception catch (e) {
+  } catch (e) {
     dev.log(e.toString());
     throw QueryResultException;
   }
@@ -58,7 +58,7 @@ Map<String, List<Object>?>? searchDataProcessing(
             imageUrl: episode['podcast']['imageUrl'],
             audioUrl: episode['audioUrl'],
             description: episode['description'],
-            airDate: episode['airDate'],
+            airDate: DateTime.parse(episode['airDate']),
             podcast: Podcaster(
               id: episode['podcast']['id'],
               title: episode['podcast']['title'],

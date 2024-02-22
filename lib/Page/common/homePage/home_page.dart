@@ -6,6 +6,7 @@ import 'package:information_management_service/personal_information_management.d
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 //節省token
 // import 'package:podivy/widget/carousel.dart';
+// import 'dart:developer' as dev show log;
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -59,10 +60,11 @@ Widget appBar(InformationController userController) {
                 child: GestureDetector(
                   onTap: () => Get.toNamed('/user'),
                   child: Obx(() {
-                    final UserInfo? data = userController.userData;
-                    if (data != null && data.img != null) {
+                    final UserInfo data = userController.userData;
+
+                    if (data.img != "") {
                       return CircleAvatar(
-                        backgroundImage: MemoryImage(base64Decode(data.img!)),
+                        backgroundImage: MemoryImage(base64Decode(data.img)),
                         radius: 15.r,
                       );
                     } else {

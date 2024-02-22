@@ -29,7 +29,7 @@ class UserPage extends StatelessWidget {
     if (image != null) {
       final Uint8List newImg =
           (Uint8List.fromList(await File(image.path).readAsBytes()));
-      if (base64Encode(newImg) != userController.userData!.img) {
+      if (base64Encode(newImg) != userController.userData.img) {
         return newImg;
       }
     }
@@ -40,7 +40,7 @@ class UserPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // 獲取用戶email
     final userEmail = AuthService.firebase().currentUser!.email;
-    final Rx<String?> imgData = userController.userData!.img.obs;
+    final Rx<String> imgData = userController.userData.img.obs;
     return Scaffold(
       key: UniqueKey(),
       resizeToAvoidBottomInset: false,
@@ -104,10 +104,10 @@ class UserPage extends StatelessWidget {
                           alignment: Alignment.center,
                           children: [
                             Obx(() {
-                              if (imgData.value != null) {
+                              if (imgData.value != "") {
                                 return CircleAvatar(
                                   backgroundImage:
-                                      MemoryImage(base64Decode(imgData.value!)),
+                                      MemoryImage(base64Decode(imgData.value)),
                                   radius: 68.r,
                                 );
                               } else {
@@ -156,7 +156,7 @@ class UserPage extends StatelessWidget {
                 // 顯示用戶名稱的ListTile
                 Obx(() {
                   _textEditingController.text =
-                      userController.userData!.userName.value;
+                      userController.userData.userName.value;
                   return _isEdit.value
                       ? TextField(
                           controller: _textEditingController,
@@ -167,7 +167,7 @@ class UserPage extends StatelessWidget {
                       : ListTile(
                           leading: const Icon(Icons.person),
                           title: Text(
-                            "名稱 :   ${userController.userData!.userName}",
+                            "名稱 :   ${userController.userData.userName}",
                             style: TextStyle(fontSize: ScreenUtil().setSp(15)),
                           ),
                         );
@@ -189,12 +189,12 @@ class UserPage extends StatelessWidget {
                               _isEdit.value = false;
                               final List<dynamic> updates = [null, null];
                               if (_textEditingController.text !=
-                                  userController.userData!.name) {
+                                  userController.userData.name) {
                                 updates[0] = _textEditingController.text;
                               }
-                              if (userController.userData!.img !=
+                              if (userController.userData.img !=
                                   imgData.value) {
-                                updates[1] = base64Decode(imgData.value!);
+                                updates[1] = base64Decode(imgData.value);
                               }
                               informationManagement.updateInfo(
                                 userName: updates[0],
@@ -206,9 +206,9 @@ class UserPage extends StatelessWidget {
                           TextButton(
                             onPressed: () async {
                               _textEditingController.text =
-                                  userController.userData!.userName.value;
+                                  userController.userData.userName.value;
                               imgData.value =
-                                  userController.userData!.userImg.value;
+                                  userController.userData.userImg.value;
                               _isEdit.value = false;
                             },
                             child: const Text("取消"),

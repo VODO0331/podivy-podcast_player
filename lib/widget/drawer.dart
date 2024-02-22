@@ -71,11 +71,11 @@ class MyDrawer extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Obx(() {
-              final UserInfo? data = userController.userData;
-              final img = data?.img;
-              if (data != null && img != null) {
+              final UserInfo data = userController.userData;
+
+              if (data.img != '') {
                 return CircleAvatar(
-                  backgroundImage: MemoryImage(base64Decode(img)),
+                  backgroundImage: MemoryImage(base64Decode(data.img)),
                   radius: 35.r,
                 );
               } else {
@@ -88,15 +88,15 @@ class MyDrawer extends StatelessWidget {
         SizedBox(
             width: 200.r,
             child: Obx(() {
-              if (userController.userData != null) {
-                return Text(
-                  userController.userData!.name,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                );
-              } else {
-                return const Text("loading...");
-              }
+              // if (userController.userData != null) {/
+              return Text(
+                userController.userData.name,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              );
+              // } else {
+              //   return const Text("loading...");
+              // }
             })),
         SizedBox(height: 12.h),
         Container(

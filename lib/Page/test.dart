@@ -1,8 +1,8 @@
-import 'dart:typed_data';
+// import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:list_management_service/personal_list_management.dart';
-import 'dart:developer' as dev show log;
+// import 'dart:developer' as dev show log;
 
 import 'package:search_service/search_service_repository.dart';
 
@@ -38,14 +38,22 @@ class _TestPageState extends State<TestPage> with TickerProviderStateMixin {
         key: sKey,
         body: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    listManagement.addEpisodeToList('testList', testEpisode);
-                  },
-                  child: const Text("text"),
-                ))));
+            child: Column(children: [
+              ElevatedButton(
+                onPressed: () async {
+                  await listManagement.addEpisodeToList(
+                      'testListName', testEpisode);
+                },
+                child: const Text("addEpisodeToList"),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  await listManagement.deleteEpisodeFromList(
+                      'testListName', testEpisode);
+                },
+                child: const Text("DeleteEpisodeFromList"),
+              )
+            ])));
   }
 }
 

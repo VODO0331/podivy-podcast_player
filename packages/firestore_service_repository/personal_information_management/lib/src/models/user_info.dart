@@ -11,7 +11,7 @@ class UserInfo {
     required this.userImg,
   });
   String get name => userName.value;
-  String? get img => userImg.value;
+  String get img => userImg.value;
   UserInfo.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> docs)
       : userName = (docs.data()![personalName] as String).obs,
         userImg = (docs.data()![personalImg] as String).obs;

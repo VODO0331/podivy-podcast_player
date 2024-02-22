@@ -39,25 +39,25 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return GetBuilder<InformationController>(
       builder: (controller) {
-        if (controller.userData != null) {
-          return Scaffold(
-            key: _scaffoldKey,
-            body: BottomBarPageTransition(
-              builder: (_, index) => _getBody(index),
-              currentIndex: _currentPage,
-              totalLength: totalPage,
-              transitionType: TransitionType.circular,
-              transitionDuration: const Duration(milliseconds: 500),
-              transitionCurve: Curves.easeInOut,
-            ),
-            bottomNavigationBar: _getBottomBar(),
-            drawer: const MyDrawer(),
-          );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+        // if (controller.userData != null) {
+        return Scaffold(
+          key: _scaffoldKey,
+          body: BottomBarPageTransition(
+            builder: (_, index) => _getBody(index),
+            currentIndex: _currentPage,
+            totalLength: totalPage,
+            transitionType: TransitionType.circular,
+            transitionDuration: const Duration(milliseconds: 500),
+            transitionCurve: Curves.easeInOut,
+          ),
+          bottomNavigationBar: _getBottomBar(),
+          drawer: const MyDrawer(),
+        );
+        // } else {
+        //   return const Center(
+        //     child: CircularProgressIndicator(),
+        // );
+        // }
       },
     );
   }
