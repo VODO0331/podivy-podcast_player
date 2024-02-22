@@ -1,6 +1,5 @@
-
 import 'package:podivy/Page/personal/followedPage/followed_page.dart';
-import 'package:podivy/Page/personal/list_page.dart';
+import 'package:podivy/Page/personal/media/list_page.dart';
 import 'package:podivy/Page/login/auth_middleware.dart';
 import 'package:podivy/Page/common/podcasterPage/podcaster_page.dart';
 import 'package:podivy/Page/common/search/page/search_page.dart';
@@ -35,7 +34,7 @@ class RouterPage {
     ),
     GetPage(
       name: "/user",
-      page: () =>  UserPage(),
+      page: () => UserPage(),
     ),
     GetPage(
       name: "/podcaster",
@@ -43,7 +42,7 @@ class RouterPage {
     ),
     GetPage(
       name: "/followed",
-      page: () =>const FollowedPage(),
+      page: () => const FollowedPage(),
     ),
   ];
 }
