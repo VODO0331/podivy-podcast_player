@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:podivy/Page/common/podcasterPage/build/build_episodes_section.dart';
+import 'package:podivy/Page/common/podcasterPage/build/build_episodes_list.dart';
 import 'package:podivy/Page/common/podcasterPage/build/build_profile_information.dart';
 import 'package:get/get.dart';
 import 'dart:developer' as dev show log;

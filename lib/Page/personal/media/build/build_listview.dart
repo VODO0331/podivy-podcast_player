@@ -1,0 +1,50 @@
+
+
+
+import 'package:flutter/material.dart';
+import 'package:list_management_service/personal_list_management.dart';
+
+typedef ListCallback = void Function(UserList list);
+
+class MyListView extends StatelessWidget {
+  final Iterable<UserList> lists;
+  final ListCallback onDelete;
+  final ListCallback onTap;
+  const MyListView(
+      {super.key,
+      required this.lists,
+      required this.onDelete,
+      required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: lists.length,
+      itemBuilder: (BuildContext context, int index) {
+        final list = lists.elementAt(index);
+        return ListTile(
+          title: Text(
+            list.listTitle,
+            overflow: TextOverflow.ellipsis,
+          ),
+          trailing: PopupMenuButton(
+            position: PopupMenuPosition.under,
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem(
+                  onTap: ()  {
+                     onDelete(list);
+                  },
+                  child: const Text("刪除"),
+                )
+              ];
+            },
+          ),
+          onTap: () {
+            onTap(list);
+          },
+        );
+      },
+    );
+  }
+}

@@ -1,5 +1,5 @@
 import 'package:podivy/Page/personal/followedPage/followed_page.dart';
-import 'package:podivy/Page/personal/media/list_page.dart';
+import 'package:podivy/Page/personal/media/Page/list_page.dart';
 import 'package:podivy/Page/login/auth_middleware.dart';
 import 'package:podivy/Page/common/podcasterPage/podcaster_page.dart';
 import 'package:podivy/Page/common/search/page/search_page.dart';

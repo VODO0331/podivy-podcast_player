@@ -15,28 +15,45 @@ class ListManagement {
   late final CollectionReference<Map<String, dynamic>> _lists;
   ListManagement() {
     _lists = _user.doc(_userId).collection("lists");
+    initialization();
   }
 
-  // //建立List 時 至少要有一個Episode
-  // static Future<void> addList(Episode episode, String listTitle) async {
-  //   final list = user.doc(_userId).collection("$listTitle(list)");
-  // }
+  Future<void> initialization() async {
+    await _user.doc(_userId).collection("lists").doc('TagList').set({listName: 'TagList'});
+    
+  }
+
 
   //**注意** firestore 再刪除doc時 不會刪除子集合
   //所以List被刪除時其內容還會存在
-  Future<void> deleteList() async {}
-  Future<void> test() async {
-    await _lists.doc('test').set({listName: "testName"});
+  Future<void> deleteList(UserList list) async {
+    await _lists
+        .doc(list.listTitle)
+        .collection('content')
+        .where(listName, isEqualTo: list.listTitle)
+        .get()
+        .then((value) async {
+      //刪除List content
+      for (var doc in value.docs) {
+        await _lists
+            .doc(list.listTitle)
+            .collection('content')
+            .doc(doc.id)
+            .delete();
+      }
+
+      await _lists.doc(list.listTitle).delete(); //刪除List
+    });
   }
 
-  Future<void> addEpisodeToList(String listTitle, Episode episode) async {
+  Future<void> addEpisodeToList(UserList list, Episode episode) async {
     final DocumentReference<Map<String, dynamic>> targetDoc =
-        _lists.doc(listTitle).collection('content').doc(episode.id);
-    await _lists.doc(listTitle).set({listName: listTitle});
+        _lists.doc(list.listTitle).collection('content').doc(episode.id);
+    await _lists.doc(list.listTitle).set({listName: list.listTitle});
     //新增Episode
     await targetDoc
         .set({
-          listName: listTitle,
+          listName: list.listTitle,
           episodeId: episode.id,
           podcasterId: episode.podcast!.id,
           episodeImg: episode.imageUrl,
@@ -52,9 +69,9 @@ class ListManagement {
         });
   }
 
-  Future<void> deleteEpisodeFromList(String listTitle, Episode episode) async {
+  Future<void> deleteEpisodeFromList(UserList list, Episode episode) async {
     final DocumentReference<Map<String, dynamic>> targetDoc =
-        _lists.doc(listTitle).collection('content').doc(episode.id);
+        _lists.doc(list.listTitle).collection('content').doc(episode.id);
     dev.log(episode.id);
     await targetDoc
         .delete()
@@ -65,16 +82,16 @@ class ListManagement {
     });
   }
 
-  Future<void> updateList(String oldListTitle, String newListTitle) async {
+  Future<void> updateList(UserList oldList, String newListTitle) async {
     final Map<Object, Object?> updates = <Object, Object?>{
       listName: newListTitle
     };
-    await _lists.doc(oldListTitle).update(updates);
+    await _lists.doc(oldList.listTitle).update(updates);
   }
 
-  Stream<Iterable<UserList>> readList() {
+  Stream<Iterable<UserList>> readAllList() {
     try {
-      return _lists
+      return _lists.where(listName, isNotEqualTo: 'TagList')
           .snapshots()
           .map((event) => event.docs.map((doc) => UserList.fromSnapshot(doc)));
     } catch (_) {
@@ -82,9 +99,10 @@ class ListManagement {
     }
   }
 
-  Stream<Iterable<Episode>> readListContent(String listTitle) {
+  Stream<Iterable<Episode>> readListContent(UserList list) {
     try {
-      return _lists.doc(listTitle).collection('content').snapshots().map(
+      dev.log(list.listTitle);
+      return _lists.doc(list.listTitle).collection('content').snapshots().map(
           (event) => event.docs.map((e) => Episode(
               id: e.data()[episodeId] as String,
               podcast: Podcaster(id: e.data()[podcasterId] as String),
@@ -92,7 +110,7 @@ class ListManagement {
               audioUrl: e.data()[episodeAudio] as String,
               imageUrl: e.data()[episodeImg] as String,
               description: e.data()[episodeDescription] as String,
-              airDate: e.data()[episodeDate] as DateTime)));
+              airDate: (e.data()[episodeDate].toDate()) as DateTime)));
     } catch (_) {
       throw CloudNotGetException();
     }

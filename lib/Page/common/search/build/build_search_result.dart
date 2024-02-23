@@ -1,7 +1,9 @@
-// searchContent(getPodcasts, getEpisodes)
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:podivy/Page/common/search/build/build_result_podcast.dart';
+import 'package:podivy/Page/common/search/build/build_result_episode.dart';
 import 'package:podivy/util/recommend_bt.dart';
 import 'package:search_service/search_service_repository.dart';
 
@@ -23,39 +25,6 @@ class SearchResult extends StatelessWidget {
   }
 }
 
-class _Recommendations extends StatefulWidget {
-  final String? keywords;
-  final SearchService searchService;
-  const _Recommendations(
-      {Key? key, required this.keywords, required this.searchService})
-      : super(key: key);
-
-  @override
-  State<_Recommendations> createState() => _RecommendationsState();
-}
-
-class _RecommendationsState extends State<_Recommendations> {
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 10,
-      runSpacing: 5,
-      children: [
-        RecommendButton(
-          text: 'News',
-          onPressed: () {
-            setState(() {
-              // widget.keywords = 'News';
-              // searchService = SearchServiceForCategories(keywords: 'News');
-            });
-          },
-        ),
-        const RecommendButton(text: '237923478'),
-        const RecommendButton(text: '123'),
-      ],
-    );
-  }
-}
 
 class _SearchResults extends StatelessWidget {
   final SearchService searchService;
@@ -99,13 +68,14 @@ class _SearchResults extends StatelessWidget {
                     style: TextStyle(fontSize: ScreenUtil().setSp(20)),
                   ),
                   const Divider(),
-                  Expanded(flex: 2, child: podcastBuilder(getPodcasts)),
+                  Expanded(
+                      flex: 2, child: PodcastBuilder(podcasts: getPodcasts)),
                   Text(
                     'Episodes',
                     style: TextStyle(fontSize: ScreenUtil().setSp(20)),
                   ),
                   const Divider(),
-                  Expanded(flex: 8, child: episodesBuilder(getEpisodes)),
+                  Expanded(flex: 8, child: EpisodesBuilder(episodes: getEpisodes,)),
                 ],
               ),
             );
@@ -120,164 +90,36 @@ class _SearchResults extends StatelessWidget {
   }
 }
 
-Widget podcastBuilder(List<Podcaster>? podcasts) {
-  if (podcasts == null) {
-    return const Center(
-      child: Text('找尋不到資料'),
-    );
-  } else {
-    return GridView.builder(
-      key: UniqueKey(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 1,
-      ),
-      // padding:const EdgeInsets.all(8).r,
-      itemCount: podcasts.length,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (BuildContext context, int index) {
-        Podcaster podcast = podcasts[index];
-        return GestureDetector(
-          onTap: () => Get.toNamed('/podcaster', arguments: podcast.id),
-          child: Flex(
-            direction: Axis.vertical,
-            children: [
-              Expanded(
-                flex: 8,
-                child: Center(
-                    child: SizedBox(
-                  height: 120.h,
-                  width: 120.w,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    child: FadeInImage.assetNetwork(
-                      placeholderCacheWidth: 50,
-                      placeholderCacheHeight: 50,
-                      imageCacheHeight: 250,
-                      imageCacheWidth: 250,
-                      fit: BoxFit.cover,
-                      placeholderFit: BoxFit.cover,
-                      placeholder: "assets/images/generic/search_loading.gif",
-                      image: podcast.imageUrl!,
-                      imageErrorBuilder: (context, _, __) {
-                        return Image.asset(
-                          "assets/images/podcaster/defaultPodcaster.jpg",
-                          fit: BoxFit.cover,
-                          cacheHeight: 150,
-                          cacheWidth: 150,
-                        );
-                      },
-                    ),
-                  ),
-                )),
-              ),
-              Expanded(
-                  flex: 2,
-                  child: SizedBox(
-                    width: 120.w,
-                    child: Text(
-                      podcast.title ?? 'error',
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                    ),
-                  )),
-            ],
-          ),
-        );
-      },
-    );
-  }
+class _Recommendations extends StatefulWidget {
+  final String? keywords;
+  final SearchService searchService;
+  const _Recommendations(
+      {Key? key, required this.keywords, required this.searchService})
+      : super(key: key);
+
+  @override
+  State<_Recommendations> createState() => _RecommendationsState();
 }
 
-Widget episodesBuilder(
-  List<Episode>? episodes,
-) {
-  if (episodes == null) {
-    return const Center(
-      child: Text('找尋不到資料'),
-    );
-  } else {
-    return ListView.builder(
-      key: UniqueKey(),
-      prototypeItem: _prototypeItemForEpisodeBuilder(),
-      itemCount: episodes.length,
-      itemBuilder: (BuildContext context, int index) {
-        Episode episode = episodes[index];
-
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8).h,
-          child: ListTile(
-            title: Text(
-              episode.title,
-              overflow: TextOverflow.ellipsis,
-            ),
-            leading: SizedBox(
-              height: 60.h,
-              width: 60.w,
-              child: FadeInImage.assetNetwork(
-                placeholderCacheWidth: 50,
-                placeholderCacheHeight: 50,
-                imageCacheHeight: 130,
-                imageCacheWidth: 130,
-                fit: BoxFit.cover,
-                placeholderFit: BoxFit.cover,
-                placeholder: "assets/images/generic/search_loading.gif",
-                image: episode.imageUrl,
-                imageErrorBuilder: (context, _, __) {
-                  return Image.asset(
-                    "assets/images/podcaster/defaultPodcaster.jpg",
-                    fit: BoxFit.cover,
-                    cacheHeight: 100,
-                    cacheWidth: 100,
-                  );
-                },
-              ),
-            ),
-            trailing: const Icon(Icons.more_vert),
-            onTap: () {
-              Get.toNamed('/player', arguments: {
-                'episodes': episodes,
-                'index': index,
-              });
-            },
-          ),
-        );
-      },
-    );
-  }
-}
-
-Widget _prototypeItemForEpisodeBuilder() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8).h,
-    child: ListTile(
-      title: const Text(
-        "episode.title",
-        overflow: TextOverflow.ellipsis,
-      ),
-      leading: SizedBox(
-        height: 60.h,
-        width: 60.w,
-        child: FadeInImage.assetNetwork(
-          placeholderCacheWidth: 50,
-          placeholderCacheHeight: 50,
-          imageCacheHeight: 100,
-          imageCacheWidth: 100,
-          fit: BoxFit.cover,
-          placeholderFit: BoxFit.cover,
-          placeholder: "assets/images/generic/search_loading.gif",
-          image: "episode.imageUrl",
-          imageErrorBuilder: (context, _, __) {
-            return Image.asset(
-              "assets/images/podcaster/defaultPodcaster.jpg",
-              fit: BoxFit.cover,
-              cacheHeight: 100,
-              cacheWidth: 100,
-            );
+class _RecommendationsState extends State<_Recommendations> {
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 10,
+      runSpacing: 5,
+      children: [
+        RecommendButton(
+          text: 'News',
+          onPressed: () {
+            setState(() {
+              // widget.keywords = 'News';
+              // searchService = SearchServiceForCategories(keywords: 'News');
+            });
           },
         ),
-      ),
-      trailing: const Icon(Icons.more_vert),
-      onTap: null,
-    ),
-  );
+        const RecommendButton(text: '237923478'),
+        const RecommendButton(text: '123'),
+      ],
+    );
+  }
 }

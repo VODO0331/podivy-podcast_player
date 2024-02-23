@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:information_management_service/personal_information_management.dart';
+import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/common/homePage/home_page.dart';
 import 'package:podivy/widget/background.dart';
-import 'package:podivy/Page/personal/media/media_page.dart';
+import 'package:podivy/Page/personal/media/Page/media_page.dart';
 import 'package:podivy/widget/drawer.dart';
 
 class Tabs extends StatefulWidget {
@@ -20,26 +21,20 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
   // late final InformationManagement _userController;
   int _currentPage = 0;
   final List<String> _names = ['Home', 'Media'];
+  final List<Widget> _body =[const HomePage() , const MediaPage()];
   final List<IconData> _icons = [Icons.home_rounded, Icons.all_inbox];
   final InformationController controller = Get.put(InformationController());
+  final ListManagement listManagement = Get.put(ListManagement());
   @override
   void initState() {
     super.initState();
-    // _userController = InformationManagement();
-    // _userController.haveInfo(); // 只有在首次登錄後執行一次
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   // _userController;
-  // }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<InformationController>(
       builder: (controller) {
-        // if (controller.userData != null) {
         return Scaffold(
           key: _scaffoldKey,
           body: BottomBarPageTransition(
@@ -53,11 +48,6 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
           bottomNavigationBar: _getBottomBar(),
           drawer: const MyDrawer(),
         );
-        // } else {
-        //   return const Center(
-        //     child: CircularProgressIndicator(),
-        // );
-        // }
       },
     );
   }
@@ -93,7 +83,7 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
         }
       },
       child: MyBackGround(
-          child: index == 0 ? const HomePage() : const MediaPage()),
+          child: _body[index]),
     );
   }
 }
