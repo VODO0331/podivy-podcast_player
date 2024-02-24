@@ -4,7 +4,7 @@ import '../service/constants.dart';
 class UserList {
   final String listTitle;
 
-  UserList({
+  UserList( {
     required this.listTitle,
   });
 

@@ -56,6 +56,7 @@ class ListManagement {
           listName: list.listTitle,
           episodeId: episode.id,
           podcasterId: episode.podcast!.id,
+          podcasterName: episode.podcast!.title,
           episodeImg: episode.imageUrl,
           episodeName: episode.title,
           episodeAudio: episode.audioUrl,
@@ -105,12 +106,14 @@ class ListManagement {
       return _lists.doc(list.listTitle).collection('content').snapshots().map(
           (event) => event.docs.map((e) => Episode(
               id: e.data()[episodeId] as String,
-              podcast: Podcaster(id: e.data()[podcasterId] as String),
+              podcast: Podcaster(id: e.data()[podcasterId] as String,
+              title: e.data()[podcasterName]as String),
               title: e.data()[episodeName] as String,
               audioUrl: e.data()[episodeAudio] as String,
               imageUrl: e.data()[episodeImg] as String,
               description: e.data()[episodeDescription] as String,
-              airDate: (e.data()[episodeDate].toDate()) as DateTime)));
+              airDate: (e.data()[episodeDate].toDate()) as DateTime,
+              )));
     } catch (_) {
       throw CloudNotGetException();
     }

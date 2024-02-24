@@ -1,6 +1,7 @@
 const String listName = "list_title";
 const String episodeId = "episode_id";
 const String podcasterId = "podcasterID";
+const String podcasterName = "podcastTitle";
 const String episodeImg = "episode_url";
 const String episodeName = "episode_title";
 const String episodeAudio = "episode_Audio";

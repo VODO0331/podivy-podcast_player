@@ -7,11 +7,12 @@ import 'dart:developer' as dev show log;
 
 import 'package:search_service/search_service_repository.dart';
 
+typedef ImgCallback = String? Function(String? newImageUrl);
 class PlayerControl extends StatefulWidget {
   final List<Episode> getEpisodeList;
   final Podcaster? podcasterData;
   final int getIndex;
-  final void Function(String?) onParameterChanged;
+  final ImgCallback onParameterChanged;
 
   const PlayerControl({
     super.key,
@@ -34,7 +35,7 @@ class _PlayerControlState extends State<PlayerControl> {
   double progress = 0.0;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
-  late  AudioPlayer _audioPlayer;
+  late AudioPlayer _audioPlayer;
 
   @override
   void initState() {
@@ -44,8 +45,8 @@ class _PlayerControlState extends State<PlayerControl> {
     getEpisodeData = widget.getEpisodeList[currentIndex];
     getUrl = getEpisodeData.audioUrl;
 
-    currentImageUrl =
-        getEpisodeData.podcast?.imageUrl ?? widget.podcasterData!.imageUrl;
+    currentImageUrl = widget.podcasterData?.imageUrl ?? getEpisodeData.imageUrl;
+
     Future.delayed(Duration.zero, () {
       setAudio(getUrl);
     });
@@ -171,7 +172,7 @@ class _PlayerControlState extends State<PlayerControl> {
         const SizedBox(width: 20),
         IconButton(
           icon: const Icon(Icons.replay_10),
-          onPressed: () =>  _rewind(),
+          onPressed: () => _rewind(),
         ),
         const SizedBox(width: 20),
         IconButton(
@@ -187,9 +188,11 @@ class _PlayerControlState extends State<PlayerControl> {
         const SizedBox(width: 20),
         IconButton(
             icon: const Icon(Icons.skip_next),
-            onPressed: currentIndex == widget.getEpisodeList.length - 1
-                ? null
-                : _playNextEpisode),
+            onPressed: () {
+              if (currentIndex != widget.getEpisodeList.length - 1) {
+                _playNextEpisode();
+              }
+            }),
       ],
     );
   }
@@ -220,17 +223,19 @@ class _PlayerControlState extends State<PlayerControl> {
 
   Future<void> _playEpisode(int index) async {
     setState(() {
+      dev.log(currentImageUrl ?? "null");
       currentIndex = index; // 更新 currentIndex
       getEpisodeData = widget.getEpisodeList[currentIndex];
       getUrl = getEpisodeData.audioUrl;
       isPlaying = false;
+      
     });
     //如果EpisodeList 為隨機EpisodeList(e.g. 搜尋出來的EpisodeList,個人List)
-    currentImageUrl = getEpisodeData.podcast?.imageUrl;
-    if (getEpisodeData.podcast?.imageUrl != null) {
+    currentImageUrl = getEpisodeData.imageUrl;
+    if (currentImageUrl != null) {
       widget.onParameterChanged(currentImageUrl);
     }
-
+  dev.log(currentImageUrl ?? "null");
     await setAudio(getUrl);
     await _audioPlayer.resume();
   }

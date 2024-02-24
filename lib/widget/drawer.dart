@@ -4,6 +4,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:information_management_service/personal_information_management.dart';
+import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/dialogs/logout_dialog.dart';
 
@@ -158,6 +159,7 @@ class MyDrawer extends StatelessWidget {
           final result = await showLogOutDialog(context);
           if (result) {
             Get.delete<InformationController>();
+            Get.delete<ListManagement>();
             context.mounted
                 ? context.read<AuthBloc>().add(const AuthEventLogOut())
                 : null;

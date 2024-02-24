@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:podivy/util/list_option.dart';
 import 'package:search_service/search_service_repository.dart';
 
 class EpisodesSection extends StatelessWidget {
@@ -30,7 +31,7 @@ class EpisodesSection extends StatelessWidget {
                 Color.fromARGB(124, 44, 39, 29),
                 Color.fromARGB(221, 44, 39, 29),
               ],
-              stops: [0.4,0.7, 1],
+              stops: [0.4, 0.7, 1],
             ),
           ),
           child: Padding(
@@ -82,8 +83,6 @@ class EpisodesSection extends StatelessWidget {
   }
 }
 
-
-
 Widget _buildEpisodesList(
   List<Episode> getEpisodes,
   Podcaster podcasterDate,
@@ -104,7 +103,28 @@ Widget _buildEpisodesList(
               getEpisode.title,
               overflow: TextOverflow.ellipsis,
             ),
-            trailing: const Icon(Icons.more_vert),
+            trailing: PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    child: const Text("添加到清單"),
+                    onTap: () async {
+                      final newResult = Episode(
+                          id: getEpisode.id,
+                          title: getEpisode.title,
+                          audioUrl: getEpisode.audioUrl,
+                          imageUrl: getEpisode.imageUrl,
+                          description: getEpisode.description,
+                          airDate: getEpisode.airDate,
+                          podcast: Podcaster(
+                              id: podcasterDate.id,
+                              title: podcasterDate.title));
+                      await listDialog(context, newResult);
+                    },
+                  ),
+                ];
+              },
+            ),
             onTap: () {
               Get.toNamed("/player", arguments: {
                 'podcaster': podcasterDate,

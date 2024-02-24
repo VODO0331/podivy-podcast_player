@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:list_management_service/personal_list_management.dart';
@@ -49,7 +50,10 @@ class MediaPage extends StatelessWidget {
                                 await listManagement.deleteList(list);
                               },
                               onTap: (list) {
-                                Get.toNamed('/ListPage', arguments: list);
+                                Get.toNamed('/ListPage', arguments: {
+                                  "list":list,
+                                  "icon": Icons.list,
+                                });
                               },
                             );
                           } else {
@@ -87,7 +91,10 @@ Widget _defaultOption() {
                 side: BorderSide.none, // 取消边框
               ),
               onPressed: () {
-                Get.toNamed('/ListPage', arguments: tagList);
+                Get.toNamed('/ListPage', arguments: {
+                  "list":tagList,
+                  "icon": Icons.bookmark_border_outlined,
+                });
               },
               icon: Icon(
                 Icons.bookmark_border_outlined,
