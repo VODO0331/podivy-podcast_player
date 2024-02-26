@@ -174,11 +174,13 @@ Future addListDialog(BuildContext context, Episode episode) async {
           TextButton(
             child: const Text('添加'),
             onPressed: () async {
-              // ignore: unused_local_variable
               UserList userList =
                   UserList(listTitle: textEditingController.text);
+              textEditingController.text = "";
               await listManagement.addEpisodeToList(userList, episode);
               Get.back();
+              
+
             },
           ),
         ],

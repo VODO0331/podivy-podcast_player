@@ -3,7 +3,7 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/personal/media/build/enum_sort.dart';
 import 'package:search_service/search_service_repository.dart' show Episode;
 
-typedef EpisodeCallBack = void Function(Episode episode );
+typedef EpisodeCallBack = void Function(Episode episode);
 typedef PlayerCallBack = void Function(List<Episode> episodes, int index);
 
 class ListBuilder extends StatelessWidget {
@@ -20,56 +20,54 @@ class ListBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final resultOfSort = sortOfEpisode(sort, episodes);
+    final resultOfSort = sortOfEpisode(sort, episodes);
     return ListView.builder(
       padding: EdgeInsets.zero,
       prototypeItem: prototypeItem(),
       itemCount: episodes.length,
       itemBuilder: (BuildContext context, int index) {
-       
         final episode = resultOfSort.elementAt(index);
         return Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10).h,
-              child: ListTile(
-                title: Text(
-                  episode.title,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                leading: SizedBox(
-                    height: 50.r,
-                    width: 50.r,
-                    child: FadeInImage.assetNetwork(
-                      fit: BoxFit.cover,
-                      placeholder:
-                          'assets/images/podcaster/defaultPodcaster.jpg',
-                      image: episode.imageUrl,
-                      imageErrorBuilder: (context, _, __) {
-                        return Image.asset(
-                          'assets/images/podcaster/defaultPodcaster.jpg',
-                          fit: BoxFit.cover,
-                        );
-                      },
-                    )),
-                trailing: PopupMenuButton(
-                  position: PopupMenuPosition.under,
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                        onTap: () {
-                          onDelete(episode);
-                        },
-                        child: const Text("刪除"),
-                      )
-                    ];
+                padding: const EdgeInsets.symmetric(vertical: 10).h,
+                child: Dismissible(
+                  key: Key(episode.title),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    color: Colors.red,
+                    padding: const EdgeInsets.only(right: 40).r,
+                    alignment: Alignment.centerRight,
+                    child: const Icon(Icons.delete_outline_outlined),
+                  ),
+                  onDismissed: (direction) {
+                    onDelete(episode);
                   },
-                ),
-                onTap: () {
-                  onTap(episodes.toList(), index);
-                },
-              ),
-            )
+                  child: ListTile(
+                    title: Text(
+                      episode.title,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    leading: SizedBox(
+                        height: 50.r,
+                        width: 50.r,
+                        child: FadeInImage.assetNetwork(
+                          fit: BoxFit.cover,
+                          placeholder:
+                              'assets/images/podcaster/defaultPodcaster.jpg',
+                          image: episode.imageUrl,
+                          imageErrorBuilder: (context, _, __) {
+                            return Image.asset(
+                              'assets/images/podcaster/defaultPodcaster.jpg',
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        )),
+                    onTap: () {
+                      onTap(episodes.toList(), index);
+                    },
+                  ),
+                ))
           ],
         );
       },

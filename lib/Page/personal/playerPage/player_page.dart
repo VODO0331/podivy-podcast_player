@@ -15,14 +15,16 @@ class _PlayerPageState extends State<PlayerPage> {
   final List<Episode> getEpisodeList = Get.arguments['episodes'];
   final Podcaster? podcasterData = Get.arguments['podcaster'];
   final int getIndex = Get.arguments['index'];
+  
   late Rx<String?> imageUrl;
-
+  
   @override
   void initState() {
     super.initState();
 
     final Episode currentEpisodeData = getEpisodeList[getIndex];
     imageUrl = (podcasterData?.imageUrl ?? currentEpisodeData.imageUrl).obs;
+    
   }
 
   @override

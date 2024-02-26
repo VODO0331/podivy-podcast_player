@@ -19,10 +19,36 @@ class ListManagement {
   }
 
   Future<void> initialization() async {
-    await _user.doc(_userId).collection("lists").doc('TagList').set({listName: 'TagList'});
-    
+    await _user
+        .doc(_userId)
+        .collection("lists")
+        .doc('TagList')
+        .set({listName: 'TagList'});
+    await _user
+        .doc(_userId)
+        .collection("lists")
+        .doc('History')
+        .set({listName: 'History'});
   }
 
+  Future<void> addListToHistory(Episode episode) async {
+    final historyList = _user
+        .doc(_userId)
+        .collection("lists")
+        .doc('History')
+        .collection('content');
+    final number = await historyList.count().get().then((value) => value.count);
+    //限制數量
+    if (number != null && number >= 10) {
+      final data = await historyList
+          .orderBy('createAt', descending: false)
+          .limit(1)
+          .get();
+      final oldestDoc = data.docs.first;
+      await historyList.doc(oldestDoc.id).delete();
+    }
+    await addEpisodeToList(UserList(listTitle: 'History'), episode);
+  }
 
   //**注意** firestore 再刪除doc時 不會刪除子集合
   //所以List被刪除時其內容還會存在
@@ -62,6 +88,7 @@ class ListManagement {
           episodeAudio: episode.audioUrl,
           episodeDescription: episode.description,
           episodeDate: episode.airDate,
+          "createAt": Timestamp.now(),
         })
         .then((value) => dev.log("Episode added successfully!"))
         .catchError((e) {
@@ -92,7 +119,12 @@ class ListManagement {
 
   Stream<Iterable<UserList>> readAllList() {
     try {
-      return _lists.where(listName, isNotEqualTo: 'TagList')
+      return _lists
+          .where(
+            listName,
+            whereNotIn: ['TagList', 'History'],
+          )
+          // .where(listName, isNotEqualTo: 'History')
           .snapshots()
           .map((event) => event.docs.map((doc) => UserList.fromSnapshot(doc)));
     } catch (_) {
@@ -102,17 +134,21 @@ class ListManagement {
 
   Stream<Iterable<Episode>> readListContent(UserList list) {
     try {
-      dev.log(list.listTitle);
-      return _lists.doc(list.listTitle).collection('content').snapshots().map(
-          (event) => event.docs.map((e) => Episode(
-              id: e.data()[episodeId] as String,
-              podcast: Podcaster(id: e.data()[podcasterId] as String,
-              title: e.data()[podcasterName]as String),
-              title: e.data()[episodeName] as String,
-              audioUrl: e.data()[episodeAudio] as String,
-              imageUrl: e.data()[episodeImg] as String,
-              description: e.data()[episodeDescription] as String,
-              airDate: (e.data()[episodeDate].toDate()) as DateTime,
+      return _lists
+          .doc(list.listTitle)
+          .collection('content')
+          .orderBy('createAt', descending: true)
+          .snapshots()
+          .map((event) => event.docs.map((e) => Episode(
+                id: e.data()[episodeId] as String,
+                podcast: Podcaster(
+                    id: e.data()[podcasterId] as String,
+                    title: e.data()[podcasterName] as String),
+                title: e.data()[episodeName] as String,
+                audioUrl: e.data()[episodeAudio] as String,
+                imageUrl: e.data()[episodeImg] as String,
+                description: e.data()[episodeDescription] as String,
+                airDate: (e.data()[episodeDate].toDate()) as DateTime,
               )));
     } catch (_) {
       throw CloudNotGetException();

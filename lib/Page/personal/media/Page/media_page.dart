@@ -73,7 +73,7 @@ class MediaPage extends StatelessWidget {
 }
 
 Widget _defaultOption() {
-  final UserList tagList = Get.put(UserList(listTitle: "TagList"));
+
   return SizedBox(
     height: 180.h,
     child: Card(
@@ -92,7 +92,7 @@ Widget _defaultOption() {
               ),
               onPressed: () {
                 Get.toNamed('/ListPage', arguments: {
-                  "list":tagList,
+                  "list":UserList(listTitle: "TagList"),
                   "icon": Icons.bookmark_border_outlined,
                 });
               },
@@ -119,7 +119,10 @@ Widget _defaultOption() {
                 side: BorderSide.none, // 取消边框
               ),
               onPressed: () {
-                Get.toNamed('/test');
+                Get.toNamed('/ListPage', arguments: {
+                  "list":UserList(listTitle: "History"),
+                  "icon": Icons.history,
+                });
               },
               icon: Icon(
                 Icons.history_rounded,

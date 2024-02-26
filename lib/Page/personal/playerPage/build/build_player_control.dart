@@ -1,5 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/dialogs/cannot_play.dart';
 import 'package:podivy/util/dialogs/description_dialog.dart';
@@ -36,13 +38,15 @@ class _PlayerControlState extends State<PlayerControl> {
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
   late AudioPlayer _audioPlayer;
-
+  final ListManagement listManagement = Get.find();
+  
   @override
   void initState() {
     super.initState();
     _audioPlayer = AudioPlayer();
     currentIndex = widget.getIndex;
     getEpisodeData = widget.getEpisodeList[currentIndex];
+   
     getUrl = getEpisodeData.audioUrl;
 
     currentImageUrl = widget.podcasterData?.imageUrl ?? getEpisodeData.imageUrl;
@@ -213,6 +217,7 @@ class _PlayerControlState extends State<PlayerControl> {
     try {
       _audioPlayer.setReleaseMode(ReleaseMode.stop);
       await _audioPlayer.play(UrlSource(url));
+       listManagement.addListToHistory(getEpisodeData);
     } catch (e) {
       context.mounted
           ? await showPlayErrorDialog(context, '音訊錯誤，請收聽其他節目')
@@ -235,7 +240,6 @@ class _PlayerControlState extends State<PlayerControl> {
     if (currentImageUrl != null) {
       widget.onParameterChanged(currentImageUrl);
     }
-  dev.log(currentImageUrl ?? "null");
     await setAudio(getUrl);
     await _audioPlayer.resume();
   }
