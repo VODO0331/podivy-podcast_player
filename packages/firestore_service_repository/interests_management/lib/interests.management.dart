@@ -1,0 +1,1 @@
+library interests_management;

@@ -243,8 +243,28 @@ Widget _buildUserAvatar(String imageUrl, double size, double opacity) {
       child: Padding(
         padding: const EdgeInsets.only(right: 20).r,
         child: CircleAvatar(
-          backgroundImage: NetworkImage(imageUrl),
           radius: size,
+          backgroundColor: Colors.transparent,
+          child: ClipOval(
+            child: FadeInImage.assetNetwork(
+              placeholderCacheWidth: 90,
+              placeholderCacheHeight: 90,
+              imageCacheHeight: 160,
+              imageCacheWidth: 160,
+              fit: BoxFit.cover,
+              placeholderFit: BoxFit.cover,
+              placeholder: "assets/images/generic/search_loading.gif",
+              image: imageUrl,
+              imageErrorBuilder: (context, _, __) {
+                return Image.asset(
+                  "assets/images/podcaster/defaultPodcaster.jpg",
+                  fit: BoxFit.cover,
+                  cacheHeight: 100,
+                  cacheWidth: 100,
+                );
+              },
+            ),
+          ),
         ),
       ),
     ),

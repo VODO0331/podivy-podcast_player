@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:information_management_service/personal_information_management.dart';
+import 'package:information_management_service/information_management_service.dart';
 
 class InformationController extends GetxController {
   final Rx<UserInfo> _userInfo = UserInfo.forDefault().obs;

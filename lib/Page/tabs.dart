@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:information_management_service/personal_information_management.dart';
+import 'package:information_management_service/information_management_service.dart';
 import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/common/homePage/home_page.dart';
@@ -21,7 +21,7 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
   // late final InformationManagement _userController;
   int _currentPage = 0;
   final List<String> _names = ['Home', 'Media'];
-  final List<Widget> _body =[const HomePage() , const MediaPage()];
+  final List<Widget> _body = [const HomePage(), const MediaPage()];
   final List<IconData> _icons = [Icons.home_rounded, Icons.all_inbox];
   final InformationController controller = Get.put(InformationController());
   final ListManagement listManagement = Get.put(ListManagement());
@@ -29,7 +29,6 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
   void initState() {
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +81,7 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
           _scaffoldKey.currentState?.openDrawer();
         }
       },
-      child: MyBackGround(
-          child: _body[index]),
+      child: MyBackGround(child: _body[index]),
     );
   }
 }

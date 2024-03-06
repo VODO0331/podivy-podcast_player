@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:information_management_service/personal_information_management.dart';
+import 'package:information_management_service/information_management_service.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 //節省token
 // import 'package:podivy/widget/carousel.dart';

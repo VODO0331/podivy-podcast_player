@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:podivy/Page/personal/media/build/build_listview.dart';
+import 'package:podivy/Page/personal/media/build/build_listView.dart';
 import 'package:podivy/widget/background.dart';
 
 class MediaPage extends StatelessWidget {
@@ -51,7 +50,7 @@ class MediaPage extends StatelessWidget {
                               },
                               onTap: (list) {
                                 Get.toNamed('/ListPage', arguments: {
-                                  "list":list,
+                                  "list": list,
                                   "icon": Icons.list,
                                 });
                               },
@@ -73,7 +72,6 @@ class MediaPage extends StatelessWidget {
 }
 
 Widget _defaultOption() {
-
   return SizedBox(
     height: 180.h,
     child: Card(
@@ -92,7 +90,7 @@ Widget _defaultOption() {
               ),
               onPressed: () {
                 Get.toNamed('/ListPage', arguments: {
-                  "list":UserList(listTitle: "TagList"),
+                  "list": UserList(listTitle: "TagList"),
                   "icon": Icons.bookmark_border_outlined,
                 });
               },
@@ -120,7 +118,7 @@ Widget _defaultOption() {
               ),
               onPressed: () {
                 Get.toNamed('/ListPage', arguments: {
-                  "list":UserList(listTitle: "History"),
+                  "list": UserList(listTitle: "History"),
                   "icon": Icons.history,
                 });
               },
