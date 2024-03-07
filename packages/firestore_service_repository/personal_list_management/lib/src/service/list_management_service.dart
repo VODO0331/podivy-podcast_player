@@ -19,16 +19,20 @@ class ListManagement {
   }
 
   Future<void> initialization() async {
-    await _user
-        .doc(_userId)
-        .collection("lists")
-        .doc('TagList')
-        .set({listName: 'TagList'});
-    await _user
-        .doc(_userId)
-        .collection("lists")
-        .doc('History')
-        .set({listName: 'History'});
+    if (await _lists.doc("TagList").get().then((value) => !value.exists)) {
+      await _user
+          .doc(_userId)
+          .collection("lists")
+          .doc('TagList')
+          .set({listName: 'TagList'});
+    }
+    if (await _lists.doc("History").get().then((value) => !value.exists)) {
+      await _user
+          .doc(_userId)
+          .collection("lists")
+          .doc('History')
+          .set({listName: 'History'});
+    }
   }
 
   Future<void> addListToHistory(Episode episode) async {
