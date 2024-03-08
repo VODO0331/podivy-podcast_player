@@ -26,7 +26,7 @@ class MyDrawer extends StatelessWidget {
                 _buildUserProfile(userController),
                 SizedBox(height: 30.h),
                 _buildDrawerItems(),
-                Expanded(child: Container()),
+                const Expanded(child: SizedBox()),
                 _buildLogoutButton(context),
                 _buildDivider(),
               ],

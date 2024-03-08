@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:nil/nil.dart';
 import 'package:podivy/loading/loading_screen_controller.dart';
 class LoadingScreen {
   static final LoadingScreen _shared = LoadingScreen._sharedInstance();
@@ -79,7 +80,7 @@ class LoadingScreen {
                           // style: const TextStyle(color: Colors.black),
                         );
                       } else {
-                        return Container();
+                        return nil;
                       }
                     },
                   )

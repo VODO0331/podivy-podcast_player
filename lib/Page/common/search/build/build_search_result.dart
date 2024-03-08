@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:podivy/Page/common/search/build/build_HeaderDelegate.dart';
 import 'package:podivy/Page/common/search/build/build_result_podcast.dart';
 import 'package:podivy/Page/common/search/build/build_result_episode.dart';
 import 'package:podivy/util/recommend_bt.dart';
@@ -25,7 +25,6 @@ class SearchResult extends StatelessWidget {
   }
 }
 
-
 class _SearchResults extends StatelessWidget {
   final SearchService searchService;
 
@@ -34,58 +33,44 @@ class _SearchResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double appBarHeight = AppBar().preferredSize.height;
-    double screenHeight = ScreenUtil().screenHeight - appBarHeight;
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: FutureBuilder(
-        future: getSearchData(searchService),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              snapshot.error.printInfo;
-              return Text('snapshot Error:${snapshot.error}');
-            }
-            final Map? data = snapshot.data;
-            if (data == null) {
-              return Center(
-                child: Text(
-                  '搜尋不到相關資料',
-                  style: TextStyle(fontSize: ScreenUtil().setSp(14)),
-                ),
-              );
-            }
-            List<Podcaster>? getPodcasts = data['podcastList'];
-            List<Episode>? getEpisodes = data['episodeList'];
-
-            return SizedBox(
-              height: screenHeight,
-              child: Flex(
-                direction: Axis.vertical,
-                children: [
-                  Text(
-                    'Podcast',
-                    style: TextStyle(fontSize: ScreenUtil().setSp(20)),
-                  ),
-                  const Divider(),
-                  Expanded(
-                      flex: 2, child: PodcastBuilder(podcasts: getPodcasts)),
-                  Text(
-                    'Episodes',
-                    style: TextStyle(fontSize: ScreenUtil().setSp(20)),
-                  ),
-                  const Divider(),
-                  Expanded(flex: 8, child: EpisodesBuilder(episodes: getEpisodes,)),
-                ],
+    return FutureBuilder(
+      future: getSearchData(searchService),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            snapshot.error.printInfo;
+            return Text('snapshot Error:${snapshot.error}');
+          }
+          final Map? data = snapshot.data;
+          if (data == null) {
+            return Center(
+              child: Text(
+                '搜尋不到相關資料',
+                style: TextStyle(fontSize: ScreenUtil().setSp(14)),
               ),
             );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
           }
-        },
-      ),
+          List<Podcaster>? getPodcasts = data['podcastList'];
+          List<Episode>? getEpisodes = data['episodeList'];
+
+          return CustomScrollView(
+            slivers: [
+              sliverGroup(
+                "Podcast",
+                PodcastBuilder(podcasts: getPodcasts),
+              ),
+              sliverGroup(
+                "Episode",
+                EpisodesBuilder(episodes: getEpisodes),
+              ),
+            ],
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 }
@@ -122,4 +107,17 @@ class _RecommendationsState extends State<_Recommendations> {
       ],
     );
   }
+}
+
+Widget sliverGroup(String title, Widget sliver) {
+  return SliverMainAxisGroup(slivers: [
+    SliverPadding(
+      padding: EdgeInsets.symmetric(vertical: 8.h),
+      sliver: SliverPersistentHeader(
+        pinned: true,
+        delegate: HeaderDelegate(title),
+      ),
+    ),
+    sliver
+  ]);
 }

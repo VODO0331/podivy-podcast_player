@@ -325,6 +325,7 @@ Widget buttonGroup(RxBool isLiked, RxBool reminder, String name) {
 Widget podcastLatestContent(List<Map> latestList, Map podcasterDate) {
   return ListView.builder(
     padding: EdgeInsets.zero,
+    // itemExtent:300.h,
     itemCount: 3,
     itemBuilder: (BuildContext context, int index) {
       final Map episodeData = latestList[index];

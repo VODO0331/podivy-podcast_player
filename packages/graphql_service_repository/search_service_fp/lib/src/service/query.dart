@@ -60,6 +60,8 @@ query  search(
     \$episodesFirst: Int,
     \$categories : [String],
     \$episodesSortBy: EpisodeSortType!
+    \$airDateForm: DateTime
+    \$airDateTo: DateTime
   ){
     podcasts(
       first: \$podcastFirst, 
@@ -101,6 +103,8 @@ query  search(
     \$episodesFirst: Int,
     \$searchTerm: String,
     \$episodesSortBy: EpisodeSortType!
+    \$airDateForm: DateTime
+    \$airDateTo: DateTime
   ){
     podcasts(
       first: \$podcastFirst, 
@@ -115,6 +119,7 @@ query  search(
     episodes(
       first: \$episodesFirst, 
       searchTerm: \$searchTerm,
+      filters:{airDate:{from: \$airDateForm, to: \$airDateTo}},
       sort:{sortBy: \$episodesSortBy}){
         data{
           id

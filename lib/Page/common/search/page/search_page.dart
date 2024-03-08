@@ -82,8 +82,8 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        width: ScreenUtil().screenWidth,
+        height: ScreenUtil().screenHeight,
         color: const Color.fromARGB(196, 5, 8, 5),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
@@ -93,12 +93,10 @@ class _SearchPageState extends State<SearchPage> {
               const SizedBox(height: 15),
               _buildSearchLabel(),
               const Divider(endIndent: 170, color: Color(0xFFABC4AA)),
-              Expanded(
-                child: SearchResult(
-                  keywords: keywords,
-                  searchService: searchService,
-                ),
-              ),
+              Expanded(child: SearchResult(
+                keywords: keywords,
+                searchService: searchService,
+              ),)
             ],
           ),
         ),
@@ -106,5 +104,3 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 }
-
-

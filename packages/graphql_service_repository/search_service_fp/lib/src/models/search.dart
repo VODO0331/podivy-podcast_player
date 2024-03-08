@@ -1,11 +1,10 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-
+import 'package:intl/intl.dart';
 
 import '../service/query.dart';
 import 'episode.dart';
 import 'podcaster.dart';
 // import 'dart:developer' as dev show log;
-
 //利用語言分類 改變
 //根據使用者  追隨清單 改變 SearchServiceForLatestList 資料
 sealed class SearchService {
@@ -15,6 +14,7 @@ sealed class SearchService {
   final List<Podcaster>? podcasterList;
   final List<Episode>? episodeList;
   final QueryOptions queryOptions;
+
   SearchService({
     required this.numberOfEpisodesResults,
     required this.numberOfPodcastResults,
@@ -31,7 +31,7 @@ class SearchServiceForKeyword extends SearchService {
     super.episodeList,
     super.podcasterList,
     super.numberOfPodcastResults = 3,
-    super.numberOfEpisodesResults = 5,
+    super.numberOfEpisodesResults = 10,
   }) : super(
             queryOptions: QueryOptions(
           document: gql(queryForKeyword),
@@ -40,6 +40,8 @@ class SearchServiceForKeyword extends SearchService {
             'podcastFirst': numberOfPodcastResults,
             'episodesFirst': numberOfEpisodesResults,
             'episodesSortBy': 'RELEVANCE',
+            'airDateForm': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime(2019)),
+            'airDateTo':  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
           },
         ));
 }
@@ -59,6 +61,7 @@ class SearchServiceForCategories extends SearchService {
             'podcastFirst': numberOfPodcastResults,
             'episodesFirst': numberOfEpisodesResults,
             'episodesSortBy': 'RELEVANCE',
+            // 'airDateForm':
           },
         ));
 }
@@ -81,10 +84,10 @@ class SearchServiceForExploreContent extends SearchServiceForCategories {
 }
 
 class SearchServiceForLatestList extends SearchServiceForCategories {
-  //追隨清單中 Episode更新最新 的前三個podcast , 
+  //追隨清單中 Episode更新最新 的前三個podcast ,
   //如果不足三個或Null 用隨機podcast(依照使用者喜好)
-  final List<int>? idList; 
-  SearchServiceForLatestList( {
+  final List<int>? idList;
+  SearchServiceForLatestList({
     required this.idList,
     required super.keywords,
   });

@@ -14,10 +14,11 @@ class EpisodesBuilder extends StatelessWidget {
         child: Text('找尋不到資料'),
       );
     } else {
-      return ListView.builder(
+      return SliverList.builder(
         key: UniqueKey(),
-        prototypeItem: _prototypeItemForEpisodeBuilder(),
+        // prototypeItem: _prototypeItemForEpisodeBuilder(),
         itemCount: episodes!.length,
+       
         itemBuilder: (BuildContext context, int index) {
           Episode episode = episodes![index];
 
@@ -73,42 +74,5 @@ class EpisodesBuilder extends StatelessWidget {
       );
     }
   }
-}
-
-Widget _prototypeItemForEpisodeBuilder() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8).h,
-    child: ListTile(
-      title: Text(
-        "episode.title",
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(fontSize: 14.sp),
-      ),
-      leading: SizedBox(
-        height: 60.h,
-        width: 60.w,
-        child: FadeInImage.assetNetwork(
-          placeholderCacheWidth: 50,
-          placeholderCacheHeight: 50,
-          imageCacheHeight: 100,
-          imageCacheWidth: 100,
-          fit: BoxFit.cover,
-          placeholderFit: BoxFit.cover,
-          placeholder: "assets/images/generic/search_loading.gif",
-          image: "episode.imageUrl",
-          imageErrorBuilder: (context, _, __) {
-            return Image.asset(
-              "assets/images/podcaster/defaultPodcaster.jpg",
-              fit: BoxFit.cover,
-              cacheHeight: 100,
-              cacheWidth: 100,
-            );
-          },
-        ),
-      ),
-      trailing: const Icon(Icons.more_vert),
-      onTap: null,
-    ),
-  );
 }
 

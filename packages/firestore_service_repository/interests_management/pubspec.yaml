@@ -12,7 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
   cloud_firestore: ^4.15.4
-
+  
+  
   authentication_repository:
       path: ../../authentication_repository
   
