@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:podivy/Page/common/search/build/build_HeaderDelegate.dart';
+import 'package:podivy/Page/common/search/build/build_header_delegate.dart';
 import 'package:podivy/Page/common/search/build/build_result_podcast.dart';
 import 'package:podivy/Page/common/search/build/build_result_episode.dart';
 import 'package:podivy/util/recommend_bt.dart';

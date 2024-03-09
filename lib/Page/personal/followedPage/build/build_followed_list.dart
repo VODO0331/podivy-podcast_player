@@ -40,22 +40,19 @@ class FollowedList extends StatelessWidget {
               color: Colors.transparent,
               elevation: 10,
               shadowColor: Colors.black,
+              clipBehavior: Clip.antiAlias,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                child: FadeInImage.assetNetwork(
-                  placeholderCacheWidth: 200,
-                  placeholderCacheHeight: 200,
-                  imageCacheHeight: 200,
-                  imageCacheWidth: 200,
-                  fit: BoxFit.cover,
-                  placeholderFit: BoxFit.cover,
-                  placeholder: "assets/images/generic/loading.gif",
-                  image: followed.podcastImg,
-                ),
-                
+              child: FadeInImage.assetNetwork(
+                placeholderCacheWidth: 200,
+                placeholderCacheHeight: 200,
+                imageCacheHeight: 200,
+                imageCacheWidth: 200,
+                fit: BoxFit.cover,
+                placeholderFit: BoxFit.cover,
+                placeholder: "assets/images/generic/loading.gif",
+                image: followed.podcastImg,
               ),
             ),
           ),

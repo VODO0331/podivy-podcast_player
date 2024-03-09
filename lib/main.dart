@@ -3,7 +3,6 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/theme/theme.dart';
 import 'package:search_service/search_service_repository.dart';

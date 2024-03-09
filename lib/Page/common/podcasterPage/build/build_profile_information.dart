@@ -242,10 +242,13 @@ Widget _buildUserAvatar(String imageUrl, double size, double opacity) {
       opacity: 1 - opacity,
       child: Padding(
         padding: const EdgeInsets.only(right: 20).r,
-        child: CircleAvatar(
-          radius: size,
-          backgroundColor: Colors.transparent,
-          child: ClipOval(
+        child: SizedBox(
+          height: size * 2,
+          width: size * 2,
+          child: Card(
+            clipBehavior: Clip.antiAlias,
+            shape: const CircleBorder(),
+            color: Colors.transparent,
             child: FadeInImage.assetNetwork(
               placeholderCacheWidth: 90,
               placeholderCacheHeight: 90,

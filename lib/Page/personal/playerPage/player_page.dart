@@ -48,8 +48,8 @@ class _PlayerPageState extends State<PlayerPage> {
                       return FadeInImage.assetNetwork(
                         placeholderCacheWidth: 50,
                         placeholderCacheHeight: 50,
-                        imageCacheHeight: 200,
-                        imageCacheWidth: 200,
+                        imageCacheHeight: 250,
+                        imageCacheWidth: 250,
                         fit: BoxFit.cover,
                         placeholderFit: BoxFit.cover,
                         placeholder: "assets/images/generic/search_loading.gif",

@@ -219,9 +219,9 @@ class _PlayerControlState extends State<PlayerControl> {
       await _audioPlayer.play(UrlSource(url));
        listManagement.addListToHistory(getEpisodeData);
     } catch (e) {
-      context.mounted
-          ? await showPlayErrorDialog(context, '音訊錯誤，請收聽其他節目')
-          : null;
+      if(mounted){
+        await showPlayErrorDialog(context, '音訊錯誤，請收聽其他節目');
+      }
       dev.log('Unexpected error: $e');
     }
   }

@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 import 'package:podivy/Page/common/homePage/build/build_turntable_animation.dart';
@@ -13,19 +12,20 @@ class LatestPodcast extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Query(
-      options: QueryOptions(
-        document: gql(getPodcasts),
-        variables: const {
-          'languageFilter': 'ZH',
-          'first': 3,
-          'podcastsSortBy': 'DATE_OF_FIRST_EPISODE',
-          'episodeDirection': 'DESCENDING',
-          'episodesortBy': 'AIR_DATE',
-        },
-      ),
-      builder: _buildQueryResult,
-    );
+    return const Text('LatestPodcast');
+    // Query(
+    //   options: QueryOptions(
+    //     document: gql(getPodcasts),
+    //     variables: const {
+    //       'languageFilter': 'ZH',
+    //       'first': 3,
+    //       'podcastsSortBy': 'DATE_OF_FIRST_EPISODE',
+    //       'episodeDirection': 'DESCENDING',
+    //       'episodesortBy': 'AIR_DATE',
+    //     },
+    //   ),
+    //   builder: _buildQueryResult,
+    // );
   }
 
   Widget _buildQueryResult(result, {fetchMore, refetch}) {
