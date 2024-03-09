@@ -1,36 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:interests_management_service/interests.management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:get/get.dart';
-
-import '../../../../theme/custom_theme.dart';
-import 'build_podcast_gridView.dart';
-
-class ExploreContent extends StatelessWidget {
-  ExploreContent({Key? key}) : super(key: key);
-  final RxString selectedType = ''.obs;
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          CategoryButton(
-            selected: (category) {
-              selectedType.value = category;
-            },
-          ),
-          Expanded(
-            child: Obx(() {
-              return BuildGridView(
-                category: selectedType.value,
-              );
-            }),
-          ),
-        ],
-      ),
-    );
-  }
-}
+import 'package:podivy/theme/custom_theme.dart';
 
 typedef SelectCallBack = void Function(String category);
 
@@ -57,6 +29,7 @@ class CategoryButton extends StatelessWidget {
                 height: 55.r,
                 width: ScreenUtil().screenWidth,
                 child: ListView.builder(
+                  prototypeItem: prototypeItem(),
                   padding: const EdgeInsets.all(9).r,
                   scrollDirection: Axis.horizontal,
                   itemCount: interests.length,
@@ -86,4 +59,18 @@ class CategoryButton extends StatelessWidget {
           }
         });
   }
+}
+
+Widget prototypeItem() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 4).r,
+    child: TextButton(
+      style: textButtonForRecommend,
+      onPressed: null,
+      child: Text(
+        '',
+        style: TextStyle(fontSize: 12.sp, color: Colors.black),
+      ),
+    ),
+  );
 }

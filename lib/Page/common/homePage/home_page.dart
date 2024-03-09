@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:information_management_service/information_management_service.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
-import 'build/build_explore_content.dart';
+
 //節省token
 // import 'package:podivy/widget/carousel.dart';
+
 // import 'dart:developer' as dev show log;
 
 class HomePage extends StatelessWidget {
@@ -36,7 +37,7 @@ class HomePage extends StatelessWidget {
               color: Color.fromARGB(255, 255, 255, 255),
             ),
           ),
-           ExploreContent(),
+          //  ExploreContent(),
         ],
       ),
     );

@@ -40,11 +40,12 @@ dependencies:
   equatable: ^2.0.5
   share_plus: ^7.2.1
   http: ^1.1.2
-  url_launcher: ^6.2.2
+  url_launcher: ^6.2.5
   audioplayers: ^5.2.1
   html: ^0.15.4
   image_picker: ^1.0.7
   nil: ^1.1.1
+  font_awesome_flutter: ^10.7.0
   modify_widget_repository:
     path: packages/modify_widget_repository
 

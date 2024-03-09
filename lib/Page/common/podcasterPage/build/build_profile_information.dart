@@ -5,9 +5,10 @@ import 'package:get/get.dart';
 import 'package:interests_management_service/interests.management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Controller/widget_animation_controller.dart';
+import 'package:podivy/Page/common/podcasterPage/build/build_description.dart';
 import 'package:search_service/search_service_repository.dart';
 
-import 'dart:developer' as dev show log;
+
 
 class ProfileInformation extends StatelessWidget {
   final Podcaster podcasterData;
@@ -16,7 +17,9 @@ class ProfileInformation extends StatelessWidget {
   final RxBool isFollowed = false.obs;
   final FollowedManagement _followedStorageService =
       Get.put(FollowedManagement());
-  final InterestsManagement _interestsManagement = Get.find();
+  // final InterestsManagement _interestsManagement = Get.find();
+   final InterestsManagement _interestsManagement =
+      Get.put(InterestsManagement());
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -74,12 +77,12 @@ class ProfileInformation extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        child: _buildDescription(
-                            podcasterData,
-                            _widgetController.opacityAnimation!.value!,
-                            isFollowed,
-                            _followedStorageService,
-                            _interestsManagement),
+                        child: ShowDescription(
+                            podcasterData: podcasterData,
+                            opacity: _widgetController.opacityAnimation!.value!,
+                            isFollowed: isFollowed,
+                            followedManagement: _followedStorageService,
+                            interestsManagement: _interestsManagement),
                       ),
                       Transform.rotate(
                         angle: _widgetController.rotateAnimation!.value,
@@ -103,110 +106,6 @@ class ProfileInformation extends StatelessWidget {
       ],
     );
   }
-}
-
-Widget _buildDescription(
-    Podcaster podcasterData,
-    double opacity,
-    RxBool isFollowed,
-    FollowedManagement followedManagement,
-    InterestsManagement interestsManagement) {
-  return Opacity(
-    opacity: opacity,
-    child: Visibility(
-      visible: opacity > 0.75,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20).r,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(
-                    fixedSize: Size(
-                        ScreenUtil().setWidth(150), ScreenUtil().setWidth(40)),
-                  ),
-                  onPressed: () {
-                    if (podcasterData.categories != null) {
-                      for (var category in podcasterData.categories!) {
-                        dev.log(category);
-                      }
-                    }
-                  },
-                  icon: const Icon(Icons.share),
-                  label: const Text("分享"),
-                ),
-                FutureBuilder(
-                  future: followedManagement.isFollowed(podcasterData.id),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      isFollowed.value = snapshot.data!;
-
-                      return Obx(() {
-                        final Rx<IconData> btIcon = isFollowed.value
-                            ? Icons.favorite.obs
-                            : Icons.favorite_border.obs;
-                        final Rx<Color> btColor = isFollowed.value
-                            ? Colors.red.obs
-                            : Colors.white.obs;
-                        return OutlinedButton.icon(
-                          style: OutlinedButton.styleFrom(
-                              fixedSize: Size(
-                                ScreenUtil().setWidth(150),
-                                ScreenUtil().setWidth(40),
-                              ),
-                              foregroundColor: btColor.value,
-                              side: BorderSide(color: btColor.value)),
-                          onPressed: () async {
-                            await changeBtState(
-                              followedManagement,
-                              interestsManagement,
-                              podcasterData,
-                              isFollowed.value,
-                            );
-                            isFollowed.value = !isFollowed.value;
-                          },
-                          icon: Icon(
-                            btIcon.value,
-                            color: btColor.value,
-                          ),
-                          label: const Text("追隨"),
-                        );
-                      });
-                    } else {
-                      return OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(
-                          fixedSize: Size(
-                            ScreenUtil().setWidth(150),
-                            ScreenUtil().setWidth(40),
-                          ),
-                        ),
-                        onPressed: null,
-                        icon: const Icon(Icons.favorite_border),
-                        label: const Text("追隨"),
-                      );
-                    }
-                  },
-                )
-              ],
-            ),
-            SizedBox(
-              height: 12.h,
-            ),
-            // SizeTransition(sizeFactor: ,)
-            Expanded(
-              child: SingleChildScrollView(
-                child: Text(podcasterData.description!),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
 }
 
 Future<void> changeBtState(
@@ -301,3 +200,5 @@ Widget _buildShaderMask(String imageUrl) {
     ),
   );
 }
+
+
