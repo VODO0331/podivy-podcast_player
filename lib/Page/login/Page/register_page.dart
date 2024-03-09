@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/dialogs/error_dialog.dart';
 import 'package:podivy/util/dialogs/generic_dialog.dart';
-import 'package:podivy/util/recommend_bt.dart';
+
+import '../../../theme/custom_theme.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -88,8 +89,9 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget buttonGroup() {
     return Column(
       children: [
-        RecommendButton(
-          text: '註冊',
+        TextButton(
+          style: textButtonForRecommend,
+          child: const Text('註冊',style: TextStyle(color: Colors.black),),
           onPressed: () async {
             final email = _email.text;
             final password = _password.text;

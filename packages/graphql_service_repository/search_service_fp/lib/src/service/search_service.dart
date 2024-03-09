@@ -14,6 +14,7 @@ Future<Map?> getSearchData(SearchService searchService) async {
   if (searchService.keywords == null || searchService.keywords == "") {
     return null;
   }
+
   final Map? data = await _getData(searchService: searchService) as Map?;
   if (data == null) {
     dev.log('data is empty');
@@ -24,8 +25,10 @@ Future<Map?> getSearchData(SearchService searchService) async {
 Future<Object?> _getData({required SearchService searchService}) async {
   try {
     var result = await _queryResult(searchService: searchService);
+
     if (result == null || result.hasException) {
-      dev.log(result?.exception.toString() ?? 'Query result is null');
+      dev.log(
+          "_getData : ${result?.exception.toString() ?? 'Query result is null'}");
       throw GenericAuthException();
     }
     final List? podcasts = result.data?['podcasts']['data'];
@@ -34,7 +37,7 @@ Future<Object?> _getData({required SearchService searchService}) async {
         : null;
     return searchDataProcessing(podcasts, episodes);
   } catch (e) {
-    dev.log(e.toString());
+    dev.log("_getData : ${e.toString()}");
     throw QueryResultException;
   }
 }
@@ -43,30 +46,41 @@ Map<String, List<Object>?>? searchDataProcessing(
   List? podcasts,
   List? episodes,
 ) {
-  if (podcasts == null && episodes == null) return null;
-  List<Podcaster>? podcastList = podcasts
-      ?.map((podcast) => Podcaster(
-            id: podcast['id'],
-            title: podcast['title'],
-            imageUrl: podcast['imageUrl'],
-          ))
-      .toList();
-  List<Episode>? episodeList = episodes
-      ?.map((episode) => Episode(
-            id: episode['id'],
-            title: episode['title'],
+  try {
+    if (podcasts == null && episodes == null) return null;
+    List<Podcaster>? podcastList = [];
+    for (var podcast in podcasts!) {
+      podcastList.add(Podcaster(
+        id: podcast['id'],
+        title: podcast['title'],
+        imageUrl: podcast['imageUrl'],
+      ));
+    }
+
+    List<Episode>? episodeList = [];
+    if (episodes != null) {
+      for (var episode in episodes) {
+        episodeList.add(Episode(
+          id: episode['id'],
+          title: episode['title'],
+          imageUrl: episode['podcast']['imageUrl'],
+          audioUrl: episode['audioUrl'],
+          description: episode['description'],
+          airDate: DateTime.parse(episode['airDate']),
+          podcast: Podcaster(
+            id: episode['podcast']['id'],
+            title: episode['podcast']['title'],
             imageUrl: episode['podcast']['imageUrl'],
-            audioUrl: episode['audioUrl'],
-            description: episode['description'],
-            airDate: DateTime.parse(episode['airDate']),
-            podcast: Podcaster(
-              id: episode['podcast']['id'],
-              title: episode['podcast']['title'],
-              imageUrl: episode['podcast']['imageUrl'],
-            ),
-          ))
-      .toList();
-  return {'podcastList': podcastList, 'episodeList': episodeList};
+          ),
+        ));
+      }
+    }
+
+    return {'podcastList': podcastList, 'episodeList': episodeList};
+  } catch (e) {
+    dev.log("searchDataProcessing: ${e.toString()}");
+    throw DataProcessingException();
+  }
 }
 
 Future<QueryResult?> _queryResult(
@@ -76,12 +90,12 @@ Future<QueryResult?> _queryResult(
   try {
     var result = await client.query(searchService.queryOptions);
     if (result.hasException) {
-      dev.log(result.exception.toString());
+      dev.log("_queryResult: ${result.exception.toString()}");
       throw QueryException;
     }
     return result;
   } catch (e) {
-    dev.log(e.toString());
+    dev.log("_queryResult: ${e.toString()}");
     throw QueryException;
   }
 }

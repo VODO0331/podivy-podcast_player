@@ -5,7 +5,6 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'dart:developer' as devtool show log;
 import 'package:podivy/util/dialogs/error_dialog.dart';
 import 'package:podivy/util/dialogs/password_reset_dialog.dart';
-import 'package:podivy/util/recommend_bt.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -70,8 +69,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               const SizedBox(
                 height: 30,
               ),
-              RecommendButton(
-                text: '重設密碼',
+              TextButton(
+                child: const Text('重設密碼'),
                 onPressed: () {
                   final email = _controller.text;
                   context

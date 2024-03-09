@@ -479,7 +479,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  followed_management:
+  followed_management_service:
     dependency: "direct main"
     description:
       path: "packages/firestore_service_repository/followed_management"
@@ -682,6 +682,13 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/firestore_service_repository/personal_information_management"
+      relative: true
+    source: path
+    version: "1.0.0+1"
+  interests_management_service:
+    dependency: "direct main"
+    description:
+      path: "packages/firestore_service_repository/interests_management"
       relative: true
     source: path
     version: "1.0.0+1"

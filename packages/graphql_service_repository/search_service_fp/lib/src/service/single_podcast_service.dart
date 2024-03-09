@@ -1,6 +1,7 @@
 import 'dart:developer' as dev show log;
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:search_service/src/service/query.dart';
 import '../controller/client_global_controller.dart';
 import '../error_exception/search_error_exception.dart';
 
@@ -48,23 +49,29 @@ Podcaster? singlePodcastDataProcessing(
   try {
     List<Episode> episodeList = [];
     if (episodes != null) {
-      episodeList = episodes
-          .map((episode) => Episode(
-                id: episode['id'],
-                title: episode['title'],
-                imageUrl: podcast['imageUrl'],
-                audioUrl: episode['audioUrl'],
-                description: episode['description'],
-                airDate: DateTime.parse(episode['airDate']),
-                podcast: Podcaster(id: podcast['id'], title: podcast['title']),
-              ))
-          .toList();
+      for (var episode in episodes) {
+        episodeList.add(Episode(
+          id: episode['id'],
+          title: episode['title'],
+          imageUrl: podcast['imageUrl'],
+          audioUrl: episode['audioUrl'],
+          description: episode['description'],
+          airDate: DateTime.parse(episode['airDate']),
+          podcast: Podcaster(id: podcast['id'], title: podcast['title']),
+        ));
+      }
+    }
+
+    List categories = [];
+    for (var category in podcast['categories']) {
+      categories.add(category['title']);
     }
 
     final Podcaster podcaster = Podcaster(
       id: podcast['id'],
       title: podcast['title'],
       imageUrl: podcast['imageUrl'],
+      categories: categories,
       language: podcast['language'],
       description: podcast['description'],
       socialLinks: SocialLinks(
@@ -87,7 +94,16 @@ Future<QueryResult?> _queryResult({
   final GraphQLClient client = controller.client;
   try {
     late QueryResult result;
-    result = await client.query(podcastData.queryOptions);
+    result = await client.query(QueryOptions(
+      document: gql(queryPodcastData),
+      variables: {
+        'podcastId': podcastData.id,
+        'identifierType': 'PODCHASER',
+        'episodesFirst': podcastData.numberOfEpisodesResults,
+        'episodesortBy': 'AIR_DATE',
+        'episodedirection': 'DESCENDING'
+      },
+    ));
 
     if (result.hasException) {
       dev.log(result.exception.toString());

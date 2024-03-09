@@ -1,4 +1,4 @@
-name: interests_management
+name: interests_management_service
 description:  Services for management interests.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 

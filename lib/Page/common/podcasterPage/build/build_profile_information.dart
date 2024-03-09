@@ -1,43 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:followed_management/followed_management.dart';
+import 'package:followed_management_service/followed_management.dart';
 
 import 'package:get/get.dart';
+import 'package:interests_management_service/interests.management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Controller/widget_animation_controller.dart';
 import 'package:search_service/search_service_repository.dart';
 
-// import 'dart:developer' as dev show log;
+import 'dart:developer' as dev show log;
 
-class ProfileInformation extends StatefulWidget {
+class ProfileInformation extends StatelessWidget {
   final Podcaster podcasterData;
-  const ProfileInformation({super.key, required this.podcasterData});
-
-  @override
-  State<ProfileInformation> createState() => _ProfileInformationState();
-}
-
-class _ProfileInformationState extends State<ProfileInformation> {
+  ProfileInformation({super.key, required this.podcasterData});
   final _widgetController = Get.put(WidgetController());
   final RxBool isFollowed = false.obs;
-  late FollowedManagement _followedStorageService;
-  @override
-  void initState() {
-    super.initState();
-    _followedStorageService = FollowedManagement();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _followedStorageService;
-    _widgetController;
-  }
-
+  final FollowedManagement _followedStorageService =
+      Get.put(FollowedManagement());
+  final InterestsManagement _interestsManagement = Get.find();
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        _buildShaderMask(widget.podcasterData.imageUrl!),
+        _buildShaderMask(podcasterData.imageUrl!),
         Padding(
             padding: const EdgeInsets.fromLTRB(15, 60, 15, 0).r,
             child: AnimatedBuilder(
@@ -76,13 +60,13 @@ class _ProfileInformationState extends State<ProfileInformation> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               _buildUserAvatar(
-                                widget.podcasterData.imageUrl!,
+                                podcasterData.imageUrl!,
                                 _widgetController.avatarSizeAnimation!.value,
                                 _widgetController.opacityAnimation!.value!,
                               ),
                               Flexible(
                                 child: _buildTitleTextScroll(
-                                  widget.podcasterData.title,
+                                  podcasterData.title,
                                 ),
                               ),
                             ],
@@ -91,11 +75,11 @@ class _ProfileInformationState extends State<ProfileInformation> {
                       ),
                       Expanded(
                         child: _buildDescription(
-                          widget.podcasterData,
-                          _widgetController.opacityAnimation!.value!,
-                          isFollowed,
-                          _followedStorageService,
-                        ),
+                            podcasterData,
+                            _widgetController.opacityAnimation!.value!,
+                            isFollowed,
+                            _followedStorageService,
+                            _interestsManagement),
                       ),
                       Transform.rotate(
                         angle: _widgetController.rotateAnimation!.value,
@@ -122,11 +106,11 @@ class _ProfileInformationState extends State<ProfileInformation> {
 }
 
 Widget _buildDescription(
-  Podcaster podcasterData,
-  double opacity,
-  RxBool isFollowed,
-  FollowedManagement followedStorageService,
-) {
+    Podcaster podcasterData,
+    double opacity,
+    RxBool isFollowed,
+    FollowedManagement followedManagement,
+    InterestsManagement interestsManagement) {
   return Opacity(
     opacity: opacity,
     child: Visibility(
@@ -145,12 +129,18 @@ Widget _buildDescription(
                     fixedSize: Size(
                         ScreenUtil().setWidth(150), ScreenUtil().setWidth(40)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    if (podcasterData.categories != null) {
+                      for (var category in podcasterData.categories!) {
+                        dev.log(category);
+                      }
+                    }
+                  },
                   icon: const Icon(Icons.share),
                   label: const Text("分享"),
                 ),
                 FutureBuilder(
-                  future: followedStorageService.isFollowed(podcasterData.id),
+                  future: followedManagement.isFollowed(podcasterData.id),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       isFollowed.value = snapshot.data!;
@@ -172,7 +162,8 @@ Widget _buildDescription(
                               side: BorderSide(color: btColor.value)),
                           onPressed: () async {
                             await changeBtState(
-                              followedStorageService,
+                              followedManagement,
+                              interestsManagement,
                               podcasterData,
                               isFollowed.value,
                             );
@@ -220,18 +211,20 @@ Widget _buildDescription(
 
 Future<void> changeBtState(
   FollowedManagement followedController,
+  InterestsManagement interestsManagement,
   Podcaster podcasterData,
   bool value,
 ) async {
   if (value) {
     await followedController.deleteFollowed(podcastId: podcasterData.id);
+    await interestsManagement.updateInterests(podcasterData.categories, !value);
   } else {
     await followedController.addFollowed(
       podcastId: podcasterData.id,
       podcastImg: podcasterData.imageUrl,
       podcastName: podcasterData.title,
     );
-    // await followedController.deleteFollowed(podcastId: podcasterData.id);
+    await interestsManagement.updateInterests(podcasterData.categories, !value);
   }
 }
 

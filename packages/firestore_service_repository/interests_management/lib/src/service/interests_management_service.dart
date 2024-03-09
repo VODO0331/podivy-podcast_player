@@ -1,6 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:interests_management/src/model/interests.dart';
+import '../model/interests.dart';
 import './constant.dart';
 import 'dart:developer' as dev show log;
 
@@ -14,6 +14,7 @@ class InterestsManagement {
 
   InterestsManagement() {
     _interests = _user.doc(_userId).collection("interests");
+    addInterests();
   }
 
   Future<void> addInterests() async {
@@ -34,23 +35,36 @@ class InterestsManagement {
     }
   }
 
-  Future<void> updateInterests(Interests interests) async {
-    final docRef = _interests.doc(interests.category);
+  Future<void> updateInterests(List? categories, bool isAdd) async {
+    if (categories == null) return;
 
-    docRef.set({
-      interestsValue: interests.value + 1,
-    }, SetOptions(merge: true)).onError(
-        (error, _) => dev.log(error.toString()));
+    final int incrementValue = isAdd ? 1 : -1;
+
+    for (var category in categories) {
+      final docRef = _interests.doc(category);
+
+      await docRef.get().then((doc) {
+        if (doc.exists) {
+          docRef.update({interestsValue: FieldValue.increment(incrementValue)});
+        } else {
+          docRef.set({categoryName: category, interestsValue: incrementValue});
+        }
+      }).catchError((error, stackTrace) {
+        throw CloudNotUpdateException();
+      });
+    }
   }
 
   Stream<Iterable<Interests>> interestsCategory() {
     try {
-      final interests = _interests
-          .orderBy(interestsValue)
+      return _interests
+          .orderBy(interestsValue, descending: true)
           .limit(5)
           .snapshots()
-          .map((event) => event.docs.map((doc) => Interests.fromSnapshot(doc)));
-      return interests;
+          .map((event) {
+        event.docs.map((doc) => dev.log(doc[categoryName]));
+        return event.docs.map((doc) => Interests.fromSnapshot(doc));
+      });
     } catch (_) {
       throw CloudNotGetException();
     }

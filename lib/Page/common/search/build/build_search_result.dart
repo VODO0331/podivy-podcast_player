@@ -4,8 +4,9 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/common/search/build/build_header_delegate.dart';
 import 'package:podivy/Page/common/search/build/build_result_podcast.dart';
 import 'package:podivy/Page/common/search/build/build_result_episode.dart';
-import 'package:podivy/util/recommend_bt.dart';
 import 'package:search_service/search_service_repository.dart';
+
+import '../../../../theme/custom_theme.dart';
 
 class SearchResult extends StatelessWidget {
   final String? keywords;
@@ -93,8 +94,9 @@ class _RecommendationsState extends State<_Recommendations> {
       spacing: 10,
       runSpacing: 5,
       children: [
-        RecommendButton(
-          text: 'News',
+        TextButton(
+          style: textButtonForRecommend,
+          child: const Text('News'),
           onPressed: () {
             setState(() {
               // widget.keywords = 'News';
@@ -102,8 +104,6 @@ class _RecommendationsState extends State<_Recommendations> {
             });
           },
         ),
-        const RecommendButton(text: '237923478'),
-        const RecommendButton(text: '123'),
       ],
     );
   }

@@ -31,7 +31,7 @@ class SearchServiceForKeyword extends SearchService {
     super.episodeList,
     super.podcasterList,
     super.numberOfPodcastResults = 3,
-    super.numberOfEpisodesResults = 10,
+    super.numberOfEpisodesResults = 6,
   }) : super(
             queryOptions: QueryOptions(
           document: gql(queryForKeyword),

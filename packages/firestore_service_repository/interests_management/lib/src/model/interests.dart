@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:interests_management/src/service/constant.dart';
+
+import '../service/constant.dart';
 
 class Interests {
   final String category;

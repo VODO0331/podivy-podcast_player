@@ -139,3 +139,42 @@ query  search(
 
 """;
 
+const String queryPodcastData = """
+  query GetPodcast(
+    \$podcastId : String!,
+    \$identifierType : PodcastIdentifierType!,
+    \$episodesFirst : Int,
+    \$episodesortBy : EpisodeSortType!,
+    \$episodedirection : SortDirection,
+){
+    podcast(identifier : {id : \$podcastId , type: \$identifierType}){
+      id
+      title
+      imageUrl
+      language
+      description
+      categories{
+        title
+      }
+      numberOfEpisodes
+      socialLinks{
+        twitter
+        facebook
+        instagram
+      } 
+      episodes(first : \$episodesFirst, 
+      sort:{sortBy: \$episodesortBy, direction: \$episodedirection}){
+        data {
+          id
+          title
+          audioUrl
+          description
+          airDate
+          
+        }
+      }
+    }
+  }
+     
+  
+""";

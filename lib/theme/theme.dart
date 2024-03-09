@@ -4,6 +4,7 @@ final ThemeData myTheme = ThemeData(
     brightness: Brightness.dark,
     primarySwatch: Colors.brown,
     scaffoldBackgroundColor: const Color(0xFF6C5A44),
+    
     colorScheme: const ColorScheme(
         brightness: Brightness.dark,
         primary: Color.fromARGB(255, 221, 209, 190),
@@ -25,4 +26,5 @@ final ThemeData myTheme = ThemeData(
       unselectedItemColor: Color(0xFFAEA9A3),
       // unselectedIconTheme: IconThemeData(size: 25.0, color: Color(0xFFAEA9A3)),
     ),
-    textTheme: const TextTheme(titleLarge: TextStyle(fontSize: 19)));
+    textTheme: const TextTheme(titleLarge: TextStyle(fontSize: 19)),
+    );

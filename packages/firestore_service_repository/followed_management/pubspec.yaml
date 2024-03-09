@@ -1,4 +1,4 @@
-name: followed_management
+name: followed_management_service
 description:  Services for following podcasts.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
