@@ -69,7 +69,7 @@ class PodcastBuilder extends StatelessWidget {
                       child: SizedBox(
                         width: 120.w,
                         child: Text(
-                          podcast.title ?? 'error',
+                          podcast.title,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                         ),

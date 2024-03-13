@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/personal/playerPage/build/build_player_control.dart';
+import 'package:podivy/service/audio_player.dart';
 import 'package:search_service/search_service_repository.dart';
 // import 'dart:developer' as dev show log;
+
+
+
 class PlayerPage extends StatefulWidget {
   const PlayerPage({super.key});
 
@@ -13,18 +17,22 @@ class PlayerPage extends StatefulWidget {
 
 class _PlayerPageState extends State<PlayerPage> {
   final List<Episode> getEpisodeList = Get.arguments['episodes'];
-  final Podcaster? podcasterData = Get.arguments['podcaster'];
   final int getIndex = Get.arguments['index'];
-  
-  late Rx<String?> imageUrl;
-  
+  late final MyAudioPlayer _myAudioPlayer;
+
   @override
   void initState() {
     super.initState();
 
-    final Episode currentEpisodeData = getEpisodeList[getIndex];
-    imageUrl = (podcasterData?.imageUrl ?? currentEpisodeData.imageUrl).obs;
-    
+
+    _myAudioPlayer =
+        MyAudioPlayer(episodeList: getEpisodeList, index: getIndex);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _myAudioPlayer.dispose;
   }
 
   @override
@@ -43,7 +51,7 @@ class _PlayerPageState extends State<PlayerPage> {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Obx(() {
-                    if (imageUrl.value != null && imageUrl.value != "") {
+                    if (_myAudioPlayer.currentImageUrl.value != "") {
                       // dev.log("處發換player圖片");
                       return FadeInImage.assetNetwork(
                         placeholderCacheWidth: 50,
@@ -53,7 +61,7 @@ class _PlayerPageState extends State<PlayerPage> {
                         fit: BoxFit.cover,
                         placeholderFit: BoxFit.cover,
                         placeholder: "assets/images/generic/search_loading.gif",
-                        image: imageUrl.value!,
+                        image: _myAudioPlayer.currentImageUrl.value,
                         imageErrorBuilder: (context, _, __) {
                           return Image.asset(
                             "assets/images/podcaster/defaultPodcaster.jpg",
@@ -73,16 +81,7 @@ class _PlayerPageState extends State<PlayerPage> {
             ),
             SizedBox(height: 20.h),
             PlayerControl(
-              getEpisodeList: getEpisodeList,
-              getIndex: getIndex,
-              podcasterData: podcasterData,
-              onParameterChanged: (newImageUrl) {
-                if (imageUrl.value != newImageUrl) {
-                  imageUrl.value =newImageUrl;
-                  
-                }
-                return null;
-              },
+              myAudioPlayer: _myAudioPlayer,
             ),
           ],
         ));

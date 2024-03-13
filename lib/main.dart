@@ -1,39 +1,43 @@
+import 'dart:async';
+
 import 'package:authentication_repository/authentication_repository.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/theme/theme.dart';
 import 'package:search_service/search_service_repository.dart';
 
 import './routes/router.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
   await initHiveForFlutter();
-
-  final ClientGlobalController clientController = ClientGlobalController();
-  Get.put(clientController);
-  runApp(MyApp(client: clientController.client));
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final GraphQLClient? client;
-  const MyApp({super.key, required this.client});
-
+  MyApp({super.key});
+  final clientController = Get.put(ClientGlobalController());
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp, 
-      DeviceOrientation.portraitDown, 
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
     ]);
 
     return BlocProvider<AuthBloc>(
-      create: (context) =>  AuthBloc(FirebaseAuthProvider()),
+      create: (context) => AuthBloc(FirebaseAuthProvider()),
       child: GraphQLProvider(
-        client: ValueNotifier(client!),
+        client: ValueNotifier(clientController.client),
         child: ScreenUtilInit(
           designSize: const Size(393, 852),
           minTextAdapt: true,

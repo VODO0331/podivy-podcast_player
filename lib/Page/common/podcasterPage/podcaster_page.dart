@@ -11,7 +11,7 @@ class PodcasterPage extends StatelessWidget {
   PodcasterPage({super.key});
   final GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
   final Podcaster podcaster =
-      Podcaster(id: Get.arguments); //Get.arguments => catch podcaster id
+      Podcaster(id: Get.arguments,title: ''); //Get.arguments => catch podcaster id
 
   @override
   Widget build(BuildContext context) {

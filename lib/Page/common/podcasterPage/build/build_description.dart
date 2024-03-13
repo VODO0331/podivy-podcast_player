@@ -8,7 +8,6 @@ import 'package:nil/nil.dart';
 import 'package:podivy/Page/common/podcasterPage/build/build_profile_information.dart';
 import 'package:search_service/search_service_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:developer' as dev show log;
 
 class ShowDescription extends StatelessWidget {
   final Podcaster podcasterData;

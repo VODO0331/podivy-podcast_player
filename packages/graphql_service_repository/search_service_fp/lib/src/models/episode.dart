@@ -1,3 +1,5 @@
+import 'package:audio_service/audio_service.dart';
+
 import 'podcaster.dart';
 
 class Episode {
@@ -7,7 +9,7 @@ class Episode {
   final String imageUrl;
   final String description;
   final DateTime airDate;
-  final Podcaster? podcast;
+  final Podcaster podcast;
 
   Episode(
       {required this.id,
@@ -16,6 +18,19 @@ class Episode {
       required this.imageUrl,
       required this.description,
       required this.airDate,
-      this.podcast});
+      required this.podcast});
+  factory Episode.defaultEpisode() => Episode(
+      id: 'id',
+      title: 'title',
+      audioUrl: 'audioUrl',
+      imageUrl: 'imageUrl',
+      description: 'description',
+      airDate: DateTime(10),
+      podcast: Podcaster(id: 'id', title: 'title'));
 
+  MediaItem toMediaItem() => MediaItem(
+      id: id,
+      title: title,
+      artist: podcast.title,
+      artUri: Uri.parse(podcast.imageUrl!));
 }

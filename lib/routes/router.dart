@@ -3,7 +3,7 @@ import 'package:podivy/Page/personal/media/list/Page/list_page.dart';
 import 'package:podivy/Page/login/auth_middleware.dart';
 import 'package:podivy/Page/common/podcasterPage/podcaster_page.dart';
 import 'package:podivy/Page/common/search/page/search_page.dart';
-import 'package:podivy/Page/test.dart';
+// import 'package:podivy/Page/test.dart';
 import 'package:podivy/Page/personal/user_page/user_page.dart';
 import 'package:get/get.dart';
 import '../Page/personal/playerPage/player_page.dart';
@@ -28,10 +28,10 @@ class RouterPage {
       page: () => const ListPage(),
       parameters: const {'listTitle': ''},
     ),
-    GetPage(
-      name: "/test",
-      page: () => const TestPage(),
-    ),
+    // GetPage(
+    //   name: "/test",
+    //   page: () => const TestPage(),
+    // ),
     GetPage(
       name: "/user",
       page: () => UserPage(),

@@ -1,204 +1,73 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:podivy/util/dialogs/cannot_play.dart';
+import 'package:podivy/service/audio_player.dart';
+// import 'package:podivy/util/dialogs/cannot_play.dart';
 import 'package:podivy/util/dialogs/description_dialog.dart';
-import 'dart:developer' as dev show log;
 
 import 'package:search_service/search_service_repository.dart';
 
 typedef ImgCallback = String? Function(String? newImageUrl);
-class PlayerControl extends StatefulWidget {
-  final List<Episode> getEpisodeList;
-  final Podcaster? podcasterData;
-  final int getIndex;
-  final ImgCallback onParameterChanged;
 
-  const PlayerControl({
-    super.key,
-    required this.getEpisodeList,
-    required this.podcasterData,
-    required this.getIndex,
-    required this.onParameterChanged,
-  });
-
-  @override
-  State<PlayerControl> createState() => _PlayerControlState();
-}
-
-class _PlayerControlState extends State<PlayerControl> {
-  late int currentIndex;
-  late String getUrl;
-  late Episode getEpisodeData;
-  late String? currentImageUrl;
-  bool isPlaying = false;
-  double progress = 0.0;
-  Duration duration = Duration.zero;
-  Duration position = Duration.zero;
-  late AudioPlayer _audioPlayer;
+class PlayerControl extends StatelessWidget {
+  final MyAudioPlayer myAudioPlayer;
+  PlayerControl({super.key, required this.myAudioPlayer});
   final ListManagement listManagement = Get.find();
-  
-  @override
-  void initState() {
-    super.initState();
-    _audioPlayer = AudioPlayer();
-    currentIndex = widget.getIndex;
-    getEpisodeData = widget.getEpisodeList[currentIndex];
-   
-    getUrl = getEpisodeData.audioUrl;
-
-    currentImageUrl = widget.podcasterData?.imageUrl ?? getEpisodeData.imageUrl;
-
-    Future.delayed(Duration.zero, () {
-      setAudio(getUrl);
-    });
-    _audioPlayer.onPlayerStateChanged.listen((state) {
-      if (mounted) {
-        setState(() {
-          isPlaying = state == PlayerState.playing;
-        });
-      }
-    });
-
-    _audioPlayer.onDurationChanged.listen((newDuration) {
-      if (mounted) {
-        setState(() {
-          duration = newDuration;
-        });
-      }
-    });
-
-    _audioPlayer.onPositionChanged.listen((newPosition) {
-      if (mounted) {
-        setState(() {
-          position = newPosition;
-        });
-      }
-    });
-    // _audioPlayer.setAudioContext(AudioContext(android: AudioContextAndroid()));
-  }
-
-  @override
-  void dispose() {
-    _audioPlayer.dispose();
-    super.dispose();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
+     final Rx<Duration> currentPosition = myAudioPlayer.position;
     return Column(
       children: [
-        _buildSongInfo(
-            getEpisodeData, widget.podcasterData ?? getEpisodeData.podcast!),
-        SizedBox(height: 20.h),
-        _buildProgressBar(),
-        _buildTimeLabels(),
-        SizedBox(height: 20.h),
-        _buildControlButtons(),
+        Obx(() => BuildSongInfo(
+            currentEpisodeData: myAudioPlayer.currentEpisodeData.value)),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: const BoxDecoration(
+                color: Colors.blueGrey,
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            child: Column(
+              children: [
+                SizedBox(height: 20.h),
+                _buildProgressBar(currentPosition),
+                _buildTimeLabels(currentPosition),
+                SizedBox(height: 10.h),
+                _buildControlButtons(),
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
 
-  Widget _buildSongInfo(Episode getEpisodeData, Podcaster getPodcaster) {
-    return GestureDetector(
-      onTap: () async {
-        await showDescriptionDialog(context, getEpisodeData.description);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8).w,
-        child: Container(
-          padding: const EdgeInsets.all(10).w,
-          decoration: BoxDecoration(
-              color: const Color(0xFF8A7F6E),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: Offset(0, 7),
-                  blurRadius: 10,
-                  spreadRadius: 2,
-                ),
-              ],
-              borderRadius: BorderRadius.circular(20.0)),
-          child: Column(
+  Widget _buildProgressBar(Rx<Duration> currentPosition) {
+    
+    return Obx(() => Slider(
+          value: currentPosition.value.inSeconds.toDouble(),
+          min: 0,
+          max: myAudioPlayer.duration.value.inSeconds.toDouble(),
+          onChanged: (value) async {
+            currentPosition.value = Duration(seconds: value.toInt());
+            await myAudioPlayer.seek(myAudioPlayer.position.value);
+          },
+        ));
+  }
+
+  Widget _buildTimeLabels(Rx<Duration> currentPosition) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24).w,
+        child: Obx(
+          () => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                getEpisodeData.title,
-                style: TextStyle(fontSize: ScreenUtil().setSp(15)),
-                overflow: TextOverflow.ellipsis,
-              ),
-              Text(
-                getPodcaster.title!,
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-              const SizedBox(height: 20),
+              Text(formatTime(currentPosition.value)),
+              Text(formatTime(myAudioPlayer.duration.value)),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProgressBar() {
-    return Slider(
-      min: 0,
-      max: duration.inSeconds.toDouble(),
-      value: position.inSeconds.toDouble(),
-      onChanged: (value) async {
-        final position = Duration(seconds: value.toInt());
-        await _audioPlayer.seek(position);
-        await _audioPlayer.resume();
-      },
-    );
-  }
-
-  Widget _buildTimeLabels() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24).w,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(formatTime(position)),
-          Text(formatTime(duration)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildControlButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-            icon: const Icon(Icons.skip_previous),
-            onPressed: currentIndex == 0 ? null : _playPreviousEpisode),
-        const SizedBox(width: 20),
-        IconButton(
-          icon: const Icon(Icons.replay_10),
-          onPressed: () => _rewind(),
-        ),
-        const SizedBox(width: 20),
-        IconButton(
-          icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
-          iconSize: 50,
-          onPressed: _togglePlayPause,
-        ),
-        const SizedBox(width: 20),
-        IconButton(
-          icon: const Icon(Icons.forward_10),
-          onPressed: () => _forward(),
-        ),
-        const SizedBox(width: 20),
-        IconButton(
-            icon: const Icon(Icons.skip_next),
-            onPressed: () {
-              if (currentIndex != widget.getEpisodeList.length - 1) {
-                _playNextEpisode();
-              }
-            }),
-      ],
-    );
+        ));
   }
 
   String formatTime(Duration duration) {
@@ -213,66 +82,91 @@ class _PlayerControlState extends State<PlayerControl> {
     ].join(':');
   }
 
-  Future<void> setAudio(String url) async {
-    try {
-      _audioPlayer.setReleaseMode(ReleaseMode.stop);
-      await _audioPlayer.play(UrlSource(url));
-       listManagement.addListToHistory(getEpisodeData);
-    } catch (e) {
-      if(mounted){
-        await showPlayErrorDialog(context, '音訊錯誤，請收聽其他節目');
-      }
-      dev.log('Unexpected error: $e');
-    }
+  Widget _buildControlButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+            icon: const Icon(Icons.skip_previous),
+            onPressed: () =>myAudioPlayer.playPreviousEpisode()),
+        const SizedBox(width: 20),
+        IconButton(
+          icon: const Icon(Icons.replay_10),
+          onPressed: () => myAudioPlayer.durationChanges(false),
+        ),
+        const SizedBox(width: 20),
+        StreamBuilder(
+          stream: myAudioPlayer.playingStream,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                final bool isPlaying = snapshot.data!;
+                return IconButton(
+                  icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+                  iconSize: 50,
+                  onPressed: myAudioPlayer.togglePlayPause,
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+        const SizedBox(width: 20),
+        IconButton(
+          icon: const Icon(Icons.forward_10),
+          onPressed: () => myAudioPlayer.durationChanges(true),
+        ),
+        const SizedBox(width: 20),
+        IconButton(
+            icon: const Icon(Icons.skip_next),
+            onPressed: () => myAudioPlayer.playNextEpisode()),
+      ],
+    );
   }
+ 
+}
 
-  Future<void> _playEpisode(int index) async {
-    setState(() {
-      dev.log(currentImageUrl ?? "null");
-      currentIndex = index; // 更新 currentIndex
-      getEpisodeData = widget.getEpisodeList[currentIndex];
-      getUrl = getEpisodeData.audioUrl;
-      isPlaying = false;
-      
-    });
-    //如果EpisodeList 為隨機EpisodeList(e.g. 搜尋出來的EpisodeList,個人List)
-    currentImageUrl = getEpisodeData.imageUrl;
-    if (currentImageUrl != null) {
-      widget.onParameterChanged(currentImageUrl);
-    }
-    await setAudio(getUrl);
-    await _audioPlayer.resume();
-  }
 
-  void _rewind() async {
-    final newPosition = position - const Duration(seconds: 10);
-    await _audioPlayer.seek(newPosition);
-  }
+class BuildSongInfo extends StatelessWidget {
+  final Episode currentEpisodeData;
+  const BuildSongInfo({super.key, required this.currentEpisodeData});
 
-  void _forward() async {
-    final newPosition = position + const Duration(seconds: 10);
-    await _audioPlayer.seek(newPosition);
-  }
-
-  void _togglePlayPause() async {
-    if (isPlaying) {
-      await _audioPlayer.pause();
-    } else {
-      await _audioPlayer.resume();
-    }
-  }
-
-  void _playPreviousEpisode() async {
-    if (currentIndex > 0) {
-      final newIndex = currentIndex - 1;
-      await _playEpisode(newIndex);
-    }
-  }
-
-  void _playNextEpisode() async {
-    if (currentIndex < widget.getEpisodeList.length - 1) {
-      final newIndex = currentIndex + 1;
-      await _playEpisode(newIndex);
-    }
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        await showDescriptionDialog(context, currentEpisodeData.description);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8).r,
+        child: Container(
+          padding: const EdgeInsets.all(10).r,
+          decoration: BoxDecoration(
+              color: const Color(0xFF8A7F6E),
+              borderRadius: BorderRadius.circular(20.0)),
+          child: Column(
+            children: [
+              Text(
+                currentEpisodeData.title,
+                style: TextStyle(fontSize: ScreenUtil().setSp(15)),
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                currentEpisodeData.podcast.title,
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

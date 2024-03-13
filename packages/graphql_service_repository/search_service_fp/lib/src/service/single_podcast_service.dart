@@ -57,7 +57,10 @@ Podcaster? singlePodcastDataProcessing(
           audioUrl: episode['audioUrl'],
           description: episode['description'],
           airDate: DateTime.parse(episode['airDate']),
-          podcast: Podcaster(id: podcast['id'], title: podcast['title']),
+          podcast: Podcaster(
+              id: podcast['id'],
+              title: podcast['title'],
+              imageUrl: podcast['imageUrl']),
         ));
       }
     }

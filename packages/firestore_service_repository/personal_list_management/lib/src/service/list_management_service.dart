@@ -85,8 +85,8 @@ class ListManagement {
         .set({
           listName: list.listTitle,
           episodeId: episode.id,
-          podcasterId: episode.podcast!.id,
-          podcasterName: episode.podcast!.title,
+          podcasterId: episode.podcast.id,
+          podcasterName: episode.podcast.title,
           episodeImg: episode.imageUrl,
           episodeName: episode.title,
           episodeAudio: episode.audioUrl,

@@ -87,7 +87,7 @@ class BuildGridView extends StatelessWidget {
                             width: double.infinity,
                             color: const Color(0x7C191B18),
                             child: Text(
-                              podcaster.title!,
+                              podcaster.title,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
                               style:
