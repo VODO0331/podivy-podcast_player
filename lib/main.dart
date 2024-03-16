@@ -14,6 +14,7 @@ import './routes/router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
   await ScreenUtil.ensureScreenSize();
   await initHiveForFlutter();
   await JustAudioBackground.init(

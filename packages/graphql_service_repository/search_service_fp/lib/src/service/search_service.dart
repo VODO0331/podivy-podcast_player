@@ -10,45 +10,39 @@ import '../error_exception/search_error_exception.dart';
 
 //functional programming
 
-Future<Map?> getSearchData(SearchService searchService) async {
-  if (searchService.keywords == null || searchService.keywords == "") {
-    return null;
-  }
+Future<({List<Podcaster> podcastList, List<Episode> episodeList})>
+    getSearchData(SearchService searchService) async {
+  // if (searchService.keywords == null || searchService.keywords == "") {
+  //   return ;
+  // }
 
-  final Map? data = await _getData(searchService: searchService) as Map?;
-  if (data == null) {
-    dev.log('data is empty');
-  }
+  final data = await _getData(searchService: searchService);
+
   return data;
 }
 
-Future<Object?> _getData({required SearchService searchService}) async {
+Future<({List<Podcaster> podcastList, List<Episode> episodeList})> _getData(
+    {required SearchService searchService}) async {
   try {
     var result = await _queryResult(searchService: searchService);
 
-    if (result == null || result.hasException) {
-      dev.log(
-          "_getData : ${result?.exception.toString() ?? 'Query result is null'}");
-      throw GenericAuthException();
-    }
     final List? podcasts = result.data?['podcasts']['data'];
     final List? episodes = result.data?['episodes'] != null
         ? result.data!['episodes']['data']
         : null;
-    return searchDataProcessing(podcasts, episodes);
+    return dataProcessing(podcasts, episodes);
   } catch (e) {
     dev.log("_getData : ${e.toString()}");
     throw QueryResultException;
   }
 }
 
-Map<String, List<Object>?>? searchDataProcessing(
+({List<Podcaster> podcastList, List<Episode> episodeList}) dataProcessing(
   List? podcasts,
   List? episodes,
 ) {
   try {
-    if (podcasts == null && episodes == null) return null;
-    List<Podcaster>? podcastList = [];
+    List<Podcaster> podcastList = [];
     for (var podcast in podcasts!) {
       podcastList.add(Podcaster(
         id: podcast['id'],
@@ -57,7 +51,7 @@ Map<String, List<Object>?>? searchDataProcessing(
       ));
     }
 
-    List<Episode>? episodeList = [];
+    List<Episode> episodeList = [];
     if (episodes != null) {
       for (var episode in episodes) {
         episodeList.add(Episode(
@@ -76,20 +70,19 @@ Map<String, List<Object>?>? searchDataProcessing(
       }
     }
 
-    return {'podcastList': podcastList, 'episodeList': episodeList};
+    return (podcastList: podcastList, episodeList: episodeList);
   } catch (e) {
     dev.log("searchDataProcessing: ${e.toString()}");
     throw DataProcessingException();
   }
 }
 
-Future<QueryResult?> _queryResult(
-    {required SearchService searchService}) async {
+Future<QueryResult> _queryResult({required SearchService searchService}) async {
   final ClientGlobalController controller = Get.find();
   final GraphQLClient client = controller.client;
   try {
     var result = await client.query(searchService.queryOptions);
-    if (result.hasException) {
+    if (result.hasException || result.data == null) {
       dev.log("_queryResult: ${result.exception.toString()}");
       throw QueryException;
     }

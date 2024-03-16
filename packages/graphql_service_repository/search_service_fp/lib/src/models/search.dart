@@ -8,7 +8,7 @@ import 'podcaster.dart';
 //利用語言分類 改變
 //根據使用者  追隨清單 改變 SearchServiceForLatestList 資料
 sealed class SearchService {
-  final String? keywords;
+  final String keywords;
   final int numberOfEpisodesResults;
   final int numberOfPodcastResults;
   final List<Podcaster>? podcasterList;
@@ -61,7 +61,8 @@ class SearchServiceForCategories extends SearchService {
             'podcastFirst': numberOfPodcastResults,
             'episodesFirst': numberOfEpisodesResults,
             'episodesSortBy': 'RELEVANCE',
-            // 'airDateForm':
+            'airDateForm': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime(2019)),
+            'airDateTo':  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
           },
         ));
 }

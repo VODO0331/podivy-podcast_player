@@ -77,7 +77,7 @@ query  search(
     }
     episodes(
       first: \$episodesFirst, 
-      filters:{categories:{terms:\$categories},}
+      filters:{categories:{terms:\$categories},airDate:{from: \$airDateForm, to: \$airDateTo}}
       sort:{sortBy: \$episodesSortBy}){
         data{
           id

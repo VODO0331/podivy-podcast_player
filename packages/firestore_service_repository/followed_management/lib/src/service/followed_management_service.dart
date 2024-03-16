@@ -23,30 +23,29 @@ class FollowedManagement {
     required String? podcastImg,
     required String? podcastName,
   }) async {
-  
-      await followed
-          .doc(podcastId)
-          .set({
-            followingPodcastId: podcastId,
-            followingPodcastName: podcastName,
-            followingPodcastImg: podcastImg,
-          })
-          .then((value) => dev.log("Podcast added successfully!"))
-          .catchError((error) {
-            dev.log(error);
-            throw CloudNotCreateException();
-          });
-    
+    await followed
+        .doc(podcastId)
+        .set({
+          followingPodcastId: podcastId,
+          followingPodcastName: podcastName,
+          followingPodcastImg: podcastImg,
+        })
+        .then((value) => dev.log("Podcast added successfully!"))
+        .catchError((error) {
+          dev.log(error);
+          throw CloudNotCreateException();
+        });
   }
 
   Future<void> deleteFollowed({required String podcastId}) async {
-
-      await followed
-          .doc(podcastId)
-          .delete()
-          .then((value) => dev.log("Podcast delete successfully!"))
-          .catchError((error){ dev.log(error);throw CloudDeleteException();});
-    
+    await followed
+        .doc(podcastId)
+        .delete()
+        .then((value) => dev.log("Podcast delete successfully!"))
+        .catchError((error) {
+      dev.log(error);
+      throw CloudDeleteException();
+    });
   }
 
   Future<void> updateFollowed() async {
@@ -69,10 +68,13 @@ class FollowedManagement {
 
   Stream<Iterable<Followed>> allFollowed() {
     try {
-      final allFollowed = followed
-          .snapshots()
-          .map((event) => event.docs.map((doc) => Followed.fromSnapshot(doc)));
-      return allFollowed;
+      return followed.snapshots().map((event) {
+        List<Followed> followedList = [];
+        for (var doc in event.docs) {
+          followedList.add(Followed.fromSnapshot(doc));
+        }
+        return followedList;
+      });
     } catch (_) {
       throw CloudNotGetException();
     }

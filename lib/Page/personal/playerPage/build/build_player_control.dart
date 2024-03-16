@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:list_management_service/personal_list_management.dart';
@@ -5,6 +7,7 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/service/audio_player.dart';
 // import 'package:podivy/util/dialogs/cannot_play.dart';
 import 'package:podivy/util/dialogs/description_dialog.dart';
+import 'package:podivy/util/list_option.dart';
 
 import 'package:search_service/search_service_repository.dart';
 
@@ -14,10 +17,10 @@ class PlayerControl extends StatelessWidget {
   final MyAudioPlayer myAudioPlayer;
   PlayerControl({super.key, required this.myAudioPlayer});
   final ListManagement listManagement = Get.find();
- 
+
   @override
   Widget build(BuildContext context) {
-     final Rx<Duration> currentPosition = myAudioPlayer.position;
+    final Rx<Duration> currentPosition = myAudioPlayer.position;
     return Column(
       children: [
         Obx(() => BuildSongInfo(
@@ -29,12 +32,46 @@ class PlayerControl extends StatelessWidget {
                 color: Colors.blueGrey,
                 borderRadius: BorderRadius.all(Radius.circular(30))),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 SizedBox(height: 20.h),
                 _buildProgressBar(currentPosition),
                 _buildTimeLabels(currentPosition),
                 SizedBox(height: 10.h),
                 _buildControlButtons(),
+                IconButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return Container(
+                        padding: const EdgeInsets.all(8).r,
+                        height: 300.r,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                "選擇項目",
+                                style: TextStyle(fontSize: 20.sp),
+                              ),
+                            ),
+                            ListTile(
+                              leading:const  Icon(Icons.post_add),
+                              title: const Text("添加到清單"),
+                              onTap: () => listDialog(context,  myAudioPlayer.currentEpisodeData.value),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(100)),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                    },
+                    icon: const Icon(Icons.menu_rounded))
               ],
             ),
           ),
@@ -44,7 +81,6 @@ class PlayerControl extends StatelessWidget {
   }
 
   Widget _buildProgressBar(Rx<Duration> currentPosition) {
-    
     return Obx(() => Slider(
           value: currentPosition.value.inSeconds.toDouble(),
           min: 0,
@@ -88,9 +124,10 @@ class PlayerControl extends StatelessWidget {
       children: [
         IconButton(
             icon: const Icon(Icons.skip_previous),
-            onPressed: () =>myAudioPlayer.playPreviousEpisode()),
+            onPressed: () => myAudioPlayer.playPreviousEpisode()),
         const SizedBox(width: 20),
         IconButton(
+          iconSize: 30.r,
           icon: const Icon(Icons.replay_10),
           onPressed: () => myAudioPlayer.durationChanges(false),
         ),
@@ -120,6 +157,7 @@ class PlayerControl extends StatelessWidget {
         ),
         const SizedBox(width: 20),
         IconButton(
+          iconSize: 30.r,
           icon: const Icon(Icons.forward_10),
           onPressed: () => myAudioPlayer.durationChanges(true),
         ),
@@ -130,9 +168,7 @@ class PlayerControl extends StatelessWidget {
       ],
     );
   }
- 
 }
-
 
 class BuildSongInfo extends StatelessWidget {
   final Episode currentEpisodeData;

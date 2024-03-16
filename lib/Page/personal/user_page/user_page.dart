@@ -22,7 +22,7 @@ class UserPage extends StatelessWidget {
   final InformationManagement informationManagement =
       Get.put(InformationManagement());
   final RxBool _isEdit = false.obs;
-
+  final Rx<String> imgData = ''.obs;
   Future<Uint8List?> selectImage() async {
     XFile? image = await _imagePicker.pickImage(
       source: ImageSource.gallery,
@@ -37,11 +37,95 @@ class UserPage extends StatelessWidget {
     return null;
   }
 
+  Widget _buildAppBar() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          iconSize: 35.r,
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(Icons.arrow_back_ios_rounded),
+        ),
+        PopupMenuButton(
+          color: Colors.black87,
+          icon: Icon(
+            Icons.more_vert_sharp,
+            size: 35.r,
+          ),
+          itemBuilder: (context) {
+            return [
+              const PopupMenuItem(
+                value: true,
+                child: Text('編輯'),
+              )
+            ];
+          },
+          onSelected: (value) {
+            _isEdit.value = value;
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEditBt() {
+    return Obx(() {
+      return _isEdit.value
+          ? Positioned(
+              bottom:0,
+              right: 0,
+              child: OutlinedButton(
+                onPressed: () async {
+                  final Uint8List? result = await selectImage();
+
+                  if (result != null) {
+                    imgData.value = base64Encode(result);
+                  }
+                },
+                style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.black87,
+                    shape: const CircleBorder()),
+                child: Icon(
+                  Icons.add_to_photos_outlined,
+                  size: 20.r,
+                ),
+              ),
+            )
+          : const SizedBox(child: nil,);
+    });
+  }
+Widget _buildUserAvatar(){
+  return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20).r,
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Obx(() {
+                              if (imgData.value != "") {
+                                return CircleAvatar(
+                                  backgroundImage:
+                                      MemoryImage(base64Decode(imgData.value)),
+                                  radius: 68.r,
+                                );
+                              } else {
+                                return const CircularProgressIndicator();
+                              }
+                            }),
+                            _buildEditBt(),
+                          ],
+                        ),
+                      ),
+                    );
+}
   @override
   Widget build(BuildContext context) {
     // 獲取用戶email
     final userEmail = AuthService.firebase().currentUser!.email;
-    final Rx<String> imgData = userController.userData.img.obs;
+     imgData.value = userController.userData.img;
     return Scaffold(
       key: UniqueKey(),
       resizeToAvoidBottomInset: false,
@@ -64,87 +148,12 @@ class UserPage extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(12, 60, 12, 0),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          iconSize: 35.r,
-                          onPressed: () {
-                            Get.back();
-                          },
-                          icon: const Icon(Icons.arrow_back_ios_rounded),
-                        ),
-                        PopupMenuButton(
-                          color: Colors.black87,
-                          icon: Icon(
-                            Icons.more_vert_sharp,
-                            size: 35.r,
-                          ),
-                          itemBuilder: (context) {
-                            return [
-                              const PopupMenuItem(
-                                value: true,
-                                child: Text('編輯'),
-                              )
-                            ];
-                          },
-                          onSelected: (value) {
-                            _isEdit.value = value;
-                          },
-                        ),
-                      ],
-                    ),
+                    _buildAppBar(),
                     const Divider(
                       color: Colors.white12,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20).r,
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Obx(() {
-                              if (imgData.value != "") {
-                                return CircleAvatar(
-                                  backgroundImage:
-                                      MemoryImage(base64Decode(imgData.value)),
-                                  radius: 68.r,
-                                );
-                              } else {
-                                return const CircularProgressIndicator();
-                              }
-                            }),
-                            Obx(() {
-                              return _isEdit.value
-                                  ? Positioned(
-                                      bottom: 0,
-                                      right: 0,
-                                      child: OutlinedButton(
-                                        onPressed: () async {
-                                          final Uint8List? result =
-                                              await selectImage();
-
-                                          if (result != null) {
-                                            imgData.value =
-                                                base64Encode(result);
-                                          }
-                                        },
-                                        style: OutlinedButton.styleFrom(
-                                            backgroundColor: Colors.black87,
-                                            shape: const CircleBorder()),
-                                        child: Icon(
-                                          Icons.add_to_photos_outlined,
-                                          size: 20.r,
-                                        ),
-                                      ),
-                                    )
-                                  : nil;
-                            })
-                          ],
-                        ),
-                      ),
-                    )
+                    _buildUserAvatar(),
+                   
                   ],
                 ),
               ),
@@ -216,7 +225,7 @@ class UserPage extends StatelessWidget {
                           )
                         ],
                       )
-                    : nil)
+                    : const SizedBox(child: nil,))
               ],
             ),
           )

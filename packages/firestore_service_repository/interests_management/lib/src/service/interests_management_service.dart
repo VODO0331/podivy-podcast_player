@@ -2,7 +2,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/interests.dart';
 import './constant.dart';
-import 'dart:developer' as dev show log;
+// import 'dart:developer' as dev show log;
 
 import '../error_exception/cloud_storage_exception.dart';
 
@@ -62,8 +62,12 @@ class InterestsManagement {
           .limit(5)
           .snapshots()
           .map((event) {
-        event.docs.map((doc) => dev.log(doc[categoryName]));
-        return event.docs.map((doc) => Interests.fromSnapshot(doc));
+        List<Interests> interestsList = [];
+        for (var doc in event.docs) {
+          interestsList.add(Interests.fromSnapshot(doc));
+        }
+        return interestsList;
+        
       });
     } catch (_) {
       throw CloudNotGetException();

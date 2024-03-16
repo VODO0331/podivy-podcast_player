@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:nil/nil.dart';
 import 'package:podivy/Page/personal/media/build/build_listView.dart';
 import 'package:podivy/widget/background.dart';
 
@@ -56,10 +57,10 @@ class MediaPage extends StatelessWidget {
                               },
                             );
                           } else {
-                            return const Center(child: Text("loading..."));
+                            return nil;
                           }
                         default:
-                          return const Center(child: Text("loading..."));
+                          return nil;
                       }
                     },
                   ),

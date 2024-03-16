@@ -1,35 +1,20 @@
 import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:search_service/search_service_repository.dart';
 
-import '../build/build_search_result.dart';
+import 'build/build_search_result.dart';
 // import 'dart:developer' as dev show log;
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
-
-  @override
-  State<SearchPage> createState() => _SearchPageState();
-}
-
-class _SearchPageState extends State<SearchPage> {
-  String? keywords;
-  late SearchService searchService;
-  late TextEditingController textEditingController;
-
-  @override
-  void initState() {
-    super.initState();
-    searchService = SearchServiceForKeyword(keywords: keywords);
-    textEditingController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    textEditingController.dispose();
-    searchService;
-  }
+class SearchPage extends StatelessWidget {
+  SearchPage({Key? key}) : super(key: key);
+  final RxString keywords = "".obs;
+  final RxBool isSearched = false.obs;
+  final Rx<SearchService> searchService =
+      Get.put(SearchServiceForKeyword(keywords: "").obs);
+  final TextEditingController textEditingController =
+      Get.put(TextEditingController());
 
   Widget _buildTextField() {
     return TextField(
@@ -41,9 +26,9 @@ class _SearchPageState extends State<SearchPage> {
         suffixIcon: IconButton(
           onPressed: () {
             textEditingController.clear();
-            setState(() {
-              keywords = " ";
-            });
+
+            keywords.value = "";
+            isSearched.value = false;
           },
           icon: const Icon(Icons.clear),
         ),
@@ -58,10 +43,17 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
       onSubmitted: (value) {
-        setState(() {
-          searchService = SearchServiceForKeyword(keywords: value);
-          keywords = value;
-        });
+        if (value.trim().isNotEmpty) {
+          searchService.value = SearchServiceForKeyword(keywords: value);
+          keywords.value = value;
+          isSearched.value = true;
+        } else {
+          Get.snackbar(
+            '提示',
+            "請輸入",
+            duration: const Duration(seconds: 1),
+          );
+        }
       },
     );
   }
@@ -69,12 +61,12 @@ class _SearchPageState extends State<SearchPage> {
   Widget _buildSearchLabel() {
     return Align(
       alignment: Alignment.centerLeft,
-      child: Text(
-        "search:${keywords ?? "類型"}",
-        style: TextStyle(
-          fontSize: ScreenUtil().setSp(20),
-        ),
-      ),
+      child: Obx(() => Text(
+            "search:${keywords.value.trim().isNotEmpty ? keywords.value : "類型"}",
+            style: TextStyle(
+              fontSize: ScreenUtil().setSp(20),
+            ),
+          )),
     );
   }
 
@@ -93,10 +85,15 @@ class _SearchPageState extends State<SearchPage> {
               const SizedBox(height: 15),
               _buildSearchLabel(),
               const Divider(endIndent: 170, color: Color(0xFFABC4AA)),
-              Expanded(child: SearchResult(
-                keywords: keywords,
-                searchService: searchService,
-              ),)
+              Expanded(
+                child: SearchResult(
+                  isSearched: isSearched,
+                  searchService: searchService,
+                  onSearched: (keyword) {
+                    keywords.value = keyword;
+                  },
+                ),
+              )
             ],
           ),
         ),

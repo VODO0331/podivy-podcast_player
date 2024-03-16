@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
@@ -14,100 +12,100 @@ class BuildGridView extends StatelessWidget {
     SearchServiceForExploreContent exploreContent =
         SearchServiceForExploreContent(keywords: category);
     // dev.log(type);
-    if(category != ''){
+    if (category != '') {
       return FutureBuilder(
-      future: getSearchData(exploreContent),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return Text('snapshot Error:${snapshot.error}');
-          }
-          final Map? data = snapshot.data;
-          List<Podcaster>? getPodcasts = data?['podcastList'];
-          if (data == null || getPodcasts == null) {
-            return Center(
-              child: Text(
-                '接收資料錯誤',
-                style: TextStyle(fontSize: ScreenUtil().setSp(14)),
+        future: getSearchData(exploreContent),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Text('snapshot Error:${snapshot.error}');
+            }
+            final data = snapshot.data;
+            final getPodcasts = data?.podcastList;
+            if (data == null || getPodcasts == null) {
+              return Center(
+                child: Text(
+                  '接收資料錯誤',
+                  style: TextStyle(fontSize: ScreenUtil().setSp(14)),
+                ),
+              );
+            }
+            return GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.only(left: 50, right: 50, bottom: 50).h,
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 12.0,
+                crossAxisSpacing: 12.0,
               ),
-            );
-          }
-          return GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.only(left: 50, right: 50, bottom: 50).h,
-            shrinkWrap: true,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 12.0,
-              crossAxisSpacing: 12.0,
-            ),
-            itemCount: getPodcasts.length,
-            itemBuilder: (BuildContext context, int index) {
-              final Podcaster podcaster = getPodcasts[index];
-              return GestureDetector(
-                onTap: () {
-                  Get.toNamed('/podcaster', arguments: podcaster.id);
-                },
-                child: Container(
-                    key: UniqueKey(),
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black54,
-                          offset: Offset(2, 5),
-                          blurRadius: 4,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        FadeInImage.assetNetwork(
-                          placeholderCacheWidth: 50,
-                          placeholderCacheHeight: 50,
-                          imageCacheHeight: 150,
-                          imageCacheWidth: 150,
-                          fit: BoxFit.cover,
-                          placeholderFit: BoxFit.cover,
-                          placeholder:
-                              "assets/images/generic/search_loading.gif",
-                          image: podcaster.imageUrl!,
-                          imageErrorBuilder: (context, _, __) {
-                            return Image.asset(
-                              "assets/images/podcaster/defaultPodcaster.jpg",
-                              fit: BoxFit.cover,
-                              cacheHeight: 100,
-                              cacheWidth: 100,
-                            );
-                          },
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            width: double.infinity,
-                            color: const Color(0x7C191B18),
-                            child: Text(
-                              podcaster.title,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style:
-                                  TextStyle(fontSize: ScreenUtil().setSp(16)),
+              itemCount: getPodcasts.length,
+              itemBuilder: (BuildContext context, int index) {
+                final Podcaster podcaster = getPodcasts[index];
+                return GestureDetector(
+                  onTap: () {
+                    Get.toNamed('/podcaster', arguments: podcaster.id);
+                  },
+                  child: Container(
+                      key: UniqueKey(),
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black54,
+                            offset: Offset(2, 5),
+                            blurRadius: 4,
+                            spreadRadius: 1,
+                          ),
+                        ],
+                      ),
+                      child: Stack(
+                        children: [
+                          FadeInImage.assetNetwork(
+                            placeholderCacheWidth: 50,
+                            placeholderCacheHeight: 50,
+                            imageCacheHeight: 150,
+                            imageCacheWidth: 150,
+                            fit: BoxFit.cover,
+                            placeholderFit: BoxFit.cover,
+                            placeholder:
+                                "assets/images/generic/search_loading.gif",
+                            image: podcaster.imageUrl!,
+                            imageErrorBuilder: (context, _, __) {
+                              return Image.asset(
+                                "assets/images/podcaster/defaultPodcaster.jpg",
+                                fit: BoxFit.cover,
+                                cacheHeight: 100,
+                                cacheWidth: 100,
+                              );
+                            },
+                          ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              width: double.infinity,
+                              color: const Color(0x7C191B18),
+                              child: Text(
+                                podcaster.title,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style:
+                                    TextStyle(fontSize: ScreenUtil().setSp(16)),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    )),
-              );
-            },
-          );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
-    );
-    }else{
+                        ],
+                      )),
+                );
+              },
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      );
+    } else {
       return const Center(child: CircularProgressIndicator());
     }
   }

@@ -5,7 +5,7 @@ import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/common/homePage/home_page.dart';
 import 'package:podivy/widget/background.dart';
-import 'package:podivy/Page/personal/media/Page/media_page.dart';
+import 'package:podivy/Page/personal/media/media_page.dart';
 import 'package:podivy/widget/drawer.dart';
 
 class Tabs extends StatefulWidget {

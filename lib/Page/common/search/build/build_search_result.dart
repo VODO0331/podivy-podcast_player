@@ -1,28 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:interests_management_service/interests.management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/common/search/build/build_header_delegate.dart';
 import 'package:podivy/Page/common/search/build/build_result_podcast.dart';
 import 'package:podivy/Page/common/search/build/build_result_episode.dart';
 import 'package:search_service/search_service_repository.dart';
 
-import '../../../../theme/custom_theme.dart';
+typedef KeywordCallback = void Function(String keywords);
 
 class SearchResult extends StatelessWidget {
-  final String? keywords;
-  final SearchService searchService;
-  const SearchResult({super.key, this.keywords, required this.searchService});
+  final KeywordCallback onSearched;
+  final RxBool isSearched;
+  final Rx<SearchService> searchService;
+  const SearchResult({
+    super.key,
+    required this.searchService,
+    required this.isSearched,
+    required this.onSearched,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return keywords != null && keywords != " "
-        ? _SearchResults(
-            searchService: searchService,
-          )
-        : _Recommendations(
-            searchService: searchService,
-            keywords: keywords,
-          );
+    return Obx(() {
+      if (isSearched.value) {
+        return _SearchResults(
+          searchService: searchService.value,
+        );
+      } else {
+        return _Recommendations(
+          recommendCallBack: (searchServiceC) {
+            isSearched.value = true;
+            onSearched(searchServiceC.keywords);
+            searchService.value = searchServiceC;
+          },
+        );
+      }
+    });
   }
 }
 
@@ -42,7 +56,7 @@ class _SearchResults extends StatelessWidget {
             snapshot.error.printInfo;
             return Text('snapshot Error:${snapshot.error}');
           }
-          final Map? data = snapshot.data;
+          final data = snapshot.data;
           if (data == null) {
             return Center(
               child: Text(
@@ -51,17 +65,17 @@ class _SearchResults extends StatelessWidget {
               ),
             );
           }
-          List<Podcaster>? getPodcasts = data['podcastList'];
-          List<Episode>? getEpisodes = data['episodeList'];
+          List<Podcaster>? getPodcasts = data.podcastList;
+          List<Episode>? getEpisodes = data.episodeList;
 
           return CustomScrollView(
             slivers: [
               sliverGroup(
-                "Podcast",
+                "Podcasts",
                 PodcastBuilder(podcasts: getPodcasts),
               ),
               sliverGroup(
-                "Episode",
+                "Episodes",
                 EpisodesBuilder(episodes: getEpisodes),
               ),
             ],
@@ -76,36 +90,48 @@ class _SearchResults extends StatelessWidget {
   }
 }
 
-class _Recommendations extends StatefulWidget {
-  final String? keywords;
-  final SearchService searchService;
-  const _Recommendations(
-      {Key? key, required this.keywords, required this.searchService})
+typedef RecommendCallBack = void Function(SearchService searchService);
+
+class _Recommendations extends StatelessWidget {
+  final RecommendCallBack recommendCallBack;
+  // final SearchService searchService;
+  _Recommendations({Key? key, required this.recommendCallBack})
       : super(key: key);
-
-  @override
-  State<_Recommendations> createState() => _RecommendationsState();
-}
-
-class _RecommendationsState extends State<_Recommendations> {
+  final InterestsManagement _interestsManagement =
+      Get.put(InterestsManagement());
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 10,
-      runSpacing: 5,
-      children: [
-        TextButton(
-          style: textButtonForRecommend,
-          child: const Text('News'),
-          onPressed: () {
-            setState(() {
-              // widget.keywords = 'News';
-              // searchService = SearchServiceForCategories(keywords: 'News');
-            });
-          },
-        ),
-      ],
-    );
+    return StreamBuilder(
+        stream: _interestsManagement.interestsCategory(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasError) {
+              return Text("Error: ${snapshot.error}");
+            } else if (snapshot.hasData) {
+              final interests = snapshot.data!;
+
+              return Wrap(
+                spacing: 10,
+                runSpacing: 5,
+                children: [
+                  for (var interest in interests)
+                    ElevatedButton(
+                        // style: textButtonForRecommend,
+                        child: Text(interest.category),
+                        onPressed: () {
+                          recommendCallBack(SearchServiceForCategories(
+                              keywords: interest.category));
+                        })
+                ],
+              );
+            } else {
+              return const Text("Loading...");
+            }
+          } else {
+            return Text("Connection state: ${snapshot.connectionState}");
+          }
+        });
   }
 }
 

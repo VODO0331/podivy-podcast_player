@@ -128,41 +128,46 @@ class ListManagement {
             listName,
             whereNotIn: ['TagList', 'History'],
           )
-          // .where(listName, isNotEqualTo: 'History')
           .snapshots()
-          .map((event) => event.docs.map((doc) => UserList.fromSnapshot(doc)));
+          .map((event) {
+            List<UserList> userList = [];
+            for (var doc in event.docs) {
+              userList.add(UserList.fromSnapshot(doc));
+            }
+            return userList;
+          });
     } catch (_) {
       throw CloudNotGetException();
     }
   }
 
   Stream<Iterable<Episode>> readListContent(UserList list) {
-  try {
-    return _lists
-        .doc(list.listTitle)
-        .collection('content')
-        .orderBy('createAt', descending: true)
-        .snapshots()
-        .map((event) {
-      final episodes = <Episode>[];
-      for (final e in event.docs) {
-        episodes.add(Episode(
-          id: e.data()[episodeId] as String,
-          podcast: Podcaster(
-            id: e.data()[podcasterId] as String,
-            title: e.data()[podcasterName] as String,
-          ),
-          title: e.data()[episodeName] as String,
-          audioUrl: e.data()[episodeAudio] as String,
-          imageUrl: e.data()[episodeImg] as String,
-          description: e.data()[episodeDescription] as String,
-          airDate: (e.data()[episodeDate].toDate()) as DateTime,
-        ));
-      }
-      return episodes;
-    });
-  } catch (_) {
-    throw CloudNotGetException();
+    try {
+      return _lists
+          .doc(list.listTitle)
+          .collection('content')
+          .orderBy('createAt', descending: true)
+          .snapshots()
+          .map((event) {
+        final episodes = <Episode>[];
+        for (final e in event.docs) {
+          episodes.add(Episode(
+            id: e.data()[episodeId] as String,
+            podcast: Podcaster(
+              id: e.data()[podcasterId] as String,
+              title: e.data()[podcasterName] as String,
+            ),
+            title: e.data()[episodeName] as String,
+            audioUrl: e.data()[episodeAudio] as String,
+            imageUrl: e.data()[episodeImg] as String,
+            description: e.data()[episodeDescription] as String,
+            airDate: (e.data()[episodeDate].toDate()) as DateTime,
+          ));
+        }
+        return episodes;
+      });
+    } catch (_) {
+      throw CloudNotGetException();
+    }
   }
-}
 }

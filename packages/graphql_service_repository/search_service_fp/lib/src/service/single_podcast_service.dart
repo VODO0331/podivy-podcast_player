@@ -11,58 +11,59 @@ import '../models/podcaster.dart';
 //functional programming
 
 Future<Podcaster?> getSinglePodcasterData(Podcaster podcastData) async {
-  return await _getData(podcastData: podcastData) as Podcaster;
+  return await _getData(podcastData: podcastData);
 }
 
 // //完成LatestList 處理
 // Future<List<Podcaster>?> getLatestList(
 //     SearchServiceForLatestList? latestList) async {}
 
-Future<Object?> _getData({
+Future<Podcaster> _getData({
   required Podcaster podcastData,
 }) async {
   try {
     var result = await _queryResult(podcastData: podcastData);
-    if (result == null) return null;
+
     if (result.hasException) {
       dev.log(result.exception.toString());
       throw GenericAuthException();
     }
     Map? getPodcast = result.data?['podcast'];
     List? getEpisodes = getPodcast?['episodes']['data'];
-    final Podcaster? data =
-        singlePodcastDataProcessing(getPodcast, getEpisodes);
-
-    return data; // Podcaster
+    final Podcaster? data = podcasterInfoProcessing(getPodcast, getEpisodes);
+    if (data != null) {
+      return data;
+    } else {
+      throw QueryResultException;
+    }
   } on Exception catch (e) {
     dev.log(e.toString());
     throw QueryResultException;
   }
 }
 
-Podcaster? singlePodcastDataProcessing(
+Podcaster? podcasterInfoProcessing(
   Map? podcast,
   List? episodes,
 ) {
-  if (podcast == null) return null;
+  if (podcast == null || episodes == null) return null;
 
   try {
     List<Episode> episodeList = [];
-    if (episodes != null) {
-      for (var episode in episodes) {
-        episodeList.add(Episode(
-          id: episode['id'],
-          title: episode['title'],
-          imageUrl: podcast['imageUrl'],
-          audioUrl: episode['audioUrl'],
-          description: episode['description'],
-          airDate: DateTime.parse(episode['airDate']),
-          podcast: Podcaster(
-              id: podcast['id'],
-              title: podcast['title'],
-              imageUrl: podcast['imageUrl']),
-        ));
-      }
+
+    for (var episode in episodes) {
+      episodeList.add(Episode(
+        id: episode['id'],
+        title: episode['title'],
+        imageUrl: podcast['imageUrl'],
+        audioUrl: episode['audioUrl'],
+        description: episode['description'],
+        airDate: DateTime.parse(episode['airDate']),
+        podcast: Podcaster(
+            id: podcast['id'],
+            title: podcast['title'],
+            imageUrl: podcast['imageUrl']),
+      ));
     }
 
     List categories = [];
@@ -90,7 +91,7 @@ Podcaster? singlePodcastDataProcessing(
   }
 }
 
-Future<QueryResult?> _queryResult({
+Future<QueryResult> _queryResult({
   required Podcaster podcastData,
 }) async {
   final ClientGlobalController controller = Get.find();
@@ -108,7 +109,7 @@ Future<QueryResult?> _queryResult({
       },
     ));
 
-    if (result.hasException) {
+    if (result.hasException || result.data == null) {
       dev.log(result.exception.toString());
       throw QueryException;
     }

@@ -14,13 +14,11 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
         color: const Color(0xFF708D78),
         borderRadius: BorderRadius.circular(30),
       ),
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: TextStyle(fontSize: ScreenUtil().setSp(20)),
-          ),
-        ],
+      child: Center(
+        child: Text(
+          title,
+          style: TextStyle(fontSize: ScreenUtil().setSp(20)),
+        ),
       ),
     );
   }
