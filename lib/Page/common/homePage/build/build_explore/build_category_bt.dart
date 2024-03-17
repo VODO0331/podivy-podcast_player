@@ -42,8 +42,10 @@ class CategoryButton extends StatelessWidget {
                         style: textButtonForRecommend,
                         child: Text(
                           interest.category,
-                          style:
-                              TextStyle(fontSize: 12.sp, color: Colors.black),
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            // color: Colors.black,
+                          ),
                         ),
                         onPressed: () => selected(interest.category),
                       ),
@@ -69,7 +71,10 @@ Widget prototypeItem() {
       onPressed: null,
       child: Text(
         '',
-        style: TextStyle(fontSize: 12.sp, color: Colors.black),
+        style: TextStyle(
+          fontSize: 12.sp,
+          // color: Colors.black,
+        ),
       ),
     ),
   );

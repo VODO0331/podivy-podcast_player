@@ -29,8 +29,10 @@ class Episode {
       podcast: Podcaster(id: 'id', title: 'title'));
 
   MediaItem toMediaItem() => MediaItem(
-      id: id,
-      title: title,
-      artist: podcast.title,
-      artUri: Uri.parse(podcast.imageUrl!));
+        id: id,
+        title: title,
+        artist: podcast.title,
+        displayDescription: description,
+        artUri: Uri.parse(podcast.imageUrl ?? imageUrl),
+      );
 }

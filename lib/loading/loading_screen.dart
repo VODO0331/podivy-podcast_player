@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:nil/nil.dart';
 import 'package:podivy/loading/loading_screen_controller.dart';
 class LoadingScreen {
   static final LoadingScreen _shared = LoadingScreen._sharedInstance();
@@ -53,7 +52,7 @@ class LoadingScreen {
             minWidth: size.width * 0.5,
           ),
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(10.0),
           ),
           child: Padding(
@@ -66,7 +65,7 @@ class LoadingScreen {
                   const SizedBox(
                     height: 10,
                   ),
-                  const CircularProgressIndicator(),
+                   CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary,),
                   const SizedBox(
                     height: 20,
                   ),
@@ -80,7 +79,7 @@ class LoadingScreen {
                           // style: const TextStyle(color: Colors.black),
                         );
                       } else {
-                        return nil;
+                        return const SizedBox.shrink();
                       }
                     },
                   )

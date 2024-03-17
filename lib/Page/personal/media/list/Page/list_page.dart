@@ -2,21 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:get/get.dart';
-import 'package:podivy/Page/personal/media/list/build/build_episode_list.dart';
-import 'package:podivy/Page/personal/media/build/enum_sort.dart';
+import 'dart:developer' as dev show log;
+
+import '../build/build_list.dart';
 
 class ListPage extends StatelessWidget {
-  const ListPage({super.key});
+  ListPage({super.key});
+  final IconData icon = Get.arguments['icon'];
+  final UserList list = Get.arguments['list'];
+  final ListManagement listManagement = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    final  IconData icon = Get.arguments['icon'];
-    final UserList list = Get.arguments['list'];
-    final ListManagement listManagement = Get.find();
-    final Rx<Sort> sort = Sort.addTimeNewToOld.obs;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 25, 25, 25),
-      appBar: AppBar(),
+      appBar: listAppBar(
+        list: list,
+        listManagement: listManagement,
+      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(12, 0, 12, 10).r,
         child: Column(
@@ -38,100 +41,80 @@ class ListPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: StreamBuilder(
-                stream: listManagement.readListContent(list),
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                    case ConnectionState.active:
-                      if (snapshot.hasData) {
-                        final episodes = snapshot.data;
-                        return Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              textBaseline: TextBaseline.alphabetic,
-                              children: [
-                                Obx(
-                                  () => PopupMenuButton(
-                                    icon: const Icon(Icons.sort_sharp),
-                                    position: PopupMenuPosition.under,
-                                    initialValue: sort.value,
-                                    onSelected: (value) => sort.value = value,
-                                    itemBuilder: (context) {
-                                      return const [
-                                        PopupMenuItem(
-                                          value: Sort.addTimeNewToOld,
-                                          child: Text('新增時間(新>舊)'),
-                                        ),
-                                        PopupMenuItem(
-                                          value: Sort.addTimeOldToNew,
-                                          child: Text('新增時間(舊>新)'),
-                                        ),
-                                        
-                                        PopupMenuItem(
-                                          value: Sort.releaseOldToNew,
-                                          child: Text('發布時間(舊>新)'),
-                                        ),
-                                        PopupMenuItem(
-                                          value: Sort.releaseNewToOld,
-                                          child: Text('發布時間(新>舊)'),
-                                        ),
-                                      ];
-                                    },
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: null,
-                                  child: Text(
-                                    '${episodes!.length} 部',
-                                    style: TextStyle(
-                                        textBaseline: TextBaseline.alphabetic,
-                                        fontSize: 15.r),
-                                  ),
-                                )
-                              ],
-                            ),
-                            const Divider(
-                              thickness: 1,
-                            ),
-                            Expanded(
-                                child: Obx(
-                              () => ListBuilder(
-                                episodes: episodes,
-                                onDelete: (episode, ) async {
-                                  await listManagement.deleteEpisodeFromList(
-                                      list, episode);
-                                },
-                                onTap: (episodes, index) {
-                                  //player
-                                  Get.toNamed('/player', arguments: {
-                                    'episodes': episodes,
-                                    'index': index
-                                  });
-                                },
-                                sort: sort.value,
-                              ),
-                            )),
-                          ],
-                        );
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-
-                    default:
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                  }
-                },
-              ),
-            ),
+                child: BuildList(
+              list: list,
+              listManagement: listManagement,
+            )),
           ],
         ),
       ),
     );
   }
+}
+
+PreferredSizeWidget listAppBar({
+  required UserList list,
+  required ListManagement listManagement,
+}) {
+  return AppBar(
+    leading: IconButton(
+      onPressed: () {
+        Get.back();
+      },
+      icon: const Icon(Icons.arrow_back_ios_rounded),
+    ),
+    actions: [
+      PopupMenuButton(
+        color: Colors.black87,
+        icon: const Icon(
+          Icons.more_vert_sharp,
+        ),
+        itemBuilder: (context) {
+          return [
+            PopupMenuItem(
+              value: true,
+              child: const Text('編輯'),
+              onTap: () async {
+                dev.log("here");
+                await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      TextEditingController textEditingController =
+                          Get.put(TextEditingController());
+                      return AlertDialog(
+                        title: const Text('新播放清單名稱'),
+                        content: TextField(
+                          controller: textEditingController,
+                          decoration:
+                              const InputDecoration(hintText: '請輸入新的List名稱'),
+                          onChanged: (value) {
+                            textEditingController.text = value; // 監聽輸入框的變化
+                          },
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); // 取消
+                            },
+                            child: const Text('取消'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              // 在這裡處理修改List名稱的邏輯，例如更新數據庫等操作
+                              listManagement.updateList(
+                                  list, textEditingController.text);
+                              Get.back();
+                            },
+                            child: const Text('確定'),
+                          ),
+                        ],
+                      );
+                    });
+              },
+            )
+          ];
+        },
+      ),
+    ],
+  );
 }

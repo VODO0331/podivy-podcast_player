@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:podivy/util/list_option.dart';
+import 'package:podivy/widget/extras.dart';
 import 'package:search_service/search_service_repository.dart';
 
 class EpisodesSection extends StatelessWidget {
@@ -21,19 +21,7 @@ class EpisodesSection extends StatelessWidget {
       return const Expanded(child: Text("無內容"));
     } else {
       return Expanded(
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.transparent,
-                Color.fromARGB(124, 44, 39, 29),
-                Color.fromARGB(221, 44, 39, 29),
-              ],
-              stops: [0.4, 0.7, 1],
-            ),
-          ),
+        child: SizedBox(
           child: Padding(
             padding: const EdgeInsets.all(8.0).r,
             child: Column(
@@ -44,7 +32,6 @@ class EpisodesSection extends StatelessWidget {
                     PopupMenuButton(
                       position: PopupMenuPosition.under,
                       icon: const Icon(Icons.sort_sharp),
-                      color: Colors.black54,
                       onSelected: (value) {
                         listSort.value = value;
                       },
@@ -61,7 +48,10 @@ class EpisodesSection extends StatelessWidget {
                         ];
                       },
                     ),
-                    Text('${getEpisodes!.length} 部'),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 9.0).r,
+                      child: Text('${getEpisodes!.length} 部'),
+                    ),
                   ],
                 ),
                 const Divider(
@@ -103,28 +93,8 @@ Widget _buildEpisodesList(
               getEpisode.title,
               overflow: TextOverflow.ellipsis,
             ),
-            trailing: PopupMenuButton(
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem(
-                    child: const Text("添加到清單"),
-                    onTap: () async {
-                      final newResult = Episode(
-                          id: getEpisode.id,
-                          title: getEpisode.title,
-                          audioUrl: getEpisode.audioUrl,
-                          imageUrl: getEpisode.imageUrl,
-                          description: getEpisode.description,
-                          airDate: getEpisode.airDate,
-                          podcast: Podcaster(
-                              id: podcasterDate.id,
-                              title: podcasterDate.title));
-                      await listDialog(context, newResult);
-                    },
-                  ),
-                ];
-              },
-            ),
+            trailing:
+                Extras(episodeData: getEpisode, icon: const Icon(Icons.more_vert)),
             onTap: () {
               Get.toNamed("/player", arguments: {
                 'podcaster': podcasterDate,

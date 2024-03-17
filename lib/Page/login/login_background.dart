@@ -16,6 +16,8 @@ class LoginBackGround extends StatelessWidget {
           Image.asset(
             "assets/images/background/loginBackGround.png",
             fit: BoxFit.cover,
+            cacheHeight: ScreenUtil().screenHeight.toInt(),
+            cacheWidth: ScreenUtil().screenWidth.toInt(),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15).w,

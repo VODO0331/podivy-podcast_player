@@ -43,7 +43,6 @@ dependencies:
   url_launcher: ^6.2.5
   html: ^0.15.4
   image_picker: ^1.0.7
-  nil: ^1.1.1
   font_awesome_flutter: ^10.7.0
   just_audio: ^0.9.36
   # audio_service: ^0.18.12

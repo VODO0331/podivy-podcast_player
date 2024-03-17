@@ -11,7 +11,7 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF708D78),
+        color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.circular(30),
       ),
       child: Center(

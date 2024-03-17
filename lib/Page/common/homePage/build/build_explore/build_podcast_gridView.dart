@@ -51,7 +51,7 @@ class BuildGridView extends StatelessWidget {
                       decoration: const BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black54,
+                            color: Colors.grey,
                             offset: Offset(2, 5),
                             blurRadius: 4,
                             spreadRadius: 1,

@@ -90,7 +90,7 @@ class _SearchResults extends StatelessWidget {
   }
 }
 
-typedef RecommendCallBack = void Function(SearchService searchService);
+typedef RecommendCallBack = void Function(SearchServiceForCategories searchService);
 
 class _Recommendations extends StatelessWidget {
   final RecommendCallBack recommendCallBack;

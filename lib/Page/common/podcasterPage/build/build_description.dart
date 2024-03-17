@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:interests_management_service/interests.management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:nil/nil.dart';
 import 'package:podivy/Page/common/podcasterPage/build/build_profile_information.dart';
 import 'package:search_service/search_service_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -65,7 +64,7 @@ class ShowDescription extends StatelessWidget {
                               : Icons.favorite_border.obs;
                           final Rx<Color> btColor = isFollowed.value
                               ? Colors.red.obs
-                              : Colors.white.obs;
+                              : Colors.grey.obs;
                           return OutlinedButton.icon(
                             style: OutlinedButton.styleFrom(
                                 fixedSize: Size(
@@ -132,7 +131,7 @@ class ShowDescription extends StatelessWidget {
 }
 
 Widget socialButton(SocialLinks? socialLinks) {
-  if (socialLinks == null) return nil;
+  if (socialLinks == null) return const SizedBox.shrink();
 
   Widget buildIconButton(String url, IconData iconData) {
     return IconButton(

@@ -25,7 +25,7 @@ class RouterPage {
     ),
     GetPage(
       name: "/ListPage",
-      page: () => const ListPage(),
+      page: () =>  ListPage(),
       parameters: const {'listTitle': ''},
     ),
     // GetPage(

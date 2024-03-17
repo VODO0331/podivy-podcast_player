@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 class MyBackGround extends StatelessWidget {
   final Widget child;
@@ -10,19 +11,21 @@ class MyBackGround extends StatelessWidget {
     return Container(
       constraints: const BoxConstraints.expand(),
       // padding: EdgeInsets.zero,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFA99B86),
-              Color(0xFF7B7060),
-              Color(0xFF2C271D),
+              Theme.of(context).colorScheme.background,
+              // const Color(0xFFE1CFAF)
+              Theme.of(context)
+                  .colorScheme
+                  .onBackground
+                  .blend(const Color(0xFFDE8F07), 30),
             ],
-            stops: [
-              0.4,
-              0.6,
-              1
+            stops: const [
+              0.2,
+              1,
             ]),
       ),
       child: Stack(
@@ -36,15 +39,6 @@ class MyBackGround extends StatelessWidget {
               fit: BoxFit.cover,
               cacheHeight: 500,
               cacheWidth: 400,
-            ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Image.asset(
-              "assets/images/background/backGroundVine.png",
-              color: bkColor,
-              cacheHeight: 200,
-              cacheWidth: 450,
             ),
           ),
           child

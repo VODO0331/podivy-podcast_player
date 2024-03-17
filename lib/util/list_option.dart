@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:search_service/search_service_repository.dart' show Episode;
+import 'dart:developer' as dev show log;
 
 Future listDialog(BuildContext context, Episode episode) async {
   final ListManagement listManagement = Get.find();
-  late UserList list;
+  final Rxn<UserList> userList = Rxn();
   return await showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -18,17 +19,17 @@ Future listDialog(BuildContext context, Episode episode) async {
           width: 300.w,
           child: ListOption(
             onChanged: (value) {
-              // dev.log(value);
-              list = UserList(listTitle: value);
+              userList.value = value;
+              dev.log(userList.value!.docId);
             },
           ),
         ),
         actions: <Widget>[
           TextButton(
             child: const Text('添加清單'),
-            onPressed: () async{
-              Get.back();
+            onPressed: () async {
               await addListDialog(context, episode);
+              Get.back();
             },
           ),
           TextButton(
@@ -40,7 +41,10 @@ Future listDialog(BuildContext context, Episode episode) async {
           TextButton(
             child: const Text('添加'),
             onPressed: () async {
-              await listManagement.addEpisodeToList(list, episode);
+              if (userList.value != null) {
+                await listManagement.addEpisodeToList(userList.value!, episode);
+              }
+
               Get.back();
             },
           ),
@@ -50,13 +54,13 @@ Future listDialog(BuildContext context, Episode episode) async {
   );
 }
 
-typedef ListOptionCallback = void Function(String list);
+typedef ListOptionCallback = void Function(UserList list);
 
 class ListOption extends StatelessWidget {
   final ListOptionCallback onChanged;
   ListOption({super.key, required this.onChanged});
   final ListManagement listManagement = Get.find();
-  final RxString groupValue = "TagList".obs;
+  final RxString groupValue = "".obs;
 
   Widget optionBuilder(Iterable<UserList>? allList) {
     if (allList == null) {
@@ -76,7 +80,7 @@ class ListOption extends StatelessWidget {
             groupValue: groupValue.value,
             onChanged: (value) {
               groupValue.value = value!;
-              onChanged(value);
+              onChanged(list);
             },
           ),
         );
@@ -104,7 +108,10 @@ class ListOption extends StatelessWidget {
                           groupValue: groupValue.value,
                           onChanged: (value) {
                             groupValue.value = value!;
-                            onChanged(value);
+                            onChanged(UserList(
+                              docId: "TagList",
+                              listTitle: "TagList",
+                            ));
                           },
                         ),
                       ),
@@ -174,13 +181,9 @@ Future addListDialog(BuildContext context, Episode episode) async {
           TextButton(
             child: const Text('添加'),
             onPressed: () async {
-              UserList userList =
-                  UserList(listTitle: textEditingController.text);
+              await listManagement.addList(textEditingController.text, episode);
               textEditingController.text = "";
-              await listManagement.addEpisodeToList(userList, episode);
               Get.back();
-              
-
             },
           ),
         ],

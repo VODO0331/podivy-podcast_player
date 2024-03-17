@@ -61,6 +61,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 autocorrect: false,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
+                  fillColor: Colors.black45,
                   hintText: '請輸入電子郵件',
                   focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFFABC4AA))),

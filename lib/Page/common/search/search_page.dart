@@ -19,7 +19,7 @@ class SearchPage extends StatelessWidget {
   Widget _buildTextField() {
     return TextField(
       controller: textEditingController,
-      cursorColor: const Color(0xFFABC4AA),
+      cursorColor: Theme.of(Get.context!).primaryColor,
       textInputAction: TextInputAction.search,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.search),
@@ -34,12 +34,13 @@ class SearchPage extends StatelessWidget {
         ),
         label: const Text(
           "search",
-          style: TextStyle(color: Color.fromARGB(255, 110, 127, 109)),
         ),
         border: const OutlineInputBorder(),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFFABC4AA)),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(Get.context!).primaryColor,
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
         ),
       ),
       onSubmitted: (value) {
@@ -76,7 +77,7 @@ class SearchPage extends StatelessWidget {
       body: Container(
         width: ScreenUtil().screenWidth,
         height: ScreenUtil().screenHeight,
-        color: const Color.fromARGB(196, 5, 8, 5),
+        color: Theme.of(Get.context!).hoverColor,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
           child: Column(

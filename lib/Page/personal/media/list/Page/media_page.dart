@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:nil/nil.dart';
 import 'package:podivy/Page/personal/media/build/build_listView.dart';
 import 'package:podivy/widget/background.dart';
 
@@ -15,7 +14,7 @@ class MediaPage extends StatelessWidget {
     return MyBackGround(
       bkColor: const Color.fromRGBO(255, 255, 255, 1),
       child: Scaffold(
-        backgroundColor: Colors.black87,
+        backgroundColor: Theme.of(context).colorScheme.background.withOpacity(0.9),
         body: Padding(
             padding: const EdgeInsets.only(
               top: 100,
@@ -57,10 +56,10 @@ class MediaPage extends StatelessWidget {
                               },
                             );
                           } else {
-                            return nil;
+                            return const SizedBox.shrink();
                           }
                         default:
-                          return nil;
+                          return const SizedBox.shrink();
                       }
                     },
                   ),
@@ -79,7 +78,7 @@ Widget _defaultOption() {
       margin: const EdgeInsets.all(10),
       elevation: 30,
       shadowColor: Colors.grey,
-      color: const Color(0xFFABC4AA),
+      color: Theme.of(Get.context!).colorScheme.primary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -91,7 +90,7 @@ Widget _defaultOption() {
               ),
               onPressed: () {
                 Get.toNamed('/ListPage', arguments: {
-                  "list": UserList(listTitle: "TagList"),
+                  "list": UserList(docId: "TagList",listTitle: "TagList"),
                   "icon": Icons.bookmark_border_outlined,
                 });
               },
@@ -119,7 +118,7 @@ Widget _defaultOption() {
               ),
               onPressed: () {
                 Get.toNamed('/ListPage', arguments: {
-                  "list": UserList(listTitle: "History"),
+                  "list": UserList(docId: "History",listTitle: "History"),
                   "icon": Icons.history,
                 });
               },

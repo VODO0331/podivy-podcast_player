@@ -8,7 +8,6 @@ import 'package:information_management_service/information_management_service.da
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:nil/nil.dart';
 
 // import 'dart:developer' as dev show log;
 class UserPage extends StatelessWidget {
@@ -93,7 +92,7 @@ class UserPage extends StatelessWidget {
                 ),
               ),
             )
-          : const SizedBox(child: nil,);
+          : const SizedBox.shrink();
     });
   }
 Widget _buildUserAvatar(){
@@ -225,7 +224,7 @@ Widget _buildUserAvatar(){
                           )
                         ],
                       )
-                    : const SizedBox(child: nil,))
+                    :const SizedBox.shrink())
               ],
             ),
           )

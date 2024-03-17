@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
@@ -44,9 +42,11 @@ class _LoginPageState extends State<LoginPage> {
           autocorrect: false,
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
+            fillColor: Colors.black45,
             hintText: '輸入電子郵件',
-            focusedBorder: UnderlineInputBorder(
+            border: UnderlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFFABC4AA))),
+            // focusedBorder: OutlineInputBorder(),
           ),
         ),
         const SizedBox(
@@ -60,8 +60,9 @@ class _LoginPageState extends State<LoginPage> {
           autocorrect: false,
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
+            fillColor: Colors.black45,
             hintText: '輸入密碼',
-            focusedBorder: UnderlineInputBorder(
+            border: UnderlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFFABC4AA))),
           ),
         ),
@@ -74,7 +75,10 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         TextButton(
           style: textButtonForRecommend,
-          child: Text('登入',style: TextStyle(fontSize: 15.sp,color: Colors.black),),
+          child: Text(
+            '登入',
+            style: TextStyle(fontSize: 15.sp, color: Colors.black),
+          ),
           onPressed: () async {
             final email = _email.text;
             final password = _password.text;
@@ -112,16 +116,6 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ],
     );
-  }
-
-  Future<Uint8List?> vineImage() async {
-    final list = await imageCompressor.compressImage(
-        'assets/images/background/bkvine3.png',
-        minh: 80,
-        minw: 80,
-        quality: 60,
-        format: ImageFormat.png);
-    return list;
   }
 
   @override
@@ -186,7 +180,8 @@ class _LoginPageState extends State<LoginPage> {
           ),
           Container(
             decoration: const BoxDecoration(
-                color: Colors.black54, ),
+              color: Colors.black54,
+            ),
             padding: const EdgeInsets.all(12.0).r,
             width: 500.w,
             height: 395.h,
@@ -207,7 +202,9 @@ class _LoginPageState extends State<LoginPage> {
                 buttonGroup(),
               ],
             ),
-          ).asGlass(tintColor: Colors.orange,clipBorderRadius: BorderRadius.circular(30)),
+          ).asGlass(
+              tintColor: Colors.orange,
+              clipBorderRadius: BorderRadius.circular(30)),
         ],
       ),
     );

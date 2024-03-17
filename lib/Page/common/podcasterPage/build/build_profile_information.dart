@@ -8,8 +8,6 @@ import 'package:podivy/Controller/widget_animation_controller.dart';
 import 'package:podivy/Page/common/podcasterPage/build/build_description.dart';
 import 'package:search_service/search_service_repository.dart';
 
-
-
 class ProfileInformation extends StatelessWidget {
   final Podcaster podcasterData;
   ProfileInformation({super.key, required this.podcasterData});
@@ -18,7 +16,7 @@ class ProfileInformation extends StatelessWidget {
   final FollowedManagement _followedStorageService =
       Get.put(FollowedManagement());
   // final InterestsManagement _interestsManagement = Get.find();
-   final InterestsManagement _interestsManagement =
+  final InterestsManagement _interestsManagement =
       Get.put(InterestsManagement());
   @override
   Widget build(BuildContext context) {
@@ -30,9 +28,8 @@ class ProfileInformation extends StatelessWidget {
             child: AnimatedBuilder(
               animation: _widgetController.animationController!,
               builder: (context, child) {
-                return Container(
+                return SizedBox(
                   height: _widgetController.heightAnimation!.value.h,
-                  color: Colors.black45,
                   child: Column(
                     children: [
                       Row(
@@ -99,6 +96,7 @@ class ProfileInformation extends StatelessWidget {
                     ],
                   ),
                 ).asGlass(
+                  tintColor: Theme.of(context).colorScheme.background,
                   clipBorderRadius: BorderRadius.circular(30),
                 );
               },
@@ -185,10 +183,13 @@ Widget _buildTitleTextScroll(
 Widget _buildShaderMask(String imageUrl) {
   return ShaderMask(
     shaderCallback: (Rect bounds) {
-      return const LinearGradient(
+      return LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [Colors.black, Colors.transparent],
+        colors: [
+          Theme.of(Get.context!).dialogBackgroundColor,
+          Colors.transparent,
+        ],
       ).createShader(bounds);
     },
     blendMode: BlendMode.dstIn,
@@ -200,5 +201,3 @@ Widget _buildShaderMask(String imageUrl) {
     ),
   );
 }
-
-

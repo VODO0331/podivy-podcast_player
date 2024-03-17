@@ -7,3 +7,5 @@ const String episodeName = "episode_title";
 const String episodeAudio = "episode_Audio";
 const String episodeDescription = "episode_Description";
 const String episodeDate = "episode_Date";
+
+const String documentId = "doc_id";

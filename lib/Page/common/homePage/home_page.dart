@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:information_management_service/information_management_service.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
-
 //節省token
 // import 'package:podivy/widget/carousel.dart';
 
@@ -13,7 +12,7 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
- 
+
   @override
   Widget build(BuildContext context) {
     final InformationController userController = Get.find();
@@ -68,7 +67,10 @@ Widget appBar(InformationController userController) {
 
                     if (data.img != "") {
                       return CircleAvatar(
-                        backgroundImage: MemoryImage(base64Decode(data.img)),
+                        backgroundImage: ResizeImage(
+                            MemoryImage(base64Decode(data.img)),
+                            height: 50,
+                            width: 50),
                         radius: 15.r,
                       );
                     } else {
@@ -87,28 +89,65 @@ Widget appBar(InformationController userController) {
       Expanded(
         flex: 7,
         child: Padding(
-          padding: const EdgeInsets.only(right: 8.0).w,
-          child: ElevatedButton.icon(
-            style: ButtonStyle(
-              alignment: Alignment.centerLeft,
-              backgroundColor: MaterialStateProperty.all(Colors.black45),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+            padding: const EdgeInsets.only(right: 8.0).w,
+            child: GestureDetector(
+              onTap: () => Get.toNamed('/search'),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6).r,
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                    color: Theme.of(Get.context!).colorScheme.background,
+                    // border: Border.all(
+                    //     color: Theme.of(Get.context!).colorScheme.onBackground,
+                    //     width: 1.5),
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 10,
+                          // spreadRadius: 0.1,
+                          offset: Offset(2, 3))
+                    ]),
+                child: Icon(
+                  Icons.search,
+                  color: Theme.of(Get.context!).colorScheme.primary,
                 ),
               ),
+            )
+            // ElevatedButton.icon(
+            //   style: ButtonStyle(
+            //     shadowColor: MaterialStateProperty.all(
+            //       Theme.of(Get.context!)
+            //           .colorScheme
+            //           .onBackground
+            //           .withOpacity(0.7),
+            //     ),
+            //     alignment: Alignment.centerLeft,
+            //     // backgroundColor: MaterialStateProperty.all(
+            //     //   Theme.of(Get.context!)
+            //     //       .colorScheme
+            //     //       .onBackground
+            //     //       .withOpacity(0.7),
+
+            //     // ),
+            //     shape: MaterialStateProperty.all(
+            //       RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(20),
+            //       ),
+            //     ),
+            //   ),
+            //   icon: Icon(
+            //     Icons.search,
+            //     color: Theme.of(Get.context!).colorScheme.primary,
+            //   ),
+            //   label: const Text(""),
+            //   onPressed: () async {
+            //     Get.toNamed('/search');
+            //     // await getAccessToken();
+            //   },
+            // ),
             ),
-            icon: const Icon(
-              Icons.search,
-              color: Colors.white,
-            ),
-            label: const Text(""),
-            onPressed: () async {
-              Get.toNamed('/search');
-              // await getAccessToken();
-            },
-          ),
-        ),
       )
     ],
   );

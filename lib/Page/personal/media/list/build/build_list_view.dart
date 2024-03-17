@@ -6,12 +6,12 @@ import 'package:search_service/search_service_repository.dart' show Episode;
 typedef EpisodeCallBack = void Function(Episode episode);
 typedef PlayerCallBack = void Function(List<Episode> episodes, int index);
 
-class ListBuilder extends StatelessWidget {
+class BuildListView extends StatelessWidget {
   final Iterable<Episode> episodes;
   final EpisodeCallBack onDelete;
   final PlayerCallBack onTap;
   final Sort sort;
-  const ListBuilder(
+  const BuildListView(
       {super.key,
       required this.episodes,
       required this.onDelete,

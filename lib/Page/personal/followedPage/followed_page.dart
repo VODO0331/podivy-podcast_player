@@ -29,16 +29,16 @@ class _FollowedPageState extends State<FollowedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // backgroundColor:Color.fromARGB(255, 113, 96, 90),
+        backgroundColor:Theme.of(context).colorScheme.inversePrimary,
         appBar: AppBar(
-          foregroundColor: Colors.black87,
-          backgroundColor: const Color(0xFFEAD1AB),
+          // foregroundColor: Colors.black87,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text(
             "Following",
             style: GoogleFonts.borel(
               fontSize: 20.r,
               fontWeight: FontWeight.w900,
-              color: const Color(0xFF745E4D),
+              color: Theme.of(context).colorScheme.onPrimary
             ),
           ),
           centerTitle: true,

@@ -55,10 +55,12 @@ class MyDrawer extends StatelessWidget {
   Widget _buildVineImage(String imagePath) {
     return Image.asset(
       imagePath,
-      cacheHeight: 200,
-      cacheWidth: 150,
+      width: 200,
+      height: 190,
+      cacheHeight: 250,
+      cacheWidth: 240,
       fit: BoxFit.cover,
-      color: const Color.fromARGB(255, 146, 146, 146),
+      color:  Theme.of(Get.context!).colorScheme.onBackground.withOpacity(0.7),
     );
   }
 
@@ -104,10 +106,10 @@ class MyDrawer extends StatelessWidget {
           height: 0.6.h,
           width: 200.w,
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: Colors.grey,
             boxShadow: [
               BoxShadow(
-                color: Colors.white,
+                color: Colors.grey,
                 spreadRadius: 1,
                 blurRadius: 4,
               ),
@@ -124,7 +126,7 @@ class MyDrawer extends StatelessWidget {
       endIndent: ScreenUtil().setWidth(120),
       height: 1,
       thickness: 2.0,
-      color: Colors.white10,
+      color: Theme.of(Get.context!).colorScheme.onBackground,
     );
   }
 

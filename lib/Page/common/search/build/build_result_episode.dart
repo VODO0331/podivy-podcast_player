@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:podivy/util/list_option.dart';
+import 'package:podivy/widget/extras.dart';
 import 'package:search_service/search_service_repository.dart';
 
 class EpisodesBuilder extends StatelessWidget {
@@ -51,39 +51,9 @@ class EpisodesBuilder extends StatelessWidget {
                   },
                 ),
               ),
-              trailing: IconButton(
-                icon: const Icon(Icons.more_vert_sharp),
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return Container(
-                        padding: const EdgeInsets.all(8).r,
-                        height: 300.r,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Align(
-                              alignment: Alignment.topCenter,
-                              child: Text(
-                                "選擇項目",
-                                style: TextStyle(fontSize: 20.sp),
-                              ),
-                            ),
-                            ListTile(
-                              leading:const  Icon(Icons.post_add),
-                              title: const Text("添加到清單"),
-                              onTap: () => listDialog(context, episode),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100)),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+              trailing: Extras(
+                  episodeData: episode,
+                  icon: const Icon(Icons.more_vert_outlined)),
               onTap: () {
                 Get.toNamed('/player', arguments: {
                   'episodes': episodes,

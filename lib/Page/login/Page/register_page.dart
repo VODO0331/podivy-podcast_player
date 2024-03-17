@@ -43,8 +43,9 @@ class _RegisterPageState extends State<RegisterPage> {
           autocorrect: false,
           keyboardType: TextInputType.emailAddress,
           decoration: const InputDecoration(
+            fillColor: Colors.black45,
             hintText: '輸入電子郵件',
-            focusedBorder: UnderlineInputBorder(
+            border: UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFABC4AA))
             ),
           ),
@@ -54,14 +55,16 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
         TextField(
           controller: _password,
+          
           obscureText: true,
           enableSuggestions: false,
           autocorrect: false,
           autofocus: true,
           keyboardType: TextInputType.visiblePassword,
           decoration: const InputDecoration(
+            fillColor: Colors.black45,
             hintText: '輸入密碼',
-            focusedBorder: UnderlineInputBorder(
+            border: UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFABC4AA))
             ),
           ),
@@ -76,8 +79,9 @@ class _RegisterPageState extends State<RegisterPage> {
           autocorrect: false,
           keyboardType: TextInputType.visiblePassword,
           decoration: const InputDecoration(
+            fillColor: Colors.black45,
             hintText: '再次輸入密碼',
-            focusedBorder: UnderlineInputBorder(
+            border: UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFABC4AA))
             ),
           ),

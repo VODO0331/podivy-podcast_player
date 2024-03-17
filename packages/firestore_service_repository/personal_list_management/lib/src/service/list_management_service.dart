@@ -20,22 +20,22 @@ class ListManagement {
 
   Future<void> initialization() async {
     if (await _lists.doc("TagList").get().then((value) => !value.exists)) {
-      await _user
-          .doc(_userId)
-          .collection("lists")
-          .doc('TagList')
-          .set({listName: 'TagList'});
+      await _user.doc(_userId).collection("lists").doc('TagList').set({
+        documentId: "TagList",
+        listName: 'TagList',
+        "createAt": Timestamp.now(),
+      });
     }
     if (await _lists.doc("History").get().then((value) => !value.exists)) {
-      await _user
-          .doc(_userId)
-          .collection("lists")
-          .doc('History')
-          .set({listName: 'History'});
+      await _user.doc(_userId).collection("lists").doc('History').set({
+        documentId: "History",
+        listName: 'History',
+        "createAt": Timestamp.now(),
+      });
     }
   }
 
-  Future<void> addListToHistory(Episode episode) async {
+  Future<void> addToHistory(Episode episode) async {
     final historyList = _user
         .doc(_userId)
         .collection("lists")
@@ -51,59 +51,102 @@ class ListManagement {
       final oldestDoc = data.docs.first;
       await historyList.doc(oldestDoc.id).delete();
     }
-    await addEpisodeToList(UserList(listTitle: 'History'), episode);
+    await addEpisodeToList(
+        UserList(docId: "History", listTitle: "History"), episode);
   }
 
   //**注意** firestore 再刪除doc時 不會刪除子集合
   //所以List被刪除時其內容還會存在
   Future<void> deleteList(UserList list) async {
     await _lists
-        .doc(list.listTitle)
+        .doc(list.docId)
         .collection('content')
-        .where(listName, isEqualTo: list.listTitle)
+        .where(documentId, isEqualTo: list.docId)
         .get()
         .then((value) async {
       //刪除List content
       for (var doc in value.docs) {
         await _lists
-            .doc(list.listTitle)
+            .doc(list.docId)
             .collection('content')
             .doc(doc.id)
             .delete();
       }
 
-      await _lists.doc(list.listTitle).delete(); //刪除List
+      await _lists.doc(list.docId).delete(); //刪除List
     });
   }
 
   Future<void> addEpisodeToList(UserList list, Episode episode) async {
-    final DocumentReference<Map<String, dynamic>> targetDoc =
-        _lists.doc(list.listTitle).collection('content').doc(episode.id);
-    await _lists.doc(list.listTitle).set({listName: list.listTitle});
+    if (await _lists
+        .doc(list.docId)
+        .collection('content')
+        .doc(episode.id)
+        .get()
+        .then((value) => !value.exists)) {
+      final DocumentReference<Map<String, dynamic>> targetDoc =
+          _lists.doc(list.docId).collection('content').doc(episode.id);
+      // await _lists.doc(list.listTitle).set({listName: list.listTitle});
+      //新增Episode
+      await targetDoc
+          .set({
+            listName: list.listTitle,
+            episodeId: episode.id,
+            podcasterId: episode.podcast.id,
+            podcasterName: episode.podcast.title,
+            episodeImg: episode.imageUrl,
+            episodeName: episode.title,
+            episodeAudio: episode.audioUrl,
+            episodeDescription: episode.description,
+            episodeDate: episode.airDate,
+            "createAt": Timestamp.now(),
+          })
+          .then((value) => dev.log("Episode added successfully!"))
+          .catchError((e) {
+            dev.log(e);
+            throw CloudNotCreateException();
+          });
+    } else {
+      dev.log("has been add");
+    }
+  }
+
+  Future<void> addList(String listTitle, Episode episode) async {
+    final newList = _lists.doc();
+    await newList.set({
+      documentId: newList.id,
+      listName: listTitle,
+      "createAt": Timestamp.now(),
+    }).then((_) async {
+      await _lists
+          .doc(newList.id)
+          .collection('content')
+          .doc(episode.id)
+          .set({
+            documentId: newList.id,
+            listName: listTitle,
+            episodeId: episode.id,
+            podcasterId: episode.podcast.id,
+            podcasterName: episode.podcast.title,
+            episodeImg: episode.imageUrl,
+            episodeName: episode.title,
+            episodeAudio: episode.audioUrl,
+            episodeDescription: episode.description,
+            episodeDate: episode.airDate,
+            "createAt": Timestamp.now(),
+          })
+          .then((value) => dev.log("Episode added successfully!"))
+          .catchError((e) {
+            dev.log(e);
+            throw CloudNotCreateException();
+          });
+    });
     //新增Episode
-    await targetDoc
-        .set({
-          listName: list.listTitle,
-          episodeId: episode.id,
-          podcasterId: episode.podcast.id,
-          podcasterName: episode.podcast.title,
-          episodeImg: episode.imageUrl,
-          episodeName: episode.title,
-          episodeAudio: episode.audioUrl,
-          episodeDescription: episode.description,
-          episodeDate: episode.airDate,
-          "createAt": Timestamp.now(),
-        })
-        .then((value) => dev.log("Episode added successfully!"))
-        .catchError((e) {
-          dev.log(e);
-          throw CloudNotCreateException();
-        });
   }
 
   Future<void> deleteEpisodeFromList(UserList list, Episode episode) async {
     final DocumentReference<Map<String, dynamic>> targetDoc =
-        _lists.doc(list.listTitle).collection('content').doc(episode.id);
+        _lists.doc(list.docId).collection('content').doc(episode.id);
     dev.log(episode.id);
     await targetDoc
         .delete()
@@ -118,7 +161,7 @@ class ListManagement {
     final Map<Object, Object?> updates = <Object, Object?>{
       listName: newListTitle
     };
-    await _lists.doc(oldList.listTitle).update(updates);
+    await _lists.doc(oldList.docId).update(updates);
   }
 
   Stream<Iterable<UserList>> readAllList() {
@@ -126,6 +169,7 @@ class ListManagement {
       return _lists
           .where(
             listName,
+            
             whereNotIn: ['TagList', 'History'],
           )
           .snapshots()
@@ -137,6 +181,7 @@ class ListManagement {
             return userList;
           });
     } catch (_) {
+      dev.log(_.toString());
       throw CloudNotGetException();
     }
   }
@@ -144,7 +189,7 @@ class ListManagement {
   Stream<Iterable<Episode>> readListContent(UserList list) {
     try {
       return _lists
-          .doc(list.listTitle)
+          .doc(list.docId)
           .collection('content')
           .orderBy('createAt', descending: true)
           .snapshots()
