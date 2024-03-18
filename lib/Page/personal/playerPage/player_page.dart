@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 import 'package:podivy/Page/personal/playerPage/build/build_player_control.dart';
-import 'package:podivy/service/audio_player.dart';
 import 'package:search_service/search_service_repository.dart';
 
 import 'build/build_episode_info.dart';

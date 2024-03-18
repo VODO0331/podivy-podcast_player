@@ -1,8 +1,7 @@
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:followed_management_service/followed_management.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:interests_management_service/interests.management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/common/podcasterPage/build/build_profile_information.dart';
 import 'package:search_service/search_service_repository.dart';

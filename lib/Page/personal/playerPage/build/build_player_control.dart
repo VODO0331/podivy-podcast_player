@@ -1,8 +1,8 @@
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:podivy/service/audio_player.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 // import 'package:podivy/util/dialogs/cannot_play.dart';
 import 'package:podivy/widget/extras.dart';
 

@@ -1,8 +1,8 @@
 
 
 
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:list_management_service/personal_list_management.dart';
 
 typedef ListCallback = void Function(UserList list);
 

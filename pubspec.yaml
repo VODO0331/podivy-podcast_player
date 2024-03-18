@@ -54,20 +54,18 @@ dependencies:
   authentication_repository:
     path: packages/authentication_repository
   
-  followed_management_service:
-    path: packages/firestore_service_repository/followed_management
+  firestore_service_repository:
+    path: packages/firestore_service_repository
   
   search_service:
     path: packages/graphql_service_repository/search_service_fp
 
-  information_management_service:
-    path: packages/firestore_service_repository/personal_information_management
 
-  list_management_service:
-    path: packages/firestore_service_repository/personal_list_management
+
+  my_audio_player:
+    path: packages/audio_player
+
   
-  interests_management_service:
-    path: packages/firestore_service_repository/interests_management
   
   
     

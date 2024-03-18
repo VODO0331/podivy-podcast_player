@@ -1,0 +1,33 @@
+name: firestore_service_repository
+description:  package which manages the firestore.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  get: 
+  cloud_firestore: ^4.15.8
+  flutter_image_compress: ^2.1.0
+  
+  authentication_repository:
+      path: ../authentication_repository
+
+  search_service:
+      path: ../graphql_service_repository/search_service_fp
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+      - assets/images/userPic/

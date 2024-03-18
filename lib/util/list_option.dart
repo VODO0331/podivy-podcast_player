@@ -1,6 +1,6 @@
+import 'package:firestore_service_repository/firestore_service_repository.dart' ;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:list_management_service/personal_list_management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:search_service/search_service_repository.dart' show Episode;
 import 'dart:developer' as dev show log;

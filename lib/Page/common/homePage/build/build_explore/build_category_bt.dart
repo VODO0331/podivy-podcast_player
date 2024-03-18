@@ -1,6 +1,6 @@
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:interests_management_service/interests.management.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/theme/custom_theme.dart';
 

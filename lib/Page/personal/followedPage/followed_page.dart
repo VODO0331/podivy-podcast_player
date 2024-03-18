@@ -1,7 +1,7 @@
 
 
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:followed_management_service/followed_management.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/personal/followedPage/build/build_followed_list.dart';
