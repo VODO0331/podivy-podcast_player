@@ -14,6 +14,7 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final InformationController userController = Get.find();
     return Drawer(
+      backgroundColor:Get.isDarkMode ? null:Theme.of(context).colorScheme.primaryContainer,
       child: Stack(
         children: [
           _buildBackgroundImages(),
@@ -54,10 +55,10 @@ class MyDrawer extends StatelessWidget {
   Widget _buildVineImage(String imagePath) {
     return Image.asset(
       imagePath,
-      width: 200,
-      height: 190,
-      cacheHeight: 250,
-      cacheWidth: 240,
+      width: 200.r,
+      height: 190.r,
+      cacheHeight: 250.r.toInt(),
+      cacheWidth: 240.r.toInt(),
       fit: BoxFit.cover,
       color:  Theme.of(Get.context!).colorScheme.onBackground.withOpacity(0.7),
     );
@@ -121,11 +122,11 @@ class MyDrawer extends StatelessWidget {
 
   Widget _buildDivider() {
     return Divider(
-      indent: ScreenUtil().setWidth(10),
-      endIndent: ScreenUtil().setWidth(120),
+      indent: 10.w,
+      endIndent: 70.w,
       height: 1,
       thickness: 2.0,
-      color: Theme.of(Get.context!).colorScheme.onBackground,
+      color: ThemeData.light().dividerColor,
     );
   }
 
@@ -136,13 +137,16 @@ class MyDrawer extends StatelessWidget {
             icon: Icons.mic,
             title: '追隨',
             tileOption: () {
-              Get.toNamed("/followed");
+              Get.offAndToNamed("/followed");
+              
             }),
         DrawerItem(
             icon: Icons.access_alarm_rounded,
             title: 'test2',
             tileOption: () {}),
-        DrawerItem(icon: Icons.settings, title: '設定', tileOption: () {}),
+        DrawerItem(icon: Icons.settings, title: '設定', tileOption: () {
+          Get.offAndToNamed(('/setting'));
+        }),
       ],
     );
   }
@@ -189,13 +193,16 @@ class DrawerItem extends StatelessWidget {
       children: [
         ListTile(
           leading: Icon(icon, size: 25.w),
+          
           title: Text(title),
           onTap: tileOption,
         ),
-        const Divider(
+         Divider(
           height: 1,
-          thickness: 2.0,
-          color: Color(0x0DFFFFFF),
+          thickness: 1.0,
+          indent: 10.w,
+          endIndent:30.w,
+          color: ThemeData().dividerColor,
         ),
       ],
     );

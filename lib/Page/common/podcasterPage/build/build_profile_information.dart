@@ -23,7 +23,7 @@ class ProfileInformation extends StatelessWidget {
       children: [
         _buildShaderMask(podcasterData.imageUrl!),
         Padding(
-            padding: const EdgeInsets.fromLTRB(15, 60, 15, 0).r,
+            padding: const EdgeInsets.all(9).r,
             child: AnimatedBuilder(
               animation: _widgetController.animationController!,
               builder: (context, child) {
@@ -186,7 +186,7 @@ Widget _buildShaderMask(String imageUrl) {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          Theme.of(Get.context!).dialogBackgroundColor,
+          Theme.of(Get.context!).colorScheme.background,
           Colors.transparent,
         ],
       ).createShader(bounds);

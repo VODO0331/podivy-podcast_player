@@ -5,6 +5,7 @@ import 'package:podivy/util/img_compress.dart';
 import 'package:podivy/util/dialogs/error_dialog.dart';
 
 import '../../../theme/custom_theme.dart';
+import '../../../util/languageDialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -36,33 +37,51 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       children: [
         TextField(
+          style: const TextStyle(
+            color: Colors.white,
+          ),
           cursorColor: Colors.white,
+          cursorErrorColor: const Color(0xFFABC4AA),
           controller: _email,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.emailAddress,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            hintStyle: const TextStyle(color: Colors.grey),
             fillColor: Colors.black45,
             hintText: '輸入電子郵件',
-            border: UnderlineInputBorder(
-                borderSide: BorderSide(color: Color(0xFFABC4AA))),
-            // focusedBorder: OutlineInputBorder(),
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  const BorderSide(color: Color(0xFFABC4AA), width: 2.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            // border: const OutlineInputBorder(
+            //     borderSide: BorderSide(color: Color(0xFFABC4AA))),
           ),
         ),
         const SizedBox(
           height: 15,
         ),
         TextField(
+          style: const TextStyle(
+            color: Colors.white,
+          ),
           cursorColor: Colors.white,
           controller: _password,
           obscureText: true,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.emailAddress,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            hintStyle: const TextStyle(color: Colors.grey),
             fillColor: Colors.black45,
             hintText: '輸入密碼',
-            border: UnderlineInputBorder(
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  const BorderSide(color: Color(0xFFABC4AA), width: 2.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            border: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Color(0xFFABC4AA))),
           ),
         ),
@@ -88,6 +107,17 @@ class _LoginPageState extends State<LoginPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            IconButton.filled(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateColor.resolveWith(
+                        (states) => const Color(0xFFABC4AA))),
+                onPressed: () async {
+                  await languageDialog();
+                },
+                icon: const Icon(
+                  Icons.language,
+                  color: Colors.black87,
+                )),
             TextButton(
               onPressed: () {
                 context.read<AuthBloc>().add(const AuthEventShouldRegister());

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/common/homePage/home_page.dart';
 import 'package:podivy/widget/background.dart';
-import 'package:podivy/Page/personal/media/list/Page/media_page.dart';
+import 'package:podivy/Page/personal/media/media_page.dart';
 import 'package:podivy/widget/drawer.dart';
 
 class Tabs extends StatefulWidget {
@@ -45,6 +45,7 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
           ),
           bottomNavigationBar: _getBottomBar(),
           drawer: const MyDrawer(),
+          
         );
       },
     );
@@ -52,12 +53,12 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
 
   Widget _getBottomBar() {
     return BottomNavigationBar(
-      backgroundColor: const Color(0xFF141513),
+      backgroundColor:Get.isDarkMode?null: Theme.of(context).colorScheme.secondaryContainer,
       // iconSize:600.r,
       showSelectedLabels: false,
       showUnselectedLabels: false,
       currentIndex: _currentPage,
-     
+
       onTap: (index) {
         setState(() {
           _currentPage = index;

@@ -10,6 +10,7 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:search_service/search_service_repository.dart';
 
 import './routes/router.dart';
+import 'theme/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,40 +45,8 @@ class MyApp extends StatelessWidget {
           splitScreenMode: true,
           child: GetMaterialApp(
             title: 'Podivy',
-            theme: FlexThemeData.light(
-              scheme: FlexScheme.gold,
-              surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-              blendLevel: 7,
-              subThemesData: const FlexSubThemesData(
-                blendOnLevel: 10,
-                blendOnColors: false,
-                useTextTheme: true,
-                useM2StyleDividerInM3: true,
-                alignedDropdown: true,
-                useInputDecoratorThemeInDialogs: true,
-              ),
-              visualDensity: FlexColorScheme.comfortablePlatformDensity,
-              useMaterial3: true,
-              swapLegacyOnMaterial3: true,
-              // To use the Playground font, add GoogleFonts package and uncomment
-              fontFamily: GoogleFonts.notoSans().fontFamily,
-            ),
-            darkTheme: FlexThemeData.dark(
-              scheme: FlexScheme.mallardGreen,
-              surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-              blendLevel: 13,
-              subThemesData: const FlexSubThemesData(
-                blendOnLevel: 20,
-                useTextTheme: true,
-                useM2StyleDividerInM3: true,
-                alignedDropdown: true,
-                useInputDecoratorThemeInDialogs: true,
-              ),
-              visualDensity: FlexColorScheme.comfortablePlatformDensity,
-              useMaterial3: true,
-              swapLegacyOnMaterial3: true,
-              fontFamily: GoogleFonts.notoSans().fontFamily,
-            ),
+            theme: Themes.lightTheme,
+            darkTheme: Themes.darkTheme,
             initialRoute: '/',
             unknownRoute: GetPage(
                 name: '/notFound', page: () => const UnknownRoutePage()),
@@ -106,3 +75,4 @@ class UnknownRoutePage extends StatelessWidget {
     );
   }
 }
+

@@ -14,7 +14,7 @@ Future<T?> showGenericDialog<T>({
     context: context,
     builder: (context) {
       return AlertDialog(
-        backgroundColor: const Color.fromARGB(230, 49, 49, 49),
+        backgroundColor: ThemeData().dialogBackgroundColor,
         title: Text(title),
         content: Text(content),
         actions: options.keys.map((optionTile) {
@@ -29,8 +29,8 @@ Future<T?> showGenericDialog<T>({
             },
             child: Text(
               optionTile,
-              style: const TextStyle(
-                color: Color(0xFFABC4AA),
+              style:  TextStyle(
+                color: Theme.of(context).colorScheme.primary,
               ),
             ),
           );

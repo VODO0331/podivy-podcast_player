@@ -38,52 +38,72 @@ class _RegisterPageState extends State<RegisterPage> {
     return Column(
       children: [
         TextField(
+          style: const TextStyle(color: Colors.white),
+           cursorColor: Colors.white,
           controller: _email,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.emailAddress,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            hintStyle: const TextStyle(color: Colors.grey),
             fillColor: Colors.black45,
             hintText: '輸入電子郵件',
-            border: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFABC4AA))
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  const BorderSide(color: Color(0xFFABC4AA), width: 2.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
+            border: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFFABC4AA))),
           ),
         ),
         const SizedBox(
-                      height: 15,
-                    ),
+          height: 15,
+        ),
         TextField(
           controller: _password,
-          
+          style: const TextStyle(color: Colors.white),
+          cursorColor: Colors.white,
           obscureText: true,
           enableSuggestions: false,
           autocorrect: false,
           autofocus: true,
           keyboardType: TextInputType.visiblePassword,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            hintStyle: const TextStyle(color: Colors.grey),
             fillColor: Colors.black45,
             hintText: '輸入密碼',
-            border: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFABC4AA))
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  const BorderSide(color: Color(0xFFABC4AA), width: 2.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
+            border: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFFABC4AA))),
           ),
         ),
         const SizedBox(
-                      height: 15,
-                    ),
+          height: 15,
+        ),
         TextField(
           controller: _repassword,
+          style: const TextStyle(color: Colors.white),
+          cursorColor: Colors.white,
           obscureText: true,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.visiblePassword,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
+            hintStyle: const TextStyle(color: Colors.grey),
             fillColor: Colors.black45,
             hintText: '再次輸入密碼',
-            border: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFFABC4AA))
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  const BorderSide(color: Color(0xFFABC4AA), width: 2.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
+            border: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFFABC4AA))),
           ),
         ),
       ],
@@ -95,7 +115,10 @@ class _RegisterPageState extends State<RegisterPage> {
       children: [
         TextButton(
           style: textButtonForRecommend,
-          child: const Text('註冊',style: TextStyle(color: Colors.black),),
+          child: const Text(
+            '註冊',
+            style: TextStyle(color: Colors.black),
+          ),
           onPressed: () async {
             final email = _email.text;
             final password = _password.text;
@@ -107,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     repassword,
                   ),
                 );
-                
+
             await showGenericDialog(
               context: context,
               title: '郵件驗證',
@@ -170,8 +193,7 @@ class _RegisterPageState extends State<RegisterPage> {
       },
       child: Center(
         child: Container(
-          decoration:const BoxDecoration(
-              color: Colors.black54),
+          decoration: const BoxDecoration(color: Colors.black54),
           padding: const EdgeInsets.all(12.0).r,
           width: 500.w,
           height: 450.h,
@@ -192,7 +214,9 @@ class _RegisterPageState extends State<RegisterPage> {
               buttonGroup(),
             ],
           ),
-        ).asGlass(tintColor: Colors.orange,clipBorderRadius: BorderRadius.circular(30)),
+        ).asGlass(
+            tintColor: Colors.orange,
+            clipBorderRadius: BorderRadius.circular(30)),
       ),
     );
   }

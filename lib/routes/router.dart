@@ -1,3 +1,4 @@
+import 'package:podivy/Page/common/settingPage/setting_page.dart';
 import 'package:podivy/Page/personal/followedPage/followed_page.dart';
 import 'package:podivy/Page/personal/media/list/Page/list_page.dart';
 import 'package:podivy/Page/login/auth_middleware.dart';
@@ -28,10 +29,10 @@ class RouterPage {
       page: () =>  ListPage(),
       parameters: const {'listTitle': ''},
     ),
-    // GetPage(
-    //   name: "/test",
-    //   page: () => const TestPage(),
-    // ),
+    GetPage(
+      name: "/setting",
+      page: () =>  SettingPage(),
+    ),
     GetPage(
       name: "/user",
       page: () => UserPage(),

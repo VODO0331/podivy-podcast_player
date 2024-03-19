@@ -81,16 +81,16 @@ class _SearchResults extends StatelessWidget {
           }
           return CustomScrollView(
             slivers: [
-              if(getPodcasts.isNotEmpty)
-              sliverGroup(
-                "Podcasts",
-                PodcastBuilder(podcasts: getPodcasts),
-              ),
-              if(getEpisodes.isNotEmpty)
-              sliverGroup(
-                "Episodes",
-                EpisodesBuilder(episodes: getEpisodes),
-              ),
+              if (getPodcasts.isNotEmpty)
+                sliverGroup(
+                  "Podcasts",
+                  PodcastBuilder(podcasts: getPodcasts),
+                ),
+              if (getEpisodes.isNotEmpty)
+                sliverGroup(
+                  "Episodes",
+                  EpisodesBuilder(episodes: getEpisodes),
+                ),
             ],
           );
         } else {
@@ -133,8 +133,27 @@ class _Recommendations extends StatelessWidget {
                     children: [
                       for (var interest in interests)
                         ElevatedButton(
-                            // style: textButtonForRecommend,
-                            child: Text(interest.category),
+                            style: ButtonStyle(
+                                textStyle: MaterialStateTextStyle.resolveWith(
+                                    (states) => TextStyle(
+                                        color: Get.isDarkMode
+                                            ? Theme.of(context)
+                                            .colorScheme
+                                            .onBackground
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .onPrimaryContainer)),
+                                backgroundColor: MaterialStateColor.resolveWith(
+                                    (states) => Get.isDarkMode
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .background
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .primaryContainer)),
+                            child: Text(
+                              interest.category,
+                            ),
                             onPressed: () {
                               recommendCallBack(SearchServiceForCategories(
                                   keywords: interest.category));
@@ -150,6 +169,7 @@ class _Recommendations extends StatelessWidget {
                         cacheHeight: 656,
                         cacheWidth: 656,
                         fit: BoxFit.cover,
+                        color: Theme.of(Get.context!).colorScheme.onBackground,
                       ))
                 ],
               );

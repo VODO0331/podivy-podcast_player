@@ -10,14 +10,18 @@ import 'package:search_service/search_service_repository.dart';
 class PodcasterPage extends StatelessWidget {
   PodcasterPage({super.key});
   final GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
-  final Podcaster podcaster =
-      Podcaster(id: Get.arguments,title: ''); //Get.arguments => catch podcaster id
+  final Podcaster podcaster = Podcaster(
+      id: Get.arguments, title: ''); //Get.arguments => catch podcaster id
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          key: sKey,
-          body: FutureBuilder(
+        backgroundColor: Get.isDarkMode
+            ? Theme.of(Get.context!).colorScheme.background
+            : Theme.of(Get.context!).colorScheme.secondaryContainer,
+        key: sKey,
+        body: SafeArea(
+          child: FutureBuilder(
             future: getSinglePodcasterData(podcaster),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
@@ -48,7 +52,7 @@ class PodcasterPage extends StatelessWidget {
                 );
               }
             },
-          ));
-    
+          ),
+        ));
   }
 }

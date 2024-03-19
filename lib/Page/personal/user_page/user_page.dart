@@ -37,35 +37,38 @@ class UserPage extends StatelessWidget {
   }
 
   Widget _buildAppBar() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          iconSize: 35.r,
-          onPressed: () {
-            Get.back();
-          },
-          icon: const Icon(Icons.arrow_back_ios_rounded),
-        ),
-        PopupMenuButton(
-          color: Colors.black87,
-          icon: Icon(
-            Icons.more_vert_sharp,
-            size: 35.r,
+    return Container(
+      color: Theme.of(Get.context!).colorScheme.secondaryContainer,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+            iconSize: 35.r,
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios_rounded),
           ),
-          itemBuilder: (context) {
-            return [
-              const PopupMenuItem(
-                value: true,
-                child: Text('編輯'),
-              )
-            ];
-          },
-          onSelected: (value) {
-            _isEdit.value = value;
-          },
-        ),
-      ],
+          PopupMenuButton(
+            color: Theme.of(Get.context!).colorScheme.primary,
+            icon: Icon(
+              Icons.more_vert_sharp,
+              size: 35.r,
+            ),
+            itemBuilder: (context) {
+              return [
+                const PopupMenuItem(
+                  value: true,
+                  child: Text('編輯'),
+                )
+              ];
+            },
+            onSelected: (value) {
+              _isEdit.value = value;
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -101,7 +104,7 @@ class UserPage extends StatelessWidget {
       height: 200.h,
       width: 300.w,
       decoration: BoxDecoration(
-          color: Theme.of(Get.context!).colorScheme.primary,
+          color: Theme.of(Get.context!).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(30),
           boxShadow: const [
             BoxShadow(color: Colors.grey, blurRadius: 15, offset: Offset(0, 5))
@@ -136,7 +139,7 @@ class UserPage extends StatelessWidget {
     return Scaffold(
       key: UniqueKey(),
       resizeToAvoidBottomInset: false,
-      backgroundColor: const Color.fromARGB(221, 15, 20, 15),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         child: Column(
           children: [

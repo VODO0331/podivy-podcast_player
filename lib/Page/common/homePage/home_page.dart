@@ -16,28 +16,30 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final InformationController userController = Get.find();
-    return Padding(
-      padding: const EdgeInsets.only(top: 100).h,
-      child: Column(
-        children: [
-          appBar(userController),
-          const Divider(
-            thickness: 2,
-            color: Color.fromARGB(123, 255, 255, 255),
-          ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(vertical: 10).h,
-          //   child: const LatestPodcast(),
-          // ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30).w,
-            child: const Divider(
-              thickness: 0.5,
-              color: Color.fromARGB(255, 255, 255, 255),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 40).h,
+        child: Column(
+          children: [
+            appBar(userController),
+            const Divider(
+              thickness: 2,
+              color: Color.fromARGB(123, 255, 255, 255),
             ),
-          ),
-          //  ExploreContent(),
-        ],
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(vertical: 10).h,
+            //   child: const LatestPodcast(),
+            // ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30).w,
+              child: const Divider(
+                thickness: 0.5,
+                color: Color.fromARGB(255, 255, 255, 255),
+              ),
+            ),
+            //  ExploreContent(),
+          ],
+        ),
       ),
     );
   }

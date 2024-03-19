@@ -37,7 +37,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             if (state.hasSendEmail) {
               _controller.clear();
               await showPasswordResetSentDialog(context);
-              context.mounted ? context.read<AuthBloc>().add(const AuthEventLogOut()) : null;
+              context.mounted
+                  ? context.read<AuthBloc>().add(const AuthEventLogOut())
+                  : null;
             }
             if (state.exception != null && context.mounted) {
               await showErrorDialog(context, '傳送失敗或格式不符');
@@ -46,8 +48,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         },
         child: Center(
           child: Container(
-            decoration:const BoxDecoration(
-                color: Colors.black54,),
+            decoration: const BoxDecoration(
+              color: Colors.black54,
+            ),
             padding: const EdgeInsets.all(12.0).r,
             width: 500.w,
             height: 359.h,
@@ -55,6 +58,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               const Text('如果你忘記密碼，請輸入帳號的電子郵件'),
               TextField(
+                style: const TextStyle(color: Colors.white),
+                cursorColor:Colors.white ,
                 controller: _controller,
                 enableSuggestions: false,
                 autofocus: true,
@@ -62,6 +67,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                   fillColor: Colors.black45,
+                  hintStyle: TextStyle(color: Colors.grey),
                   hintText: '請輸入電子郵件',
                   focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFFABC4AA))),
@@ -70,8 +76,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               const SizedBox(
                 height: 30,
               ),
-              TextButton(
-                child: const Text('重設密碼'),
+              ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateColor.resolveWith(
+                        (states) => const Color(0xFFABC4AA))),
+                child: const Text(
+                  '重設密碼',
+                  style: TextStyle(color: Colors.black),
+                ),
                 onPressed: () {
                   final email = _controller.text;
                   context
@@ -89,7 +101,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
               )
             ]),
-          ).asGlass(tintColor: Colors.orange,clipBorderRadius: BorderRadius.circular(30)),
+          ).asGlass(
+              tintColor: Colors.orange,
+              clipBorderRadius: BorderRadius.circular(30)),
         ));
   }
 }

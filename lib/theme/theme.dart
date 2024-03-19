@@ -1,30 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:modify_widget_repository/modify_widget_repository.dart';
 
-final ThemeData myTheme = ThemeData(
-    brightness: Brightness.dark,
-    primarySwatch: Colors.brown,
-    scaffoldBackgroundColor: const Color(0xFF6C5A44),
-    
-    colorScheme: const ColorScheme(
-        brightness: Brightness.dark,
-        primary: Color.fromARGB(255, 221, 209, 190),
-        onPrimary: Color(0xFF212121),
-        secondary: Color(0xFF24211C),
-        onSecondary: Color(0xFF9A8F7E),
-        error: Colors.red,
-        onError: Colors.white,
-        background: Color(0xFF7B7060),
-        onBackground: Colors.white,
-        surface: Color.fromARGB(255, 25, 24, 22),
-        onSurface: Colors.white),
-    drawerTheme: const DrawerThemeData(
-      backgroundColor: Color(0xFF24211C),
+class Themes {
+  static ThemeData lightTheme = FlexThemeData.light(
+    scheme: FlexScheme.orangeM3,
+    surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+    blendLevel: 7,
+    subThemesData: const FlexSubThemesData(
+      blendOnLevel: 10,
+      blendOnColors: false,
+      useTextTheme: true,
+      useM2StyleDividerInM3: true,
+      alignedDropdown: true,
+      useInputDecoratorThemeInDialogs: true,
     ),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: Color(0x922D2722),
-      selectedItemColor: Color(0xFFE6D7C5),
-      unselectedItemColor: Color(0xFFAEA9A3),
-      // unselectedIconTheme: IconThemeData(size: 25.0, color: Color(0xFFAEA9A3)),
+    visualDensity: FlexColorScheme.comfortablePlatformDensity,
+    useMaterial3: true,
+    swapLegacyOnMaterial3: true,
+    fontFamily: GoogleFonts.notoSans().fontFamily,
+  );
+  static ThemeData darkTheme = FlexThemeData.dark(
+    scheme: FlexScheme.mallardGreen,
+    surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+    blendLevel: 13,
+    subThemesData: const FlexSubThemesData(
+      blendOnLevel: 20,
+      useTextTheme: true,
+      useM2StyleDividerInM3: true,
+      alignedDropdown: true,
+      useInputDecoratorThemeInDialogs: true,
     ),
-    textTheme: const TextTheme(titleLarge: TextStyle(fontSize: 19)),
-    );
+    visualDensity: FlexColorScheme.comfortablePlatformDensity,
+    useMaterial3: true,
+    swapLegacyOnMaterial3: true,
+    fontFamily: GoogleFonts.notoSans().fontFamily,
+  );
+}

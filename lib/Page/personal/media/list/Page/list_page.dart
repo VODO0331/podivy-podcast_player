@@ -15,7 +15,9 @@ class ListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 25, 25, 25),
+      backgroundColor: Get.isDarkMode
+          ? Theme.of(Get.context!).colorScheme.background
+          : Theme.of(Get.context!).colorScheme.secondaryContainer,
       appBar: listAppBar(
         list: list,
         listManagement: listManagement,
@@ -65,7 +67,7 @@ PreferredSizeWidget listAppBar({
     ),
     actions: [
       PopupMenuButton(
-        color: Colors.black87,
+        color: Theme.of(Get.context!).colorScheme.primary,
         icon: const Icon(
           Icons.more_vert_sharp,
         ),

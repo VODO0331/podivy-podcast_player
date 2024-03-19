@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 class HeaderDelegate extends SliverPersistentHeaderDelegate {
@@ -11,7 +12,7 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color:Get.isDarkMode? Theme.of(context).primaryColor : Theme.of(context).colorScheme.primaryContainer ,
         borderRadius: BorderRadius.circular(30),
       ),
       child: Center(

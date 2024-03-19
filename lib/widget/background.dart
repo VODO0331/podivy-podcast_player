@@ -3,8 +3,7 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 class MyBackGround extends StatelessWidget {
   final Widget child;
-  final Color? bkColor;
-  const MyBackGround({super.key, required this.child, this.bkColor});
+  const MyBackGround({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
