@@ -14,7 +14,7 @@ class BuildGridView extends StatelessWidget {
     // dev.log(type);
     if (category != '') {
       return FutureBuilder(
-        future: getSearchData(exploreContent),
+        future: getGridViewData(exploreContent),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {

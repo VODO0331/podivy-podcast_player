@@ -11,8 +11,13 @@ class SearchPage extends StatelessWidget {
   SearchPage({Key? key}) : super(key: key);
   final RxString keywords = "".obs;
   final RxBool isSearched = false.obs;
-  final Rx<SearchService> searchService =
-      Get.put(SearchServiceForKeyword(keywords: "").obs);
+  final (
+    Rx<SearchServiceForKeyword> ,
+    Rx<SearchServiceForCategories> )
+   searchService = (
+    SearchServiceForKeyword(keywords: '').obs,
+    SearchServiceForCategories(keywords: '').obs
+  );
   final TextEditingController textEditingController =
       Get.put(TextEditingController());
 
@@ -23,7 +28,9 @@ class SearchPage extends StatelessWidget {
       textInputAction: TextInputAction.search,
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.search),
-        suffixIcon: IconButton(
+        suffixIcon: Obx(() {
+          if(keywords.value != ''){
+            return IconButton(
           onPressed: () {
             textEditingController.clear();
 
@@ -31,7 +38,11 @@ class SearchPage extends StatelessWidget {
             isSearched.value = false;
           },
           icon: const Icon(Icons.clear),
-        ),
+        );
+          }else{
+            return const SizedBox.shrink();
+          }
+        }),
         label: const Text(
           "search",
         ),
@@ -45,7 +56,8 @@ class SearchPage extends StatelessWidget {
       ),
       onSubmitted: (value) {
         if (value.trim().isNotEmpty) {
-          searchService.value = SearchServiceForKeyword(keywords: value);
+          searchService.$1.value = SearchServiceForKeyword(keywords: value); 
+          searchService.$2.value= SearchServiceForCategories(keywords: '');
           keywords.value = value;
           isSearched.value = true;
         } else {
@@ -63,7 +75,9 @@ class SearchPage extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Obx(() => Text(
-            "search:${keywords.value.trim().isNotEmpty ? keywords.value : "類型"}",
+            keywords.value.trim().isNotEmpty
+                ? "search:${keywords.value}"
+                : "類型",
             style: TextStyle(
               fontSize: ScreenUtil().setSp(20),
             ),
@@ -74,12 +88,11 @@ class SearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: ScreenUtil().screenWidth,
-        height: ScreenUtil().screenHeight,
-        color: Theme.of(Get.context!).hoverColor,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12).r,
+          color: Theme.of(Get.context!).hoverColor,
           child: Column(
             children: [
               _buildTextField(),

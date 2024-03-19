@@ -11,12 +11,30 @@ import '../error_exception/search_error_exception.dart';
 //functional programming
 
 Future<({List<Podcaster> podcastList, List<Episode> episodeList})>
-    getSearchData(SearchService searchService) async {
+    getSearchData(
+        (
+          SearchServiceForKeyword,
+          SearchServiceForCategories
+        ) searchService) async {
   // if (searchService.keywords == null || searchService.keywords == "") {
   //   return ;
   // }
+  ({List<Podcaster> podcastList, List<Episode> episodeList}) data;
+  if (searchService.$1.keywords != '') {
+    data = await _getData(searchService: searchService.$1);
+  } else {
+    data = await _getData(searchService: searchService.$2);
+  }
 
-  final data = await _getData(searchService: searchService);
+  return data;
+}
+
+Future<({List<Podcaster> podcastList, List<Episode> episodeList})>
+    getGridViewData(SearchServiceForExploreContent searchService) async {
+  // if (searchService.keywords == null || searchService.keywords == "") {
+  //   return ;
+  // }
+  final data = await _getData(searchService:searchService);
 
   return data;
 }

@@ -12,7 +12,10 @@ typedef KeywordCallback = void Function(String keywords);
 class SearchResult extends StatelessWidget {
   final KeywordCallback onSearched;
   final RxBool isSearched;
-  final Rx<SearchService> searchService;
+  final (
+    Rx<SearchServiceForKeyword>,
+    Rx<SearchServiceForCategories>
+  ) searchService;
   const SearchResult({
     super.key,
     required this.searchService,
@@ -25,14 +28,15 @@ class SearchResult extends StatelessWidget {
     return Obx(() {
       if (isSearched.value) {
         return _SearchResults(
-          searchService: searchService.value,
+          searchService: (searchService.$1.value, searchService.$2.value),
         );
       } else {
         return _Recommendations(
           recommendCallBack: (searchServiceC) {
             isSearched.value = true;
             onSearched(searchServiceC.keywords);
-            searchService.value = searchServiceC;
+            searchService.$2.value = searchServiceC;
+            searchService.$1.value = SearchServiceForKeyword(keywords: '');
           },
         );
       }
@@ -41,7 +45,7 @@ class SearchResult extends StatelessWidget {
 }
 
 class _SearchResults extends StatelessWidget {
-  final SearchService searchService;
+  final (SearchServiceForKeyword, SearchServiceForCategories) searchService;
 
   const _SearchResults({Key? key, required this.searchService})
       : super(key: key);
@@ -60,20 +64,29 @@ class _SearchResults extends StatelessWidget {
           if (data == null) {
             return Center(
               child: Text(
+                'data is nul',
+                style: TextStyle(fontSize: ScreenUtil().setSp(14)),
+              ),
+            );
+          }
+          List<Podcaster> getPodcasts = data.podcastList;
+          List<Episode> getEpisodes = data.episodeList;
+          if (getPodcasts.isEmpty && getEpisodes.isEmpty) {
+            return Center(
+              child: Text(
                 '搜尋不到相關資料',
                 style: TextStyle(fontSize: ScreenUtil().setSp(14)),
               ),
             );
           }
-          List<Podcaster>? getPodcasts = data.podcastList;
-          List<Episode>? getEpisodes = data.episodeList;
-
           return CustomScrollView(
             slivers: [
+              if(getPodcasts.isNotEmpty)
               sliverGroup(
                 "Podcasts",
                 PodcastBuilder(podcasts: getPodcasts),
               ),
+              if(getEpisodes.isNotEmpty)
               sliverGroup(
                 "Episodes",
                 EpisodesBuilder(episodes: getEpisodes),
@@ -90,7 +103,8 @@ class _SearchResults extends StatelessWidget {
   }
 }
 
-typedef RecommendCallBack = void Function(SearchServiceForCategories searchService);
+typedef RecommendCallBack = void Function(
+    SearchServiceForCategories searchService);
 
 class _Recommendations extends StatelessWidget {
   final RecommendCallBack recommendCallBack;
@@ -111,18 +125,32 @@ class _Recommendations extends StatelessWidget {
             } else if (snapshot.hasData) {
               final interests = snapshot.data!;
 
-              return Wrap(
-                spacing: 10,
-                runSpacing: 5,
+              return Stack(
                 children: [
-                  for (var interest in interests)
-                    ElevatedButton(
-                        // style: textButtonForRecommend,
-                        child: Text(interest.category),
-                        onPressed: () {
-                          recommendCallBack(SearchServiceForCategories(
-                              keywords: interest.category));
-                        })
+                  Wrap(
+                    spacing: 10,
+                    runSpacing: 5,
+                    children: [
+                      for (var interest in interests)
+                        ElevatedButton(
+                            // style: textButtonForRecommend,
+                            child: Text(interest.category),
+                            onPressed: () {
+                              recommendCallBack(SearchServiceForCategories(
+                                  keywords: interest.category));
+                            })
+                    ],
+                  ),
+                  Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Image.asset(
+                        'assets/images/background/search.png',
+                        width: 250.r,
+                        height: 250.r,
+                        cacheHeight: 656,
+                        cacheWidth: 656,
+                        fit: BoxFit.cover,
+                      ))
                 ],
               );
             } else {

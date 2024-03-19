@@ -197,6 +197,8 @@ Widget _buildShaderMask(String imageUrl) {
       fit: BoxFit.cover,
       height: 300.h,
       width: double.infinity,
+      cacheHeight: 594,
+      cacheWidth: 594,
     ),
   );
 }

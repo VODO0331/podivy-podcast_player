@@ -18,42 +18,53 @@ class PlayerControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Rx<Duration> currentPosition = myAudioPlayer.position;
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration:  BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-               
-                borderRadius:const BorderRadius.all(Radius.circular(30))),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SizedBox(height: 20.h),
-                _buildProgressBar(currentPosition),
-                _buildTimeLabels(currentPosition),
-                SizedBox(height: 10.h),
-                BuildControlBt(
-                  player: myAudioPlayer.player,
-                ),
-                Obx(() {
-                  final data = myAudioPlayer.episodeData.value;
-                  if (data != null) {
-                    return Extras(
-                      episodeData: data,
-                      icon: const Icon(Icons.menu),
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                })
-              ],
+    return Container(
+      height: 250.r,
+      width: 500.r,
+      padding: const EdgeInsets.all(8.0),
+      child: Stack(
+        children: [
+          Align(
+            alignment: AlignmentDirectional.bottomEnd,
+            child: Image.asset(
+              'assets/images/background/player.png',
+              width: 150.r,
+              height: 150.r,
+              cacheHeight: 300,
+              cacheWidth: 300,
             ),
           ),
-        )
-      ],
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SizedBox(height: 20.h),
+              _buildProgressBar(currentPosition),
+              _buildTimeLabels(currentPosition),
+              SizedBox(height: 10.h),
+              BuildControlBt(
+                player: myAudioPlayer.player,
+              ),
+              Obx(() {
+                final data = myAudioPlayer.episodeData.value;
+                if (data != null) {
+                  return Extras(
+                    episodeData: data,
+                    icon: const Icon(Icons.menu),
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              })
+            ],
+          ).asGlass(
+            blurX: 1,
+            blurY: 1,
+            tintColor: Theme.of(context).colorScheme.surface,
+            clipBorderRadius: const BorderRadius.all(Radius.circular(30)),
+          ),
+        ],
+      ),
     );
   }
 
@@ -95,5 +106,3 @@ class PlayerControl extends StatelessWidget {
     ].join(':');
   }
 }
-
-

@@ -73,7 +73,7 @@ class UserPage extends StatelessWidget {
     return Obx(() {
       return _isEdit.value
           ? Positioned(
-              bottom:0,
+              bottom: 0,
               right: 0,
               child: OutlinedButton(
                 onPressed: () async {
@@ -95,140 +95,136 @@ class UserPage extends StatelessWidget {
           : const SizedBox.shrink();
     });
   }
-Widget _buildUserAvatar(){
-  return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20).r,
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Obx(() {
-                              if (imgData.value != "") {
-                                return CircleAvatar(
-                                  backgroundImage:
-                                      MemoryImage(base64Decode(imgData.value)),
-                                  radius: 68.r,
-                                );
-                              } else {
-                                return const CircularProgressIndicator();
-                              }
-                            }),
-                            _buildEditBt(),
-                          ],
-                        ),
-                      ),
-                    );
-}
+
+  Widget _buildUserAvatar() {
+    return Container(
+      height: 200.h,
+      width: 300.w,
+      decoration: BoxDecoration(
+          color: Theme.of(Get.context!).colorScheme.primary,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: const [
+            BoxShadow(color: Colors.grey, blurRadius: 15, offset: Offset(0, 5))
+          ]),
+      child: GestureDetector(
+        onTap: () {},
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Obx(() {
+              if (imgData.value != "") {
+                return CircleAvatar(
+                  backgroundImage: MemoryImage(base64Decode(imgData.value)),
+                  radius: 68.r,
+                );
+              } else {
+                return const CircularProgressIndicator();
+              }
+            }),
+            _buildEditBt(),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // 獲取用戶email
     final userEmail = AuthService.firebase().currentUser!.email;
-     imgData.value = userController.userData.img;
+    imgData.value = userController.userData.img;
     return Scaffold(
       key: UniqueKey(),
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(221, 15, 20, 15),
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              Image.asset(
-                'assets/images/background/userPageBackGround.jpg',
-                width: double.infinity,
-                height: 350.h,
-                fit: BoxFit.cover,
-                cacheHeight: 120,
-                cacheWidth: 120,
-                color: Colors.white12,
-                colorBlendMode: BlendMode.lighten,
-              ).asGlass(),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(12, 60, 12, 0),
-                child: Column(
-                  children: [
-                    _buildAppBar(),
-                    const Divider(
-                      color: Colors.white12,
-                    ),
-                    _buildUserAvatar(),
-                   
-                  ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            _buildAppBar(),
+            const Divider(
+              color: Colors.white12,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15).r,
+              child: _buildUserAvatar(),
+            ),
+
+            // 顯示用戶名稱的ListTile
+            Obx(() {
+              _textEditingController.text =
+                  userController.userData.userName.value;
+              return _isEdit.value
+                  ? TextField(
+                      controller: _textEditingController,
+                      decoration: const InputDecoration(
+                        labelText: "名稱",
+                      ),
+                    )
+                  : ListTile(
+                      leading: const Icon(Icons.person),
+                      title: Text(
+                        "名稱 :   ${userController.userData.userName}",
+                        style: TextStyle(fontSize: ScreenUtil().setSp(15)),
+                      ),
+                    );
+            }),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.email),
+              title: Text(
+                userEmail,
+                style: TextStyle(fontSize: ScreenUtil().setSp(15)),
+              ),
+            ),
+            const Divider(),
+            Obx(() => _isEdit.value
+                ? Row(
+                    children: [
+                      TextButton(
+                        onPressed: () async {
+                          _isEdit.value = false;
+                          final List<dynamic> updates = [null, null];
+                          if (_textEditingController.text !=
+                              userController.userData.name) {
+                            updates[0] = _textEditingController.text;
+                          }
+                          if (userController.userData.img != imgData.value) {
+                            updates[1] = base64Decode(imgData.value);
+                          }
+                          informationManagement.updateInfo(
+                            userName: updates[0],
+                            userImg: updates[1],
+                          );
+                        },
+                        child: const Text("完成"),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          _textEditingController.text =
+                              userController.userData.userName.value;
+                          imgData.value = userController.userData.userImg.value;
+                          _isEdit.value = false;
+                        },
+                        child: const Text("取消"),
+                      )
+                    ],
+                  )
+                : const SizedBox.shrink()),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Image.asset(
+                  'assets/images/background/user.png',
+                  width: 230.r,
+                  height: 250.r,
+                  cacheHeight: 525.r.toInt(),
+                  cacheWidth: 500.r.toInt(),
+                  fit: BoxFit.contain,
                 ),
               ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              children: [
-                // 顯示用戶名稱的ListTile
-                Obx(() {
-                  _textEditingController.text =
-                      userController.userData.userName.value;
-                  return _isEdit.value
-                      ? TextField(
-                          controller: _textEditingController,
-                          decoration: const InputDecoration(
-                            labelText: "名稱",
-                          ),
-                        )
-                      : ListTile(
-                          leading: const Icon(Icons.person),
-                          title: Text(
-                            "名稱 :   ${userController.userData.userName}",
-                            style: TextStyle(fontSize: ScreenUtil().setSp(15)),
-                          ),
-                        );
-                }),
-                const Divider(),
-                ListTile(
-                  leading: const Icon(Icons.email),
-                  title: Text(
-                    userEmail,
-                    style: TextStyle(fontSize: ScreenUtil().setSp(15)),
-                  ),
-                ),
-                const Divider(),
-                Obx(() => _isEdit.value
-                    ? Row(
-                        children: [
-                          TextButton(
-                            onPressed: () async {
-                              _isEdit.value = false;
-                              final List<dynamic> updates = [null, null];
-                              if (_textEditingController.text !=
-                                  userController.userData.name) {
-                                updates[0] = _textEditingController.text;
-                              }
-                              if (userController.userData.img !=
-                                  imgData.value) {
-                                updates[1] = base64Decode(imgData.value);
-                              }
-                              informationManagement.updateInfo(
-                                userName: updates[0],
-                                userImg: updates[1],
-                              );
-                            },
-                            child: const Text("完成"),
-                          ),
-                          TextButton(
-                            onPressed: () async {
-                              _textEditingController.text =
-                                  userController.userData.userName.value;
-                              imgData.value =
-                                  userController.userData.userImg.value;
-                              _isEdit.value = false;
-                            },
-                            child: const Text("取消"),
-                          )
-                        ],
-                      )
-                    :const SizedBox.shrink())
-              ],
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

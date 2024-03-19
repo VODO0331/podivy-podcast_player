@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../service/query.dart';
 import 'episode.dart';
 import 'podcaster.dart';
+
 // import 'dart:developer' as dev show log;
 //利用語言分類 改變
 //根據使用者  追隨清單 改變 SearchServiceForLatestList 資料
@@ -23,7 +24,10 @@ sealed class SearchService {
     required this.podcasterList,
     required this.episodeList,
   });
+
+
 }
+
 
 class SearchServiceForKeyword extends SearchService {
   SearchServiceForKeyword({
@@ -40,8 +44,10 @@ class SearchServiceForKeyword extends SearchService {
             'podcastFirst': numberOfPodcastResults,
             'episodesFirst': numberOfEpisodesResults,
             'episodesSortBy': 'RELEVANCE',
-            'airDateForm': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime(2019)),
-            'airDateTo':  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
+            'airDateForm':
+                DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime(2019)),
+            'airDateTo':
+                DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
           },
         ));
 }
@@ -61,8 +67,10 @@ class SearchServiceForCategories extends SearchService {
             'podcastFirst': numberOfPodcastResults,
             'episodesFirst': numberOfEpisodesResults,
             'episodesSortBy': 'RELEVANCE',
-            'airDateForm': DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime(2019)),
-            'airDateTo':  DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
+            'airDateForm':
+                DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime(2019)),
+            'airDateTo':
+                DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())
           },
         ));
 }
