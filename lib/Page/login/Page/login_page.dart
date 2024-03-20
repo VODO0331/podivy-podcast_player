@@ -5,7 +5,7 @@ import 'package:podivy/util/img_compress.dart';
 import 'package:podivy/util/dialogs/error_dialog.dart';
 
 import '../../../theme/custom_theme.dart';
-import '../../../util/languageDialog.dart';
+import '../../../util/language_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

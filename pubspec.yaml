@@ -37,16 +37,14 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: 
   flutter_image_compress: ^2.1.0
-  equatable: ^2.0.5
+  # equatable: ^2.0.5
   share_plus: ^7.2.1
   http: ^1.1.2
   url_launcher: ^6.2.5
   html: ^0.15.4
   image_picker: ^1.0.7
   font_awesome_flutter: ^10.7.0
-  just_audio: ^0.9.36
-  # audio_service: ^0.18.12
-  just_audio_background: ^0.0.1-beta.11
+  get_storage: ^2.1.1
 
   modify_widget_repository:
     path: packages/modify_widget_repository
@@ -59,8 +57,6 @@ dependencies:
   
   search_service:
     path: packages/graphql_service_repository/search_service_fp
-
-
 
   my_audio_player:
     path: packages/audio_player

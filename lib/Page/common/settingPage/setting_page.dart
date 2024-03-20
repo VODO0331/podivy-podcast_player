@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
-import '../../../util/languageDialog.dart';
+import '../../../util/language_dialog.dart';
 
 class SettingPage extends StatelessWidget {
   SettingPage({super.key});
-  final RxBool isDarkTheme = Get.isDarkMode.obs;
+  final RxBool isDarkTheme = true.obs;
   final RxString language = "中文".obs;
+  final storage = GetStorage();
+  
   @override
   Widget build(BuildContext context) {
+    storage.writeIfNull('darkMode', true);
+    isDarkTheme.value = storage.read('darkMode');
     return Scaffold(
       appBar: AppBar(
         title: const Icon(Icons.settings),
@@ -63,6 +68,8 @@ class SettingPage extends StatelessWidget {
                                         ? ThemeMode.light
                                         : ThemeMode.dark);
                                     isDarkTheme.value = !isDarkTheme.value;
+                                    storage.write('darkMode', value);
+                                    
                                   },
                                 )
                               ],

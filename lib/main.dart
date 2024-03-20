@@ -5,8 +5,9 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:just_audio_background/just_audio_background.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 import 'package:search_service/search_service_repository.dart';
 
 import './routes/router.dart';
@@ -17,6 +18,7 @@ Future<void> main() async {
 
   await ScreenUtil.ensureScreenSize();
   await initHiveForFlutter();
+  await GetStorage.init();
   await JustAudioBackground.init(
     androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
@@ -28,6 +30,8 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   final clientController = Get.put(ClientGlobalController());
+  final storage = GetStorage();
+  final RxBool isDarkMode = true.obs;
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -44,9 +48,14 @@ class MyApp extends StatelessWidget {
           minTextAdapt: true,
           splitScreenMode: true,
           child: GetMaterialApp(
+            
+            onInit: () {
+              isDarkMode.value = storage.read('darkMode') ?? true;
+            },
             title: 'Podivy',
-            theme: Themes.lightTheme,
-            darkTheme: Themes.darkTheme,
+            themeMode: isDarkMode.value ? ThemeMode.dark : ThemeMode.light  ,
+            theme: lightTheme,
+            darkTheme: darkTheme,
             initialRoute: '/',
             unknownRoute: GetPage(
                 name: '/notFound', page: () => const UnknownRoutePage()),
@@ -75,4 +84,3 @@ class UnknownRoutePage extends StatelessWidget {
     );
   }
 }
-

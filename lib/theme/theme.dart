@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
-class Themes {
-  static ThemeData lightTheme = FlexThemeData.light(
+
+
+   ThemeData lightTheme = FlexThemeData.light(
     scheme: FlexScheme.orangeM3,
     surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
     blendLevel: 7,
@@ -19,7 +20,7 @@ class Themes {
     swapLegacyOnMaterial3: true,
     fontFamily: GoogleFonts.notoSans().fontFamily,
   );
-  static ThemeData darkTheme = FlexThemeData.dark(
+   ThemeData darkTheme = FlexThemeData.dark(
     scheme: FlexScheme.mallardGreen,
     surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
     blendLevel: 13,
@@ -35,4 +36,4 @@ class Themes {
     swapLegacyOnMaterial3: true,
     fontFamily: GoogleFonts.notoSans().fontFamily,
   );
-}
+

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 import 'package:podivy/util/dialogs/description_dialog.dart';
 
 class BuildEpisodeInfo extends StatelessWidget {

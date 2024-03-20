@@ -1,8 +1,8 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 
 class BuildControlBt extends StatelessWidget {
   final AudioPlayer player;
