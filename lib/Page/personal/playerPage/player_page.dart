@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_audio_player/my_audio_player.dart';
@@ -38,7 +37,7 @@ class _PlayerPageState extends State<PlayerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Music Player'),
+          title: const Text('Player'),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -67,5 +66,3 @@ class _PlayerPageState extends State<PlayerPage> {
         ));
   }
 }
-
-

@@ -64,7 +64,7 @@ class _SearchResults extends StatelessWidget {
           if (data == null) {
             return Center(
               child: Text(
-                'data is nul',
+                'data is null',
                 style: TextStyle(fontSize: ScreenUtil().setSp(14)),
               ),
             );
@@ -74,7 +74,7 @@ class _SearchResults extends StatelessWidget {
           if (getPodcasts.isEmpty && getEpisodes.isEmpty) {
             return Center(
               child: Text(
-                '搜尋不到相關資料',
+                'dataNotFind'.tr,
                 style: TextStyle(fontSize: ScreenUtil().setSp(14)),
               ),
             );
@@ -138,8 +138,8 @@ class _Recommendations extends StatelessWidget {
                                     (states) => TextStyle(
                                         color: Get.isDarkMode
                                             ? Theme.of(context)
-                                            .colorScheme
-                                            .onBackground
+                                                .colorScheme
+                                                .onBackground
                                             : Theme.of(context)
                                                 .colorScheme
                                                 .onPrimaryContainer)),
@@ -174,7 +174,7 @@ class _Recommendations extends StatelessWidget {
                 ],
               );
             } else {
-              return const Text("Loading...");
+              return Text("loading".tr);
             }
           } else {
             return Text("Connection state: ${snapshot.connectionState}");

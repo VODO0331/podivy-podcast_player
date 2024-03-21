@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/img_compress.dart';
 import 'package:podivy/util/dialogs/error_dialog.dart';
@@ -49,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
           decoration: InputDecoration(
             hintStyle: const TextStyle(color: Colors.grey),
             fillColor: Colors.black45,
-            hintText: '輸入電子郵件',
+            hintText: 'enter the Email'.tr,
             focusedBorder: OutlineInputBorder(
               borderSide:
                   const BorderSide(color: Color(0xFFABC4AA), width: 2.0),
@@ -75,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
           decoration: InputDecoration(
             hintStyle: const TextStyle(color: Colors.grey),
             fillColor: Colors.black45,
-            hintText: '輸入密碼',
+            hintText: 'enter the Password'.tr,
             focusedBorder: OutlineInputBorder(
               borderSide:
                   const BorderSide(color: Color(0xFFABC4AA), width: 2.0),
@@ -95,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
         TextButton(
           style: textButtonForRecommend,
           child: Text(
-            '登入',
+            'logIn'.tr,
             style: TextStyle(fontSize: 15.sp, color: Colors.black),
           ),
           onPressed: () async {
@@ -123,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                 context.read<AuthBloc>().add(const AuthEventShouldRegister());
               },
               child: Text(
-                "註冊",
+                "register".tr,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: ScreenUtil().setSp(12),
@@ -135,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                 context.read<AuthBloc>().add(const AuthEventForgotPassword());
               },
               child: Text(
-                "忘記密碼?",
+                "forget the password?".tr,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: ScreenUtil().setSp(12),

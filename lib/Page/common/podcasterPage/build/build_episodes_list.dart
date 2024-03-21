@@ -18,7 +18,7 @@ class EpisodesSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final RxBool listSort = true.obs;
     if (getEpisodes == null) {
-      return const Expanded(child: Text("無內容"));
+      return Expanded(child: Text("No Content".tr));
     } else {
       return Expanded(
         child: SizedBox(
@@ -37,20 +37,20 @@ class EpisodesSection extends StatelessWidget {
                       },
                       itemBuilder: (context) {
                         return [
-                          const PopupMenuItem(
+                          PopupMenuItem(
                             value: true,
-                            child: Text("最新"),
+                            child: Text("newest".tr),
                           ),
-                          const PopupMenuItem(
+                          PopupMenuItem(
                             value: false,
-                            child: Text("最舊"),
+                            child: Text("oldest".tr),
                           ),
                         ];
                       },
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 9.0).r,
-                      child: Text('${getEpisodes!.length} 部'),
+                      child: Text('Count :${getEpisodes!.length} '.tr),
                     ),
                   ],
                 ),
@@ -93,8 +93,8 @@ Widget _buildEpisodesList(
               getEpisode.title,
               overflow: TextOverflow.ellipsis,
             ),
-            trailing:
-                Extras(episodeData: getEpisode, icon: const Icon(Icons.more_vert)),
+            trailing: Extras(
+                episodeData: getEpisode, icon: const Icon(Icons.more_vert)),
             onTap: () {
               Get.toNamed("/player", arguments: {
                 'podcaster': podcasterDate,

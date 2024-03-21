@@ -1,4 +1,4 @@
-import 'package:firestore_service_repository/firestore_service_repository.dart' ;
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
@@ -13,7 +13,7 @@ Future listDialog(BuildContext context, Episode episode) async {
     builder: (BuildContext context) {
       return AlertDialog(
         scrollable: true,
-        title: const Text('添加清單'),
+        title: Text('Add To List'.tr),
         content: SizedBox(
           height: 200.h,
           width: 300.w,
@@ -26,20 +26,20 @@ Future listDialog(BuildContext context, Episode episode) async {
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('添加清單'),
+            child: Text('Add To List'.tr),
             onPressed: () async {
               await addListDialog(context, episode);
               Get.back();
             },
           ),
           TextButton(
-            child: const Text('取消'),
+            child: Text('Cancel'.tr),
             onPressed: () {
               Get.back();
             },
           ),
           TextButton(
-            child: const Text('添加'),
+            child: Text('Add'.tr),
             onPressed: () async {
               if (userList.value != null) {
                 await listManagement.addEpisodeToList(userList.value!, episode);
@@ -102,7 +102,7 @@ class ListOption extends StatelessWidget {
               return Obx(() => Column(
                     children: <Widget>[
                       ListTile(
-                        title: const Text('標籤清單'),
+                        title: Text('Tag List'.tr),
                         leading: Radio(
                           value: "TagList",
                           groupValue: groupValue.value,
@@ -156,7 +156,7 @@ Future addListDialog(BuildContext context, Episode episode) async {
     builder: (BuildContext context) {
       return AlertDialog(
         scrollable: true,
-        title: const Text('添加清單'),
+        title: Text('Add To List'.tr),
         content: SizedBox(
           height: 100.h,
           width: 300.w,
@@ -164,8 +164,8 @@ Future addListDialog(BuildContext context, Episode episode) async {
             children: [
               TextField(
                 controller: textEditingController,
-                decoration: const InputDecoration(
-                  labelText: "清單名稱",
+                decoration: InputDecoration(
+                  labelText: "list Name".tr,
                 ),
               )
             ],
@@ -173,13 +173,13 @@ Future addListDialog(BuildContext context, Episode episode) async {
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('取消'),
+            child: Text('Cancel'.tr),
             onPressed: () {
               Get.back();
             },
           ),
           TextButton(
-            child: const Text('添加'),
+            child: Text('Add'.tr),
             onPressed: () async {
               await listManagement.addList(textEditingController.text, episode);
               textEditingController.text = "";

@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 import 'dart:developer' as devtool show log;
@@ -56,20 +57,20 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             height: 359.h,
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const Text('如果你忘記密碼，請輸入帳號的電子郵件'),
+              Text('If you forget your password, enter the email'.tr),
               TextField(
                 style: const TextStyle(color: Colors.white),
-                cursorColor:Colors.white ,
+                cursorColor: Colors.white,
                 controller: _controller,
                 enableSuggestions: false,
                 autofocus: true,
                 autocorrect: false,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   fillColor: Colors.black45,
-                  hintStyle: TextStyle(color: Colors.grey),
-                  hintText: '請輸入電子郵件',
-                  focusedBorder: UnderlineInputBorder(
+                  hintStyle: const TextStyle(color: Colors.grey),
+                  hintText: 'enter the Email'.tr,
+                  focusedBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Color(0xFFABC4AA))),
                 ),
               ),
@@ -80,9 +81,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 style: ButtonStyle(
                     backgroundColor: MaterialStateColor.resolveWith(
                         (states) => const Color(0xFFABC4AA))),
-                child: const Text(
-                  '重設密碼',
-                  style: TextStyle(color: Colors.black),
+                child: Text(
+                  'reset Password'.tr,
+                  style: const TextStyle(color: Colors.black),
                 ),
                 onPressed: () {
                   final email = _controller.text;
@@ -95,9 +96,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 onPressed: () {
                   context.read<AuthBloc>().add(const AuthEventLogOut());
                 },
-                child: const Text(
-                  '返回',
-                  style: TextStyle(color: Colors.white),
+                child: Text(
+                  'back'.tr,
+                  style: const TextStyle(color: Colors.white),
                 ),
               )
             ]),

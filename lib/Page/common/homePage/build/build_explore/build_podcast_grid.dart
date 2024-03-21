@@ -25,7 +25,7 @@ class BuildGridView extends StatelessWidget {
             if (data == null || getPodcasts == null) {
               return Center(
                 child: Text(
-                  '接收資料錯誤',
+                  'dataError'.tr,
                   style: TextStyle(fontSize: ScreenUtil().setSp(14)),
                 ),
               );

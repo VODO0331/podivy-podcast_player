@@ -74,10 +74,10 @@ class MediaPage extends StatelessWidget {
 }
 
 Widget _defaultOption() {
-  Color onP =Get.isDarkMode
+  Color onP = Get.isDarkMode
       ? Theme.of(Get.context!).colorScheme.onPrimary
       : Theme.of(Get.context!).colorScheme.onPrimaryContainer;
-   
+
   Color bk = Get.isDarkMode
       ? Theme.of(Get.context!).colorScheme.primary
       : Theme.of(Get.context!).colorScheme.primaryContainer;
@@ -109,7 +109,7 @@ Widget _defaultOption() {
                 color: onP,
               ),
               label: Text(
-                '標籤清單',
+                'Tag List'.tr,
                 style:
                     TextStyle(color: onP, fontSize: 20.sp, letterSpacing: 10),
               ),
@@ -137,7 +137,7 @@ Widget _defaultOption() {
                 color: onP,
               ),
               label: Text(
-                '歷史紀錄',
+                'History'.tr,
                 style:
                     TextStyle(color: onP, fontSize: 20.sp, letterSpacing: 10),
               ),

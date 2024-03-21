@@ -31,7 +31,7 @@ class Extras extends StatelessWidget {
                         child: Icon(Icons.keyboard_arrow_down_rounded)),
                     ListTile(
                       leading: const Icon(Icons.post_add),
-                      title: const Text("添加到清單"),
+                      title: Text("Add To List".tr),
                       onTap: () async {
                         Get.back();
                         await listDialog(context, episodeData);

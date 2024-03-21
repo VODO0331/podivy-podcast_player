@@ -33,7 +33,7 @@ class PodcasterPage extends StatelessWidget {
                 if (data == null) {
                   return Center(
                     child: Text(
-                      '顯示錯誤',
+                      'dataNotFind'.tr,
                       style: TextStyle(fontSize: ScreenUtil().setSp(14)),
                     ),
                   );

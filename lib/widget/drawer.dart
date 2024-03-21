@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:firestore_service_repository/firestore_service_repository.dart' ;
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
@@ -14,7 +14,9 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final InformationController userController = Get.find();
     return Drawer(
-      backgroundColor:Get.isDarkMode ? null:Theme.of(context).colorScheme.primaryContainer,
+      backgroundColor: Get.isDarkMode
+          ? null
+          : Theme.of(context).colorScheme.primaryContainer,
       child: Stack(
         children: [
           _buildBackgroundImages(),
@@ -60,7 +62,7 @@ class MyDrawer extends StatelessWidget {
       cacheHeight: 250.r.toInt(),
       cacheWidth: 240.r.toInt(),
       fit: BoxFit.cover,
-      color:  Theme.of(Get.context!).colorScheme.onBackground.withOpacity(0.7),
+      color: Theme.of(Get.context!).colorScheme.onBackground.withOpacity(0.7),
     );
   }
 
@@ -135,18 +137,20 @@ class MyDrawer extends StatelessWidget {
       children: [
         DrawerItem(
             icon: Icons.mic,
-            title: '追隨',
+            title: 'follow'.tr,
             tileOption: () {
               Get.offAndToNamed("/followed");
-              
             }),
         DrawerItem(
             icon: Icons.access_alarm_rounded,
             title: 'test2',
             tileOption: () {}),
-        DrawerItem(icon: Icons.settings, title: '設定', tileOption: () {
-          Get.offAndToNamed(('/setting'));
-        }),
+        DrawerItem(
+            icon: Icons.settings,
+            title: 'setting'.tr,
+            tileOption: () {
+              Get.offAndToNamed(('/setting'));
+            }),
       ],
     );
   }
@@ -156,9 +160,9 @@ class MyDrawer extends StatelessWidget {
       alignment: Alignment.center,
       child: ListTile(
         leading: const Icon(Icons.logout, size: 35, color: Colors.red),
-        title: const Text(
-          "登出",
-          style: TextStyle(color: Colors.red),
+        title: Text(
+          "logOut".tr,
+          style: const TextStyle(color: Colors.red),
         ),
         onTap: () async {
           final result = await showLogOutDialog(context);
@@ -193,15 +197,14 @@ class DrawerItem extends StatelessWidget {
       children: [
         ListTile(
           leading: Icon(icon, size: 25.w),
-          
           title: Text(title),
           onTap: tileOption,
         ),
-         Divider(
+        Divider(
           height: 1,
           thickness: 1.0,
           indent: 10.w,
-          endIndent:30.w,
+          endIndent: 30.w,
           color: ThemeData().dividerColor,
         ),
       ],

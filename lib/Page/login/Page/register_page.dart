@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/dialogs/error_dialog.dart';
 import 'package:podivy/util/dialogs/generic_dialog.dart';
@@ -39,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
       children: [
         TextField(
           style: const TextStyle(color: Colors.white),
-           cursorColor: Colors.white,
+          cursorColor: Colors.white,
           controller: _email,
           enableSuggestions: false,
           autocorrect: false,
@@ -47,7 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
           decoration: InputDecoration(
             hintStyle: const TextStyle(color: Colors.grey),
             fillColor: Colors.black45,
-            hintText: '輸入電子郵件',
+            hintText: 'enter the Email'.tr,
             focusedBorder: OutlineInputBorder(
               borderSide:
                   const BorderSide(color: Color(0xFFABC4AA), width: 2.0),
@@ -96,7 +97,7 @@ class _RegisterPageState extends State<RegisterPage> {
           decoration: InputDecoration(
             hintStyle: const TextStyle(color: Colors.grey),
             fillColor: Colors.black45,
-            hintText: '再次輸入密碼',
+            hintText: 'enter the password again'.tr,
             focusedBorder: OutlineInputBorder(
               borderSide:
                   const BorderSide(color: Color(0xFFABC4AA), width: 2.0),
@@ -115,9 +116,9 @@ class _RegisterPageState extends State<RegisterPage> {
       children: [
         TextButton(
           style: textButtonForRecommend,
-          child: const Text(
-            '註冊',
-            style: TextStyle(color: Colors.black),
+          child: Text(
+            'register'.tr,
+            style: const TextStyle(color: Colors.black),
           ),
           onPressed: () async {
             final email = _email.text;
@@ -145,9 +146,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   const AuthEventLogOut(),
                 );
           },
-          child: const Text(
-            "已有帳號? 在這登入",
-            style: TextStyle(color: Colors.white),
+          child: Text(
+            "Already have an account? Log in here".tr,
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       ],

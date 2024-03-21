@@ -10,7 +10,7 @@ class SettingPage extends StatelessWidget {
   final RxBool isDarkTheme = true.obs;
   final RxString language = "中文".obs;
   final storage = GetStorage();
-  
+
   @override
   Widget build(BuildContext context) {
     storage.writeIfNull('darkMode', true);
@@ -49,7 +49,7 @@ class SettingPage extends StatelessWidget {
                                   size: 50.r,
                                 ),
                                 Text(
-                                  "主題",
+                                  "theme".tr,
                                   style: TextStyle(
                                     fontSize: 20.sp,
                                     letterSpacing: 10,
@@ -69,7 +69,6 @@ class SettingPage extends StatelessWidget {
                                         : ThemeMode.dark);
                                     isDarkTheme.value = !isDarkTheme.value;
                                     storage.write('darkMode', value);
-                                    
                                   },
                                 )
                               ],

@@ -11,8 +11,8 @@ class EpisodesBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (episodes == null) {
-      return const Center(
-        child: Text('找尋不到資料'),
+      return Center(
+        child: Text('dataNotFind'.tr),
       );
     } else {
       return SliverList.builder(

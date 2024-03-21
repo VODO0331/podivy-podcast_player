@@ -12,9 +12,9 @@ class SearchPage extends StatelessWidget {
   final RxString keywords = "".obs;
   final RxBool isSearched = false.obs;
   final (
-    Rx<SearchServiceForKeyword> ,
-    Rx<SearchServiceForCategories> )
-   searchService = (
+    Rx<SearchServiceForKeyword>,
+    Rx<SearchServiceForCategories>
+  ) searchService = (
     SearchServiceForKeyword(keywords: '').obs,
     SearchServiceForCategories(keywords: '').obs
   );
@@ -29,17 +29,17 @@ class SearchPage extends StatelessWidget {
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.search),
         suffixIcon: Obx(() {
-          if(keywords.value != ''){
+          if (keywords.value != '') {
             return IconButton(
-          onPressed: () {
-            textEditingController.clear();
+              onPressed: () {
+                textEditingController.clear();
 
-            keywords.value = "";
-            isSearched.value = false;
-          },
-          icon: const Icon(Icons.clear),
-        );
-          }else{
+                keywords.value = "";
+                isSearched.value = false;
+              },
+              icon: const Icon(Icons.clear),
+            );
+          } else {
             return const SizedBox.shrink();
           }
         }),
@@ -56,8 +56,8 @@ class SearchPage extends StatelessWidget {
       ),
       onSubmitted: (value) {
         if (value.trim().isNotEmpty) {
-          searchService.$1.value = SearchServiceForKeyword(keywords: value); 
-          searchService.$2.value= SearchServiceForCategories(keywords: '');
+          searchService.$1.value = SearchServiceForKeyword(keywords: value);
+          searchService.$2.value = SearchServiceForCategories(keywords: '');
           keywords.value = value;
           isSearched.value = true;
         } else {
@@ -77,7 +77,7 @@ class SearchPage extends StatelessWidget {
       child: Obx(() => Text(
             keywords.value.trim().isNotEmpty
                 ? "search:${keywords.value}"
-                : "類型",
+                : "category".tr,
             style: TextStyle(
               fontSize: ScreenUtil().setSp(20),
             ),

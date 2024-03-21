@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/personal/media/build/enum_sort.dart';
 import 'package:search_service/search_service_repository.dart' show Episode;
@@ -132,7 +133,7 @@ Widget prototypeItem() {
                     onTap: () {
                       //  onDelete(list);
                     },
-                    child: const Text("刪除"),
+                    child: Text("delete".tr),
                   )
                 ];
               },

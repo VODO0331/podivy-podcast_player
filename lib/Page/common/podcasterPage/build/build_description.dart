@@ -49,7 +49,7 @@ class ShowDescription extends StatelessWidget {
                       // }
                     },
                     icon: const Icon(Icons.share),
-                    label: const Text("分享"),
+                    label: Text("share".tr),
                   ),
                   FutureBuilder(
                     future: followedManagement.isFollowed(podcasterData.id),
@@ -85,7 +85,7 @@ class ShowDescription extends StatelessWidget {
                               btIcon.value,
                               color: btColor.value,
                             ),
-                            label: const Text("追隨"),
+                            label: Text("follow".tr),
                           );
                         });
                       } else {
@@ -98,7 +98,7 @@ class ShowDescription extends StatelessWidget {
                           ),
                           onPressed: null,
                           icon: const Icon(Icons.favorite_border),
-                          label: const Text("追隨"),
+                          label: Text("follow".tr),
                         );
                       }
                     },
@@ -112,8 +112,10 @@ class ShowDescription extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 9).r,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [socialButton(podcasterData.socialLinks),
-                  Text(podcasterData.language!)],
+                  children: [
+                    socialButton(podcasterData.socialLinks),
+                    Text(podcasterData.language!)
+                  ],
                 ),
               ),
               Expanded(

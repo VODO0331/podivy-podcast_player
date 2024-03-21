@@ -75,7 +75,7 @@ PreferredSizeWidget listAppBar({
           return [
             PopupMenuItem(
               value: true,
-              child: const Text('編輯'),
+              child: Text('Edit'.tr),
               onTap: () async {
                 dev.log("here");
                 await showDialog(
@@ -84,11 +84,11 @@ PreferredSizeWidget listAppBar({
                       TextEditingController textEditingController =
                           Get.put(TextEditingController());
                       return AlertDialog(
-                        title: const Text('新播放清單名稱'),
+                        title: Text('New list name'.tr),
                         content: TextField(
                           controller: textEditingController,
-                          decoration:
-                              const InputDecoration(hintText: '請輸入新的List名稱'),
+                          decoration: InputDecoration(
+                              hintText: 'Please enter the new name'.tr),
                           onChanged: (value) {
                             textEditingController.text = value; // 監聽輸入框的變化
                           },
@@ -98,7 +98,7 @@ PreferredSizeWidget listAppBar({
                             onPressed: () {
                               Navigator.of(context).pop(); // 取消
                             },
-                            child: const Text('取消'),
+                            child: Text('Cancel'.tr),
                           ),
                           ElevatedButton(
                             onPressed: () {
@@ -107,7 +107,7 @@ PreferredSizeWidget listAppBar({
                                   list, textEditingController.text);
                               Get.back();
                             },
-                            child: const Text('確定'),
+                            child: const Text('Ok'),
                           ),
                         ],
                       );

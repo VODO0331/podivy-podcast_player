@@ -11,6 +11,7 @@ import 'package:my_audio_player/my_audio_player.dart';
 import 'package:search_service/search_service_repository.dart';
 
 import './routes/router.dart';
+import 'international/intl.dart';
 import 'theme/theme.dart';
 
 Future<void> main() async {
@@ -48,12 +49,14 @@ class MyApp extends StatelessWidget {
           minTextAdapt: true,
           splitScreenMode: true,
           child: GetMaterialApp(
-            
+            translations: TranslationService(),
+            locale: const Locale('zh', 'TW'),
+            fallbackLocale: const Locale('en', 'US'),
             onInit: () {
               isDarkMode.value = storage.read('darkMode') ?? true;
             },
             title: 'Podivy',
-            themeMode: isDarkMode.value ? ThemeMode.dark : ThemeMode.light  ,
+            themeMode: isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
             theme: lightTheme,
             darkTheme: darkTheme,
             initialRoute: '/',
@@ -72,13 +75,13 @@ class UnknownRoutePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: SizedBox(
         width: 500,
         height: 500,
         child: Text(
-          'Page not find!!!!!!!!',
-          style: TextStyle(color: Colors.red),
+          'PageError'.tr,
+          style: const TextStyle(color: Colors.red),
         ),
       ),
     );

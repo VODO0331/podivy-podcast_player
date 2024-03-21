@@ -1,4 +1,3 @@
-
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,22 +28,22 @@ class BuildList extends StatelessWidget {
             initialValue: sort.value,
             onSelected: (value) => sort.value = value,
             itemBuilder: (context) {
-              return const [
+              return [
                 PopupMenuItem(
                   value: Sort.addTimeNewToOld,
-                  child: Text('新增時間(新>舊)'),
+                  child: Text('Add time (new > old)'.tr),
                 ),
                 PopupMenuItem(
                   value: Sort.addTimeOldToNew,
-                  child: Text('新增時間(舊>新)'),
+                  child: Text('Add time (old > new)'.tr),
                 ),
                 PopupMenuItem(
                   value: Sort.releaseOldToNew,
-                  child: Text('發布時間(舊>新)'),
+                  child: Text('Release time (old > new)'.tr),
                 ),
                 PopupMenuItem(
                   value: Sort.releaseNewToOld,
-                  child: Text('發布時間(新>舊)'),
+                  child: Text('Release time (new > old)'.tr),
                 ),
               ];
             },
@@ -53,7 +52,7 @@ class BuildList extends StatelessWidget {
         TextButton(
           onPressed: null,
           child: Text(
-            '$count 部',
+            'Count :$count'.tr,
             style: TextStyle(
                 textBaseline: TextBaseline.alphabetic, fontSize: 15.r),
           ),

@@ -57,9 +57,9 @@ class UserPage extends StatelessWidget {
             ),
             itemBuilder: (context) {
               return [
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: true,
-                  child: Text('編輯'),
+                  child: Text('Edit'.tr),
                 )
               ];
             },
@@ -159,14 +159,14 @@ class UserPage extends StatelessWidget {
               return _isEdit.value
                   ? TextField(
                       controller: _textEditingController,
-                      decoration: const InputDecoration(
-                        labelText: "名稱",
+                      decoration: InputDecoration(
+                        labelText: "Name".tr,
                       ),
                     )
                   : ListTile(
                       leading: const Icon(Icons.person),
                       title: Text(
-                        "名稱 :   ${userController.userData.userName}",
+                        "Name :   ${userController.userData.userName}".tr,
                         style: TextStyle(fontSize: ScreenUtil().setSp(15)),
                       ),
                     );
@@ -199,7 +199,7 @@ class UserPage extends StatelessWidget {
                             userImg: updates[1],
                           );
                         },
-                        child: const Text("完成"),
+                        child: Text("Done".tr),
                       ),
                       TextButton(
                         onPressed: () async {
@@ -208,7 +208,7 @@ class UserPage extends StatelessWidget {
                           imgData.value = userController.userData.userImg.value;
                           _isEdit.value = false;
                         },
-                        child: const Text("取消"),
+                        child: Text("Cancel".tr),
                       )
                     ],
                   )

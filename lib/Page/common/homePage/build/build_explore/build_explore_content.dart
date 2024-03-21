@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'build_category_bt.dart';
-import 'build_podcast_gridview.dart';
+import 'build_podcast_grid.dart';
 
 class ExploreContent extends StatelessWidget {
   ExploreContent({Key? key}) : super(key: key);
@@ -29,4 +29,3 @@ class ExploreContent extends StatelessWidget {
     );
   }
 }
-

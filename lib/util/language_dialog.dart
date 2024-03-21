@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:podivy/international/intl.dart';
 
 Future languageDialog() async {
+  final TranslationService translationService = Get.put(TranslationService());
   return await showDialog(
     context: Get.context!,
     builder: (BuildContext context) {
@@ -11,7 +13,9 @@ Future languageDialog() async {
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(Icons.language),
-            SizedBox(width: 10,),
+            SizedBox(
+              width: 10,
+            ),
             Text('language'),
           ],
         ),
@@ -19,17 +23,19 @@ Future languageDialog() async {
           children: [
             ListTile(
               title: const Text("中文"),
-              onTap: () {},
+              onTap: () =>
+                  translationService.updateTransition(const Locale('zh', 'TW')),
             ),
             ListTile(
               title: const Text("English"),
-              onTap: () {},
+              onTap: () =>
+                  translationService.updateTransition(const Locale('en', 'US')),
             ),
           ],
         ),
         actions: <Widget>[
           TextButton(
-            child: const Text('取消'),
+            child: const Text('Ok'),
             onPressed: () {
               Get.back();
             },

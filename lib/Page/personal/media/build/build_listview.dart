@@ -1,8 +1,6 @@
-
-
-
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 typedef ListCallback = void Function(UserList list);
 
@@ -32,10 +30,10 @@ class MyListView extends StatelessWidget {
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
-                  onTap: ()  {
-                     onDelete(list);
+                  onTap: () {
+                    onDelete(list);
                   },
-                  child: const Text("刪除"),
+                  child: Text("delete".tr),
                 )
               ];
             },
