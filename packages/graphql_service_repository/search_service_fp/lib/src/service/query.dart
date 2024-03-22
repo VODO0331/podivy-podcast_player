@@ -38,12 +38,16 @@ const String queryForExploreContent = """
 query  search(
     \$podcastFirst: Int,
     \$categories: [String],
+    \$language: String,
+    \$episodesSortBy: PodcastSortType!
   ){
     podcasts(
       first:\$podcastFirst, 
       filters:{
+        language:\$language,
         categories:\$categories, 
       },
+      sort:{sortBy: \$episodesSortBy}
       ){
       data{
         id
@@ -62,10 +66,12 @@ query  search(
     \$episodesSortBy: EpisodeSortType!
     \$airDateForm: DateTime
     \$airDateTo: DateTime
+    \$language: String,
   ){
     podcasts(
       first: \$podcastFirst, 
       filters:{
+         language:\$language,
         categories:\$categories, 
       },
       ){

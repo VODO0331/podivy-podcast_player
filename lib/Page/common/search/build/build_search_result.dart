@@ -5,6 +5,7 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/common/search/build/build_header_delegate.dart';
 import 'package:podivy/Page/common/search/build/build_result_podcast.dart';
 import 'package:podivy/Page/common/search/build/build_result_episode.dart';
+import 'package:podivy/util/translator.dart';
 import 'package:search_service/search_service_repository.dart';
 
 typedef KeywordCallback = void Function(String keywords);
@@ -133,26 +134,20 @@ class _Recommendations extends StatelessWidget {
                     children: [
                       for (var interest in interests)
                         ElevatedButton(
-                            style: ButtonStyle(
-                                textStyle: MaterialStateTextStyle.resolveWith(
-                                    (states) => TextStyle(
-                                        color: Get.isDarkMode
-                                            ? Theme.of(context)
-                                                .colorScheme
-                                                .onBackground
-                                            : Theme.of(context)
-                                                .colorScheme
-                                                .onPrimaryContainer)),
-                                backgroundColor: MaterialStateColor.resolveWith(
-                                    (states) => Get.isDarkMode
-                                        ? Theme.of(context)
-                                            .colorScheme
-                                            .background
-                                        : Theme.of(context)
-                                            .colorScheme
-                                            .primaryContainer)),
-                            child: Text(
-                              interest.category,
+                            child: FutureBuilder(
+                              future: translation(interest.category),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const SizedBox.shrink();
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else if (snapshot.hasData) {
+                                  return Text(snapshot.data as String);
+                                } else {
+                                  return const Text('Translation Error');
+                                }
+                              },
                             ),
                             onPressed: () {
                               recommendCallBack(SearchServiceForCategories(

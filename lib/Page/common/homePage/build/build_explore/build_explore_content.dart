@@ -14,7 +14,8 @@ class ExploreContent extends StatelessWidget {
         children: [
           CategoryButton(
             selected: (category) {
-              selectedType.value = category;
+              Future.microtask(() => selectedType.value = category);
+              
             },
           ),
           Expanded(

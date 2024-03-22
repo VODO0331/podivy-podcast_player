@@ -149,7 +149,8 @@ class MyDrawer extends StatelessWidget {
             icon: Icons.settings,
             title: 'setting'.tr,
             tileOption: () {
-              Get.offAndToNamed(('/setting'));
+              
+              Get.offAllNamed(('/setting'));
             }),
       ],
     );

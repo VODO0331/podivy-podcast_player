@@ -58,6 +58,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text('If you forget your password, enter the email'.tr),
+              SizedBox(height: 20.r,),
               TextField(
                 style: const TextStyle(color: Colors.white),
                 cursorColor: Colors.white,

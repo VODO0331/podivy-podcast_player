@@ -1,5 +1,5 @@
-name: search_service
-description:  Service for search.
+name: internationalization_repository
+description: service for Internationalization.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
@@ -11,13 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get: 
-  intl: ^0.19.0
-  graphql_flutter: ^5.1.2
-  audio_service: ^0.18.12
 
-  internationalization_repository:
-    path: ../../internationalization
+  get:
+  get_storage: ^2.1.1
   
 dev_dependencies:
   flutter_test:

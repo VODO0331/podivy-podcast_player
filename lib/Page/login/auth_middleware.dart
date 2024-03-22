@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:podivy/Page/login/Page/login_page.dart';
 import 'package:podivy/Page/login/Page/rest_password_page.dart';
 import 'package:podivy/Page/login/Page/register_page.dart';
@@ -19,7 +20,7 @@ class AuthMiddleWare extends StatelessWidget {
         if (state.isLoading) {
           LoadingScreen().show(
             context: context,
-            text: state.loadingText ?? '加載中...',
+            text: 'loading'.tr,
           );
         } else {
           LoadingScreen().hide();
@@ -38,7 +39,7 @@ class AuthMiddleWare extends StatelessWidget {
           return const LoginBackGround(child: ForgotPasswordPage());
         } else {
           return const Scaffold(
-            body: CircularProgressIndicator(),
+            body: Center(child: CircularProgressIndicator(),),
           );
         }
       },

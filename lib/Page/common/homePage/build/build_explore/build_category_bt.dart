@@ -1,8 +1,10 @@
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:podivy/theme/custom_theme.dart';
+import 'package:podivy/util/translator.dart';
+
 
 typedef SelectCallBack = void Function(String category);
 
@@ -29,7 +31,7 @@ class CategoryButton extends StatelessWidget {
                 height: 55.r,
                 width: ScreenUtil().screenWidth,
                 child: ListView.builder(
-                  prototypeItem: prototypeItem(),
+                  // prototypeItem: prototypeItem(),
                   padding: const EdgeInsets.all(9).r,
                   scrollDirection: Axis.horizontal,
                   itemCount: interests.length,
@@ -37,15 +39,22 @@ class CategoryButton extends StatelessWidget {
                     final interest = interests.elementAt(index);
 
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4).r,
-                      child: TextButton(
-                        style: textButtonForRecommend,
-                        child: Text(
-                          interest.category,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            // color: Colors.black,
-                          ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8).r,
+                      child: ElevatedButton(
+                        child: FutureBuilder(
+                          future: translation(interest.category),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const SizedBox.shrink();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else if (snapshot.hasData) {
+                              return Text(snapshot.data as String);
+                            } else {
+                              return const Text('Translation Error');
+                            }
+                          },
                         ),
                         onPressed: () => selected(interest.category),
                       ),
@@ -63,19 +72,20 @@ class CategoryButton extends StatelessWidget {
   }
 }
 
+
+
 Widget prototypeItem() {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 4).r,
-    child: TextButton(
-      style: textButtonForRecommend,
-      onPressed: null,
+    padding: const EdgeInsets.symmetric(horizontal: 8).r,
+    child: ElevatedButton(
       child: Text(
         '',
         style: TextStyle(
           fontSize: 12.sp,
-          // color: Colors.black,
+          // color: Colors.,
         ),
       ),
+      onPressed: () {},
     ),
   );
 }

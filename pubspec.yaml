@@ -45,7 +45,8 @@ dependencies:
   image_picker: ^1.0.7
   font_awesome_flutter: ^10.7.0
   get_storage: ^2.1.1
-
+  translator: ^1.0.0
+  
   modify_widget_repository:
     path: packages/modify_widget_repository
 
@@ -60,6 +61,9 @@ dependencies:
 
   my_audio_player:
     path: packages/audio_player
+    
+  internationalization_repository:
+    path: packages/internationalization
 
   
   

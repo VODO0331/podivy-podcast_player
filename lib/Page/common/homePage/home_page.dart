@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
+// import 'build/build_explore/build_explore_content.dart';
+
 //節省token
 // import 'package:podivy/widget/carousel.dart';
 
@@ -17,6 +19,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final InformationController userController = Get.find();
     return SafeArea(
+      right: false,
+      left: false,
       child: Padding(
         padding: const EdgeInsets.only(top: 40).h,
         child: Column(
@@ -30,14 +34,14 @@ class HomePage extends StatelessWidget {
             //   padding: const EdgeInsets.symmetric(vertical: 10).h,
             //   child: const LatestPodcast(),
             // ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30).w,
-              child: const Divider(
-                thickness: 0.5,
-                color: Color.fromARGB(255, 255, 255, 255),
-              ),
+
+            Divider(
+              thickness: 0.5,
+              indent: 30.r,
+              endIndent: 30.r,
+              color: const Color.fromARGB(255, 255, 255, 255),
             ),
-            //  ExploreContent(),
+            // ExploreContent(),
           ],
         ),
       ),
@@ -99,10 +103,7 @@ Widget appBar(InformationController userController) {
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 6).r,
                 alignment: Alignment.centerLeft,
                 decoration: BoxDecoration(
-                    color: Theme.of(Get.context!).colorScheme.background,
-                    // border: Border.all(
-                    //     color: Theme.of(Get.context!).colorScheme.onBackground,
-                    //     width: 1.5),
+                    color: Get.theme.colorScheme.background,
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: const [
                       BoxShadow(
@@ -113,7 +114,7 @@ Widget appBar(InformationController userController) {
                     ]),
                 child: Icon(
                   Icons.search,
-                  color: Theme.of(Get.context!).colorScheme.primary,
+                  color: Get.theme.colorScheme.primary,
                 ),
               ),
             )

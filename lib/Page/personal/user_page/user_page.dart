@@ -37,9 +37,7 @@ class UserPage extends StatelessWidget {
   }
 
   Widget _buildAppBar() {
-    return Container(
-      color: Theme.of(Get.context!).colorScheme.secondaryContainer,
-      child: Row(
+    return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
@@ -68,8 +66,8 @@ class UserPage extends StatelessWidget {
             },
           ),
         ],
-      ),
-    );
+      );
+    
   }
 
   Widget _buildEditBt() {
@@ -100,11 +98,12 @@ class UserPage extends StatelessWidget {
   }
 
   Widget _buildUserAvatar() {
+    final Color userAvatar = Get.isDarkMode?Theme.of(Get.context!).colorScheme.primary:Theme.of(Get.context!).colorScheme.primaryContainer;
     return Container(
       height: 200.h,
       width: 300.w,
       decoration: BoxDecoration(
-          color: Theme.of(Get.context!).colorScheme.primaryContainer,
+          color: userAvatar,
           borderRadius: BorderRadius.circular(30),
           boxShadow: const [
             BoxShadow(color: Colors.grey, blurRadius: 15, offset: Offset(0, 5))

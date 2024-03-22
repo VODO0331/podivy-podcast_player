@@ -8,7 +8,7 @@ import '../../../util/language_dialog.dart';
 class SettingPage extends StatelessWidget {
   SettingPage({super.key});
   final RxBool isDarkTheme = true.obs;
-  final RxString language = "中文".obs;
+  final RxString language = "intl language".obs;
   final storage = GetStorage();
 
   @override
@@ -17,108 +17,135 @@ class SettingPage extends StatelessWidget {
     isDarkTheme.value = storage.read('darkMode');
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Get.offAndToNamed('/');
+            },
+            icon: const Icon(Icons.arrow_back_ios_rounded)),
         title: const Icon(Icons.settings),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
           child: Column(
             children: [
               SizedBox(
-                height: 200.h,
+                height: 100.h,
                 child: Flex(
                   direction: Axis.horizontal,
                   children: [
                     Expanded(
                       flex: 6,
                       child: Container(
-                          decoration: BoxDecoration(
-                              color:
-                                  Theme.of(context).colorScheme.inversePrimary,
-                              borderRadius: BorderRadius.circular(30)),
-                          child: Obx(
-                            () => Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
+                        height: 100.r,
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Obx(() => Center(
+                              child: ListTile(
+                                leading: Icon(
                                   isDarkTheme.value
                                       ? Icons.dark_mode_outlined
                                       : Icons.light_mode_outlined,
-                                  size: 50.r,
+                                  size: 30.r,
                                 ),
-                                Text(
+                                title: Text(
                                   "theme".tr,
                                   style: TextStyle(
                                     fontSize: 20.sp,
-                                    letterSpacing: 10,
+                                    // letterSpacing: 3,
                                     color: Theme.of(context)
                                         .colorScheme
                                         .onPrimaryContainer,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 20.r,
-                                ),
-                                Switch(
-                                  value: isDarkTheme.value,
-                                  onChanged: (value) {
-                                    Get.changeThemeMode(Get.isDarkMode
-                                        ? ThemeMode.light
-                                        : ThemeMode.dark);
-                                    isDarkTheme.value = !isDarkTheme.value;
-                                    storage.write('darkMode', value);
-                                  },
-                                )
-                              ],
-                            ),
-                          )),
+                                subtitle: Text(Get.isDarkMode
+                                    ? 'dark mode'.tr
+                                    : 'light mode'.tr),
+                                subtitleTextStyle:
+                                    const TextStyle(color: Colors.grey),
+                                onTap: () {
+                                  Get.changeThemeMode(Get.isDarkMode
+                                      ? ThemeMode.light
+                                      : ThemeMode.dark);
+                                  isDarkTheme.value = !isDarkTheme.value;
+                                  storage.write('darkMode', isDarkTheme.value);
+                                },
+                              ),
+                            )),
+                      ),
                     ),
                     const Expanded(flex: 1, child: SizedBox.shrink()),
                     Expanded(
                       flex: 6,
                       child: Container(
+                          height: 100.r,
                           decoration: BoxDecoration(
                               color:
                                   Theme.of(context).colorScheme.inversePrimary,
                               borderRadius: BorderRadius.circular(30)),
-                          child: Obx(
-                            () => Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.language,
-                                  size: 50.r,
+                          child: Center(
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.language,
+                                size: 30.r,
+                              ),
+                              title: Text(
+                                "language",
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                  // letterSpacing: 3,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer,
                                 ),
-                                Text(
-                                  "language",
-                                  style: TextStyle(
-                                    fontSize: 20.sp,
-                                    letterSpacing: 2,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onPrimaryContainer,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20.r,
-                                ),
-                                ElevatedButton(
-                                    onPressed: () async {
-                                      await languageDialog();
-                                    },
-                                    child: Text(
-                                      language.value,
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimaryContainer,
-                                      ),
-                                    ))
-                              ],
+                              ),
+                              subtitle: Text("intl_language".tr),
+                              onTap: () async {
+                                await languageDialog();
+                              },
                             ),
-                          )),
+                          )
+                          // Column(
+                          //   mainAxisAlignment: MainAxisAlignment.center,
+                          //   children: [
+                          //     Icon(
+                          //       Icons.language,
+                          //       size: 50.r,
+                          //     ),
+                          //     Text(
+                          //       "language",
+                          //       style: TextStyle(
+                          //         fontSize: 20.sp,
+                          //         letterSpacing: 2,
+                          //         color: Theme.of(context)
+                          //             .colorScheme
+                          //             .onPrimaryContainer,
+                          //       ),
+                          //     ),
+                          //     SizedBox(
+                          //       height: 20.r,
+                          //     ),
+                          //     ElevatedButton(
+                          //         onPressed: () async {
+                          //           await languageDialog((value) {
+                          //             language.value = value;
+                          //           });
+                          //         },
+                          //         child: Text(
+                          //           language.value,
+                          //           style: TextStyle(
+                          //             color: Theme.of(context)
+                          //                 .colorScheme
+                          //                 .onPrimaryContainer,
+                          //           ),
+                          //         ))
+                          //   ],
+                          // ),
+
+                          ),
                     )
                   ],
                 ),

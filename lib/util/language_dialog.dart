@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:podivy/international/intl.dart';
+import 'package:internationalization_repository/internationalization.dart';
+
+typedef LanguageCallback = void Function(String language);
 
 Future languageDialog() async {
   final TranslationService translationService = Get.put(TranslationService());
@@ -23,14 +25,17 @@ Future languageDialog() async {
           children: [
             ListTile(
               title: const Text("中文"),
-              onTap: () =>
-                  translationService.updateTransition(const Locale('zh', 'TW')),
+              onTap: () {
+                translationService.changeLanguage('zh', 'TW');
+                // languageCallback("intl language".tr);
+              },
             ),
             ListTile(
-              title: const Text("English"),
-              onTap: () =>
-                  translationService.updateTransition(const Locale('en', 'US')),
-            ),
+                title: const Text("English"),
+                onTap: () {
+                  translationService.changeLanguage('en', 'US');
+                  // languageCallback("intl language".tr);
+                }),
           ],
         ),
         actions: <Widget>[

@@ -73,7 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
           decoration: InputDecoration(
             hintStyle: const TextStyle(color: Colors.grey),
             fillColor: Colors.black45,
-            hintText: '輸入密碼',
+            hintText: 'enter the Password'.tr,
             focusedBorder: OutlineInputBorder(
               borderSide:
                   const BorderSide(color: Color(0xFFABC4AA), width: 2.0),

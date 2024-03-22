@@ -1,4 +1,5 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:internationalization_repository/internationalization.dart';
 import 'package:intl/intl.dart';
 
 import '../service/query.dart';
@@ -24,10 +25,7 @@ sealed class SearchService {
     required this.podcasterList,
     required this.episodeList,
   });
-
-
 }
-
 
 class SearchServiceForKeyword extends SearchService {
   SearchServiceForKeyword({
@@ -60,11 +58,13 @@ class SearchServiceForCategories extends SearchService {
     super.numberOfPodcastResults = 3,
     super.numberOfEpisodesResults = 5,
   }) : super(
+    
             queryOptions: QueryOptions(
           document: gql(queryForCategories),
           variables: {
             'categories': keywords,
             'podcastFirst': numberOfPodcastResults,
+            'language':TranslationService().currentLanguage,
             'episodesFirst': numberOfEpisodesResults,
             'episodesSortBy': 'RELEVANCE',
             'airDateForm':
@@ -79,39 +79,42 @@ class SearchServiceForExploreContent extends SearchServiceForCategories {
   SearchServiceForExploreContent({
     required super.keywords,
     super.numberOfPodcastResults = 4,
+    // required super.language,
   });
   @override
   QueryOptions get queryOptions {
     return QueryOptions(
       document: gql(queryForExploreContent),
       variables: {
+        'language':TranslationService().currentLanguage,
         'categories': keywords,
         'podcastFirst': numberOfPodcastResults,
+        'episodesSortBy': 'RELEVANCE',
       },
     );
   }
 }
 
-class SearchServiceForLatestList extends SearchServiceForCategories {
-  //追隨清單中 Episode更新最新 的前三個podcast ,
-  //如果不足三個或Null 用隨機podcast(依照使用者喜好)
-  final List<int>? idList;
-  SearchServiceForLatestList({
-    required this.idList,
-    required super.keywords,
-  });
+// class SearchServiceForLatestList extends SearchServiceForCategories {
+//   //追隨清單中 Episode更新最新 的前三個podcast ,
+//   //如果不足三個或Null 用隨機podcast(依照使用者喜好)
+//   final List<int>? idList;
+//   SearchServiceForLatestList({
+//     required this.idList,
+//     required super.keywords,
+//   });
 
-  @override
-  QueryOptions get queryOptions {
-    return QueryOptions(
-      document: gql(queryLatestList),
-      variables: const {
-        'languageFilter': 'ZH',
-        'first': 3,
-        'podcastsSortBy': 'DATE_OF_FIRST_EPISODE',
-        'episodeDirection': 'DESCENDING',
-        'episodesortBy': 'AIR_DATE',
-      },
-    );
-  }
-}
+//   @override
+//   QueryOptions get queryOptions {
+//     return QueryOptions(
+//       document: gql(queryLatestList),
+//       variables: const {
+//         'languageFilter': 'ZH',
+//         'first': 3,
+//         'podcastsSortBy': 'DATE_OF_FIRST_EPISODE',
+//         'episodeDirection': 'DESCENDING',
+//         'episodesortBy': 'AIR_DATE',
+//       },
+//     );
+//   }
+// }
