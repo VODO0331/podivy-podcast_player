@@ -26,10 +26,10 @@ class BuildEpisodeInfo extends StatelessWidget {
           child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: FadeInImage.assetNetwork(
-                placeholderCacheWidth: 50,
-                placeholderCacheHeight: 50,
-                imageCacheHeight: 300,
-                imageCacheWidth: 300,
+                placeholderCacheWidth: 50.r.toInt(),
+                placeholderCacheHeight: 50.r.toInt(),
+                imageCacheHeight: 300.r.toInt(),
+                imageCacheWidth: 300.r.toInt(),
                 fit: BoxFit.cover,
                 placeholderFit: BoxFit.cover,
                 placeholder: "assets/images/generic/search_loading.gif",
@@ -38,8 +38,8 @@ class BuildEpisodeInfo extends StatelessWidget {
                   return Image.asset(
                     "assets/images/podcaster/defaultPodcaster.jpg",
                     fit: BoxFit.cover,
-                    cacheHeight: 100,
-                    cacheWidth: 100,
+                    cacheHeight: 100.r.toInt(),
+                    cacheWidth: 100.r.toInt(),
                   );
                 },
               )),

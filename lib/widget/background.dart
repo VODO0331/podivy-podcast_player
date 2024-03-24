@@ -36,8 +36,8 @@ class MyBackGround extends StatelessWidget {
             child: Image.asset(
               'assets/images/background/test.png',
               fit: BoxFit.cover,
-              cacheHeight: 500,
-              cacheWidth: 400,
+              cacheHeight: 500.r.toInt(),
+              cacheWidth: 400.r.toInt(),
             ),
           ),
           child

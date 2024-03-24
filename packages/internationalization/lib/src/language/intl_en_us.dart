@@ -18,6 +18,8 @@ const Map<String, String> en_Us =  {
           'reset Password': 'Reset Password',
           'Please verify the email': 'Please verify the email',
           'send verification': 'Send verification',
+          //home Page
+          'Go follow your favorite podcasts':'Go follow your favorite podcasts!!',
           //search Page
           'loading': "Loading...",
           "dataError": "Data Error!",
@@ -45,7 +47,8 @@ const Map<String, String> en_Us =  {
           'list Name': 'List Name',
           'New list name': 'New list name',
           'Please enter the new name': 'Please enter the new list name',
-
+          //follow
+          'Are you sure you want to cancel follow?':'Are you sure you want to cancel follow?',
           //add list dialog
           'Add To List': 'Add To List',
           'Add': "Add",

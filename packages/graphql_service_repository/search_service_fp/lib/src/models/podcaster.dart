@@ -15,7 +15,6 @@ class SocialLinks {
 
 class Podcaster {
   final String id;
-  final int numberOfEpisodesResults;
   final String title;
   final List? categories;
   final String? imageUrl;
@@ -26,7 +25,6 @@ class Podcaster {
 
   Podcaster(
       {required this.id,
-       this.numberOfEpisodesResults = 5,
        required this.title,
        this.categories,
        this.imageUrl,

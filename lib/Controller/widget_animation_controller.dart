@@ -1,16 +1,45 @@
-
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+class LoopController extends GetxController  with GetSingleTickerProviderStateMixin{
+
+  final Rxn<AnimationController> _loopAnimationController =
+      Rxn<AnimationController>();
+  AnimationController? get animationController =>
+      _loopAnimationController.value;
+  final Rxn<Animation<double>> _boardAnimation = Rxn<Animation<double>>();
+  Animation<double>? get boardAnimation => _boardAnimation.value;
+  @override
+  void onInit() {
+    super.onInit();
+    const duration = Duration(milliseconds: 700);
+    _loopAnimationController.value =
+        AnimationController(vsync: this, duration: duration)
+          ..repeat(reverse: true);
+
+      _boardAnimation.value = (Tween<double>(begin: 1, end: 1.1)
+        .chain(CurveTween(curve: Curves.elasticIn))
+        .animate(_loopAnimationController.value!)
+      ..addListener(() {
+        update();
+      }));
+  }
+
+  @override
+  void onClose() {
+    _loopAnimationController.value?.dispose();
+    super.onClose();
+  }
+
+}
 
 class WidgetController extends GetxController
     with GetSingleTickerProviderStateMixin {
   final Rxn<AnimationController> _animationController =
       Rxn<AnimationController>();
   AnimationController? get animationController => _animationController.value;
-
   final Rxn<Animation<double?>> _opacityAnimation = Rxn<Animation<double?>>();
   Animation<double?>? get opacityAnimation => _opacityAnimation.value;
 
@@ -45,6 +74,8 @@ class WidgetController extends GetxController
       ..addListener(() {
         update();
       }));
+
+  
 
     _avatarSizeAnimation.value = (Tween<double>(begin: 55, end: 0)
         .chain(CurveTween(curve: Curves.easeOut))

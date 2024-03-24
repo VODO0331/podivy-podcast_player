@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
-// import 'build/build_explore/build_explore_content.dart';
+import 'build/build_carousel.dart';
+
+import 'build/build_explore/build_explore_content.dart';
 
 //節省token
 // import 'package:podivy/widget/carousel.dart';
@@ -30,10 +32,13 @@ class HomePage extends StatelessWidget {
               thickness: 2,
               color: Color.fromARGB(123, 255, 255, 255),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(vertical: 10).h,
-            //   child: const LatestPodcast(),
-            // ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10).h,
+              child:  SizedBox(
+                height: 220.r,
+                child: BuildCarousel(),
+              )
+            ),
 
             Divider(
               thickness: 0.5,
@@ -41,7 +46,12 @@ class HomePage extends StatelessWidget {
               endIndent: 30.r,
               color: const Color.fromARGB(255, 255, 255, 255),
             ),
-            // ExploreContent(),
+            //佔位
+            // Expanded(
+            //     child: Container(
+            //   color: Colors.amber,
+            // ))
+            ExploreContent(),
           ],
         ),
       ),
@@ -118,38 +128,7 @@ Widget appBar(InformationController userController) {
                 ),
               ),
             )
-            // ElevatedButton.icon(
-            //   style: ButtonStyle(
-            //     shadowColor: MaterialStateProperty.all(
-            //       Theme.of(Get.context!)
-            //           .colorScheme
-            //           .onBackground
-            //           .withOpacity(0.7),
-            //     ),
-            //     alignment: Alignment.centerLeft,
-            //     // backgroundColor: MaterialStateProperty.all(
-            //     //   Theme.of(Get.context!)
-            //     //       .colorScheme
-            //     //       .onBackground
-            //     //       .withOpacity(0.7),
-
-            //     // ),
-            //     shape: MaterialStateProperty.all(
-            //       RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(20),
-            //       ),
-            //     ),
-            //   ),
-            //   icon: Icon(
-            //     Icons.search,
-            //     color: Theme.of(Get.context!).colorScheme.primary,
-            //   ),
-            //   label: const Text(""),
-            //   onPressed: () async {
-            //     Get.toNamed('/search');
-            //     // await getAccessToken();
-            //   },
-            // ),
+            
             ),
       )
     ],

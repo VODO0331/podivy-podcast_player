@@ -17,6 +17,8 @@ const Map<String, String> zh_Tw ={
           'Please verify the email': '請驗證電子郵件',
           'reset Password': '重設密碼',
           'send verification': '傳送驗證',
+          //home Page
+          'Go follow your favorite podcasts':'追隨喜歡的podcast!!',
           //search Page
           'loading': "加載中...",
           "dataError": "數據出現錯誤!",
@@ -44,7 +46,8 @@ const Map<String, String> zh_Tw ={
           'New list name': '新播放清單名稱',
           'list Name': '清單名稱',
           'Please enter the new name': '請輸入新的名稱',
-
+          //follow
+          'Are you sure you want to cancel follow?':'您確定要取消追蹤嗎？',
           //add list dialog
           'Add To List': '添加清單',
           'Add': "添加",

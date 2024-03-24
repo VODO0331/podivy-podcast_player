@@ -161,8 +161,8 @@ class _Recommendations extends StatelessWidget {
                         'assets/images/background/search.png',
                         width: 250.r,
                         height: 250.r,
-                        cacheHeight: 656,
-                        cacheWidth: 656,
+                        cacheHeight: 656.r.toInt(),
+                        cacheWidth: 656.r.toInt(),
                         fit: BoxFit.cover,
                         color: Theme.of(Get.context!).colorScheme.onBackground,
                       ))

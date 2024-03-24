@@ -10,8 +10,8 @@ import 'package:search_service/search_service_repository.dart';
 class PodcasterPage extends StatelessWidget {
   PodcasterPage({super.key});
   final GlobalKey<ScaffoldState> sKey = GlobalKey<ScaffoldState>();
-  final Podcaster podcaster = Podcaster(
-      id: Get.arguments, title: ''); //Get.arguments => catch podcaster id
+  final String podcasterId =
+      Get.arguments; //Get.arguments => catch podcaster id
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,10 @@ class PodcasterPage extends StatelessWidget {
         key: sKey,
         body: SafeArea(
           child: FutureBuilder(
-            future: getSinglePodcasterData(podcaster),
+            future: getSinglePodcasterData(
+              id: podcasterId,
+              numberOfEpisodesResults: 5,
+            ),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasError) {

@@ -7,31 +7,15 @@ import 'package:search_service/search_service_repository.dart';
 import 'build/build_episode_info.dart';
 // import 'dart:developer' as dev show log;
 
-class PlayerPage extends StatefulWidget {
-  const PlayerPage({super.key});
+class PlayerPage extends StatelessWidget {
+  PlayerPage({super.key});
 
-  @override
-  State<PlayerPage> createState() => _PlayerPageState();
-}
-
-class _PlayerPageState extends State<PlayerPage> {
   final List<Episode> getEpisodeList = Get.arguments['episodes'];
+
   final int getIndex = Get.arguments['index'];
-  late final MyAudioPlayer _myAudioPlayer;
 
-  @override
-  void initState() {
-    super.initState();
-
-    _myAudioPlayer =
-        MyAudioPlayer(episodeList: getEpisodeList, index: getIndex);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _myAudioPlayer.dispose();
-  }
+  final MyAudioPlayer _myAudioPlayer = MyAudioPlayer(
+      episodeList: Get.arguments['episodes'], index: Get.arguments['index']);
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 import 'package:podivy/util/dialogs/logout_dialog.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -170,6 +171,7 @@ class MyDrawer extends StatelessWidget {
           if (result) {
             Get.delete<InformationController>();
             Get.delete<ListManagement>();
+            Get.delete<MyAudioPlayer>();
             context.mounted
                 ? context.read<AuthBloc>().add(const AuthEventLogOut())
                 : null;

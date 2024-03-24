@@ -49,10 +49,10 @@ class _FollowedPageState extends State<FollowedPage> {
             child: Image.asset(
               "assets/images/background/followed.png",
               
-              height: 270,
-              width: 270,
-              cacheHeight: 350,
-              cacheWidth: 350,
+              height: 270.r,
+              width: 270.r,
+              cacheHeight: 350.r.toInt(),
+              cacheWidth: 350.r.toInt(),
             ),
           ),
           StreamBuilder(

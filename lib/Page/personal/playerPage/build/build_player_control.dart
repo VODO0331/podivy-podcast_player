@@ -30,8 +30,8 @@ class PlayerControl extends StatelessWidget {
               'assets/images/background/player.png',
               width: 150.r,
               height: 150.r,
-              cacheHeight: 300,
-              cacheWidth: 300,
+              cacheHeight: 300.r.toInt(),
+              cacheWidth: 300.r.toInt(),
             ),
           ),
           Column(

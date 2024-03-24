@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:podivy/Page/common/podcasterPage/build/build_profile_information.dart';
+import 'package:podivy/util/change_follow_state.dart';
+
 import 'package:search_service/search_service_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,14 +13,13 @@ class ShowDescription extends StatelessWidget {
   final double opacity;
   final RxBool isFollowed;
   final FollowedManagement followedManagement;
-  final InterestsManagement interestsManagement;
+ 
   const ShowDescription(
       {super.key,
       required this.podcasterData,
       required this.opacity,
       required this.isFollowed,
-      required this.followedManagement,
-      required this.interestsManagement});
+      required this.followedManagement,});
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +73,7 @@ class ShowDescription extends StatelessWidget {
                                 foregroundColor: btColor.value,
                                 side: BorderSide(color: btColor.value)),
                             onPressed: () async {
-                              await changeBtState(
-                                followedManagement,
-                                interestsManagement,
+                              await changeFollowState(
                                 podcasterData,
                                 isFollowed.value,
                               );

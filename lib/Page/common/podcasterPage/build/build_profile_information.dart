@@ -12,11 +12,10 @@ class ProfileInformation extends StatelessWidget {
   ProfileInformation({super.key, required this.podcasterData});
   final _widgetController = Get.put(WidgetController());
   final RxBool isFollowed = false.obs;
-  final FollowedManagement _followedStorageService =
-      Get.put(FollowedManagement());
+  final _followedStorageService = Get.find<FollowedManagement>();
+
   // final InterestsManagement _interestsManagement = Get.find();
-  final InterestsManagement _interestsManagement =
-      Get.put(InterestsManagement());
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -77,8 +76,7 @@ class ProfileInformation extends StatelessWidget {
                             podcasterData: podcasterData,
                             opacity: _widgetController.opacityAnimation!.value!,
                             isFollowed: isFollowed,
-                            followedManagement: _followedStorageService,
-                            interestsManagement: _interestsManagement),
+                            followedManagement: _followedStorageService,),
                       ),
                       Transform.rotate(
                         angle: _widgetController.rotateAnimation!.value,
@@ -105,24 +103,7 @@ class ProfileInformation extends StatelessWidget {
   }
 }
 
-Future<void> changeBtState(
-  FollowedManagement followedController,
-  InterestsManagement interestsManagement,
-  Podcaster podcasterData,
-  bool value,
-) async {
-  if (value) {
-    await followedController.deleteFollowed(podcastId: podcasterData.id);
-    await interestsManagement.updateInterests(podcasterData.categories, !value);
-  } else {
-    await followedController.addFollowed(
-      podcastId: podcasterData.id,
-      podcastImg: podcasterData.imageUrl,
-      podcastName: podcasterData.title,
-    );
-    await interestsManagement.updateInterests(podcasterData.categories, !value);
-  }
-}
+
 
 Widget _buildUserAvatar(String imageUrl, double size, double opacity) {
   return Visibility(
@@ -139,10 +120,10 @@ Widget _buildUserAvatar(String imageUrl, double size, double opacity) {
             shape: const CircleBorder(),
             color: Colors.transparent,
             child: FadeInImage.assetNetwork(
-              placeholderCacheWidth: 90,
-              placeholderCacheHeight: 90,
-              imageCacheHeight: 160,
-              imageCacheWidth: 160,
+              placeholderCacheWidth: 90.r.toInt(),
+              placeholderCacheHeight: 90.r.toInt(),
+              imageCacheHeight: 160.r.toInt(),
+              imageCacheWidth: 160.r.toInt(),
               fit: BoxFit.cover,
               placeholderFit: BoxFit.cover,
               placeholder: "assets/images/generic/search_loading.gif",
@@ -151,8 +132,8 @@ Widget _buildUserAvatar(String imageUrl, double size, double opacity) {
                 return Image.asset(
                   "assets/images/podcaster/defaultPodcaster.jpg",
                   fit: BoxFit.cover,
-                  cacheHeight: 100,
-                  cacheWidth: 100,
+                  cacheHeight: 100.r.toInt(),
+                  cacheWidth: 100.r.toInt(),
                 );
               },
             ),
@@ -197,8 +178,8 @@ Widget _buildShaderMask(String imageUrl) {
       fit: BoxFit.cover,
       height: 300.h,
       width: double.infinity,
-      cacheHeight: 594,
-      cacheWidth: 594,
+      cacheHeight: 594.r.toInt(),
+      cacheWidth: 594.r.toInt(),
     ),
   );
 }

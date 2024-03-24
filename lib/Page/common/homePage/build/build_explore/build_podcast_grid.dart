@@ -53,18 +53,18 @@ class BuildGridView extends StatelessWidget {
                           BoxShadow(
                             color: Colors.grey,
                             offset: Offset(2, 5),
-                            blurRadius: 4,
-                            spreadRadius: 1,
+                            blurRadius: 10,
+                            spreadRadius: 0.2,
                           ),
                         ],
                       ),
                       child: Stack(
                         children: [
                           FadeInImage.assetNetwork(
-                            placeholderCacheWidth: 50,
-                            placeholderCacheHeight: 50,
-                            imageCacheHeight: 150,
-                            imageCacheWidth: 150,
+                            placeholderCacheWidth: 50.r.toInt(),
+                            placeholderCacheHeight: 50.r.toInt(),
+                            imageCacheHeight: 150.r.toInt(),
+                            imageCacheWidth: 150.r.toInt(),
                             fit: BoxFit.cover,
                             placeholderFit: BoxFit.cover,
                             placeholder:
@@ -74,8 +74,8 @@ class BuildGridView extends StatelessWidget {
                               return Image.asset(
                                 "assets/images/podcaster/defaultPodcaster.jpg",
                                 fit: BoxFit.cover,
-                                cacheHeight: 100,
-                                cacheWidth: 100,
+                                cacheHeight: 100.r.toInt(),
+                                cacheWidth: 100.r.toInt(),
                               );
                             },
                           ),

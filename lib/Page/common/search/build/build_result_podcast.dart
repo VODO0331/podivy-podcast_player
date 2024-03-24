@@ -43,10 +43,10 @@ class PodcastBuilder extends StatelessWidget {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(8)),
                           child: FadeInImage.assetNetwork(
-                            placeholderCacheWidth: 50,
-                            placeholderCacheHeight: 50,
-                            imageCacheHeight: 250,
-                            imageCacheWidth: 250,
+                            placeholderCacheWidth: 50.r.toInt(),
+                            placeholderCacheHeight: 50.r.toInt(),
+                            imageCacheHeight: 250.r.toInt(),
+                            imageCacheWidth: 250.r.toInt(),
                             fit: BoxFit.cover,
                             placeholderFit: BoxFit.cover,
                             placeholder:
@@ -56,8 +56,8 @@ class PodcastBuilder extends StatelessWidget {
                               return Image.asset(
                                 "assets/images/podcaster/defaultPodcaster.jpg",
                                 fit: BoxFit.cover,
-                                cacheHeight: 150,
-                                cacheWidth: 150,
+                                cacheHeight: 150.r.toInt(),
+                                cacheWidth: 150.r.toInt(),
                               );
                             },
                           ),

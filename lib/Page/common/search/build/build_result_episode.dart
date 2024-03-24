@@ -33,10 +33,10 @@ class EpisodesBuilder extends StatelessWidget {
                 height: 60.h,
                 width: 60.w,
                 child: FadeInImage.assetNetwork(
-                  placeholderCacheWidth: 50,
-                  placeholderCacheHeight: 50,
-                  imageCacheHeight: 130,
-                  imageCacheWidth: 130,
+                  placeholderCacheWidth: 50.r.toInt(),
+                  placeholderCacheHeight: 50.r.toInt(),
+                  imageCacheHeight: 130.r.toInt(),
+                  imageCacheWidth: 130.r.toInt(),
                   fit: BoxFit.cover,
                   placeholderFit: BoxFit.cover,
                   placeholder: "assets/images/generic/search_loading.gif",
@@ -45,8 +45,8 @@ class EpisodesBuilder extends StatelessWidget {
                     return Image.asset(
                       "assets/images/podcaster/defaultPodcaster.jpg",
                       fit: BoxFit.cover,
-                      cacheHeight: 100,
-                      cacheWidth: 100,
+                      cacheHeight: 100.r.toInt(),
+                      cacheWidth: 100.r.toInt(),
                     );
                   },
                 ),

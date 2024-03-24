@@ -67,6 +67,19 @@ class FollowedManagement {
       }
     });
   }
+  Stream<Iterable<Followed>> homePageViewFollowed() {
+    try {
+      return followed.limit(3).snapshots().map((event) {
+        List<Followed> followedList = [];
+        for (var doc in event.docs) {
+          followedList.add(Followed.fromSnapshot(doc));
+        }
+        return followedList;
+      });
+    } catch (_) {
+      throw CloudNotGetException();
+    }
+  }
 
   Stream<Iterable<Followed>> allFollowed() {
     try {

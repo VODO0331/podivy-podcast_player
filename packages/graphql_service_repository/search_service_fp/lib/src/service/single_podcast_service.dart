@@ -10,8 +10,9 @@ import '../models/podcaster.dart';
 
 //functional programming
 
-Future<Podcaster?> getSinglePodcasterData(Podcaster podcastData) async {
-  return await _getData(podcastData: podcastData);
+Future<Podcaster?> getSinglePodcasterData({required String id,
+  required int numberOfEpisodesResults,}) async {
+  return await _getData(id: id,numberOfEpisodesResults: numberOfEpisodesResults);
 }
 
 // //完成LatestList 處理
@@ -19,10 +20,11 @@ Future<Podcaster?> getSinglePodcasterData(Podcaster podcastData) async {
 //     SearchServiceForLatestList? latestList) async {}
 
 Future<Podcaster> _getData({
-  required Podcaster podcastData,
+  required String id,
+  required int numberOfEpisodesResults,
 }) async {
   try {
-    var result = await _queryResult(podcastData: podcastData);
+    var result = await _queryResult(id: id,numberOfEpisodesResults: numberOfEpisodesResults);
 
     if (result.hasException) {
       dev.log(result.exception.toString());
@@ -92,7 +94,8 @@ Podcaster? podcasterInfoProcessing(
 }
 
 Future<QueryResult> _queryResult({
-  required Podcaster podcastData,
+  required String id,
+  required int numberOfEpisodesResults,
 }) async {
   final ClientGlobalController controller = Get.find();
   final GraphQLClient client = controller.client;
@@ -101,9 +104,9 @@ Future<QueryResult> _queryResult({
     result = await client.query(QueryOptions(
       document: gql(queryPodcastData),
       variables: {
-        'podcastId': podcastData.id,
+        'podcastId': id,
         'identifierType': 'PODCHASER',
-        'episodesFirst': podcastData.numberOfEpisodesResults,
+        'episodesFirst': numberOfEpisodesResults,
         'episodesortBy': 'AIR_DATE',
         'episodedirection': 'DESCENDING'
       },
