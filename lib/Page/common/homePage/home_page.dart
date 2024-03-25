@@ -90,12 +90,8 @@ Widget appBar(InformationController userController) {
                         radius: 15.r,
                       );
                     } else {
-                      return SizedBox(
-                          width: 20.r,
-                          height: 20.r,
-                          child: const CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ));
+                      return const Center(
+                          child: LinearProgressIndicator(),);
                     }
                   }),
                 ))

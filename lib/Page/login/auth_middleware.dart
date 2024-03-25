@@ -39,7 +39,9 @@ class AuthMiddleWare extends StatelessWidget {
           return const LoginBackGround(child: ForgotPasswordPage());
         } else {
           return const Scaffold(
-            body: Center(child: CircularProgressIndicator(),),
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         }
       },

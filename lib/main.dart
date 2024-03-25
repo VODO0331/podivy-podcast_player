@@ -18,7 +18,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
   final storage = GetStorage();
-
   final test = Locale.fromSubtags(
       languageCode: storage.read('language') ?? 'en',
       countryCode: storage.read('location') ?? "US");
