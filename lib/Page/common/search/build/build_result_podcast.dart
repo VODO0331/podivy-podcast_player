@@ -29,7 +29,7 @@ class PodcastBuilder extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               Podcaster podcast = podcasts![index];
               return GestureDetector(
-                onTap: () => Get.toNamed('/podcaster', arguments: podcast.id),
+                onTap: () => Get.toNamed('/search/podcaster', arguments: podcast.id),
                 child: Flex(
                   direction: Axis.vertical,
                   children: [

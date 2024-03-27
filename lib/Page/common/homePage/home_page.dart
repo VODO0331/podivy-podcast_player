@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
-import 'build/build_carousel.dart';
+// import 'build/build_carousel/build_carousel.dart';
 
-import 'build/build_explore/build_explore_content.dart';
+// import 'build/build_explore/build_explore_content.dart';
 
 //節省token
 // import 'package:podivy/widget/carousel.dart';
@@ -15,11 +15,16 @@ import 'build/build_explore/build_explore_content.dart';
 // import 'dart:developer' as dev show log;
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final InformationController infoController;
+  final InterestsManagement interestsManagement;
+  final FollowedManagement followedManagement;
+  const HomePage(
+      {super.key,
+      required this.infoController,
+      required this.followedManagement, required this.interestsManagement});
 
   @override
   Widget build(BuildContext context) {
-    final InformationController userController = Get.find();
     return SafeArea(
       right: false,
       left: false,
@@ -27,18 +32,19 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 40).h,
         child: Column(
           children: [
-            appBar(userController),
+            appBar(infoController),
             const Divider(
               thickness: 2,
               color: Color.fromARGB(123, 255, 255, 255),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10).h,
-              child:  SizedBox(
-                height: 220.r,
-                child: BuildCarousel(),
-              )
-            ),
+            // Padding(
+            //     padding: const EdgeInsets.symmetric(vertical: 10).h,
+            //     child: SizedBox(
+            //       height: 220.r,
+            //       child: BuildCarousel(
+            //         followedStorageService: followedManagement,
+            //       ),
+            //     )),
 
             Divider(
               thickness: 0.5,
@@ -51,7 +57,7 @@ class HomePage extends StatelessWidget {
             //     child: Container(
             //   color: Colors.amber,
             // ))
-            ExploreContent(),
+            // ExploreContent(interestsManagement: interestsManagement,),
           ],
         ),
       ),
@@ -90,8 +96,14 @@ Widget appBar(InformationController userController) {
                         radius: 15.r,
                       );
                     } else {
-                      return const Center(
-                          child: LinearProgressIndicator(),);
+                      return Center(
+                        child: SizedBox(
+                            height: 20.r,
+                            width: 20.r,
+                            child: const CircularProgressIndicator(
+                              strokeWidth: 1,
+                            )),
+                      );
                     }
                   }),
                 ))
@@ -123,9 +135,7 @@ Widget appBar(InformationController userController) {
                   color: Get.theme.colorScheme.primary,
                 ),
               ),
-            )
-            
-            ),
+            )),
       )
     ],
   );

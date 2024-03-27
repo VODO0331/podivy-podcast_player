@@ -11,6 +11,7 @@ class TranslationService extends Translations {
   final RxString _currentLocation = 'US'.obs;
   String get currentLanguage => _currentLanguage.value;
   String get currentLocation => _currentLocation.value;
+  
   static final TranslationService _singleton = TranslationService._();
 
   factory TranslationService() => _singleton;

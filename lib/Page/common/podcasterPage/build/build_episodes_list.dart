@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 import 'package:podivy/widget/extras.dart';
+import 'package:provider/provider.dart';
 import 'package:search_service/search_service_repository.dart';
 
-class EpisodesSection extends StatelessWidget {
+class EpisodesSection extends StatefulWidget {
   final List<Episode>? getEpisodes;
   final Podcaster podcasterDate;
 
@@ -13,15 +15,28 @@ class EpisodesSection extends StatelessWidget {
     required this.getEpisodes,
     required this.podcasterDate,
   });
+
+  @override
+  State<EpisodesSection> createState() => _EpisodesSectionState();
+}
+
+class _EpisodesSectionState extends State<EpisodesSection> {
   // final RxBool listSort = true.obs;
+  late final dynamic myAudioPlayer;
+  @override
+  void initState() {
+    super.initState();
+    myAudioPlayer = Provider.of<MyAudioPlayer>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     final RxBool listSort = true.obs;
-    if (getEpisodes == null) {
+    if (widget.getEpisodes == null) {
       return Expanded(child: Text("No Content".tr));
     } else {
-      return Expanded(
-        child: SizedBox(
+      return Consumer<MyAudioPlayer>(builder: (context, value2, child) {
+        return Expanded(
           child: Padding(
             padding: const EdgeInsets.all(8.0).r,
             child: Column(
@@ -50,61 +65,70 @@ class EpisodesSection extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 9.0).r,
-                      child: Text('Count :${getEpisodes!.length} '.tr),
+                      child: Text('Count :${widget.getEpisodes!.length} '.tr),
                     ),
                   ],
                 ),
                 const Divider(
                   thickness: 1,
                 ),
-                Obx(
-                  () => _buildEpisodesList(
-                    getEpisodes!,
-                    podcasterDate,
-                    listSort,
-                  ),
-                )
+                Obx(() => BuildEpisodeList(
+                      getEpisodes: widget.getEpisodes!,
+                      podcasterDate: widget.podcasterDate,
+                      listSort: listSort.value,
+                      myAudioPlayer: myAudioPlayer,
+                    ))
               ],
             ),
           ),
-        ),
-      );
+        );
+      });
     }
   }
 }
 
-Widget _buildEpisodesList(
-  List<Episode> getEpisodes,
-  Podcaster podcasterDate,
-  RxBool listSort,
-) {
-  getEpisodes = listSort.value ? getEpisodes : getEpisodes.reversed.toList();
-  return Expanded(
-    child: ListView.builder(
-      padding: EdgeInsets.zero,
-      itemCount: getEpisodes.length,
-      itemBuilder: (BuildContext context, int index) {
-        final Episode getEpisode = getEpisodes[index];
+class BuildEpisodeList extends StatelessWidget {
+  final List<Episode> getEpisodes;
+  final Podcaster podcasterDate;
+  final bool listSort;
+  final dynamic myAudioPlayer;
+  const BuildEpisodeList(
+      {super.key,
+      required this.getEpisodes,
+      required this.podcasterDate,
+      required this.listSort,
+      required this.myAudioPlayer});
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10).h,
-          child: ListTile(
-            title: Text(
-              getEpisode.title,
-              overflow: TextOverflow.ellipsis,
+  @override
+  Widget build(BuildContext context) {
+    final episodes = listSort ? getEpisodes : getEpisodes.reversed.toList();
+    // myAudioPlayer.setPlayList = episodes;
+    return Expanded(
+      child: ListView.builder(
+        padding: EdgeInsets.zero,
+        itemCount: episodes.length,
+        itemBuilder: (BuildContext context, int index) {
+          final Episode getEpisode = episodes[index];
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10).h,
+            child: ListTile(
+              title: Text(
+                getEpisode.title,
+                overflow: TextOverflow.ellipsis,
+              ),
+              trailing: Extras(
+                  episodeData: getEpisode, icon: const Icon(Icons.more_vert)),
+              onTap: () {
+                myAudioPlayer.setIndex(index, episodes);
+                Get.toNamed(
+                  "/podcaster/player",
+                );
+              },
             ),
-            trailing: Extras(
-                episodeData: getEpisode, icon: const Icon(Icons.more_vert)),
-            onTap: () {
-              Get.toNamed("/player", arguments: {
-                'podcaster': podcasterDate,
-                'episodes': getEpisodes,
-                'index': index,
-              });
-            },
-          ),
-        );
-      },
-    ),
-  );
+          );
+        },
+      ),
+    );
+  }
 }

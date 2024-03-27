@@ -1,6 +1,6 @@
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/translator.dart';
@@ -9,14 +9,14 @@ import 'package:podivy/util/translator.dart';
 typedef SelectCallBack = void Function(String category);
 
 class CategoryButton extends StatelessWidget {
+   final InterestsManagement interestsManagement;
   final SelectCallBack selected;
-  CategoryButton({super.key, required this.selected});
-  final InterestsManagement _interestsManagement =
-      Get.put(InterestsManagement());
+  const CategoryButton({super.key, required this.selected, required this.interestsManagement});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: _interestsManagement.interestsCategory(),
+        stream: interestsManagement.interestsCategory(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
               snapshot.connectionState == ConnectionState.active) {

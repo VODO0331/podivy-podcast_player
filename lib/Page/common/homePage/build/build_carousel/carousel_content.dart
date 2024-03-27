@@ -79,7 +79,7 @@ class CarouselContent extends StatelessWidget {
                             // dev.log(
                             //     _loopController.boardAnimation!.value.toString());
                             return Obx(() => GestureDetector(
-                              onTap: ()=> Get.toNamed('/podcaster',arguments: followed.podcastId),
+                              onTap: ()=> Get.toNamed('/followed/podcaster',arguments: followed.podcastId),
                               child: Container(
                                     height: 70.r *
                                         _loopController.boardAnimation!.value.r,
@@ -169,7 +169,7 @@ class CarouselListView extends StatelessWidget {
                   style: TextStyle(fontSize: 14.sp),
                 ),
                 textColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                onTap: ()=>Get.toNamed('player',arguments: {
+                onTap: ()=>Get.toNamed('/followed/podcaster/player',arguments: {
                   'episodes':data,
                   'index':index,
                 }),

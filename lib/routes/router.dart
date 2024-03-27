@@ -7,43 +7,96 @@ import 'package:podivy/Page/common/search/search_page.dart';
 // import 'package:podivy/Page/test.dart';
 import 'package:podivy/Page/personal/user_page/user_page.dart';
 import 'package:get/get.dart';
+import 'package:podivy/Page/tabs.dart';
 import '../Page/personal/playerPage/player_page.dart';
 
 class RouterPage {
-  final List myList = [];
   static final routes = [
     GetPage(
-      name: "/",
-      page: () => const AuthMiddleWare(),
-    ),
-    GetPage(
-      name: "/player",
-      page: () =>  PlayerPage(),
-    ),
-    GetPage(
-      name: "/search",
-      page: () => SearchPage(),
-    ),
-    GetPage(
-      name: "/ListPage",
-      page: () =>  ListPage(),
-      parameters: const {'listTitle': ''},
-    ),
-    GetPage(
-      name: "/setting",
-      page: () =>  SettingPage(),
-    ),
-    GetPage(
-      name: "/user",
-      page: () => UserPage(),
-    ),
-    GetPage(
-      name: "/podcaster",
-      page: () => PodcasterPage(),
-    ),
-    GetPage(
-      name: "/followed",
-      page: () => const FollowedPage(),
-    ),
+        name: AppRoutes.authMiddleWare,
+        page: () => const AuthMiddleWare(),
+        children: [
+         
+          GetPage(
+            name: AppRoutes.tabs,
+            page: () => const Tabs(),
+            children: [
+               GetPage(name: AppRoutes.player, page: () => const PlayerPage()),
+            ]
+          ),
+          //搜尋頁面
+          GetPage(name: AppRoutes.search, page: () => SearchPage(), children: [
+            GetPage(
+              name: AppRoutes.player,
+              page: () => const PlayerPage(),
+            ),
+            GetPage(
+              name: AppRoutes.podcaster,
+              page: () => PodcasterPage(),
+            ),
+          ]),
+          //清單頁面
+          GetPage(name: AppRoutes.listPage, page: () => ListPage(), children: [
+            GetPage(name: AppRoutes.player, page: () => const PlayerPage()),
+          ]),
+          //設定頁面
+          GetPage(
+            name: AppRoutes.setting,
+            page: () => SettingPage(),
+          ),
+          //用戶頁面
+          GetPage(
+            name: AppRoutes.user,
+            page: () => UserPage(),
+          ),
+          //podcaster頁面
+          GetPage(
+              name: AppRoutes.podcaster,
+              page: () => PodcasterPage(),
+              children: [
+                GetPage(
+                  name: AppRoutes.player,
+                  page: () => const PlayerPage(),
+                ),
+              ]),
+          //追隨頁面
+          GetPage(
+              name: AppRoutes.followed,
+              page: () => const FollowedPage(),
+              children: [
+                GetPage(
+                  name: AppRoutes.podcaster,
+                  page: () => PodcasterPage(),
+                  children: [
+                    GetPage(
+                      name: AppRoutes.player,
+                      page: () => const PlayerPage(),
+                    ),
+                  ],
+                ),
+              ]),
+        ]),
   ];
 }
+
+abstract class AppRoutes {
+  static const authMiddleWare = '/';
+  static const search = '/search';
+  static const tabs = '/tabs';
+  static const listPage = '/listPage';
+  static const setting = '/setting';
+  static const user = '/user';
+  static const podcaster = '/podcaster';
+  static const followed = '/followed';
+  static const player = '/player';
+}
+
+// class TabsBindings implements Bindings {
+//   @override
+//   void dependencies() {
+//     Get.lazyPut(() => ListManagement());
+//     Get.lazyPut(() => InformationController());
+//     Get.lazyPut(() => FollowedManagement());
+//     Get.lazyPut(() => InterestsManagement());
+//   }
+// }

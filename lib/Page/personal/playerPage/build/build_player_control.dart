@@ -8,8 +8,6 @@ import 'package:podivy/widget/extras.dart';
 
 import 'build_control_bt.dart';
 
-typedef ImgCallback = String? Function(String? newImageUrl);
-
 class PlayerControl extends StatelessWidget {
   final MyAudioPlayer myAudioPlayer;
   PlayerControl({super.key, required this.myAudioPlayer});
@@ -42,9 +40,9 @@ class PlayerControl extends StatelessWidget {
               _buildProgressBar(currentPosition),
               _buildTimeLabels(currentPosition),
               SizedBox(height: 10.h),
-              BuildControlBt(
-                player: myAudioPlayer.player,
-              ),
+              const BuildControlBt(
+                  // player: myAudioPlayer.player,
+                  ),
               Obx(() {
                 final data = myAudioPlayer.episodeData.value;
                 if (data != null) {

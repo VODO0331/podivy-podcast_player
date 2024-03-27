@@ -4,16 +4,17 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 import 'package:get/get.dart';
 
-import 'build_carousel/carousel_content.dart';
+import 'carousel_content.dart';
+
 
 class BuildCarousel extends StatelessWidget {
-  BuildCarousel({super.key});
-  final FollowedManagement _followedStorageService =
-      Get.put(FollowedManagement());
+  final FollowedManagement followedStorageService;
+  const BuildCarousel({super.key, required this.followedStorageService});
+  
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _followedStorageService.homePageViewFollowed(),
+      stream: followedStorageService.homePageViewFollowed(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting ||
             snapshot.connectionState == ConnectionState.active) {
@@ -74,7 +75,7 @@ class MyCarousel extends StatelessWidget {
         ),
         Obx(
           () => DotsIndicator(
-            dotsCount: 3,
+            dotsCount: item.length,
             position: currentIndex.value,
             decorator: _buildDotsDecorator(),
           ),

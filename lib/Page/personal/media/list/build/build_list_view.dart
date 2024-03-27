@@ -65,7 +65,7 @@ class BuildListView extends StatelessWidget {
                           },
                         )),
                     onTap: () {
-                      onTap(episodes.toList(), index);
+                      onTap(resultOfSort.toList(), index);
                     },
                   ),
                 ))
@@ -115,16 +115,7 @@ Widget prototypeItem() {
             leading: SizedBox(
                 height: 50.r,
                 width: 50.r,
-                child: FadeInImage.assetNetwork(
-                  placeholder: 'assets/images/podcaster/defaultPodcaster.jpg',
-                  image: 'image',
-                  imageErrorBuilder: (context, _, __) {
-                    return Image.asset(
-                      'assets/images/podcaster/defaultPodcaster.jpg',
-                      fit: BoxFit.cover,
-                    );
-                  },
-                )),
+                ),
             trailing: PopupMenuButton(
               position: PopupMenuPosition.under,
               itemBuilder: (context) {

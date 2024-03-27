@@ -15,6 +15,7 @@ dependencies:
   get: 
   just_audio: ^0.9.36
   just_audio_background: ^0.0.1-beta.11
+  provider: ^6.1.2
 
   search_service:
     path: ../graphql_service_repository/search_service_fp

@@ -1,5 +1,3 @@
-
-
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,32 +12,39 @@ class FollowedPage extends StatefulWidget {
 }
 
 class _FollowedPageState extends State<FollowedPage> {
-   late FollowedManagement _followedStorageService;
+  late FollowedManagement _followedStorageService;
 
   @override
   void initState() {
     super.initState();
-    _followedStorageService =FollowedManagement();
+    _followedStorageService = FollowedManagement();
   }
+
   @override
   void dispose() {
     _followedStorageService;
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor:Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios_rounded),
+          ),
           // foregroundColor: Colors.black87,
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text(
             "Following",
             style: GoogleFonts.borel(
-              fontSize: 20.r,
-              fontWeight: FontWeight.w900,
-              color: Theme.of(context).colorScheme.onPrimary
-            ),
+                fontSize: 20.r,
+                fontWeight: FontWeight.w900,
+                color: Theme.of(context).colorScheme.onPrimary),
           ),
           centerTitle: true,
         ),
@@ -48,7 +53,6 @@ class _FollowedPageState extends State<FollowedPage> {
             alignment: Alignment.bottomRight,
             child: Image.asset(
               "assets/images/background/followed.png",
-              
               height: 270.r,
               width: 270.r,
               cacheHeight: 350.r.toInt(),
@@ -70,8 +74,8 @@ class _FollowedPageState extends State<FollowedPage> {
                             podcastId: followed.podcastId);
                       },
                       onTap: (followed) {
-                        Get.toNamed("/podcaster",
-                            arguments: {"id": followed.podcastId});
+                        Get.toNamed("/followed/podcaster",
+                            arguments: followed.podcastId);
                       },
                     );
                   } else {

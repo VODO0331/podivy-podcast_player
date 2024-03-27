@@ -18,8 +18,8 @@ class UserPage extends StatelessWidget {
       Get.put(TextEditingController());
   final ImagePicker _imagePicker = Get.put(ImagePicker());
   final InformationController userController = Get.find();
-  final InformationManagement informationManagement =
-      Get.put(InformationManagement());
+  final InformationController informationManagement =
+      Get.put(InformationController());
   final RxBool _isEdit = false.obs;
   final Rx<String> imgData = ''.obs;
   Future<Uint8List?> selectImage() async {
@@ -106,7 +106,7 @@ class UserPage extends StatelessWidget {
           color: userAvatar,
           borderRadius: BorderRadius.circular(30),
           boxShadow: const [
-            BoxShadow(color: Colors.grey, blurRadius: 15, offset: Offset(0, 5))
+            BoxShadow(color: Colors.grey, blurRadius: 10, offset: Offset(4, 4))
           ]),
       child: GestureDetector(
         onTap: () {},

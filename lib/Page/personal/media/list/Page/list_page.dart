@@ -90,7 +90,7 @@ PreferredSizeWidget listAppBar({
                           decoration: InputDecoration(
                               hintText: 'Please enter the new name'.tr),
                           onChanged: (value) {
-                            textEditingController.text = value; // 監聽輸入框的變化
+                            textEditingController.text = value; 
                           },
                         ),
                         actions: [
@@ -102,7 +102,6 @@ PreferredSizeWidget listAppBar({
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              // 在這裡處理修改List名稱的邏輯，例如更新數據庫等操作
                               listManagement.updateList(
                                   list, textEditingController.text);
                               Get.back();

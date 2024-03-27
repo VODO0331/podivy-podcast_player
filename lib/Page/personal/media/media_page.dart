@@ -6,11 +6,11 @@ import 'package:podivy/Page/personal/media/build/build_listView.dart';
 import 'package:podivy/widget/background.dart';
 
 class MediaPage extends StatelessWidget {
-  const MediaPage({super.key});
+   final ListManagement listManagement;
+  const MediaPage({super.key, required this.listManagement});
 
   @override
   Widget build(BuildContext context) {
-    final ListManagement listManagement = Get.find();
     return MyBackGround(
       child: Scaffold(
         backgroundColor:
@@ -50,7 +50,7 @@ class MediaPage extends StatelessWidget {
                                   await listManagement.deleteList(list);
                                 },
                                 onTap: (list) {
-                                  Get.toNamed('/ListPage', arguments: {
+                                  Get.toNamed('/listPage', arguments: {
                                     "list": list,
                                     "icon": Icons.list,
                                   });
@@ -98,7 +98,7 @@ Widget _defaultOption() {
                 side: BorderSide.none, // 取消边框
               ),
               onPressed: () {
-                Get.toNamed('/ListPage', arguments: {
+                Get.toNamed('/listPage', arguments: {
                   "list": UserList(docId: "TagList", listTitle: "TagList"),
                   "icon": Icons.bookmark_border_outlined,
                 });
@@ -126,7 +126,7 @@ Widget _defaultOption() {
                 side: BorderSide.none, // 取消边框
               ),
               onPressed: () {
-                Get.toNamed('/ListPage', arguments: {
+                Get.toNamed('/listPage', arguments: {
                   "list": UserList(docId: "History", listTitle: "History"),
                   "icon": Icons.history,
                 });

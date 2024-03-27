@@ -12,7 +12,8 @@ class ProfileInformation extends StatelessWidget {
   ProfileInformation({super.key, required this.podcasterData});
   final _widgetController = Get.put(WidgetController());
   final RxBool isFollowed = false.obs;
-  final _followedStorageService = Get.find<FollowedManagement>();
+  // final _followedStorageService = Get.find<FollowedManagement>();
+   final _followedStorageService = Get.put(FollowedManagement());
 
   // final InterestsManagement _interestsManagement = Get.find();
 
@@ -38,11 +39,13 @@ class ProfileInformation extends StatelessWidget {
                             onPressed: () {
                               Get.back();
                             },
+                            color:Theme.of(context).colorScheme.primary,
                             icon: const Icon(Icons.arrow_back_rounded),
                           ),
                           IconButton(
                             iconSize: 35.r,
                             onPressed: () {},
+                            color: Theme.of(context).colorScheme.primary,
                             icon: const Icon(Icons.more_vert_sharp),
                           ),
                         ],
@@ -73,10 +76,11 @@ class ProfileInformation extends StatelessWidget {
                       ),
                       Expanded(
                         child: ShowDescription(
-                            podcasterData: podcasterData,
-                            opacity: _widgetController.opacityAnimation!.value!,
-                            isFollowed: isFollowed,
-                            followedManagement: _followedStorageService,),
+                          podcasterData: podcasterData,
+                          opacity: _widgetController.opacityAnimation!.value!,
+                          isFollowed: isFollowed,
+                          followedManagement: _followedStorageService,
+                        ),
                       ),
                       Transform.rotate(
                         angle: _widgetController.rotateAnimation!.value,
@@ -102,8 +106,6 @@ class ProfileInformation extends StatelessWidget {
     );
   }
 }
-
-
 
 Widget _buildUserAvatar(String imageUrl, double size, double opacity) {
   return Visibility(
@@ -180,6 +182,12 @@ Widget _buildShaderMask(String imageUrl) {
       width: double.infinity,
       cacheHeight: 594.r.toInt(),
       cacheWidth: 594.r.toInt(),
+      errorBuilder: (context, error, stackTrace) => Image.asset(
+        "assets/images/podcaster/defaultPodcaster.jpg",
+        fit: BoxFit.cover,
+        cacheHeight: 100.r.toInt(),
+        cacheWidth: 100.r.toInt(),
+      ),
     ),
   );
 }

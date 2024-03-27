@@ -33,6 +33,6 @@ class Episode {
         title: title,
         artist: podcast.title,
         displayDescription: description,
-        artUri: Uri.parse(podcast.imageUrl ?? imageUrl),
+        artUri: Uri.parse( imageUrl),
       );
 }

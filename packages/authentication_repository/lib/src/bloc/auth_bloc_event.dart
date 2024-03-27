@@ -1,13 +1,13 @@
 
 
 import 'package:flutter/material.dart' show immutable;
-
 @immutable
 abstract class AuthEvent{
   const AuthEvent();
 }
 
 class AuthEventInitialize extends AuthEvent{
+  
   const AuthEventInitialize();
 }
 

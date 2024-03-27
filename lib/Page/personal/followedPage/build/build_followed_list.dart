@@ -1,6 +1,5 @@
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 import '../../../../util/dialogs/delete_dialog.dart';
@@ -33,9 +32,7 @@ class FollowedList extends StatelessWidget {
         return GestureFlipCard(
           animationDuration: const Duration(milliseconds: 400),
           frontWidget: GestureDetector(
-            onTap: () {
-              Get.toNamed("/podcaster", arguments: followed.podcastId);
-            },
+            onTap: () =>onTap(followed),
             child: Card(
               color: Colors.transparent,
               elevation: 10,

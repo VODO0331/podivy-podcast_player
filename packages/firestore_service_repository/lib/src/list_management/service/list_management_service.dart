@@ -106,9 +106,7 @@ class ListManagement {
             dev.log(e);
             throw CloudNotCreateException();
           });
-    } else {
-      dev.log("has been add");
-    }
+    } 
   }
 
   Future<void> addList(String listTitle, Episode episode) async {

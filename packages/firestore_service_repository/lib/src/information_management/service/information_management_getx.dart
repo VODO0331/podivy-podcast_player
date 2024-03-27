@@ -79,7 +79,7 @@ class InformationManagement {
     }
   }
 
-  Future<void> updateInfo({String? userName, Uint8List? userImg}) async {
+  Future<void> updateInfo({ required String? userName,required Uint8List? userImg}) async {
     final Map<Object, Object?> updates = <Object, Object?>{};
     if (userName == null && userImg == null) return;
     if (userName != null) {

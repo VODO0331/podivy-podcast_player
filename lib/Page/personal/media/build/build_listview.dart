@@ -1,6 +1,7 @@
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 typedef ListCallback = void Function(UserList list);
 
@@ -41,6 +42,7 @@ class MyListView extends StatelessWidget {
           onTap: () {
             onTap(list);
           },
+          titleTextStyle:TextStyle(fontSize: 20.sp)
         );
       },
     );
