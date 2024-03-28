@@ -58,13 +58,12 @@ class SearchServiceForCategories extends SearchService {
     super.numberOfPodcastResults = 3,
     super.numberOfEpisodesResults = 5,
   }) : super(
-    
             queryOptions: QueryOptions(
           document: gql(queryForCategories),
           variables: {
             'categories': keywords,
             'podcastFirst': numberOfPodcastResults,
-            'language':TranslationService().currentLanguage,
+            'language': TranslationService().currentLanguage,
             'episodesFirst': numberOfEpisodesResults,
             'episodesSortBy': 'RELEVANCE',
             'airDateForm':
@@ -86,7 +85,7 @@ class SearchServiceForExploreContent extends SearchServiceForCategories {
     return QueryOptions(
       document: gql(queryForExploreContent),
       variables: {
-        'language':TranslationService().currentLanguage,
+        'language': TranslationService().currentLanguage,
         'categories': keywords,
         'podcastFirst': numberOfPodcastResults,
         'episodesSortBy': 'RELEVANCE',

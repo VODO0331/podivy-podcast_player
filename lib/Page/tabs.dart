@@ -10,7 +10,9 @@ import 'package:podivy/widget/drawer.dart';
 
 class Tabs extends StatefulWidget {
   // final InformationController informationController;
-  const Tabs({super.key,});
+  const Tabs({
+    super.key,
+  });
 
   @override
   State<Tabs> createState() => _TabsState();
@@ -34,14 +36,7 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: BottomBarPageTransition(
-        builder: (_, index) => _getBody(index),
-        currentIndex: _currentPage,
-        totalLength: totalPage,
-        transitionType: TransitionType.circular,
-        transitionDuration: const Duration(milliseconds: 500),
-        transitionCurve: Curves.easeInOut,
-      ),
+      body: _getBody(_currentPage),
       bottomNavigationBar: _getBottomBar(),
       drawer: const MyDrawer(),
     );
@@ -77,18 +72,21 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
   }
 
   Widget _getBody(int index) {
+    final PageStorageBucket bucket = PageStorageBucket();
     final listManagement = Get.put(ListManagement());
     final followedManagement = Get.put(FollowedManagement());
     final interestsManagement = Get.put(InterestsManagement());
     final informationController = Get.put(InformationController());
-    
+
     final List<Widget> body = [
       HomePage(
+        key: const PageStorageKey<String>('HomePage'),
         infoController: informationController,
         followedManagement: followedManagement,
         interestsManagement: interestsManagement,
       ),
       MediaPage(
+        key: const PageStorageKey<String>('MediaPage'),
         listManagement: listManagement,
       )
     ];
@@ -98,7 +96,11 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
           _scaffoldKey.currentState?.openDrawer();
         }
       },
-      child: MyBackGround(child: body[index]),
+      child: MyBackGround(
+          child: PageStorage(
+        bucket: bucket,
+        child: body[index],
+      )),
     );
   }
 }

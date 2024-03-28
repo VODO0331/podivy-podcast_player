@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
-// import 'build/build_carousel/build_carousel.dart';
+import 'build/build_carousel/build_carousel.dart';
 
-// import 'build/build_explore/build_explore_content.dart';
+import 'build/build_explore/build_explore_content.dart';
 
 //節省token
 // import 'package:podivy/widget/carousel.dart';
@@ -21,7 +21,8 @@ class HomePage extends StatelessWidget {
   const HomePage(
       {super.key,
       required this.infoController,
-      required this.followedManagement, required this.interestsManagement});
+      required this.followedManagement,
+      required this.interestsManagement});
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +38,14 @@ class HomePage extends StatelessWidget {
               thickness: 2,
               color: Color.fromARGB(123, 255, 255, 255),
             ),
-            // Padding(
-            //     padding: const EdgeInsets.symmetric(vertical: 10).h,
-            //     child: SizedBox(
-            //       height: 220.r,
-            //       child: BuildCarousel(
-            //         followedStorageService: followedManagement,
-            //       ),
-            //     )),
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10).h,
+                child: SizedBox(
+                  height: 220.r,
+                  child: BuildCarousel(
+                    followedStorageService: followedManagement,
+                  ),
+                )),
 
             Divider(
               thickness: 0.5,
@@ -57,7 +58,9 @@ class HomePage extends StatelessWidget {
             //     child: Container(
             //   color: Colors.amber,
             // ))
-            // ExploreContent(interestsManagement: interestsManagement,),
+            ExploreContent(
+              interestsManagement: interestsManagement,
+            ),
           ],
         ),
       ),
