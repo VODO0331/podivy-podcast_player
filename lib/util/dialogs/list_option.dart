@@ -2,6 +2,7 @@ import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:podivy/util/toast/success_toast.dart';
 import 'package:search_service/search_service_repository.dart' show Episode;
 import 'dart:developer' as dev show log;
 
@@ -28,7 +29,8 @@ Future listDialog(BuildContext context, Episode episode) async {
           TextButton(
             child: Text('Add To List'.tr),
             onPressed: () async {
-              await addListDialog(context, episode);
+             await addListDialog(context, episode);
+              
               Get.back();
             },
           ),
@@ -42,7 +44,9 @@ Future listDialog(BuildContext context, Episode episode) async {
             child: Text('Add'.tr),
             onPressed: () async {
               if (userList.value != null) {
-                await listManagement.addEpisodeToList(userList.value!, episode);
+                if(await listManagement.addEpisodeToList(userList.value!, episode)){
+                  toastSuccess('Added To List'.tr);
+                }
               }
 
               Get.back();
@@ -181,7 +185,9 @@ Future addListDialog(BuildContext context, Episode episode) async {
           TextButton(
             child: Text('Add'.tr),
             onPressed: () async {
-              await listManagement.addList(textEditingController.text, episode);
+              if(await listManagement.addList(textEditingController.text, episode)){
+                toastSuccess('List added'.tr);
+              }
               textEditingController.text = "";
               Get.back();
             },

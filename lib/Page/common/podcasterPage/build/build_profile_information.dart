@@ -44,9 +44,9 @@ class ProfileInformation extends StatelessWidget {
                           ),
                           IconButton(
                             iconSize: 35.r,
-                            onPressed: () {},
+                            onPressed: null,
                             color: Theme.of(context).colorScheme.primary,
-                            icon: const Icon(Icons.more_vert_sharp),
+                            icon: const Icon(Icons.podcasts),
                           ),
                         ],
                       ),

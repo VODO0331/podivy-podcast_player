@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/dialogs/error_dialog.dart';
-import 'package:podivy/util/dialogs/generic_dialog.dart';
 
 import '../../../theme/custom_theme.dart';
 
@@ -132,12 +131,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 );
 
-            await showGenericDialog(
-              context: context,
-              title: '郵件驗證',
-              content: '驗證郵件已發送...',
-              optionBuilder: () => {'ok': null},
-            );
+            // await showGenericDialog(
+            //   context: context,
+            //   title: '郵件驗證',
+            //   content: '驗證郵件已發送...',
+            //   optionBuilder: () => {'ok': null},
+            // );
           },
         ),
         TextButton(
@@ -166,27 +165,27 @@ class _RegisterPageState extends State<RegisterPage> {
             if (state.exception is WeakPasswordAuthException) {
               await showErrorDialog(
                 context,
-                '密碼強度太弱，重新輸入',
+                'The password strength is too weak, please re-enter'.tr,
               );
             } else if (state.exception is InvalidEmailAuthException) {
               await showErrorDialog(
                 context,
-                '無效電子郵件',
+                'Invalid email'.tr,
               );
             } else if (state.exception is EmailAlreadyUserInUseAuthException) {
               await showErrorDialog(
                 context,
-                '此郵件已被註冊',
+                'This email has been registered'.tr,
               );
             } else if (state.exception is PasswordsNotSameAuthException) {
               await showErrorDialog(
                 context,
-                '密碼不相同',
+                'The passwords are not the same'.tr,
               );
             } else if (state.exception is GenericAuthException) {
               await showErrorDialog(
                 context,
-                '其他錯誤，註冊失敗',
+                'Other errors, failure to register'.tr,
               );
             }
           }

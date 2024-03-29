@@ -18,7 +18,7 @@ class Tabs extends StatefulWidget {
   State<Tabs> createState() => _TabsState();
 }
 
-class _TabsState extends State<Tabs> with TickerProviderStateMixin {
+class _TabsState extends State<Tabs> {
   final int totalPage = 2;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // late final InformationManagement _userController;
@@ -72,7 +72,6 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
   }
 
   Widget _getBody(int index) {
-    final PageStorageBucket bucket = PageStorageBucket();
     final listManagement = Get.put(ListManagement());
     final followedManagement = Get.put(FollowedManagement());
     final interestsManagement = Get.put(InterestsManagement());
@@ -80,13 +79,11 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
 
     final List<Widget> body = [
       HomePage(
-        key: const PageStorageKey<String>('HomePage'),
         infoController: informationController,
         followedManagement: followedManagement,
         interestsManagement: interestsManagement,
       ),
       MediaPage(
-        key: const PageStorageKey<String>('MediaPage'),
         listManagement: listManagement,
       )
     ];
@@ -97,10 +94,8 @@ class _TabsState extends State<Tabs> with TickerProviderStateMixin {
         }
       },
       child: MyBackGround(
-          child: PageStorage(
-        bucket: bucket,
-        child: body[index],
-      )),
+          child:  IndexedStack(index: index,children: body,)
+      ),
     );
   }
 }

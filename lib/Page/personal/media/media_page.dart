@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/personal/media/build/build_listView.dart';
+import 'package:podivy/util/toast/delete_toast.dart';
 import 'package:podivy/widget/background.dart';
 
 class MediaPage extends StatelessWidget {
@@ -47,7 +48,9 @@ class MediaPage extends StatelessWidget {
                               return MyListView(
                                 lists: allList!,
                                 onDelete: (list) async {
-                                  await listManagement.deleteList(list);
+                                  if(await listManagement.deleteList(list)){
+                                    toastDelete('Deleted List'.tr);
+                                  }
                                 },
                                 onTap: (list) {
                                   Get.toNamed('/listPage', arguments: {

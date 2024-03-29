@@ -15,29 +15,45 @@ class VerifyEmailPage extends StatelessWidget {
         padding: const EdgeInsets.all(12.0).r,
         width: 500.w,
         height: 450.h,
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text(
-            'Please verify the email'.tr,
-            style: const TextStyle(fontSize: 30),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          TextButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(
-                      const AuthEventSendEmailVerification(),
-                    );
-              },
-              child: Text('send verification'.tr)),
-          TextButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(
-                      const AuthEventLogOut(),
-                    );
-              },
-              child: Text('back'.tr)),
-        ]),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Divider(
+              color: Colors.white,
+            ),
+            Text(
+              'Please verify the email'.tr,
+              style: const TextStyle(
+                fontSize: 30,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            TextButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(
+                        const AuthEventSendEmailVerification(),
+                      );
+                },
+                child: Text(
+                  'send verification'.tr,
+                  style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.deepOrangeAccent,
+                      fontWeight: FontWeight.bold),
+                )),
+            TextButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(
+                        const AuthEventLogOut(),
+                      );
+                },
+                child: Text('back'.tr,
+                    style: const TextStyle(fontSize: 15, color: Colors.white))),
+          ],
+        ),
       ),
     );
   }

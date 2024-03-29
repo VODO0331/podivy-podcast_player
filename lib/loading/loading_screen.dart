@@ -76,7 +76,7 @@ class LoadingScreen {
                         return Text(
                           snapshot.data as String,
                           textAlign: TextAlign.center,
-                          // style: const TextStyle(color: Colors.black),
+                          style: TextStyle(color: Theme.of(context).colorScheme.onPrimaryContainer),
                         );
                       } else {
                         return const SizedBox.shrink();

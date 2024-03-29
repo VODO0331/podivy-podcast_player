@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -59,12 +61,16 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: GetMaterialApp(
+        builder: BotToastInit(),
+        navigatorObservers: [BotToastNavigatorObserver()],
         initialBinding: MainBinding(),
         translations: TranslationService(),
         locale: locale,
         fallbackLocale: const Locale('en', 'US'),
         title: 'Podivy',
-        themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+        themeMode: 
+        // isDarkMode ? ThemeMode.dark :
+         ThemeMode.light,
         theme: lightTheme,
         darkTheme: darkTheme,
         initialRoute: '/',

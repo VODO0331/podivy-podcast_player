@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/personal/followedPage/build/build_followed_list.dart';
+import 'package:podivy/util/toast/unfollow_toast.dart';
 
 class FollowedPage extends StatefulWidget {
   const FollowedPage({super.key});
@@ -70,8 +71,10 @@ class _FollowedPageState extends State<FollowedPage> {
                     return FollowedList(
                       allFollowed: allFollowed!,
                       onDelete: (followed) async {
-                        await _followedStorageService.deleteFollowed(
-                            podcastId: followed.podcastId);
+                        if(await _followedStorageService.deleteFollowed(
+                            podcastId: followed.podcastId)){
+                              toastUnfollow();
+                            }
                       },
                       onTap: (followed) {
                         Get.toNamed("/followed/podcaster",

@@ -57,7 +57,8 @@ class ListManagement {
 
   //**注意** firestore 再刪除doc時 不會刪除子集合
   //所以List被刪除時其內容還會存在
-  Future<void> deleteList(UserList list) async {
+  Future<bool> deleteList(UserList list) async {
+    bool result = false;
     await _lists
         .doc(list.docId)
         .collection('content')
@@ -74,10 +75,13 @@ class ListManagement {
       }
 
       await _lists.doc(list.docId).delete(); //刪除List
+      result = true;
     });
+    return result;
   }
 
-  Future<void> addEpisodeToList(UserList list, Episode episode) async {
+  Future<bool> addEpisodeToList(UserList list, Episode episode) async {
+    bool result = false;
     if (await _lists
         .doc(list.docId)
         .collection('content')
@@ -88,78 +92,85 @@ class ListManagement {
           _lists.doc(list.docId).collection('content').doc(episode.id);
       // await _lists.doc(list.listTitle).set({listName: list.listTitle});
       //新增Episode
-      await targetDoc
-          .set({
-            listName: list.listTitle,
-            episodeId: episode.id,
-            podcasterId: episode.podcast.id,
-            podcasterName: episode.podcast.title,
-            episodeImg: episode.imageUrl,
-            episodeName: episode.title,
-            episodeAudio: episode.audioUrl,
-            episodeDescription: episode.description,
-            episodeDate: episode.airDate,
-            "createAt": Timestamp.now(),
-          })
-          .then((value) => dev.log("Episode added successfully!"))
-          .catchError((e) {
-            dev.log(e);
-            throw CloudNotCreateException();
-          });
-    } 
+      await targetDoc.set({
+        listName: list.listTitle,
+        episodeId: episode.id,
+        podcasterId: episode.podcast.id,
+        podcasterName: episode.podcast.title,
+        episodeImg: episode.imageUrl,
+        episodeName: episode.title,
+        episodeAudio: episode.audioUrl,
+        episodeDescription: episode.description,
+        episodeDate: episode.airDate,
+        "createAt": Timestamp.now(),
+      }).then((value) {
+        dev.log("Episode added successfully!");
+        result = true;
+      }).catchError((e) {
+        dev.log(e);
+        throw CloudNotCreateException();
+      });
+    }
+    return result;
   }
 
-  Future<void> addList(String listTitle, Episode episode) async {
+  Future<bool> addList(String listTitle, Episode episode) async {
+    bool result = false;
     final newList = _lists.doc();
     await newList.set({
       documentId: newList.id,
       listName: listTitle,
       "createAt": Timestamp.now(),
     }).then((_) async {
-      await _lists
-          .doc(newList.id)
-          .collection('content')
-          .doc(episode.id)
-          .set({
-            documentId: newList.id,
-            listName: listTitle,
-            episodeId: episode.id,
-            podcasterId: episode.podcast.id,
-            podcasterName: episode.podcast.title,
-            episodeImg: episode.imageUrl,
-            episodeName: episode.title,
-            episodeAudio: episode.audioUrl,
-            episodeDescription: episode.description,
-            episodeDate: episode.airDate,
-            "createAt": Timestamp.now(),
-          })
-          .then((value) => dev.log("Episode added successfully!"))
-          .catchError((e) {
-            dev.log(e);
-            throw CloudNotCreateException();
-          });
+      await _lists.doc(newList.id).collection('content').doc(episode.id).set({
+        documentId: newList.id,
+        listName: listTitle,
+        episodeId: episode.id,
+        podcasterId: episode.podcast.id,
+        podcasterName: episode.podcast.title,
+        episodeImg: episode.imageUrl,
+        episodeName: episode.title,
+        episodeAudio: episode.audioUrl,
+        episodeDescription: episode.description,
+        episodeDate: episode.airDate,
+        "createAt": Timestamp.now(),
+      }).then((value) {
+        dev.log("Episode added successfully!");
+        result = true;
+      }).catchError((e) {
+        dev.log(e);
+        throw CloudNotCreateException();
+      });
     });
-    //新增Episode
+    return result;
   }
 
-  Future<void> deleteEpisodeFromList(UserList list, Episode episode) async {
+  Future<bool> deleteEpisodeFromList(UserList list, Episode episode) async {
+    bool result = false;
+
     final DocumentReference<Map<String, dynamic>> targetDoc =
         _lists.doc(list.docId).collection('content').doc(episode.id);
     dev.log(episode.id);
-    await targetDoc
-        .delete()
-        .then((value) => dev.log("Episode delete successfully!"))
-        .catchError((e) {
+    await targetDoc.delete().then((value) {
+      dev.log("Episode delete successfully!");
+      result = true;
+    }).catchError((e) {
       dev.log(e);
       throw CloudDeleteException();
     });
+    return result;
   }
 
-  Future<void> updateList(UserList oldList, String newListTitle) async {
+  Future<bool> updateList(UserList oldList, String newListTitle) async {
+    bool result = false;
     final Map<Object, Object?> updates = <Object, Object?>{
       listName: newListTitle
     };
-    await _lists.doc(oldList.docId).update(updates);
+    await _lists
+        .doc(oldList.docId)
+        .update(updates)
+        .then((value) => result = true);
+    return result;
   }
 
   Stream<Iterable<UserList>> readAllList() {

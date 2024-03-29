@@ -35,19 +35,24 @@ class FollowedManagement {
         .then((value) => dev.log("Podcast added successfully!"))
         .catchError((error) {
           dev.log(error);
-          throw CloudNotCreateException();
+  throw CloudNotCreateException();
         });
   }
 
-  Future<void> deleteFollowed({required String podcastId}) async {
+  Future<bool> deleteFollowed({required String podcastId}) async {
+     bool result = false;
     await followed
         .doc(podcastId)
         .delete()
-        .then((value) => dev.log("Podcast delete successfully!"))
+        .then((value) {
+          dev.log("Podcast delete successfully!");
+          result =  true;
+        })
         .catchError((error) {
       dev.log(error);
       throw CloudDeleteException();
     });
+    return result;
   }
 
   Future<void> updateFollowed() async {

@@ -88,7 +88,7 @@ class SearchServiceForExploreContent extends SearchServiceForCategories {
         'language': TranslationService().currentLanguage,
         'categories': keywords,
         'podcastFirst': numberOfPodcastResults,
-        'episodesSortBy': 'RELEVANCE',
+        'podcastsSortBy': 'FOLLOWER_COUNT',
       },
     );
   }

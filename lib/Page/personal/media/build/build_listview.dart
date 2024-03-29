@@ -2,6 +2,7 @@ import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:podivy/util/dialogs/list_name_update_dialog.dart';
 
 typedef ListCallback = void Function(UserList list);
 
@@ -22,29 +23,39 @@ class MyListView extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         final list = lists.elementAt(index);
         return ListTile(
-          title: Text(
-            list.listTitle,
-            overflow: TextOverflow.ellipsis,
-          ),
-          trailing: PopupMenuButton(
-            position: PopupMenuPosition.under,
-            itemBuilder: (context) {
-              return [
-                PopupMenuItem(
-                  onTap: () {
-                    onDelete(list);
-                  },
-                  child: Text("delete".tr),
-                )
-              ];
+            title: Text(
+              list.listTitle,
+              overflow: TextOverflow.ellipsis,
+            ),
+            trailing: PopupMenuButton(
+              position: PopupMenuPosition.under,
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    onTap: () {
+                      onDelete(list);
+                    },
+                    child: Text("delete".tr),
+                  ),
+                  PopupMenuItem(
+                    value: true,
+                    child: Text('Edit'.tr),
+                    onTap: () async {
+                      await updateListNameDialog(list);
+                    },
+                  )
+                ];
+              },
+            ),
+            onTap: () {
+              onTap(list);
             },
-          ),
-          onTap: () {
-            onTap(list);
-          },
-          titleTextStyle:TextStyle(fontSize: 20.sp)
-        );
+            titleTextStyle: TextStyle(
+                fontSize: 20.sp,
+                color: Theme.of(context).colorScheme.onBackground));
       },
     );
   }
 }
+
+

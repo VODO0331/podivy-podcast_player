@@ -72,6 +72,8 @@ class BuildGridView extends StatelessWidget {
                             image: podcaster.imageUrl!,
                             imageErrorBuilder: (context, _, __) {
                               return Image.asset(
+                                height: 150.r,
+                                width: 150.r,
                                 "assets/images/podcaster/defaultPodcaster.jpg",
                                 fit: BoxFit.cover,
                                 cacheHeight: 100.r.toInt(),
@@ -83,13 +85,16 @@ class BuildGridView extends StatelessWidget {
                             alignment: Alignment.bottomCenter,
                             child: Container(
                               width: double.infinity,
-                              color: const Color(0x7C191B18),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .background
+                                  .withOpacity(0.85),
                               child: Text(
                                 podcaster.title,
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
                                 style:
-                                    TextStyle(fontSize: ScreenUtil().setSp(16)),
+                                    TextStyle(fontSize: ScreenUtil().setSp(12)),
                               ),
                             ),
                           ),

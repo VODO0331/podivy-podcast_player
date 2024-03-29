@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:my_audio_player/my_audio_player.dart';
 import 'package:podivy/Page/personal/media/list/build/build_list_view.dart';
+import 'package:podivy/util/toast/delete_toast.dart';
 import 'package:provider/provider.dart';
 import '../../build/enum_sort.dart';
 
@@ -84,7 +85,7 @@ class _BuildListState extends State<BuildList> {
           case ConnectionState.active:
             if (snapshot.hasData) {
               final episodes = snapshot.data;
-              
+
               return Consumer<MyAudioPlayer>(
                 builder: (context, value, child) {
                   return Column(
@@ -100,8 +101,10 @@ class _BuildListState extends State<BuildList> {
                           onDelete: (
                             episode,
                           ) async {
-                            await widget.listManagement
-                                .deleteEpisodeFromList(widget.list, episode);
+                            if (await widget.listManagement
+                                .deleteEpisodeFromList(widget.list, episode)) {
+                              toastDelete('Deleted Episode'.tr);
+                            } else {}
                           },
                           onTap: (_, index) async {
                             myAudioPlayer.setIndex(index, _);

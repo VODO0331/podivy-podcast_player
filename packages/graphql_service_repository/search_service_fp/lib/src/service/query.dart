@@ -1,45 +1,12 @@
 
- const String queryLatestList = """
-  query GetPodcastsForLatestList(
-    \$languageFilter: String,
-    \$first: Int, 
-    \$podcastsSortBy: PodcastSortType!,
-    \$episodeDirection: SortDirection,
-    \$episodesortBy: EpisodeSortType!
-  ){
-    podcasts(
-      filters: {language: \$languageFilter,},
-      first: \$first, 
-      sort: {sortBy: \$podcastsSortBy},
-    ){
-      data{
-        id
-        title
-        imageUrl
-        episodes(
-          sort:{
-            sortBy: \$episodesortBy, 
-            direction:\$episodeDirection,
-            first: \$first,}
-        ){
-            data{
-              id
-              title
-              audioUrl
-              htmlDescription
-            }
-        }
-      }
-    }
-  }
-""";
+
 
 const String queryForExploreContent = """
 query  search(
     \$podcastFirst: Int,
     \$categories: [String],
     \$language: String,
-    \$episodesSortBy: PodcastSortType!
+    \$podcastsSortBy: PodcastSortType!
   ){
     podcasts(
       first:\$podcastFirst, 
@@ -47,7 +14,7 @@ query  search(
         language:\$language,
         categories:\$categories, 
       },
-      sort:{sortBy: \$episodesSortBy}
+      sort:{sortBy: \$podcastsSortBy}
       ){
       data{
         id

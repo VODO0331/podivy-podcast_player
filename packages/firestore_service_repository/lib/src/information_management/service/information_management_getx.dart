@@ -79,9 +79,10 @@ class InformationManagement {
     }
   }
 
-  Future<void> updateInfo({ required String? userName,required Uint8List? userImg}) async {
+  Future<bool> updateInfo({ required String? userName,required Uint8List? userImg}) async {
     final Map<Object, Object?> updates = <Object, Object?>{};
-    if (userName == null && userImg == null) return;
+    bool result = false;
+    if (userName == null && userImg == null) return result;
     if (userName != null) {
       updates.addAll({personalName: userName});
       // _userInfo.value.userName.value = userName;
@@ -95,10 +96,12 @@ class InformationManagement {
 
     await _userDocs.update(updates).then((value) {
       dev.log("DocumentSnapshot successfully updated!");
+      result = true;
     }).catchError((e) {
       dev.log(e.toString());
       throw CloudNotUpdateException();
     });
+    return result;
   }
 
   Stream<UserInfo> readInfo() {

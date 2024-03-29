@@ -6,7 +6,7 @@ import 'package:podivy/util/img_compress.dart';
 import 'package:podivy/util/dialogs/error_dialog.dart';
 
 import '../../../theme/custom_theme.dart';
-import '../../../util/language_dialog.dart';
+import '../../../util/dialogs/language_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -102,7 +102,14 @@ class _LoginPageState extends State<LoginPage> {
           onPressed: () async {
             final email = _email.text;
             final password = _password.text;
-            context.read<AuthBloc>().add(AuthEventLogIn(email, password));
+            if (email.trim().isEmpty || password.trim().isEmpty) {
+              await showErrorDialog(
+                context,
+                'Email or password cannot be empty'.tr,
+              );
+            } else {
+              context.read<AuthBloc>().add(AuthEventLogIn(email, password));
+            }
           },
         ),
         Row(
@@ -159,27 +166,27 @@ class _LoginPageState extends State<LoginPage> {
             if (state.exception is UserNotFindAuthException) {
               await showErrorDialog(
                 context,
-                '此用戶不存在或密碼錯誤',
+                'This user does not exist'.tr,
               );
             } else if (state.exception is InvalidEmailAuthException) {
               await showErrorDialog(
                 context,
-                '無效電子郵件',
+                'Invalid email'.tr,
               );
             } else if (state.exception is ChannelWrongAuthException) {
               await showErrorDialog(
                 context,
-                '輸入多次，請稍後再試',
+                'Entered multiple times, please try again later'.tr,
               );
             } else if (state.exception is WrongPasswordAuthException) {
               await showErrorDialog(
                 context,
-                'Email 或 密碼 錯誤',
+                'Email or password wrong'.tr,
               );
             } else if (state.exception is GenericAuthException) {
               await showErrorDialog(
                 context,
-                '其他錯誤',
+                'Other wrong'.tr,
               );
             }
           }

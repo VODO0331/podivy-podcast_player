@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
-import '../../../util/language_dialog.dart';
+import '../../../util/dialogs/language_dialog.dart';
 
 class SettingPage extends StatelessWidget {
   SettingPage({super.key});
@@ -36,13 +36,15 @@ class SettingPage extends StatelessWidget {
                 child: Flex(
                   direction: Axis.horizontal,
                   children: [
+                    //Theme button
                     Expanded(
                       flex: 6,
                       child: Container(
                         height: 100.r,
                         decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.inversePrimary,
-                            borderRadius: BorderRadius.circular(30)),
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                         child: Obx(() => Center(
                               child: ListTile(
                                 leading: Icon(
@@ -78,6 +80,7 @@ class SettingPage extends StatelessWidget {
                       ),
                     ),
                     const Expanded(flex: 1, child: SizedBox.shrink()),
+                    //language button
                     Expanded(
                       flex: 6,
                       child: Container(
@@ -107,48 +110,13 @@ class SettingPage extends StatelessWidget {
                                 await languageDialog();
                               },
                             ),
-                          )
-                          // Column(
-                          //   mainAxisAlignment: MainAxisAlignment.center,
-                          //   children: [
-                          //     Icon(
-                          //       Icons.language,
-                          //       size: 50.r,
-                          //     ),
-                          //     Text(
-                          //       "language",
-                          //       style: TextStyle(
-                          //         fontSize: 20.sp,
-                          //         letterSpacing: 2,
-                          //         color: Theme.of(context)
-                          //             .colorScheme
-                          //             .onPrimaryContainer,
-                          //       ),
-                          //     ),
-                          //     SizedBox(
-                          //       height: 20.r,
-                          //     ),
-                          //     ElevatedButton(
-                          //         onPressed: () async {
-                          //           await languageDialog((value) {
-                          //             language.value = value;
-                          //           });
-                          //         },
-                          //         child: Text(
-                          //           language.value,
-                          //           style: TextStyle(
-                          //             color: Theme.of(context)
-                          //                 .colorScheme
-                          //                 .onPrimaryContainer,
-                          //           ),
-                          //         ))
-                          //   ],
-                          // ),
-
-                          ),
+                          )),
                     )
                   ],
                 ),
+              ),
+              Divider(
+                color: ThemeData().dividerColor,
               ),
             ],
           ),

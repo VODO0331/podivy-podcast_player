@@ -1,17 +1,17 @@
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 
-
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/translator.dart';
-
 
 typedef SelectCallBack = void Function(String category);
 
 class CategoryButton extends StatelessWidget {
-   final InterestsManagement interestsManagement;
+  final InterestsManagement interestsManagement;
   final SelectCallBack selected;
-  const CategoryButton({super.key, required this.selected, required this.interestsManagement});
+  const CategoryButton(
+      {super.key, required this.selected, required this.interestsManagement});
+  
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,6 @@ class CategoryButton extends StatelessWidget {
                 height: 55.r,
                 width: ScreenUtil().screenWidth,
                 child: ListView.builder(
-                  // prototypeItem: prototypeItem(),
                   padding: const EdgeInsets.all(9).r,
                   scrollDirection: Axis.horizontal,
                   itemCount: interests.length,
@@ -70,22 +69,4 @@ class CategoryButton extends StatelessWidget {
           }
         });
   }
-}
-
-
-
-Widget prototypeItem() {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 8).r,
-    child: ElevatedButton(
-      child: Text(
-        '',
-        style: TextStyle(
-          fontSize: 12.sp,
-          // color: Colors.,
-        ),
-      ),
-      onPressed: () {},
-    ),
-  );
 }
