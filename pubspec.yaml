@@ -49,6 +49,7 @@ dependencies:
   translator: ^1.0.0
   flutter_native_splash: ^2.4.0
   provider: ^6.1.2
+  flutter_dotenv: ^5.1.0
 
 
   modify_widget_repository:
@@ -90,12 +91,15 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
+      - .env
       - assets/images/drawer/
       - assets/images/background/
       - assets/images/homePage/
       - assets/images/user_pic/
       - assets/images/podcaster/
       - assets/images/generic/
+      - assets/images/podchaser/
+      - assets/images/tip/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

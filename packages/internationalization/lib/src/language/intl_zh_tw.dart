@@ -16,13 +16,11 @@ const Map<String, String> zh_Tw = {
   'reset Password': '重設密碼',
   'send verification': '傳送驗證',
   //authException
-  'This user does not exist':
-      '此用戶不存在',
-  'Entered multiple times, please try again later':
-      '輸入多次，請稍後再試',
+  'This user does not exist': '此用戶不存在',
+  'Entered multiple times, please try again later': '輸入多次，請稍後再試',
   'Email or password wrong': 'Email 或 密碼 錯誤',
   'Other wrong': '其他錯誤',
-    'Email or password cannot be empty':'Email 或 密碼不能為空',
+  'Email or password cannot be empty': 'Email 或 密碼不能為空',
 
   'Other errors, failure to register': '其他錯誤，註冊失敗',
   'The passwords are not the same': '密碼不相同',
@@ -61,25 +59,28 @@ const Map<String, String> zh_Tw = {
   'Please enter the new name': '請輸入新的名稱',
   //follow
   'Are you sure you want to cancel follow?': '您確定要取消追蹤嗎？',
-  'Unfollowed':'退出追蹤',
+  'Unfollowed': '退出追蹤',
   //add list dialog
   'Add To List': '添加清單',
   'Add': "添加",
-  'Deleted Episode' :'已刪除節目',
-  'Deleted List' :'已刪除清單',
-  'List added':'已添加清單',
-  'Added To List':'已添加至清單',
-  'updated':'已更新',
+  'Deleted Episode': '已刪除節目',
+  'Deleted List': '已刪除清單',
+  'List added': '已添加清單',
+  'Added To List': '已添加至清單',
+  'updated': '已更新',
   ''
-  //drawer
-  'setting': '設定',
+      //drawer
+      'setting': '設定',
   'logOut': '登出',
   'Are you sure you want to log out?': '你確定要登出嗎?',
-
+//player page
+  'Player error': '撥放器錯誤',
+  'Unable to play or try again later': '無法撥放或請稍後重試',
   'Name': '名稱',
   'Edit': '編輯',
   'Count': '數量',
   'Cancel': '取消',
   'Done': '完成',
   'back': '返回',
+  'tip': '提醒'
 };

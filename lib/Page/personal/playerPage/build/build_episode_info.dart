@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:my_audio_player/my_audio_player.dart';
 import 'package:podivy/util/dialogs/description_dialog.dart';
-
 class BuildEpisodeInfo extends StatelessWidget {
   final MediaItem currentEpisodeData;
   const BuildEpisodeInfo({super.key, required this.currentEpisodeData});
@@ -23,26 +23,29 @@ class BuildEpisodeInfo extends StatelessWidget {
                   spreadRadius: 5,
                 )
               ]),
-          child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: FadeInImage.assetNetwork(
-                placeholderCacheWidth: 50.r.toInt(),
-                placeholderCacheHeight: 50.r.toInt(),
-                imageCacheHeight: 300.r.toInt(),
-                imageCacheWidth: 300.r.toInt(),
-                fit: BoxFit.cover,
-                placeholderFit: BoxFit.cover,
-                placeholder: "assets/images/generic/search_loading.gif",
-                image: currentEpisodeData.artUri.toString(),
-                imageErrorBuilder: (context, _, __) {
-                  return Image.asset(
-                    "assets/images/podcaster/defaultPodcaster.jpg",
-                    fit: BoxFit.cover,
-                    cacheHeight: 100.r.toInt(),
-                    cacheWidth: 100.r.toInt(),
-                  );
-                },
-              )),
+          child: GestureDetector(
+            onTap: ()=>Get.offAndToNamed('/podcaster',arguments: currentEpisodeData.extras!['podcasterId']),
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: FadeInImage.assetNetwork(
+                  placeholderCacheWidth: 50.r.toInt(),
+                  placeholderCacheHeight: 50.r.toInt(),
+                  imageCacheHeight: 300.r.toInt(),
+                  imageCacheWidth: 300.r.toInt(),
+                  fit: BoxFit.cover,
+                  placeholderFit: BoxFit.cover,
+                  placeholder: "assets/images/generic/search_loading.gif",
+                  image: currentEpisodeData.artUri.toString(),
+                  imageErrorBuilder: (context, _, __) {
+                    return Image.asset(
+                      "assets/images/podcaster/defaultPodcaster.jpg",
+                      fit: BoxFit.cover,
+                      cacheHeight: 100.r.toInt(),
+                      cacheWidth: 100.r.toInt(),
+                    );
+                  },
+                )),
+          ),
         ),
         SizedBox(height: 20.h),
         GestureDetector(

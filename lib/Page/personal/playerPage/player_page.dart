@@ -8,10 +8,9 @@ import 'build/build_episode_info.dart';
 
 class PlayerPage extends StatelessWidget {
   const PlayerPage({super.key});
- 
+
   @override
   Widget build(BuildContext context) {
-    
     return Consumer<MyAudioPlayer>(
       builder: (context, value, child) {
         final AudioPlayer audioPlayer = value.player;
@@ -46,9 +45,7 @@ class PlayerPage extends StatelessWidget {
                     }
                   },
                 ),
-                PlayerControl(
-                  myAudioPlayer: value,
-                ),
+                PlayerControl(),
               ],
             ));
       },

@@ -6,6 +6,7 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/change_follow_state.dart';
 
 import 'package:search_service/search_service_repository.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ShowDescription extends StatelessWidget {
@@ -42,11 +43,7 @@ class ShowDescription extends StatelessWidget {
                           ScreenUtil().setWidth(40)),
                     ),
                     onPressed: () {
-                      // if (podcasterData.categories != null) {
-                      //   for (var category in podcasterData.categories!) {
-                      //     // dev.log(category);
-                      //   }
-                      // }
+                      Share.share('share');
                     },
                     icon: const Icon(Icons.share),
                     label: Text("share".tr),

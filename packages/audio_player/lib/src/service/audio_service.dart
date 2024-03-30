@@ -2,7 +2,7 @@ import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'dart:developer' as dev show log;
+// import 'dart:developer' as dev show log;
 
 import 'package:search_service/search_service_repository.dart';
 
@@ -14,7 +14,7 @@ class MyAudioPlayer extends ChangeNotifier {
   final Rxn<List<Episode>?> episodeList = Rxn<List<Episode>?>();
   final Rx<Episode?> _currentEpisodeData = Episode.defaultEpisode().obs;
   final RxnInt _index = RxnInt();
-  
+
   final Rx<Duration> _currentPosition = Duration.zero.obs;
   final Rx<Duration> _currentDuration = Duration.zero.obs;
   //Getter
@@ -35,10 +35,11 @@ class MyAudioPlayer extends ChangeNotifier {
     if (listEquals(value, episodeList.value)) return;
     episodeList.value = value;
   }
-  Future<void> init()async {
- 
+
+  Future<void> init() async {
     _audioPlayer = AudioPlayer();
   }
+
   void setIndex(int newIndex, List<Episode> value) {
     //如果list = null
     if (episodeList.value == null) {
@@ -80,19 +81,11 @@ class MyAudioPlayer extends ChangeNotifier {
     }
   }
 
-  void _indexChanges() {
-    _audioPlayer.currentIndexStream.listen((index) {
-      if (index != null) {
-        _currentEpisodeData.value = episodeList.value![index];
-        _listManagement.addToHistory(_currentEpisodeData.value!);
-      }
-    });
-  }
-
   Future<void> seek(Duration? position, {int? index}) =>
       _audioPlayer.seek(position, index: index);
- 
+
   Future<void> _play() async {
+    
     _audioPlayer.playbackEventStream
         .listen((event) {}, onError: (Object e, StackTrace stack) {});
     try {
@@ -103,8 +96,17 @@ class MyAudioPlayer extends ChangeNotifier {
       );
       await _audioPlayer.play();
     } catch (e) {
-      dev.log("error loading playlist", name: "AudioPlayer");
+      throw CanNotPlayingException();
     }
+  }
+
+  void _indexChanges() {
+    _audioPlayer.currentIndexStream.listen((index) {
+      if (index != null) {
+        _currentEpisodeData.value = episodeList.value![index];
+        _listManagement.addToHistory(_currentEpisodeData.value!);
+      }
+    });
   }
 
   void _sliderChanges() {
@@ -135,6 +137,4 @@ class MyAudioPlayer extends ChangeNotifier {
       throw ListProcessingException();
     }
   }
-
-
 }

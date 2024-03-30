@@ -5,6 +5,7 @@ import 'package:bot_toast/bot_toast.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:internationalization_repository/internationalization.dart';
@@ -18,6 +19,7 @@ import 'theme/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AuthService.firebase().initialize();
   Provider.debugCheckInvalidValueType = null;
   await GetStorage.init();
   final storage = GetStorage();
@@ -25,26 +27,31 @@ Future<void> main() async {
       languageCode: storage.read('language') ?? 'en',
       countryCode: storage.read('location') ?? "US");
   final isDarkMode = storage.read('darkMode') ?? true;
-  await AuthService.firebase().initialize();
 
+  await dotenv.load(fileName: '.env');
+
+  final ValueNotifier<GraphQLClient> client =
+      ClientGlobalController().initialize(dotenv.get('myDevelopToken'));
   runApp(MyApp(
     locale: locale,
     isDarkMode: isDarkMode,
+    client: client,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final Locale locale;
   final bool isDarkMode;
+  final ValueNotifier<GraphQLClient> client;
   const MyApp({
     super.key,
     required this.locale,
     required this.isDarkMode,
+    required this.client,
   });
 
   @override
   Widget build(BuildContext context) {
-  
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -58,25 +65,26 @@ class MyApp extends StatelessWidget {
           create: (context) => MyAudioPlayer(),
           dispose: (context, value) => value.dispose(),
           lazy: true,
-        )
+        ),
       ],
-      child: GetMaterialApp(
-        builder: BotToastInit(),
-        navigatorObservers: [BotToastNavigatorObserver()],
-        initialBinding: MainBinding(),
-        translations: TranslationService(),
-        locale: locale,
-        fallbackLocale: const Locale('en', 'US'),
-        title: 'Podivy',
-        themeMode: 
-        // isDarkMode ? ThemeMode.dark :
-         ThemeMode.light,
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        initialRoute: '/',
-        unknownRoute:
-            GetPage(name: '/notFound', page: () => const UnknownRoutePage()),
-        getPages: RouterPage.routes,
+      child: GraphQLProvider(
+        client: client,
+        child: GetMaterialApp(
+          builder: BotToastInit(),
+          navigatorObservers: [BotToastNavigatorObserver()],
+          initialBinding: MainBinding(),
+          translations: TranslationService(),
+          locale: locale,
+          fallbackLocale: const Locale('en', 'US'),
+          title: 'Podivy',
+          themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          initialRoute: '/',
+          unknownRoute:
+              GetPage(name: '/notFound', page: () => const UnknownRoutePage()),
+          getPages: RouterPage.routes,
+        ),
       ),
     );
   }
@@ -85,6 +93,7 @@ class MyApp extends StatelessWidget {
 class MainBinding implements Bindings {
   @override
   void dependencies() async {
+    await AuthService.firebase().initialize();
     await JustAudioBackground.init(
       androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
       androidNotificationChannelName: 'Audio playback',
@@ -92,8 +101,7 @@ class MainBinding implements Bindings {
     );
     await initHiveForFlutter();
     await ScreenUtil.ensureScreenSize();
-
-    await AuthService.firebase().initialize();
+    
   }
 }
 

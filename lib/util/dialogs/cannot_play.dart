@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 
 import './generic_dialog.dart';
@@ -9,7 +10,7 @@ Future<void> showPlayErrorDialog(
 ) {
   return showGenericDialog(
     context: context,
-    title: 'ERROR，播放錯誤',
+    title: 'player error'.tr,
     content: text,
     optionBuilder: () => {
       'OK': null,

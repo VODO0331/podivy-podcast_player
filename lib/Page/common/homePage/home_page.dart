@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
       right: false,
       left: false,
       child: Padding(
-        padding: const EdgeInsets.only(top: 40).h,
+        padding: const EdgeInsets.only(top: 30).h,
         child: Column(
           children: [
             appBar(infoController),
@@ -39,26 +39,28 @@ class HomePage extends StatelessWidget {
               color: Color.fromARGB(123, 255, 255, 255),
             ),
             Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10).h,
+                padding: const EdgeInsets.symmetric(vertical: 5).h,
                 child: SizedBox(
                   height: 220.r,
                   child: BuildCarousel(
                     followedStorageService: followedManagement,
                   ),
                 )),
-
+            Image.asset(
+              Get.isDarkMode?'assets/images/podchaser/bow.png':'assets/images/podchaser/wob.png',
+              height: 30.r,
+              width: 180.r,
+              cacheHeight: 30.r.toInt(),
+              cacheWidth: 180.r.toInt(),
+              fit: BoxFit.cover,
+            ),
             Divider(
               thickness: 0.5,
               indent: 30.r,
               endIndent: 30.r,
               color: const Color.fromARGB(255, 255, 255, 255),
             ),
-            //佔位
-            // Expanded(
-            //     child: TextButton(
-            //   child: Text('rest'),
-            //   onPressed: () => toastUnfollow(),
-            // ))
+          
             ExploreContent(
               interestsManagement: interestsManagement,
             ),

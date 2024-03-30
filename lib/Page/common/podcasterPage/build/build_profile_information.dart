@@ -13,7 +13,7 @@ class ProfileInformation extends StatelessWidget {
   final _widgetController = Get.put(WidgetController());
   final RxBool isFollowed = false.obs;
   // final _followedStorageService = Get.find<FollowedManagement>();
-   final _followedStorageService = Get.put(FollowedManagement());
+  final _followedStorageService = Get.put(FollowedManagement());
 
   // final InterestsManagement _interestsManagement = Get.find();
 
@@ -39,8 +39,18 @@ class ProfileInformation extends StatelessWidget {
                             onPressed: () {
                               Get.back();
                             },
-                            color:Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.primary,
                             icon: const Icon(Icons.arrow_back_rounded),
+                          ),
+                          Image.asset(
+                            Get.isDarkMode
+                                ? 'assets/images/podchaser/white.png'
+                                : 'assets/images/podchaser/black.png',
+                            height: 30.r,
+                            width: 170.r,
+                            cacheHeight: 30.r.toInt(),
+                            cacheWidth: 170.r.toInt(),
+                            fit: BoxFit.cover,
                           ),
                           IconButton(
                             iconSize: 35.r,

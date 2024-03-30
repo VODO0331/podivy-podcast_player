@@ -97,7 +97,7 @@ Future<QueryResult> _queryResult({
   required String id,
   required int numberOfEpisodesResults,
 }) async {
-  final ClientGlobalController controller = Get.find();
+  final ClientGlobalController controller = Get.put(ClientGlobalController());
   final GraphQLClient client = controller.client;
   try {
     late QueryResult result;

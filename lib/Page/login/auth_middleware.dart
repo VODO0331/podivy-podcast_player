@@ -9,7 +9,6 @@ import 'package:podivy/Page/login/Page/verify_page.dart';
 import 'package:podivy/Page/login/login_background.dart';
 import 'package:podivy/Page/tabs.dart';
 import 'package:podivy/loading/loading_screen.dart';
-import 'package:search_service/search_service_repository.dart';
 
 class AuthMiddleWare extends StatelessWidget {
   const AuthMiddleWare({super.key});
@@ -30,7 +29,7 @@ class AuthMiddleWare extends StatelessWidget {
       },
       builder: (context, state) {
         late Widget child;
-        final clientController = Get.put(ClientGlobalController());
+
         // final informationController = Get.find<InformationController>();
         if (state is AuthStateLoggedIn) {
           child = const Tabs();
@@ -50,14 +49,11 @@ class AuthMiddleWare extends StatelessWidget {
           );
         }
 
-        return GraphQLProvider(
-          client: ValueNotifier(clientController.client),
-          child: ScreenUtilInit(
-            designSize: const Size(393, 852),
-            minTextAdapt: true,
-            splitScreenMode: true,
-            child: child,
-          ),
+        return ScreenUtilInit(
+          designSize: const Size(393, 852),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          child: child,
         );
       },
     );

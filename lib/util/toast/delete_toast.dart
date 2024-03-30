@@ -23,7 +23,7 @@ void toastDelete(String text) {
                   color: Theme.of(Get.context!).colorScheme.onErrorContainer,
                 ),
                 Text(
-                  'text',
+                  text,
                   style: TextStyle(
                       color:
                           Theme.of(Get.context!).colorScheme.onErrorContainer),

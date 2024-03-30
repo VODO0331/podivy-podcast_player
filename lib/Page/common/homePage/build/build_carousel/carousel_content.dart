@@ -4,7 +4,9 @@ import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 import 'package:podivy/Controller/widget_animation_controller.dart';
+import 'package:provider/provider.dart';
 import 'package:search_service/search_service_repository.dart';
 
 class NullCarouselContent extends StatelessWidget {
@@ -143,14 +145,25 @@ class CarouselContent extends StatelessWidget {
   }
 }
 
-class CarouselListView extends StatelessWidget {
+class CarouselListView extends StatefulWidget {
   final String podcastId;
   const CarouselListView({super.key, required this.podcastId});
 
   @override
+  State<CarouselListView> createState() => _CarouselListViewState();
+}
+
+class _CarouselListViewState extends State<CarouselListView> {
+  late final dynamic myAudioPlayer;
+  @override
+  void initState() {
+    super.initState();
+    myAudioPlayer = Provider.of<MyAudioPlayer>(context, listen: false);
+  }
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getSinglePodcasterData(id: podcastId, numberOfEpisodesResults: 3),
+      future: getSinglePodcasterData(id: widget.podcastId, numberOfEpisodesResults: 3),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -169,10 +182,10 @@ class CarouselListView extends StatelessWidget {
                   style: TextStyle(fontSize: 14.sp),
                 ),
                 textColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                onTap: ()=>Get.toNamed('/followed/podcaster/player',arguments: {
-                  'episodes':data,
-                  'index':index,
-                }),
+                onTap: ()async{
+                  myAudioPlayer.setIndex(index, data.episodesList!);
+                 await Get.toNamed('/followed/podcaster/player');
+                },
               );
             },
           );

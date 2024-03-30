@@ -38,6 +38,37 @@ class _FollowedPageState extends State<FollowedPage> {
             },
             icon: const Icon(Icons.arrow_back_ios_rounded),
           ),
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  await showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text("tip".tr),
+                      content: SizedBox(
+                        height: 300.r,
+                        width: 300.r,
+                        child: Column(children: [
+                           Divider(color: ThemeData().dividerColor,),
+                          Container(
+                          height: 200.r,
+                          width: 400.r,
+                          decoration:const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/tip/tip_follow.png'))),
+                        ),],),
+                      ),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Get.back(),
+                            child: const Text('OK'))
+                      ],
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.info_outline))
+          ],
           // foregroundColor: Colors.black87,
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: Text(
@@ -71,10 +102,10 @@ class _FollowedPageState extends State<FollowedPage> {
                     return FollowedList(
                       allFollowed: allFollowed!,
                       onDelete: (followed) async {
-                        if(await _followedStorageService.deleteFollowed(
-                            podcastId: followed.podcastId)){
-                              toastUnfollow();
-                            }
+                        if (await _followedStorageService.deleteFollowed(
+                            podcastId: followed.podcastId)) {
+                          toastUnfollow();
+                        }
                       },
                       onTap: (followed) {
                         Get.toNamed("/followed/podcaster",

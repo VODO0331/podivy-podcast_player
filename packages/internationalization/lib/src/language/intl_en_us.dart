@@ -76,11 +76,14 @@ const Map<String, String> en_Us = {
   'logOut': 'LogOut',
   'Are you sure you want to log out?': 'Are you sure you want to log out?',
   'setting': 'setting',
-
+  //player page
+  'Player error':'player error',
+  'Unable to play or try again later':'Unable to play or try again later',
   'Name': 'Name',
   'Edit': 'Edit',
   'Count': 'count',
   'Cancel': 'Cancel',
   'Done': 'Done',
   'back': 'Back',
+  'tip':'tip'
 };

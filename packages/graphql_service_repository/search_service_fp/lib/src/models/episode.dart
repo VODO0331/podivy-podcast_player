@@ -34,5 +34,8 @@ class Episode {
         artist: podcast.title,
         displayDescription: description,
         artUri: Uri.parse( imageUrl),
+        extras: {
+          'podcasterId':podcast.id
+        }
       );
 }

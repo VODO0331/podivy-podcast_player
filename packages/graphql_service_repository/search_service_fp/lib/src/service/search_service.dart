@@ -96,7 +96,7 @@ Future<({List<Podcaster> podcastList, List<Episode> episodeList})> _getData(
 }
 
 Future<QueryResult> _queryResult({required SearchService searchService}) async {
-  final ClientGlobalController controller = Get.find();
+  final ClientGlobalController controller = Get.put(ClientGlobalController());
   final GraphQLClient client = controller.client;
   try {
     var result = await client.query(searchService.queryOptions);
