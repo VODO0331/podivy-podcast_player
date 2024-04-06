@@ -12,11 +12,11 @@ class FollowedManagement {
   final _userId = userId;
   final CollectionReference<Map<String, dynamic>> user =
       FirebaseFirestore.instance.collection("user");
-  late final CollectionReference<Map<String, dynamic>> followed;
+  late final CollectionReference<Map<String, dynamic>> _followed;
 
   static final FollowedManagement _shard = FollowedManagement._shardInstance();
   FollowedManagement._shardInstance() {
-    followed = user.doc(_userId).collection('followed');
+    _followed = user.doc(_userId).collection('followed');
   }
   factory FollowedManagement() => _shard;
 
@@ -25,7 +25,7 @@ class FollowedManagement {
     required String? podcastImg,
     required String? podcastName,
   }) async {
-    await followed
+    await _followed
         .doc(podcastId)
         .set({
           followingPodcastId: podcastId,
@@ -41,7 +41,7 @@ class FollowedManagement {
 
   Future<bool> deleteFollowed({required String podcastId}) async {
      bool result = false;
-    await followed
+    await _followed
         .doc(podcastId)
         .delete()
         .then((value) {
@@ -60,7 +60,7 @@ class FollowedManagement {
   }
 
   Future<bool> isFollowed(String podcastId) async {
-    return followed
+    return _followed
         .where(followingPodcastId, isEqualTo: podcastId)
         .count()
         .get()
@@ -74,7 +74,7 @@ class FollowedManagement {
   }
   Stream<Iterable<Followed>> homePageViewFollowed() {
     try {
-      return followed.limit(3).snapshots().map((event) {
+      return _followed.limit(3).snapshots().map((event) {
         List<Followed> followedList = [];
         for (var doc in event.docs) {
           followedList.add(Followed.fromSnapshot(doc));
@@ -88,7 +88,7 @@ class FollowedManagement {
 
   Stream<Iterable<Followed>> allFollowed() {
     try {
-      return followed.snapshots().map((event) {
+      return _followed.snapshots().map((event) {
         List<Followed> followedList = [];
         for (var doc in event.docs) {
           followedList.add(Followed.fromSnapshot(doc));

@@ -1,4 +1,3 @@
-
 import 'package:authentication_repository/src/models/auth_provider.dart.dart';
 
 import '../models/auth_user.dart';
@@ -47,4 +46,11 @@ class AuthService implements AuthProvider {
   @override
   Future<void> sendPasswordReset({required String toEmail}) =>
       provider.sendPasswordReset(toEmail: toEmail);
+
+  @override
+  Future<void> emailReset({required String newEmail}) =>
+      provider.emailReset(newEmail: newEmail);
+
+  @override
+  Future<void> deleteUser() => provider.deleteUser();
 }

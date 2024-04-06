@@ -15,6 +15,15 @@ const Map<String, String> zh_Tw = {
   'Please verify the email': '請驗證電子郵件',
   'reset Password': '重設密碼',
   'send verification': '傳送驗證',
+  'enter the new Email': '輸入新Email',
+  'Change email': '更換Email',
+
+  'When you change your email, you will be logged out so you can log in with your new email.':
+      '當您更改電子郵件時，您將被登出，以便您可以使用新電子郵件登入。.',
+  'The verification has been sent to the new email address. The email address will be changed after verification...':
+      '驗證資訊已傳送至新的電子郵件地址。 電子郵件地址將在驗證後更改...',
+  'Delete User': '刪除用戶',
+  'Are you sure you want to delete your account?': '你確定要刪除帳號嗎?',
   //authException
   'This user does not exist': '此用戶不存在',
   'Entered multiple times, please try again later': '輸入多次，請稍後再試',
@@ -25,9 +34,9 @@ const Map<String, String> zh_Tw = {
   'Other errors, failure to register': '其他錯誤，註冊失敗',
   'The passwords are not the same': '密碼不相同',
   'This email has been registered': '此郵件已被註冊',
-  'Invalid email': 'Invalid email',
-  'The password strength is too weak, please re-enter':
-      'The password strength is too weak, please re-enter',
+   'Please do not use the same email': '請別使用相同email',
+  'Invalid email': '無效電子郵件',
+  'The password strength is too weak, please re-enter': '密碼不相同，請重新輸入',
   //home Page
   'Go follow your favorite podcasts': '追隨喜歡的podcast!!',
   //search Page
@@ -82,5 +91,6 @@ const Map<String, String> zh_Tw = {
   'Cancel': '取消',
   'Done': '完成',
   'back': '返回',
-  'tip': '提醒'
+  'tip': '提醒',
+  'change': '更換',
 };

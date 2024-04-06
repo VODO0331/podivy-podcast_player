@@ -42,7 +42,7 @@ class RouterPage {
           //設定頁面
           GetPage(
             name: AppRoutes.setting,
-            page: () => SettingPage(),
+            page: () =>const SettingPage(),
           ),
           //用戶頁面
           GetPage(

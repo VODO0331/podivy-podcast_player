@@ -16,19 +16,27 @@ const Map<String, String> en_Us = {
   'reset Password': 'Reset Password',
   'Please verify the email': 'Please verify the email',
   'send verification': 'Send verification',
-
+  'enter the new Email': 'enter the new Email',
+  'Change email': 'Change email',
+  'The verification has been sent to the new email address. The email address will be changed after verification...':
+      'The verification has been sent to the new email address. The email address will be changed after verification...',
+  'Delete User': 'Delete User',
+  'Are you sure you want to delete your account?':
+      'Are you sure you want to delete your account?',
+  'When you change your email, you will be logged out so you can log in with your new email.':
+      'When you change your email, you will be logged out so you can log in with your new email.',
   //authException
-  'This user does not exist':
-      'This user does not exist',
+  'This user does not exist': 'This user does not exist',
   'Entered multiple times, please try again later':
       'Entered multiple times, please try again later',
   'Email or password wrong': 'Email or password wrong',
-  'Email or password cannot be empty':'Email or password cannot be empty',
+  'Email or password cannot be empty': 'Email or password cannot be empty',
   'Other wrong': 'Other wrong',
   'Other errors, failure to register': 'Other errors, failure to register',
   'The passwords are not the same': 'The passwords are not the same',
   'This email has been registered': 'This email has been registered',
   'Invalid email': 'Invalid email',
+   'Please do not use the same email': 'Please do not use the same email',
   'The password strength is too weak, please re-enter':
       'The password strength is too weak, please re-enter',
   //home Page
@@ -63,27 +71,28 @@ const Map<String, String> en_Us = {
   //follow
   'Are you sure you want to cancel follow?':
       'Are you sure you want to cancel follow?',
-      'Unfollowed':'Unfollowed',
+  'Unfollowed': 'Unfollowed',
   //add list dialog
   'Add To List': 'Add To List',
   'Add': "Add",
-  'Deleted Episode' :'Deleted Episode',
-  'Deleted List' :'Deleted List',
-  'List added':'List added',
-  'Added To List':'Added To List',
-  'updated':'updated',
+  'Deleted Episode': 'Deleted Episode',
+  'Deleted List': 'Deleted List',
+  'List added': 'List added',
+  'Added To List': 'Added To List',
+  'updated': 'updated',
   //drawer
   'logOut': 'LogOut',
   'Are you sure you want to log out?': 'Are you sure you want to log out?',
   'setting': 'setting',
   //player page
-  'Player error':'player error',
-  'Unable to play or try again later':'Unable to play or try again later',
+  'Player error': 'player error',
+  'Unable to play or try again later': 'Unable to play or try again later',
   'Name': 'Name',
   'Edit': 'Edit',
   'Count': 'count',
   'Cancel': 'Cancel',
   'Done': 'Done',
   'back': 'Back',
-  'tip':'tip'
+  'tip': 'tip',
+  'change': 'change',
 };

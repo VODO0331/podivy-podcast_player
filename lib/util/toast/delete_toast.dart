@@ -14,7 +14,8 @@ void toastDelete(String text) {
             decoration: BoxDecoration(
                 color: Theme.of(Get.context!).colorScheme.errorContainer,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Theme.of(Get.context!).colorScheme.background)),
+                border: Border.all(
+                    color: Theme.of(Get.context!).colorScheme.background)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -32,3 +33,5 @@ void toastDelete(String text) {
             ));
       });
 }
+
+

@@ -5,16 +5,18 @@ import 'dart:typed_data';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:podivy/util/dialogs/reset_email_dialog.dart';
 
 // import 'dart:developer' as dev show log;
 class UserPage extends StatelessWidget {
   UserPage({Key? key}) : super(key: key);
 
   // final UserInfo userData = Get.arguments;
-  final TextEditingController _textEditingController =
+  final TextEditingController _nameEditingController =
       Get.put(TextEditingController());
   final ImagePicker _imagePicker = Get.put(ImagePicker());
   final InformationController userController = Get.find();
@@ -22,6 +24,7 @@ class UserPage extends StatelessWidget {
       Get.put(InformationController());
   final RxBool _isEdit = false.obs;
   final Rx<String> imgData = ''.obs;
+
   Future<Uint8List?> selectImage() async {
     XFile? image = await _imagePicker.pickImage(
       source: ImageSource.gallery,
@@ -38,36 +41,35 @@ class UserPage extends StatelessWidget {
 
   Widget _buildAppBar() {
     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            iconSize: 35.r,
-            onPressed: () {
-              Get.back();
-            },
-            icon: const Icon(Icons.arrow_back_ios_rounded),
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          iconSize: 35.r,
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(Icons.arrow_back_ios_rounded),
+        ),
+        PopupMenuButton(
+          color: Theme.of(Get.context!).colorScheme.primary,
+          icon: Icon(
+            Icons.more_vert_sharp,
+            size: 35.r,
           ),
-          PopupMenuButton(
-            color: Theme.of(Get.context!).colorScheme.primary,
-            icon: Icon(
-              Icons.more_vert_sharp,
-              size: 35.r,
-            ),
-            itemBuilder: (context) {
-              return [
-                PopupMenuItem(
-                  value: true,
-                  child: Text('Edit'.tr),
-                )
-              ];
-            },
-            onSelected: (value) {
-              _isEdit.value = value;
-            },
-          ),
-        ],
-      );
-    
+          itemBuilder: (context) {
+            return [
+              PopupMenuItem(
+                value: true,
+                child: Text('Edit'.tr),
+              )
+            ];
+          },
+          onSelected: (value) {
+            _isEdit.value = value;
+          },
+        ),
+      ],
+    );
   }
 
   Widget _buildEditBt() {
@@ -98,7 +100,9 @@ class UserPage extends StatelessWidget {
   }
 
   Widget _buildUserAvatar() {
-    final Color userAvatar = Get.isDarkMode?Theme.of(Get.context!).colorScheme.primary:Theme.of(Get.context!).colorScheme.primaryContainer;
+    final Color userAvatar = Get.isDarkMode
+        ? Theme.of(Get.context!).colorScheme.primary
+        : Theme.of(Get.context!).colorScheme.primaryContainer;
     return Container(
       height: 200.h,
       width: 300.w,
@@ -151,13 +155,13 @@ class UserPage extends StatelessWidget {
               child: _buildUserAvatar(),
             ),
 
-            // 顯示用戶名稱的ListTile
+            // 顯示用戶名稱
             Obx(() {
-              _textEditingController.text =
+              _nameEditingController.text =
                   userController.userData.userName.value;
               return _isEdit.value
                   ? TextField(
-                      controller: _textEditingController,
+                      controller: _nameEditingController,
                       decoration: InputDecoration(
                         labelText: "Name".tr,
                       ),
@@ -171,13 +175,19 @@ class UserPage extends StatelessWidget {
                     );
             }),
             const Divider(),
+            // 顯示用戶Email
             ListTile(
               leading: const Icon(Icons.email),
               title: Text(
                 userEmail,
                 style: TextStyle(fontSize: ScreenUtil().setSp(15)),
               ),
+              trailing: ElevatedButton(
+                child: const Icon(FontAwesomeIcons.pencil),
+                onPressed: () => showResetEmailDialog(),
+              ),
             ),
+
             const Divider(),
             Obx(() => _isEdit.value
                 ? Row(
@@ -186,9 +196,9 @@ class UserPage extends StatelessWidget {
                         onPressed: () async {
                           _isEdit.value = false;
                           final List<dynamic> updates = [null, null];
-                          if (_textEditingController.text !=
+                          if (_nameEditingController.text !=
                               userController.userData.name) {
-                            updates[0] = _textEditingController.text;
+                            updates[0] = _nameEditingController.text;
                           }
                           if (userController.userData.img != imgData.value) {
                             updates[1] = base64Decode(imgData.value);
@@ -202,7 +212,7 @@ class UserPage extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () async {
-                          _textEditingController.text =
+                          _nameEditingController.text =
                               userController.userData.userName.value;
                           imgData.value = userController.userData.userImg.value;
                           _isEdit.value = false;

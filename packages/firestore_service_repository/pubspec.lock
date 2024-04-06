@@ -375,6 +375,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.6.6"
+  get_storage:
+    dependency: transitive
+    description:
+      name: get_storage
+      sha256: "39db1fffe779d0c22b3a744376e86febe4ade43bf65e06eab5af707dc84185a2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   gql:
     dependency: transitive
     description:
@@ -471,6 +479,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  internationalization_repository:
+    dependency: transitive
+    description:
+      path: "../internationalization"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   intl:
     dependency: transitive
     description:

@@ -34,7 +34,7 @@ class VerifyEmailPage extends StatelessWidget {
             TextButton(
                 onPressed: () {
                   context.read<AuthBloc>().add(
-                        const AuthEventSendEmailVerification(),
+                        const AuthEventLogOut(),
                       );
                 },
                 child: Text(

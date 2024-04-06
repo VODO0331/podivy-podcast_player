@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'auth_user.dart';
 import 'dart:developer' as devtool show log;
 
-
 abstract class AuthProvider {
   Future<void> initialize();
   AuthUser? get currentUser;
@@ -22,6 +21,8 @@ abstract class AuthProvider {
   Future<void> sendEmailVerification();
 
   Future<void> sendPasswordReset({required String toEmail});
+  Future<void> emailReset({required String newEmail});
+  Future<void> deleteUser();
 }
 
 class FirebaseAuthProvider implements AuthProvider {
@@ -61,6 +62,7 @@ class FirebaseAuthProvider implements AuthProvider {
   @override
   AuthUser? get currentUser {
     final user = FirebaseAuth.instance.currentUser;
+    // final name = user!.displayName;
     if (user != null) {
       return AuthUser.fromFireBase(user);
     } else {
@@ -152,4 +154,40 @@ class FirebaseAuthProvider implements AuthProvider {
       throw GenericAuthException();
     }
   }
+
+  @override
+  Future<void> emailReset({required String newEmail}) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        
+        await user.verifyBeforeUpdateEmail(newEmail);
+     
+      } on FirebaseAuthException catch (e) {
+        switch (e.toString()) {
+          case 'invalid-email':
+            throw InvalidEmailAuthException();
+
+          default:
+            devtool.log(e.toString());
+            throw GenericAuthException();
+        }
+      } catch (_) {
+        devtool.log('Unexpected error: $_');
+        throw GenericAuthException();
+      }
+    } else {
+      throw UserNotFindAuthException();
+    }
+  }
+  
+  @override
+  Future<void> deleteUser() async{
+   final user = FirebaseAuth.instance.currentUser;
+   if(user!=null){
+   await user.delete();
+   }else{
+    throw UserNotFindAuthException();
+   }
+   }
 }
