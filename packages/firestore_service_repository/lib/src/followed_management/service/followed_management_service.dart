@@ -1,7 +1,5 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as dev show log;
-
 
 import '../../../error_exception/cloud_storage_exception.dart';
 import '../../user_id.dart';
@@ -14,12 +12,10 @@ class FollowedManagement {
       FirebaseFirestore.instance.collection("user");
   late final CollectionReference<Map<String, dynamic>> _followed;
 
-  static final FollowedManagement _shard = FollowedManagement._shardInstance();
-  FollowedManagement._shardInstance() {
+
+  FollowedManagement() {
     _followed = user.doc(_userId).collection('followed');
   }
-  factory FollowedManagement() => _shard;
-
   Future<void> addFollowed({
     required String podcastId,
     required String? podcastImg,
@@ -35,20 +31,16 @@ class FollowedManagement {
         .then((value) => dev.log("Podcast added successfully!"))
         .catchError((error) {
           dev.log(error);
-  throw CloudNotCreateException();
+          throw CloudNotCreateException();
         });
   }
 
   Future<bool> deleteFollowed({required String podcastId}) async {
-     bool result = false;
-    await _followed
-        .doc(podcastId)
-        .delete()
-        .then((value) {
-          dev.log("Podcast delete successfully!");
-          result =  true;
-        })
-        .catchError((error) {
+    bool result = false;
+    await _followed.doc(podcastId).delete().then((value) {
+      dev.log("Podcast delete successfully!");
+      result = true;
+    }).catchError((error) {
       dev.log(error);
       throw CloudDeleteException();
     });
@@ -72,6 +64,7 @@ class FollowedManagement {
       }
     });
   }
+
   Stream<Iterable<Followed>> homePageViewFollowed() {
     try {
       return _followed.limit(3).snapshots().map((event) {
@@ -88,6 +81,7 @@ class FollowedManagement {
 
   Stream<Iterable<Followed>> allFollowed() {
     try {
+      dev.log(_followed.path);
       return _followed.snapshots().map((event) {
         List<Followed> followedList = [];
         for (var doc in event.docs) {
@@ -98,5 +92,13 @@ class FollowedManagement {
     } catch (_) {
       throw CloudNotGetException();
     }
+  }
+
+  Future<void> deleteUser() async {
+    await _followed.get().then((snapshot) {
+      for (DocumentSnapshot follow in snapshot.docs) {
+        follow.reference.delete();
+      }
+    });
   }
 }

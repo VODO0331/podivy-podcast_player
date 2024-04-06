@@ -10,10 +10,10 @@ class ListPage extends StatelessWidget {
   final IconData icon = Get.arguments['icon'];
   final UserList list = Get.arguments['list'];
   final ListManagement listManagement = Get.find();
- 
+
   @override
   Widget build(BuildContext context) {
-    final RxString title =list.listTitle.obs;
+    final RxString title = list.listTitle.obs;
     return Scaffold(
       backgroundColor: Get.isDarkMode
           ? Theme.of(Get.context!).colorScheme.background
@@ -36,9 +36,9 @@ class ListPage extends StatelessWidget {
                     size: 80.r,
                   ),
                   Obx(() => Text(
-                    title.value,
-                    style: const TextStyle(fontSize: 29),
-                  ))
+                        title.value,
+                        style: const TextStyle(fontSize: 29),
+                      )),
                 ],
               ),
             ),
@@ -65,6 +65,5 @@ PreferredSizeWidget listAppBar({
       },
       icon: const Icon(Icons.arrow_back_ios_rounded),
     ),
-   
   );
 }

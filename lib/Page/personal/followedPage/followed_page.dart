@@ -5,27 +5,11 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/personal/followedPage/build/build_followed_list.dart';
 import 'package:podivy/util/toast/unfollow_toast.dart';
 
-class FollowedPage extends StatefulWidget {
-  const FollowedPage({super.key});
+class FollowedPage extends StatelessWidget {
+   FollowedPage({super.key});
 
-  @override
-  State<FollowedPage> createState() => _FollowedPageState();
-}
-
-class _FollowedPageState extends State<FollowedPage> {
-  late FollowedManagement _followedStorageService;
-
-  @override
-  void initState() {
-    super.initState();
-    _followedStorageService = FollowedManagement();
-  }
-
-  @override
-  void dispose() {
-    _followedStorageService;
-    super.dispose();
-  }
+  final  _followedStorageService =
+      Get.put(FollowedManagement());
 
   @override
   Widget build(BuildContext context) {
@@ -48,16 +32,21 @@ class _FollowedPageState extends State<FollowedPage> {
                       content: SizedBox(
                         height: 300.r,
                         width: 300.r,
-                        child: Column(children: [
-                           Divider(color: ThemeData().dividerColor,),
-                          Container(
-                          height: 200.r,
-                          width: 400.r,
-                          decoration:const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      'assets/images/tip/tip_follow.png'))),
-                        ),],),
+                        child: Column(
+                          children: [
+                            Divider(
+                              color: ThemeData().dividerColor,
+                            ),
+                            Container(
+                              height: 200.r,
+                              width: 400.r,
+                              decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/tip/tip_follow.png'))),
+                            ),
+                          ],
+                        ),
                       ),
                       actions: [
                         TextButton(

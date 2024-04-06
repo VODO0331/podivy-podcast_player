@@ -2,13 +2,14 @@
 
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:get/get.dart';
 // import 'package:get/get.dart';
 import '../../../error_exception/cloud_storage_exception.dart';
 import '../../../error_exception/information_storage_exception.dart';
 import '../../user_id.dart';
-import '../model/user_info.dart';
 import 'dart:developer' as dev show log;
 
 import 'constants.dart';
@@ -69,7 +70,13 @@ class InformationManagement {
   //註銷用戶
   Future<void> deleteInfo() async {
     try {
-      // await userInfo.delete();
+      final interests = Get.put(InterestsManagement());
+      final follow = Get.put(FollowedManagement());
+      final lists = Get.put(ListManagement());
+      
+      await interests.deleteUser();
+      await follow.deleteUser();
+      await lists.deleteUser();
       await _userTable
           .doc(_userId)
           .delete()
@@ -95,7 +102,6 @@ class InformationManagement {
     // update([_userInfo]);
 
     await _userDocs.update(updates).then((value) {
-      dev.log("DocumentSnapshot successfully updated!");
       result = true;
     }).catchError((e) {
       dev.log(e.toString());

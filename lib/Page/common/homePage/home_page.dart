@@ -47,7 +47,9 @@ class HomePage extends StatelessWidget {
                   ),
                 )),
             Image.asset(
-              Get.isDarkMode?'assets/images/podchaser/bow.png':'assets/images/podchaser/wob.png',
+              Get.isDarkMode
+                  ? 'assets/images/podchaser/bow.png'
+                  : 'assets/images/podchaser/wob.png',
               height: 30.r,
               width: 180.r,
               cacheHeight: 30.r.toInt(),
@@ -60,7 +62,7 @@ class HomePage extends StatelessWidget {
               endIndent: 30.r,
               color: const Color.fromARGB(255, 255, 255, 255),
             ),
-          
+            
             // ExploreContent(
             //   interestsManagement: interestsManagement,
             // ),

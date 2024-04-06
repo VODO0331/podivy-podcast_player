@@ -114,9 +114,10 @@ class CarouselContent extends StatelessWidget {
                   ),
                   Text(
                     followed.podcastName,
+                    maxLines: 2,
                     style: TextStyle(fontSize: 12.sp),
                     textAlign: TextAlign.center,
-                    overflow: TextOverflow.fade,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   // const Divider(),
                 ],

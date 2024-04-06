@@ -19,9 +19,12 @@ const Map<String, String> zh_Tw = {
   'Change email': '更換Email',
 
   'When you change your email, you will be logged out so you can log in with your new email.':
-      '當您更改電子郵件時，您將被登出，以便您可以使用新電子郵件登入。.',
+      '當您更改電子郵件時，您將被登出，以便您可以使用新電子郵件登入.',
   'The verification has been sent to the new email address. The email address will be changed after verification...':
       '驗證資訊已傳送至新的電子郵件地址。 電子郵件地址將在驗證後更改...',
+  'Please note: If you do not receive verification, it means that this email has been used, please use the original email address':
+      '(請注意:如果沒收到驗證,代表此電子郵件已被使用，請使用原本的電子信箱)',
+
   'Delete User': '刪除用戶',
   'Are you sure you want to delete your account?': '你確定要刪除帳號嗎?',
   //authException
@@ -34,7 +37,7 @@ const Map<String, String> zh_Tw = {
   'Other errors, failure to register': '其他錯誤，註冊失敗',
   'The passwords are not the same': '密碼不相同',
   'This email has been registered': '此郵件已被註冊',
-   'Please do not use the same email': '請別使用相同email',
+  'Please do not use the same email': '請別使用相同email',
   'Invalid email': '無效電子郵件',
   'The password strength is too weak, please re-enter': '密碼不相同，請重新輸入',
   //home Page

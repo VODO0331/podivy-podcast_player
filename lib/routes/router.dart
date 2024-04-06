@@ -62,7 +62,7 @@ class RouterPage {
           //追隨頁面
           GetPage(
               name: AppRoutes.followed,
-              page: () => const FollowedPage(),
+              page: () =>  FollowedPage(),
               children: [
                 GetPage(
                   name: AppRoutes.podcaster,

@@ -42,7 +42,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     //郵件驗證
     on<AuthEventSendEmailVerification>((event, emit) async {
       await provider.sendEmailVerification();
-      emit(state);
+      emit(const AuthStateLoggedOut(exception: null, isLoading: false));
     });
     //註冊
     on<AuthEventRegister>((event, emit) async {

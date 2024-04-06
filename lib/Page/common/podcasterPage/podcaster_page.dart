@@ -20,6 +20,7 @@ class PodcasterPage extends StatelessWidget {
             ? Theme.of(Get.context!).colorScheme.background
             : Theme.of(Get.context!).colorScheme.secondaryContainer,
         key: sKey,
+        resizeToAvoidBottomInset:false,
         body: SafeArea(
           child: FutureBuilder(
             future: getSinglePodcasterData(

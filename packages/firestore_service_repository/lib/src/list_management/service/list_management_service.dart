@@ -224,4 +224,26 @@ class ListManagement {
       throw CloudNotGetException();
     }
   }
+
+  Future<void> deleteUser() async {
+    await _lists.get().then((snapshot) {
+      for (DocumentSnapshot list in snapshot.docs) {
+        final Map<String, dynamic> targetList =
+            list.data() as Map<String, dynamic>;
+        //搜尋list內由沒有episode，如果有就刪除
+        //如果沒刪除list內的內容，firestore並不會刪除子集合(list content)
+        final CollectionReference<Map<String, dynamic>> contents =
+            _lists.doc(targetList['doc_id']).collection('content');
+        contents.get().then((value) {
+          for (DocumentSnapshot content in value.docs) {
+            content.reference.delete();
+          }
+        });
+        //刪除清單
+        list.reference.delete();
+      }
+    });
+  }
+
+ 
 }

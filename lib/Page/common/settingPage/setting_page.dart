@@ -1,11 +1,10 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/common/settingPage/build/theme_setting.dart';
-import 'package:podivy/Page/login/Page/login_page.dart';
 import 'package:podivy/Page/login/auth_middleware.dart';
-import 'package:podivy/util/dialogs/generic_dialog.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -52,6 +51,9 @@ class SettingPage extends StatelessWidget {
                           TextButton(
                               onPressed: () async {
                                 //  Get.back();
+                                final infoCtr = Get.put(InformationController()); 
+                                infoCtr.deleteInfo();
+                               await Get.deleteAll();
                                 context.mounted
                                     ? context
                                         .read<AuthBloc>()

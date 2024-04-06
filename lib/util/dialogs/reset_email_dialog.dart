@@ -15,14 +15,18 @@ Future<void> showResetEmailDialog() => showDialog(
         return AlertDialog(
           title: Text('Change email'.tr),
           content: SizedBox(
-            width: 300.w,
-            height: 200.h,
+            width: 400.w,
+            height: 350.h,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
                     'When you change your email, you will be logged out so you can log in with your new email.'
                         .tr),
+                Text(
+                    'Please note: If you do not receive verification, it means that this email has been used, please use the original email address'
+                        .tr,
+                        style: TextStyle(color: Colors.red[400]),),
                 TextField(
                   controller: email,
                   enableSuggestions: false,
@@ -48,9 +52,9 @@ Future<void> showResetEmailDialog() => showDialog(
                     }
                     await AuthService.firebase()
                         .emailReset(newEmail: email.text);
-                    email.text = '';
                     Get.back();
-                    await showResetEmailTipDialog();
+                    await showResetEmailTipDialog(email.text);
+                    email.text = '';
                   } catch (e) {
                     if (e is InvalidEmailAuthException) {
                       await showErrorDialog(
@@ -76,7 +80,7 @@ Future<void> showResetEmailDialog() => showDialog(
       },
     );
 
-Future<void> showResetEmailTipDialog() => showDialog(
+Future<void> showResetEmailTipDialog(String newEmail) => showDialog(
       context: Get.context!,
       builder: (context) => AlertDialog(
         title: Text('send verification'.tr),
@@ -86,13 +90,12 @@ Future<void> showResetEmailTipDialog() => showDialog(
         actions: [
           TextButton(
             child: const Text('ok'),
-            onPressed: () {
+            onPressed: () async {
+              await Get.deleteAll();
               context.mounted
-                              ? context
-                                  .read<AuthBloc>()
-                                  .add(const AuthEventLogOut())
-                              : null;
-                          Get.offAll(() => const AuthMiddleWare());
+                  ? context.read<AuthBloc>().add(const AuthEventLogOut())
+                  : null;
+              Get.offAll(() => const AuthMiddleWare());
             },
           )
         ],

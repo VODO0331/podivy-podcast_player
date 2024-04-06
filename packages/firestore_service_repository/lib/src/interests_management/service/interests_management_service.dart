@@ -74,4 +74,11 @@ class InterestsManagement {
       throw CloudNotGetException();
     }
   }
+  Future<void> deleteUser() async {
+    await _interests.get().then((snapshot) {
+      for (DocumentSnapshot interest in snapshot.docs) {
+        interest.reference.delete();
+      }
+    });
+  }
 }
