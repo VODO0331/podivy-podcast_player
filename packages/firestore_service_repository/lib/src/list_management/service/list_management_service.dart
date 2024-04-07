@@ -233,7 +233,7 @@ class ListManagement {
         //搜尋list內由沒有episode，如果有就刪除
         //如果沒刪除list內的內容，firestore並不會刪除子集合(list content)
         final CollectionReference<Map<String, dynamic>> contents =
-            _lists.doc(targetList['doc_id']).collection('content');
+            _lists.doc(targetList[documentId]).collection('content');
         contents.get().then((value) {
           for (DocumentSnapshot content in value.docs) {
             content.reference.delete();

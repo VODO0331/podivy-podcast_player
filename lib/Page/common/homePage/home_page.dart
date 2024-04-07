@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
               endIndent: 30.r,
               color: const Color.fromARGB(255, 255, 255, 255),
             ),
-            
+            // TextButton(onPressed: ()=>infoController.checkEmail(), child: Text('data')),
             // ExploreContent(
             //   interestsManagement: interestsManagement,
             // ),

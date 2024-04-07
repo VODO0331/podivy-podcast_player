@@ -25,8 +25,8 @@ const Map<String, String> en_Us = {
       'Are you sure you want to delete your account?',
   'When you change your email, you will be logged out so you can log in with your new email.':
       'When you change your email, you will be logged out so you can log in with your new email.',
-  'Please note: If you do not receive verification, it means that this email has been used, please use the original email address':
-      '(Please note: If you do not receive verification, it means that this email has been used, please use the original email address)',
+  'Please note: If you do not receive verification, please use your original email address':
+      'Please note: If you do not receive verification, please use your original email address',
   //authException
   'This user does not exist': 'This user does not exist',
   'Entered multiple times, please try again later':
@@ -41,6 +41,7 @@ const Map<String, String> en_Us = {
   'Please do not use the same email': 'Please do not use the same email',
   'The password strength is too weak, please re-enter':
       'The password strength is too weak, please re-enter',
+      'Please login again and try again.':'Please login again and try again.',
   //home Page
   'Go follow your favorite podcasts': 'Go follow your favorite podcasts!!',
   //search Page
@@ -97,4 +98,5 @@ const Map<String, String> en_Us = {
   'back': 'Back',
   'tip': 'tip',
   'change': 'change',
+  'Error':'Error',
 };

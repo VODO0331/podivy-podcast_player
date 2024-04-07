@@ -22,8 +22,8 @@ const Map<String, String> zh_Tw = {
       '當您更改電子郵件時，您將被登出，以便您可以使用新電子郵件登入.',
   'The verification has been sent to the new email address. The email address will be changed after verification...':
       '驗證資訊已傳送至新的電子郵件地址。 電子郵件地址將在驗證後更改...',
-  'Please note: If you do not receive verification, it means that this email has been used, please use the original email address':
-      '(請注意:如果沒收到驗證,代表此電子郵件已被使用，請使用原本的電子信箱)',
+  'Please note: If you do not receive verification, please use your original email address':
+      '(請注意:如果沒收到驗證,請使用原本的電子信箱)',
 
   'Delete User': '刪除用戶',
   'Are you sure you want to delete your account?': '你確定要刪除帳號嗎?',
@@ -40,6 +40,7 @@ const Map<String, String> zh_Tw = {
   'Please do not use the same email': '請別使用相同email',
   'Invalid email': '無效電子郵件',
   'The password strength is too weak, please re-enter': '密碼不相同，請重新輸入',
+  'Please login again and try again.':'請重新登入後再試',
   //home Page
   'Go follow your favorite podcasts': '追隨喜歡的podcast!!',
   //search Page
@@ -96,4 +97,5 @@ const Map<String, String> zh_Tw = {
   'back': '返回',
   'tip': '提醒',
   'change': '更換',
+  'Error':'錯誤',
 };

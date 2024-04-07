@@ -51,7 +51,6 @@ class UserPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_rounded),
         ),
         PopupMenuButton(
-          color: Theme.of(Get.context!).colorScheme.primary,
           icon: Icon(
             Icons.more_vert_sharp,
             size: 35.r,
@@ -206,6 +205,7 @@ class UserPage extends StatelessWidget {
                           informationManagement.updateInfo(
                             userName: updates[0],
                             userImg: updates[1],
+                            newEmail: null,
                           );
                         },
                         child: Text("Done".tr),

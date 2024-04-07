@@ -3,3 +3,4 @@ class InformationStorageException implements Exception{
 }
 
 class ImageErrorException extends InformationStorageException{}
+class EmailAlreadyInUse extends InformationStorageException{}

@@ -1,6 +1,7 @@
 // use GetX
 
 import 'dart:convert';
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/services.dart';
@@ -49,6 +50,14 @@ class InformationManagement {
         await _userTable.doc(_userId).get().then((value) => value.data());
     if (result == null || result.isEmpty) {
       await addInfo(userName: "Nobody");
+    } else {
+      //檢查firebaseAuth 與 firestore 的email是否相同
+      if (result[personalEmail] != AuthService.firebase().currentUser!.email) {
+        await updateInfo(
+            userName: null,
+            userImg: null,
+            newEmail: AuthService.firebase().currentUser!.email);
+      }
     }
   }
 
@@ -62,6 +71,7 @@ class InformationManagement {
     await _userDocs.set({
       personalName: userName,
       personalImg: imgData,
+      personalEmail: AuthService.firebase().currentUser!.email
     }).then((value) {
       dev.log("info added successfully!");
     }).catchError((error) => throw CloudNotCreateException());
@@ -73,7 +83,7 @@ class InformationManagement {
       final interests = Get.put(InterestsManagement());
       final follow = Get.put(FollowedManagement());
       final lists = Get.put(ListManagement());
-      
+
       await interests.deleteUser();
       await follow.deleteUser();
       await lists.deleteUser();
@@ -86,10 +96,13 @@ class InformationManagement {
     }
   }
 
-  Future<bool> updateInfo({ required String? userName,required Uint8List? userImg}) async {
+  Future<bool> updateInfo(
+      {required String? userName,
+      required Uint8List? userImg,
+      required String? newEmail}) async {
     final Map<Object, Object?> updates = <Object, Object?>{};
     bool result = false;
-    if (userName == null && userImg == null) return result;
+    if (userName == null && userImg == null && newEmail == null) return result;
     if (userName != null) {
       updates.addAll({personalName: userName});
       // _userInfo.value.userName.value = userName;
@@ -99,13 +112,20 @@ class InformationManagement {
       updates.addAll({personalImg: result});
       // _userInfo.value.userImg.value = result;
     }
+    if (newEmail != null) {
+      updates.addAll({personalEmail: newEmail});
+    }
     // update([_userInfo]);
 
     await _userDocs.update(updates).then((value) {
       result = true;
     }).catchError((e) {
-      dev.log(e.toString());
-      throw CloudNotUpdateException();
+      if (e is InformationStorageException) {
+        throw e;
+      } else {
+        dev.log(e.toString());
+        throw CloudNotUpdateException();
+      }
     });
     return result;
   }
@@ -117,5 +137,18 @@ class InformationManagement {
       dev.log(e.toString());
       throw CloudNotGetException();
     }
+  }
+
+  Future<bool> checkEmail(String newEmail) async {
+    await _userTable.get().then((value) {
+      for (DocumentSnapshot element in value.docs) {
+        final data = element.data() as Map<String, dynamic>;
+        if (newEmail == data[personalEmail]) {
+          throw EmailAlreadyInUse();
+        }
+      }
+    });
+
+    return true;
   }
 }

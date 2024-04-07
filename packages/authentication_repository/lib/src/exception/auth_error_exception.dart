@@ -16,3 +16,5 @@ class PasswordsNotSameAuthException implements Exception{}
 class GenericAuthException implements Exception {}
 
 class UserNotLogInAuthException implements Exception {}
+class RequiresRecentLoginException implements Exception{}
+class NewEmailInvalid implements Exception{}

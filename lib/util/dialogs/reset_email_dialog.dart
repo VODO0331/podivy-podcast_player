@@ -1,4 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:firestore_service_repository/error_exception/information_storage_exception.dart';
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
@@ -11,12 +13,12 @@ Future<void> showResetEmailDialog() => showDialog(
       builder: (context) {
         final TextEditingController email =
             Get.put(tag: 'email', TextEditingController());
-
+        final infoCtr = Get.find<InformationController>();
         return AlertDialog(
           title: Text('Change email'.tr),
           content: SizedBox(
             width: 400.w,
-            height: 350.h,
+            height: 280.h,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -24,9 +26,10 @@ Future<void> showResetEmailDialog() => showDialog(
                     'When you change your email, you will be logged out so you can log in with your new email.'
                         .tr),
                 Text(
-                    'Please note: If you do not receive verification, it means that this email has been used, please use the original email address'
-                        .tr,
-                        style: TextStyle(color: Colors.red[400]),),
+                  'Please note: If you do not receive verification, please use your original email address'
+                      .tr,
+                  style: TextStyle(color: Colors.red[400]),
+                ),
                 TextField(
                   controller: email,
                   enableSuggestions: false,
@@ -40,7 +43,12 @@ Future<void> showResetEmailDialog() => showDialog(
             ),
           ),
           actions: [
-            TextButton(onPressed: () => Get.back(), child: Text('Cancel'.tr)),
+            TextButton(
+                onPressed: () {
+                  Get.back();
+                  email.text = '';
+                },
+                child: Text('Cancel'.tr)),
             TextButton(
                 onPressed: () async {
                   try {
@@ -50,13 +58,17 @@ Future<void> showResetEmailDialog() => showDialog(
                       Get.back();
                       return;
                     }
-                    await AuthService.firebase()
-                        .emailReset(newEmail: email.text);
+                    if (await infoCtr.checkEmail(email.text)) {
+                      await AuthService.firebase()
+                          .emailReset(newEmail: email.text);
+
+                      Get.back();
+                      await showResetEmailTipDialog(email.text);
+                    }
                     Get.back();
-                    await showResetEmailTipDialog(email.text);
                     email.text = '';
                   } catch (e) {
-                    if (e is InvalidEmailAuthException) {
+                    if (e is NewEmailInvalid) {
                       await showErrorDialog(
                         Get.context!,
                         'Invalid email'.tr,
@@ -65,6 +77,16 @@ Future<void> showResetEmailDialog() => showDialog(
                       await showErrorDialog(
                         Get.context!,
                         'This user does not exist'.tr,
+                      );
+                    } else if (e is EmailAlreadyInUse) {
+                      await showErrorDialog(
+                        Get.context!,
+                        'This email has been registered'.tr,
+                      );
+                    } else if (e is RequiresRecentLoginException) {
+                      await showErrorDialog(
+                        Get.context!,
+                        'Please login again and try again.'.tr,
                       );
                     } else {
                       await showErrorDialog(

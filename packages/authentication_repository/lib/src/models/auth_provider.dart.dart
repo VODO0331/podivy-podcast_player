@@ -160,18 +160,20 @@ class FirebaseAuthProvider implements AuthProvider {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       try {
-        
+        final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+        if (!emailRegex.hasMatch(newEmail)) throw NewEmailInvalid();
         await user.verifyBeforeUpdateEmail(newEmail);
-     
       } on FirebaseAuthException catch (e) {
-        switch (e.toString()) {
-          case 'invalid-email':
-            throw InvalidEmailAuthException();
+        switch (e.code) {
+          case 'requires-recent-login':
+            throw RequiresRecentLoginException();
 
           default:
-            devtool.log(e.toString());
+            devtool.log("FirebaseAuthException : ${e.code}、${e.message}");
             throw GenericAuthException();
         }
+      } on NewEmailInvalid catch (_) {
+        throw NewEmailInvalid();
       } catch (_) {
         devtool.log('Unexpected error: $_');
         throw GenericAuthException();
@@ -180,14 +182,14 @@ class FirebaseAuthProvider implements AuthProvider {
       throw UserNotFindAuthException();
     }
   }
-  
+
   @override
-  Future<void> deleteUser() async{
-   final user = FirebaseAuth.instance.currentUser;
-   if(user!=null){
-   await user.delete();
-   }else{
-    throw UserNotFindAuthException();
-   }
-   }
+  Future<void> deleteUser() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await user.delete();
+    } else {
+      throw UserNotFindAuthException();
+    }
+  }
 }
