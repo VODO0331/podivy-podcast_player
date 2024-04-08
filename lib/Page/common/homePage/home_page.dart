@@ -7,7 +7,7 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 import 'build/build_carousel/build_carousel.dart';
 
-// import 'build/build_explore/build_explore_content.dart';
+import 'build/build_explore/build_explore_content.dart';
 
 //節省token
 // import 'package:podivy/widget/carousel.dart';
@@ -62,10 +62,10 @@ class HomePage extends StatelessWidget {
               endIndent: 30.r,
               color: const Color.fromARGB(255, 255, 255, 255),
             ),
-            // TextButton(onPressed: ()=>infoController.checkEmail(), child: Text('data')),
-            // ExploreContent(
-            //   interestsManagement: interestsManagement,
-            // ),
+            
+            ExploreContent(
+              interestsManagement: interestsManagement,
+            ),
           ],
         ),
       ),

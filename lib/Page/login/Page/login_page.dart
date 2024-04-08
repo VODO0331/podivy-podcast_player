@@ -2,7 +2,6 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:podivy/util/img_compress.dart';
 import 'package:podivy/util/dialogs/error_dialog.dart';
 
 import '../../../theme/custom_theme.dart';
@@ -18,12 +17,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late final TextEditingController _email;
   late final TextEditingController _password;
-  late final ImageCompressor imageCompressor;
   @override
   void initState() {
     _email = TextEditingController();
     _password = TextEditingController();
-    imageCompressor = ImageCompressor();
     super.initState();
   }
 
