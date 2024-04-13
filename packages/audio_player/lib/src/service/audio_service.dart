@@ -10,7 +10,8 @@ import '../../exception/player_exception.dart';
 
 class MyAudioPlayer extends ChangeNotifier {
   late AudioPlayer _audioPlayer;
-  final ListManagement _listManagement = ListManagement();
+  final ListManagement _listManagement = Get.find<ListManagement>();
+
   final Rxn<List<Episode>?> episodeList = Rxn<List<Episode>?>();
   final Rx<Episode?> _currentEpisodeData = Episode.defaultEpisode().obs;
   final RxnInt _index = RxnInt();

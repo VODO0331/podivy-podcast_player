@@ -72,11 +72,12 @@ class _TabsState extends State<Tabs> {
   }
 
   Widget _getBody(int index) {
-    final listManagement = Get.put(ListManagement());
-    final followedManagement = Get.put(FollowedManagement());
-    final interestsManagement = Get.put(InterestsManagement());
-    final informationController = Get.put(InformationController());
-
+    initializationMyFirestoreService();
+    final informationController = Get.find<InformationController>();
+    final listManagement = Get.find<ListManagement>();
+    
+    final followedManagement = Get.find<FollowedManagement>();
+    final interestsManagement = Get.find<InterestsManagement>();
     final List<Widget> body = [
       HomePage(
         infoController: informationController,

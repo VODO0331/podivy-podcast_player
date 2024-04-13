@@ -9,7 +9,7 @@ class FollowedPage extends StatelessWidget {
    FollowedPage({super.key});
 
   final  _followedStorageService =
-      Get.put(FollowedManagement());
+      Get.find<FollowedManagement>();
 
   @override
   Widget build(BuildContext context) {

@@ -6,26 +6,30 @@ import '../service/information_management_getx.dart';
 
 class InformationController extends GetxController {
   final Rx<UserInfo> _userInfo = UserInfo.forDefault().obs;
+  late final InformationManagement informationManagement ;
   UserInfo get userData => _userInfo.value;
-
-  haveInfo() => InformationManagement().haveInfo();
+  InformationController(String userId){
+    informationManagement = InformationManagement(userId);
+  }
+  haveInfo() => informationManagement.haveInfo();
 
   addInfo({required String userName}) =>
-      InformationManagement().addInfo(userName: userName);
+      informationManagement.addInfo(userName: userName);
 
-  deleteInfo() => InformationManagement().deleteInfo();
+  deleteInfo() => informationManagement.deleteInfo();
 
   updateInfo(
           {required String? userName,
           required Uint8List? userImg,
           required String? newEmail}) =>
-      InformationManagement()
+      informationManagement
           .updateInfo(userName: userName, userImg: userImg, newEmail: newEmail);
 
-  checkEmail(String newEmail) => InformationManagement().checkEmail(newEmail);
+  checkEmail(String newEmail) => informationManagement.checkEmail(newEmail);
   @override
   void onReady() {
     super.onReady();
-    _userInfo.bindStream(InformationManagement().readInfo());
+    _userInfo.bindStream(informationManagement.readInfo());
   }
+  
 }

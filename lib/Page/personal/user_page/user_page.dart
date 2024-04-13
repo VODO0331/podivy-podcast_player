@@ -21,7 +21,7 @@ class UserPage extends StatelessWidget {
   final ImagePicker _imagePicker = Get.put(ImagePicker());
   final InformationController userController = Get.find();
   final InformationController informationManagement =
-      Get.put(InformationController());
+      Get.find<InformationController>();
   final RxBool _isEdit = false.obs;
   final Rx<String> imgData = ''.obs;
 

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firestore_service_repository/src/user_id.dart';
 import 'package:search_service/search_service_repository.dart'
     show Episode, Podcaster;
 
@@ -9,11 +8,12 @@ import '../model/list.dart';
 import 'constants.dart';
 
 class ListManagement {
-  final _userId = userId;
+  late final String _userId;
   final CollectionReference<Map<String, dynamic>> _user =
       FirebaseFirestore.instance.collection("user");
   late final CollectionReference<Map<String, dynamic>> _lists;
-  ListManagement() {
+  ListManagement(String userId) {
+    _userId = userId;
     _lists = _user.doc(_userId).collection("lists");
     initialization();
   }

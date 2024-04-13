@@ -2,18 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as dev show log;
 
 import '../../../error_exception/cloud_storage_exception.dart';
-import '../../user_id.dart';
+
 import '../models/followed.dart';
 import 'constants.dart';
 
 class FollowedManagement {
-  final _userId = userId;
+   late final String _userId ;
   final CollectionReference<Map<String, dynamic>> user =
       FirebaseFirestore.instance.collection("user");
   late final CollectionReference<Map<String, dynamic>> _followed;
 
 
-  FollowedManagement() {
+  FollowedManagement(String userId) {
+    _userId = userId;
     _followed = user.doc(_userId).collection('followed');
   }
   Future<void> addFollowed({

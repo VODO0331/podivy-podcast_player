@@ -113,7 +113,7 @@ class _Recommendations extends StatelessWidget {
   _Recommendations({Key? key, required this.recommendCallBack})
       : super(key: key);
   final InterestsManagement _interestsManagement =
-      Get.put(InterestsManagement());
+      Get.find<InterestsManagement>();
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(

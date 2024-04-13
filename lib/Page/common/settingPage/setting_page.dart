@@ -51,7 +51,7 @@ class SettingPage extends StatelessWidget {
                           TextButton(
                               onPressed: () async {
                                 //  Get.back();
-                                final infoCtr = Get.put(InformationController()); 
+                                final infoCtr = Get.find<InformationController>(); 
                                 infoCtr.deleteInfo();
                                await Get.deleteAll();
                                 context.mounted

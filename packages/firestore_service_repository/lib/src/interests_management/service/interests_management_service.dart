@@ -1,6 +1,5 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firestore_service_repository/src/user_id.dart';
 import 'constant.dart';
 import '../model/interests.dart';
 import '../../../error_exception/cloud_storage_exception.dart';
@@ -8,12 +7,13 @@ import '../../../error_exception/cloud_storage_exception.dart';
 
 
 class InterestsManagement {
-  final _userId = userId;
+  late final String _userId ;
   final CollectionReference<Map<String, dynamic>> _user =
       FirebaseFirestore.instance.collection("user");
   late final CollectionReference<Map<String, dynamic>> _interests;
 
-  InterestsManagement() {
+  InterestsManagement(String userId) {
+    _userId = userId;
     _interests = _user.doc(_userId).collection("interests");
     addInterests();
   }

@@ -10,18 +10,19 @@ import 'package:get/get.dart';
 // import 'package:get/get.dart';
 import '../../../error_exception/cloud_storage_exception.dart';
 import '../../../error_exception/information_storage_exception.dart';
-import '../../user_id.dart';
+
 import 'dart:developer' as dev show log;
 
 import 'constants.dart';
 
 class InformationManagement {
-  final _userId = userId;
+  late final String _userId ;
   final CollectionReference<Map<String, dynamic>> _userTable =
       FirebaseFirestore.instance.collection("user");
   late final DocumentReference<Map<String, dynamic>> _userDocs;
 
-  InformationManagement() {
+  InformationManagement(String userId) {
+    _userId = userId;
     _userDocs = _userTable.doc(_userId);
     haveInfo();
   }
@@ -80,9 +81,9 @@ class InformationManagement {
   //註銷用戶
   Future<void> deleteInfo() async {
     try {
-      final interests = Get.put(InterestsManagement());
-      final follow = Get.put(FollowedManagement());
-      final lists = Get.put(ListManagement());
+      final interests = Get.find<InterestsManagement>();
+      final follow = Get.find<FollowedManagement>();
+      final lists = Get.find<ListManagement>();
 
       await interests.deleteUser();
       await follow.deleteUser();

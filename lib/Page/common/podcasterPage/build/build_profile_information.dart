@@ -13,7 +13,7 @@ class ProfileInformation extends StatelessWidget {
   final _widgetController = Get.put(WidgetController());
   final RxBool isFollowed = false.obs;
   // final _followedStorageService = Get.find<FollowedManagement>();
-  final _followedStorageService = Get.put(FollowedManagement());
+  final _followedStorageService = Get.find<FollowedManagement>();
 
   // final InterestsManagement _interestsManagement = Get.find();
 

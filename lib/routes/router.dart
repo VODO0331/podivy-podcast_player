@@ -1,3 +1,4 @@
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:podivy/Page/common/settingPage/setting_page.dart';
 import 'package:podivy/Page/personal/followedPage/followed_page.dart';
 import 'package:podivy/Page/personal/media/list/Page/list_page.dart';
@@ -20,9 +21,11 @@ class RouterPage {
           GetPage(
             name: AppRoutes.tabs,
             page: () => const Tabs(),
+            // binding: TabsBindings(),
             children: [
                GetPage(name: AppRoutes.player, page: () => const PlayerPage()),
-            ]
+               
+            ],
           ),
           //搜尋頁面
           GetPage(name: AppRoutes.search, page: () => SearchPage(), children: [
@@ -91,12 +94,12 @@ abstract class AppRoutes {
   static const player = '/player';
 }
 
-// class TabsBindings implements Bindings {
-//   @override
-//   void dependencies() {
-//     Get.lazyPut(() => ListManagement());
-//     Get.lazyPut(() => InformationController());
-//     Get.lazyPut(() => FollowedManagement());
-//     Get.lazyPut(() => InterestsManagement());
-//   }
-// }
+class TabsBindings implements Bindings {
+  @override
+  void dependencies() {
+    Get.find<ListManagement>();
+    // Get.lazyPut(() => InformationController());
+    // Get.lazyPut(() => FollowedManagement());
+    // Get.lazyPut(() => InterestsManagement());
+  }
+}

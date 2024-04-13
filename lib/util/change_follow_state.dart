@@ -9,7 +9,7 @@ Future<void> changeFollowState(
   bool value,
 ) async {
   final InterestsManagement interestsManagement =
-      Get.put(InterestsManagement());
+      Get.find<InterestsManagement>();
        final followedController = Get.find<FollowedManagement>();
   if (value) {
     await followedController.deleteFollowed(podcastId: podcasterData.id);
