@@ -22,7 +22,10 @@ dependencies:
   flutter_flip_card: ^0.0.5
   flutter_svg: ^2.0.9
   flex_color_scheme: ^7.3.1
-  
+  bot_toast: ^4.1.3
+  font_awesome_flutter: ^10.7.0
+  animated_text_kit: ^4.2.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

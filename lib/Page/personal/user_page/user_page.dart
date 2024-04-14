@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';

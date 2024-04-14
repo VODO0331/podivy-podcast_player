@@ -12,3 +12,6 @@ export 'package:flutter_flip_card/flutter_flip_card.dart';
 export 'package:google_fonts/google_fonts.dart';
 export 'package:flutter_svg/flutter_svg.dart';
 export 'package:flex_color_scheme/flex_color_scheme.dart';
+export 'package:bot_toast/bot_toast.dart';
+export 'package:font_awesome_flutter/font_awesome_flutter.dart';
+export 'package:animated_text_kit/animated_text_kit.dart';

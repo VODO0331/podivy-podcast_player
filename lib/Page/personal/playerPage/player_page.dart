@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:my_audio_player/my_audio_player.dart';
 import 'package:podivy/Page/personal/playerPage/build/build_player_control.dart';
+import 'package:podivy/util/toast/delete_toast.dart';
 import 'package:provider/provider.dart';
+import 'package:search_service/search_service_repository.dart';
 
 import 'build/build_episode_info.dart';
 
@@ -11,12 +14,40 @@ class PlayerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     
     return Consumer<MyAudioPlayer>(
       builder: (context, value, child) {
+        try {
+          value.setIndex(Get.arguments['index'] as int, Get.arguments['ListData'] as List<Episode> );
+        } catch (e) {
+           toastDelete('not play');
+        }
         final AudioPlayer audioPlayer = value.player;
         return Scaffold(
             appBar: AppBar(
-              title: const Text('Player'),
+              centerTitle: true,
+              title: DefaultTextStyle(
+                style: GoogleFonts.mulish(
+                  color: Theme.of(context).colorScheme.onBackground,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 2,
+                    shadows: [
+                       Shadow(
+                        blurRadius: 7.0,
+                        color: Theme.of(context).colorScheme.primary,
+                        offset: const Offset(0, 0),
+                      )
+                    ]),
+                child: AnimatedTextKit(animatedTexts: [
+                  FlickerAnimatedText(
+                    'Player',
+                  ),
+                  FlickerAnimatedText(
+                    'Podcast',
+                  ),
+                ],repeatForever :true),
+              ),
               leading: IconButton(
                 onPressed: () {
                   Get.back();

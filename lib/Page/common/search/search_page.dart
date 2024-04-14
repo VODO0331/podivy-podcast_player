@@ -43,9 +43,14 @@ class SearchPage extends StatelessWidget {
             return const SizedBox.shrink();
           }
         }),
-        label: const Text(
-          "search",
-        ),
+        label: AnimatedTextKit(animatedTexts: [
+          TypewriterAnimatedText(
+            "search...",
+            textStyle: const TextStyle(color: Colors.grey),
+            speed:const Duration(milliseconds: 150)
+          ),
+          
+        ],isRepeatingAnimation: false,),
         border: const OutlineInputBorder(),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(

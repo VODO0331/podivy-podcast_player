@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 
 import 'package:firestore_service_repository/firestore_service_repository.dart';
@@ -26,6 +27,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     return SafeArea(
       right: false,
       left: false,
@@ -62,10 +64,10 @@ class HomePage extends StatelessWidget {
               endIndent: 30.r,
               color: const Color.fromARGB(255, 255, 255, 255),
             ),
-            
-            ExploreContent(
-              interestsManagement: interestsManagement,
-            ),
+
+            // ExploreContent(
+            //   interestsManagement: interestsManagement,
+            // ),
           ],
         ),
       ),

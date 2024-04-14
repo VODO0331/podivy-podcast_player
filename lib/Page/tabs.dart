@@ -6,7 +6,7 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/common/homePage/home_page.dart';
 import 'package:podivy/widget/background.dart';
 import 'package:podivy/Page/personal/media/media_page.dart';
-import 'package:podivy/widget/drawer.dart';
+import 'package:podivy/Page/drawer/drawer.dart';
 
 class Tabs extends StatefulWidget {
   // final InformationController informationController;

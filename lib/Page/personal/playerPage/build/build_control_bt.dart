@@ -1,10 +1,11 @@
+// import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:my_audio_player/my_audio_player.dart';
 import 'package:podivy/util/dialogs/cannot_play.dart';
 import 'package:provider/provider.dart';
-
 class BuildControlBt extends StatelessWidget {
   // final AudioPlayer player;
   const BuildControlBt({
@@ -15,6 +16,8 @@ class BuildControlBt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<MyAudioPlayer>(builder: (context, ctr, child) {
+
+
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

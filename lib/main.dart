@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:bot_toast/bot_toast.dart';
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 
 import 'package:flutter/material.dart';
