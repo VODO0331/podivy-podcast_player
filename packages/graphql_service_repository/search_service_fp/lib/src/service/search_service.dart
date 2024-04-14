@@ -31,9 +31,7 @@ Future<({List<Podcaster> podcastList, List<Episode> episodeList})>
 
 Future<({List<Podcaster> podcastList, List<Episode> episodeList})>
     getGridViewData(SearchServiceForExploreContent searchService) async {
-  // if (searchService.keywords == null || searchService.keywords == "") {
-  //   return ;
-  // }
+  
   final data = await _getData(searchService:searchService);
 
   return data;
@@ -98,6 +96,7 @@ Future<({List<Podcaster> podcastList, List<Episode> episodeList})> _getData(
 Future<QueryResult> _queryResult({required SearchService searchService}) async {
   final ClientGlobalController controller = Get.put(ClientGlobalController());
   final GraphQLClient client = controller.client;
+  
   try {
     var result = await client.query(searchService.queryOptions);
     if (result.hasException || result.data == null) {

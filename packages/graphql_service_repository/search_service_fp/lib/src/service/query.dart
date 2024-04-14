@@ -3,16 +3,18 @@ query  search(
     \$podcastFirst: Int,
     \$categories: [String],
     \$language: String,
-    \$podcastsSortBy: PodcastSortType!,
-    \$sortDirection: SortDirection,
+    \$includeRemoved: Boolean
+    \$podcastsSortBy:PodcastSortType!
+   
   ){
     podcasts(
       first:\$podcastFirst, 
       filters:{
         language:\$language,
         categories:\$categories, 
+        includeRemoved:\$includeRemoved
       },
-      sort:{sortBy: \$podcastsSortBy, direction: \$sortDirection}
+      sort:{sortBy:\$podcastsSortBy}
       ){
       data{
         id

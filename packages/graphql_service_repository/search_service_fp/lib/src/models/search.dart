@@ -92,8 +92,8 @@ class SearchServiceForExploreContent extends SearchServiceForCategories {
         'language': TranslationService().currentLanguage,
         'categories': keywords,
         'podcastFirst': numberOfPodcastResults,
-        'sortDirection': 'DESCENDING',
-        'podcastsSortBy': 'FOLLOWER_COUNT',
+        'includeRemoved':false,
+        'podcastsSortBy': 'DATE_OF_FIRST_EPISODE',
       },
     );
   }

@@ -25,7 +25,7 @@ class PodcasterPage extends StatelessWidget {
           child: FutureBuilder(
             future: getSinglePodcasterData(
               id: podcasterId,
-              numberOfEpisodesResults: 5,
+              numberOfEpisodesResults: 10,
             ),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
