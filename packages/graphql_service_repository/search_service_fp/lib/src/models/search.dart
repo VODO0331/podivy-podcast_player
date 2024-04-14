@@ -32,8 +32,8 @@ class SearchServiceForKeyword extends SearchService {
     required super.keywords,
     super.episodeList,
     super.podcasterList,
-    super.numberOfPodcastResults = 3,
-    super.numberOfEpisodesResults = 6,
+    super.numberOfPodcastResults = 6,
+    super.numberOfEpisodesResults = 15,
   }) : super(
             queryOptions: QueryOptions(
           document: gql(queryForKeyword),
@@ -42,6 +42,8 @@ class SearchServiceForKeyword extends SearchService {
             'podcastFirst': numberOfPodcastResults,
             'episodesFirst': numberOfEpisodesResults,
             'episodesSortBy': 'RELEVANCE',
+            'sortDirection': 'DESCENDING',
+            'podcastSort':'RELEVANCE',
             'airDateForm':
                 DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime(2019)),
             'airDateTo':
@@ -55,8 +57,8 @@ class SearchServiceForCategories extends SearchService {
     required super.keywords,
     super.podcasterList,
     super.episodeList,
-    super.numberOfPodcastResults = 3,
-    super.numberOfEpisodesResults = 5,
+    super.numberOfPodcastResults = 6,
+    super.numberOfEpisodesResults = 15,
   }) : super(
             queryOptions: QueryOptions(
           document: gql(queryForCategories),
@@ -65,7 +67,9 @@ class SearchServiceForCategories extends SearchService {
             'podcastFirst': numberOfPodcastResults,
             'language': TranslationService().currentLanguage,
             'episodesFirst': numberOfEpisodesResults,
-            'episodesSortBy': 'RELEVANCE',
+            'episodesSortBy': 'FOLLOWER_COUNT',
+            'sortDirection': 'DESCENDING',
+            'podcastSort':'FOLLOWER_COUNT',
             'airDateForm':
                 DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime(2019)),
             'airDateTo':
@@ -88,32 +92,11 @@ class SearchServiceForExploreContent extends SearchServiceForCategories {
         'language': TranslationService().currentLanguage,
         'categories': keywords,
         'podcastFirst': numberOfPodcastResults,
+        'sortDirection': 'DESCENDING',
         'podcastsSortBy': 'FOLLOWER_COUNT',
       },
     );
   }
 }
 
-// class SearchServiceForLatestList extends SearchServiceForCategories {
-//   //追隨清單中 Episode更新最新 的前三個podcast ,
-//   //如果不足三個或Null 用隨機podcast(依照使用者喜好)
-//   final List<int>? idList;
-//   SearchServiceForLatestList({
-//     required this.idList,
-//     required super.keywords,
-//   });
 
-//   @override
-//   QueryOptions get queryOptions {
-//     return QueryOptions(
-//       document: gql(queryLatestList),
-//       variables: const {
-//         'languageFilter': 'ZH',
-//         'first': 3,
-//         'podcastsSortBy': 'DATE_OF_FIRST_EPISODE',
-//         'episodeDirection': 'DESCENDING',
-//         'episodesortBy': 'AIR_DATE',
-//       },
-//     );
-//   }
-// }

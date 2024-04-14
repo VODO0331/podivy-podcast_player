@@ -6,11 +6,10 @@ import 'package:podivy/Page/personal/followedPage/build/build_followed_list.dart
 import 'package:podivy/util/toast/unfollow_toast.dart';
 
 class FollowedPage extends StatelessWidget {
-   FollowedPage({super.key});
+  FollowedPage({super.key});
 
-  final  _followedStorageService =
-      Get.find<FollowedManagement>();
-
+  final _followedStorageService = Get.find<FollowedManagement>();
+  final _interestsManagement = Get.find<InterestsManagement>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,6 +92,8 @@ class FollowedPage extends StatelessWidget {
                       onDelete: (followed) async {
                         if (await _followedStorageService.deleteFollowed(
                             podcastId: followed.podcastId)) {
+                          await _interestsManagement.updateInterests(
+                              followed.categories, false);
                           toastUnfollow();
                         }
                       },

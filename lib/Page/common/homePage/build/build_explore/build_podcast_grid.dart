@@ -30,6 +30,14 @@ class BuildGridView extends StatelessWidget {
                 ),
               );
             }
+            if (getPodcasts.isEmpty) {
+              return Center(
+                child: Text(
+                  'No Content'.tr,
+                  style: TextStyle(fontSize: ScreenUtil().setSp(14)),
+                ),
+              );
+            }
             return GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.only(left: 50, right: 50, bottom: 50).h,

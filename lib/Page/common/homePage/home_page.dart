@@ -65,9 +65,9 @@ class HomePage extends StatelessWidget {
               color: const Color.fromARGB(255, 255, 255, 255),
             ),
 
-            // ExploreContent(
-            //   interestsManagement: interestsManagement,
-            // ),
+            ExploreContent(
+              interestsManagement: interestsManagement,
+            ),
           ],
         ),
       ),

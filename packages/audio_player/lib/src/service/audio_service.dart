@@ -2,7 +2,7 @@ import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-// import 'dart:developer' as dev show log;
+import 'dart:developer' as dev show log;
 
 import 'package:search_service/search_service_repository.dart';
 
@@ -88,7 +88,9 @@ class MyAudioPlayer extends ChangeNotifier {
   Future<void> _play() async {
     
     _audioPlayer.playbackEventStream
-        .listen((event) {}, onError: (Object e, StackTrace stack) {});
+        .listen((event) {}, onError: (Object e, StackTrace stack) {
+          dev.log('playbackEventStream error');
+        });
     try {
       await _audioPlayer.setAudioSource(
         listProcessing(),

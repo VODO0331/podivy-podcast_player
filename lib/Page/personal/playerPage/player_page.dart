@@ -3,9 +3,7 @@ import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:my_audio_player/my_audio_player.dart';
 import 'package:podivy/Page/personal/playerPage/build/build_player_control.dart';
-import 'package:podivy/util/toast/delete_toast.dart';
 import 'package:provider/provider.dart';
-import 'package:search_service/search_service_repository.dart';
 
 import 'build/build_episode_info.dart';
 
@@ -17,11 +15,7 @@ class PlayerPage extends StatelessWidget {
      
     return Consumer<MyAudioPlayer>(
       builder: (context, value, child) {
-        try {
-          value.setIndex(Get.arguments['index'] as int, Get.arguments['ListData'] as List<Episode> );
-        } catch (e) {
-           toastDelete('not play');
-        }
+      
         final AudioPlayer audioPlayer = value.player;
         return Scaffold(
             appBar: AppBar(

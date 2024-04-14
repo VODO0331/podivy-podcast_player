@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firestore_service_repository/firestore_service_repository.dart';
+
 import 'dart:developer' as dev show log;
 
 import '../../../error_exception/cloud_storage_exception.dart';
@@ -21,6 +23,7 @@ class FollowedManagement {
     required String podcastId,
     required String? podcastImg,
     required String? podcastName,
+    required List? podcastCategory,
   }) async {
     await _followed
         .doc(podcastId)
@@ -28,6 +31,7 @@ class FollowedManagement {
           followingPodcastId: podcastId,
           followingPodcastName: podcastName,
           followingPodcastImg: podcastImg,
+          followingCategory: podcastCategory,
         })
         .then((value) => dev.log("Podcast added successfully!"))
         .catchError((error) {

@@ -32,4 +32,7 @@ class Podcaster {
        this.description,
        this.socialLinks,
        this.episodesList});
+
+
+       
 }

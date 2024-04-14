@@ -1,12 +1,10 @@
-
-
-
 const String queryForExploreContent = """
 query  search(
     \$podcastFirst: Int,
     \$categories: [String],
     \$language: String,
-    \$podcastsSortBy: PodcastSortType!
+    \$podcastsSortBy: PodcastSortType!,
+    \$sortDirection: SortDirection,
   ){
     podcasts(
       first:\$podcastFirst, 
@@ -14,7 +12,7 @@ query  search(
         language:\$language,
         categories:\$categories, 
       },
-      sort:{sortBy: \$podcastsSortBy}
+      sort:{sortBy: \$podcastsSortBy, direction: \$sortDirection}
       ){
       data{
         id
@@ -30,10 +28,12 @@ query  search(
     \$podcastFirst: Int,
     \$episodesFirst: Int,
     \$categories : [String],
-    \$episodesSortBy: EpisodeSortType!
-    \$airDateForm: DateTime
-    \$airDateTo: DateTime
+    \$episodesSortBy: EpisodeSortType!, 
+    \$podcastSort: PodcastSortType!,
+    \$airDateForm: DateTime,
+    \$airDateTo: DateTime,
     \$language: String,
+    \$sortDirection: SortDirection,
   ){
     podcasts(
       first: \$podcastFirst, 
@@ -41,6 +41,7 @@ query  search(
          language:\$language,
         categories:\$categories, 
       },
+      sort:{sortBy: \$podcastSort, direction: \$sortDirection},
       ){
       data{
         id
@@ -51,7 +52,7 @@ query  search(
     episodes(
       first: \$episodesFirst, 
       filters:{categories:{terms:\$categories},airDate:{from: \$airDateForm, to: \$airDateTo}}
-      sort:{sortBy: \$episodesSortBy}){
+      sort:{sortBy: \$episodesSortBy, direction: \$sortDirection}){
         data{
           id
           title

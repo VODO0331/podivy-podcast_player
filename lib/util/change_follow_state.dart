@@ -19,6 +19,7 @@ Future<void> changeFollowState(
       podcastId: podcasterData.id,
       podcastImg: podcasterData.imageUrl,
       podcastName: podcasterData.title,
+      podcastCategory:podcasterData.categories,
     );
     await interestsManagement.updateInterests(podcasterData.categories, !value);
   }

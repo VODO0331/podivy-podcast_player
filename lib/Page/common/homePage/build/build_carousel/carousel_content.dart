@@ -1,5 +1,3 @@
-
-
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +30,9 @@ class NullCarouselContent extends StatelessWidget {
                 spreadRadius: 1,
               )
             ]),
-        child:  Text('Go follow your favorite podcasts'.tr),
+        child: AnimatedTextKit(animatedTexts: [
+          WavyAnimatedText('Go follow your favorite podcasts'.tr)
+        ]),
       ),
     );
   }
@@ -81,8 +81,10 @@ class CarouselContent extends StatelessWidget {
                             // dev.log(
                             //     _loopController.boardAnimation!.value.toString());
                             return Obx(() => GestureDetector(
-                              onTap: ()=> Get.toNamed('/followed/podcaster',arguments: followed.podcastId),
-                              child: Container(
+                                  onTap: () => Get.toNamed(
+                                      '/followed/podcaster',
+                                      arguments: followed.podcastId),
+                                  child: Container(
                                     height: 70.r *
                                         _loopController.boardAnimation!.value.r,
                                     width: 70.r *
@@ -103,7 +105,7 @@ class CarouselContent extends StatelessWidget {
                                       imageCacheWidth: 219.r.toInt(),
                                     ),
                                   ),
-                            ));
+                                ));
                           },
                         ),
                       ],
@@ -134,8 +136,7 @@ class CarouselContent extends StatelessWidget {
                       ? Theme.of(context).primaryColor
                       : Theme.of(context).colorScheme.secondaryContainer,
                   borderRadius: BorderRadius.circular(5)),
-              child:
-              CarouselListView(
+              child: CarouselListView(
                 podcastId: followed.podcastId,
               ),
             ),
@@ -161,10 +162,12 @@ class _CarouselListViewState extends State<CarouselListView> {
     super.initState();
     myAudioPlayer = Provider.of<MyAudioPlayer>(context, listen: false);
   }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getSinglePodcasterData(id: widget.podcastId, numberOfEpisodesResults: 3),
+      future: getSinglePodcasterData(
+          id: widget.podcastId, numberOfEpisodesResults: 3),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
@@ -183,9 +186,9 @@ class _CarouselListViewState extends State<CarouselListView> {
                   style: TextStyle(fontSize: 14.sp),
                 ),
                 textColor: Theme.of(context).colorScheme.onSecondaryContainer,
-                onTap: ()async{
+                onTap: () async {
                   myAudioPlayer.setIndex(index, data.episodesList!);
-                 await Get.toNamed('/followed/podcaster/player');
+                  await Get.toNamed('/followed/podcaster/player');
                 },
               );
             },

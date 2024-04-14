@@ -6,6 +6,7 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:my_audio_player/my_audio_player.dart';
 import 'package:podivy/util/dialogs/cannot_play.dart';
 import 'package:provider/provider.dart';
+
 class BuildControlBt extends StatelessWidget {
   // final AudioPlayer player;
   const BuildControlBt({
@@ -16,8 +17,6 @@ class BuildControlBt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<MyAudioPlayer>(builder: (context, ctr, child) {
-
-
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -30,11 +29,16 @@ class BuildControlBt extends StatelessWidget {
                       : null)),
           const SizedBox(width: 20),
           IconButton(
-            iconSize: 30.r,
-            icon: const Icon(Icons.replay_10),
-            onPressed: () => ctr.player
-                .seek(ctr.player.position - const Duration(seconds: 10)),
-          ),
+              iconSize: 30.r,
+              icon: const Icon(Icons.replay_10),
+              onPressed: () {
+                if (ctr.player.position.inSeconds > 10) {
+                  ctr.player
+                      .seek(ctr.player.position - const Duration(seconds: 10));
+                } else {
+                  ctr.player.seek(Duration.zero);
+                }
+              }),
           const SizedBox(width: 20),
           StreamBuilder(
             stream: ctr.player.playerStateStream,
@@ -78,11 +82,17 @@ class BuildControlBt extends StatelessWidget {
           ),
           const SizedBox(width: 20),
           IconButton(
-            iconSize: 30.r,
-            icon: const Icon(Icons.forward_10),
-            onPressed: () => ctr.player
-                .seek(ctr.player.position + const Duration(seconds: 10)),
-          ),
+              iconSize: 30.r,
+              icon: const Icon(Icons.forward_10),
+              onPressed: () {
+                if (ctr.player.position.inSeconds > ctr.duration.value.inSeconds - 10) {
+                   ctr.player
+                      .seek(ctr.duration.value);
+                } else {
+                  ctr.player
+                      .seek(ctr.player.position + const Duration(seconds: 10));
+                }
+              }),
           const SizedBox(width: 20),
           StreamBuilder(
             stream: ctr.player.sequenceStateStream,
