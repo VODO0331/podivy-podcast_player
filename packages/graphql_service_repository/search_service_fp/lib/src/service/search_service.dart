@@ -46,14 +46,14 @@ Future<({List<Podcaster> podcastList, List<Episode> episodeList})> _getData(
     final List? episodes = result.data?['episodes'] != null
         ? result.data!['episodes']['data']
         : null;
-    return dataProcessing(podcasts, episodes);
+    return _dataProcessing(podcasts, episodes);
   } catch (e) {
     dev.log("_getData : ${e.toString()}");
     throw QueryResultException;
   }
 }
 
-({List<Podcaster> podcastList, List<Episode> episodeList}) dataProcessing(
+({List<Podcaster> podcastList, List<Episode> episodeList}) _dataProcessing(
   List? podcasts,
   List? episodes,
 ) {

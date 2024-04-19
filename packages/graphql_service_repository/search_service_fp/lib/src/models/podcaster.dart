@@ -1,9 +1,7 @@
-import 'package:get/get.dart';
 
-import '../controller/client_global_controller.dart';
 import 'episode.dart';
 
-final ClientGlobalController controller = Get.find();
+
 
 class SocialLinks {
   late String? twitter;
