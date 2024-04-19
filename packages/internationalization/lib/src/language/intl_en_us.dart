@@ -18,6 +18,8 @@ const Map<String, String> en_Us = {
   'send verification': 'Send verification',
   'enter the new Email': 'enter the new Email',
   'Change email': 'Change email',
+  'Verification email sent':'Verification email sent',
+
   'The verification has been sent to the new email address. The email address will be changed after verification...':
       'The verification has been sent to the new email address. The email address will be changed after verification...',
   'Delete User': 'Delete User',

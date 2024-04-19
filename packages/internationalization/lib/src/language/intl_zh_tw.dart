@@ -17,6 +17,7 @@ const Map<String, String> zh_Tw = {
   'send verification': '傳送驗證',
   'enter the new Email': '輸入新Email',
   'Change email': '更換Email',
+  'Verification email sent':'驗證郵件已發送',
 
   'When you change your email, you will be logged out so you can log in with your new email.':
       '當您更改電子郵件時，您將被登出，以便您可以使用新電子郵件登入.',
