@@ -2,7 +2,7 @@ import 'package:authentication_repository/src/bloc/auth_bloc_event.dart';
 import 'package:authentication_repository/src/bloc/auth_bloc_state.dart';
 import 'package:authentication_repository/src/models/auth_provider.dart.dart';
 import 'package:bloc/bloc.dart';
-
+import 'dart:developer' as dev show log;
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(AuthProvider provider)
@@ -105,6 +105,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email: email,
           password: password,
         );
+        dev.log(user.isEmailVerified.toString());
         if (!user.isEmailVerified) {
           emit(
             const AuthStateLoggedOut(
@@ -115,11 +116,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(const AuthStateNeedVerification(
             isLoading: false,
           ));
-        }
-        emit(AuthStateLoggedIn(
+        }else{
+          emit(AuthStateLoggedIn(
           isLoading: false,
           user: user,
         ));
+        }
+        
       } on Exception catch (e) {
         emit(
           AuthStateLoggedOut(
