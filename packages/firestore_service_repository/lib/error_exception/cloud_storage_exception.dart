@@ -10,3 +10,5 @@ class CloudNotUpdateException extends CloudStorageException{}
 
 class CloudDeleteException extends CloudStorageException{}
 
+class CloudInitException extends CloudStorageException{}
+

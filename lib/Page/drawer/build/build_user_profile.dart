@@ -24,7 +24,8 @@ class BuildUserProfile extends StatelessWidget {
               if (data.img != '') {
                 return CircleAvatar(
                   backgroundImage: MemoryImage(base64Decode(data.img)),
-                  radius: 35.r,
+                  minRadius: 35.r,
+                  maxRadius: 40.r,
                 );
               } else {
                 return const CircularProgressIndicator();

@@ -1,16 +1,20 @@
+
 import 'package:authentication_repository/src/bloc/auth_bloc_event.dart';
 import 'package:authentication_repository/src/bloc/auth_bloc_state.dart';
-import 'package:authentication_repository/src/models/auth_provider.dart.dart';
+import 'package:authentication_repository/src/models/auth_user.dart';
 import 'package:bloc/bloc.dart';
+
+import '../service/auth_service.dart';
+
 import 'dart:developer' as dev show log;
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc(AuthProvider provider)
+  AuthBloc(Map<String, AuthService> providers)
       : super(const AuthStateUnInitialized(isLoading: true)) {
     //忘記密碼
     on<AuthEventForgotPassword>((event, emit) async {
       emit(const AuthStateForgotPassword(
-        isLoading: false, 
+        isLoading: false,
         exception: null,
         hasSendEmail: false,
       ));
@@ -22,26 +26,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           exception: null,
           hasSendEmail: false,
         ));
-        return ; // 用户只是导航到 forgotPasswordPage
+        return; // 用户只是导航到 forgotPasswordPage
       }
 
       Exception? exception;
       try {
-        await provider.sendPasswordReset(toEmail: email);
-        exception = null; 
+        await providers['Firebase']!.sendPasswordReset(toEmail: email);
+        exception = null;
       } on Exception catch (e) {
-        exception = e; 
+        exception = e;
       }
 
       emit(AuthStateForgotPassword(
         isLoading: false,
         exception: exception,
-        hasSendEmail: exception == null, 
+        hasSendEmail: exception == null,
       ));
     });
     //郵件驗證
     on<AuthEventSendEmailVerification>((event, emit) async {
-      await provider.sendEmailVerification();
+      await providers[event.loginMethod]!.sendEmailVerification();
       emit(const AuthStateLoggedOut(exception: null, isLoading: false));
     });
     //註冊
@@ -50,7 +54,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final password = event.password;
       final repassword = event.repassword;
       try {
-        await provider.createUser(
+        await providers['Firebase']!.createUser(
           email: email,
           password: password,
           repassword: repassword,
@@ -71,8 +75,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             )));
     //初始化
     on<AuthEventInitialize>((event, emit) async {
-      await provider.initialize(); 
-      final user = provider.currentUser;
+      await providers['Firebase']!.initialize();
+      final user = providers['Firebase']!.currentUser;
       if (user == null) {
         emit(
           const AuthStateLoggedOut(
@@ -83,7 +87,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else if (!user.isEmailVerified) {
         emit(const AuthStateNeedVerification(isLoading: false));
       } else {
-        emit(AuthStateLoggedIn(
+        emit(AuthStateLoggedInFormEmail(
           isLoading: false,
           user: user,
         ));
@@ -100,29 +104,50 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       final email = event.email;
       final password = event.password;
+      final loginMethod = event.loginMethod;
+
       try {
-        final user = await provider.login(
-          email: email,
-          password: password,
-        );
-        dev.log(user.isEmailVerified.toString());
-        if (!user.isEmailVerified) {
-          emit(
-            const AuthStateLoggedOut(
-              exception: null,
+        late final AuthUser user;
+        switch (loginMethod) {
+          case 'Firebase':
+            user = await providers['Firebase']!.login(
+              email: email,
+              password: password,
+            );
+            if (!user.isEmailVerified) {
+              emit(
+                const AuthStateLoggedOut(
+                  exception: null,
+                  isLoading: false,
+                ),
+              );
+              emit(const AuthStateNeedVerification(
+                isLoading: false,
+              ));
+            } else {
+              emit(AuthStateLoggedInFormEmail(
+                isLoading: false,
+                user: user,
+              ));
+            }
+          case 'Google':
+            user = await providers['Google']!.login(
+              email: email,
+              password: password,
+            );
+            emit(AuthStateLoggedInFormGoogle(
               isLoading: false,
-            ),
-          );
-          emit(const AuthStateNeedVerification(
-            isLoading: false,
-          ));
-        }else{
-          emit(AuthStateLoggedIn(
-          isLoading: false,
-          user: user,
-        ));
+              user: user,
+            ));
+          default:
+            emit(
+              AuthStateLoggedOut(
+                exception: Exception(['logMethod error']),
+                isLoading: false,
+              ),
+            );
         }
-        
+        dev.log(user.isEmailVerified.toString());
       } on Exception catch (e) {
         emit(
           AuthStateLoggedOut(
@@ -135,7 +160,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     //登出
     on<AuthEventLogOut>((event, emit) async {
       try {
-        await provider.logOut();
+        await providers[event.loginMethod]!.logOut();
         emit(
           const AuthStateLoggedOut(
             exception: null,

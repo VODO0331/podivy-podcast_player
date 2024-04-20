@@ -16,13 +16,14 @@ import 'dart:developer' as dev show log;
 import 'constants.dart';
 
 class InformationManagement {
-  late final String _userId ;
+  late final String _userId;
+  late final AuthService authService;
   final CollectionReference<Map<String, dynamic>> _userTable =
       FirebaseFirestore.instance.collection("user");
   late final DocumentReference<Map<String, dynamic>> _userDocs;
 
-  InformationManagement(String userId) {
-    _userId = userId;
+  InformationManagement(this.authService) {
+    _userId = authService.currentUser!.id;
     _userDocs = _userTable.doc(_userId);
     haveInfo();
   }
@@ -47,35 +48,38 @@ class InformationManagement {
   }
 
   Future<void> haveInfo() async {
-    final result =
-        await _userTable.doc(_userId).get().then((value) => value.data());
+    final result = await _userTable.doc(_userId).get().then((value) => value.data());
     if (result == null || result.isEmpty) {
-      await addInfo(userName: "Nobody");
+      await initInfo(userName: "Nobody");
     } else {
       //檢查firebaseAuth 與 firestore 的email是否相同
-      if (result[personalEmail] != AuthService.firebase().currentUser!.email) {
+      if (result[personalEmail] != authService.currentUser!.email) {
         await updateInfo(
             userName: null,
             userImg: null,
-            newEmail: AuthService.firebase().currentUser!.email);
+            newEmail: authService.currentUser!.email);
       }
     }
   }
 
   //僅在初始化使用
-  Future<void> addInfo({required String userName}) async {
+  Future<void> initInfo({required String userName}) async {
+   
     ByteData data =
         await rootBundle.load("assets/images/user_pic/default_user.png");
-
     final imgData = await _imgCompress(data.buffer.asUint8List());
 
     await _userDocs.set({
       personalName: userName,
       personalImg: imgData,
-      personalEmail: AuthService.firebase().currentUser!.email
+      personalEmail: authService.currentUser!.email,
+      userLoginMethod: authService.provider.loginMethod,
     }).then((value) {
       dev.log("info added successfully!");
-    }).catchError((error) => throw CloudNotCreateException());
+    }).catchError((error) {
+       dev.log("info added error!");
+      throw CloudNotCreateException();
+    });
   }
 
   //註銷用戶

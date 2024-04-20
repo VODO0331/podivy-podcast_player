@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
@@ -39,7 +40,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               _controller.clear();
               await showPasswordResetSentDialog(context);
               context.mounted
-                  ? context.read<AuthBloc>().add(const AuthEventLogOut())
+                  ? context.read<AuthBloc>().add(const AuthEventLogOut('Firebase'))
                   : null;
             }
             if (state.exception != null && context.mounted) {
@@ -95,7 +96,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               ),
               TextButton(
                 onPressed: () {
-                  context.read<AuthBloc>().add(const AuthEventLogOut());
+                  context.read<AuthBloc>().add(const AuthEventLogOut('Firebase'));
                 },
                 child: Text(
                   'back'.tr,

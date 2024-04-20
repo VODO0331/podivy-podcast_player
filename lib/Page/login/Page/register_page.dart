@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/dialogs/error_dialog.dart';
@@ -142,7 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
         TextButton(
           onPressed: () {
             context.read<AuthBloc>().add(
-                  const AuthEventLogOut(),
+                const  AuthEventLogOut("Firebase"),
                 );
           },
           child: Text(

@@ -16,7 +16,7 @@ Widget buildDrawerItems() {
           icon: Icons.settings,
           title: 'setting'.tr,
           tileOption: () {
-            Get.offAllNamed(('/setting'));
+            Get.offAndToNamed(('/setting'));
           }),
     ],
   );

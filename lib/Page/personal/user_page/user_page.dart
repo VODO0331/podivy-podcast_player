@@ -1,13 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:authentication_repository/authentication_repository.dart';
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:podivy/Page/personal/user_page/build/build_user_avatar.dart';
 import 'package:podivy/util/dialogs/reset_email_dialog.dart';
 
 // import 'dart:developer' as dev show log;
@@ -17,26 +14,11 @@ class UserPage extends StatelessWidget {
   // final UserInfo userData = Get.arguments;
   final TextEditingController _nameEditingController =
       Get.put(TextEditingController());
-  final ImagePicker _imagePicker = Get.put(ImagePicker());
-  final InformationController userController = Get.find();
-  final InformationController informationManagement =
-      Get.find<InformationController>();
+  
+  final infoController = Get.find<InformationController>();
   final RxBool _isEdit = false.obs;
-  final Rx<String> imgData = ''.obs;
+  final RxString imgData = ''.obs;
 
-  Future<Uint8List?> selectImage() async {
-    XFile? image = await _imagePicker.pickImage(
-      source: ImageSource.gallery,
-    );
-    if (image != null) {
-      final Uint8List newImg =
-          (Uint8List.fromList(await File(image.path).readAsBytes()));
-      if (base64Encode(newImg) != userController.userData.img) {
-        return newImg;
-      }
-    }
-    return null;
-  }
 
   Widget _buildAppBar() {
     return Row(
@@ -70,73 +52,10 @@ class UserPage extends StatelessWidget {
     );
   }
 
-  Widget _buildEditBt() {
-    return Obx(() {
-      return _isEdit.value
-          ? Positioned(
-              bottom: 0,
-              right: 0,
-              child: OutlinedButton(
-                onPressed: () async {
-                  final Uint8List? result = await selectImage();
-
-                  if (result != null) {
-                    imgData.value = base64Encode(result);
-                  }
-                },
-                style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.black87,
-                    shape: const CircleBorder()),
-                child: Icon(
-                  Icons.add_to_photos_outlined,
-                  size: 20.r,
-                ),
-              ),
-            )
-          : const SizedBox.shrink();
-    });
-  }
-
-  Widget _buildUserAvatar() {
-    final Color userAvatar = Get.isDarkMode
-        ? Theme.of(Get.context!).colorScheme.primary
-        : Theme.of(Get.context!).colorScheme.primaryContainer;
-    return Container(
-      height: 200.h,
-      width: 300.w,
-      decoration: BoxDecoration(
-          color: userAvatar,
-          borderRadius: BorderRadius.circular(30),
-          boxShadow: const [
-            BoxShadow(color: Colors.grey, blurRadius: 10, offset: Offset(4, 4))
-          ]),
-      child: GestureDetector(
-        onTap: () {},
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Obx(() {
-              if (imgData.value != "") {
-                return CircleAvatar(
-                  backgroundImage: MemoryImage(base64Decode(imgData.value)),
-                  radius: 68.r,
-                );
-              } else {
-                return const CircularProgressIndicator();
-              }
-            }),
-            _buildEditBt(),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    // 獲取用戶email
-    final userEmail = AuthService.firebase().currentUser!.email;
-    imgData.value = userController.userData.img;
+    imgData.value = infoController.userData.img;
     return Scaffold(
       key: UniqueKey(),
       resizeToAvoidBottomInset: false,
@@ -150,13 +69,13 @@ class UserPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15).r,
-              child: _buildUserAvatar(),
+              child: BuildUserAvatar(imgData: imgData, infoController: infoController,isEdit: _isEdit,),
             ),
 
             // 顯示用戶名稱
             Obx(() {
               _nameEditingController.text =
-                  userController.userData.userName.value;
+                  infoController.userData.userName.value;
               return _isEdit.value
                   ? TextField(
                       controller: _nameEditingController,
@@ -167,26 +86,31 @@ class UserPage extends StatelessWidget {
                   : ListTile(
                       leading: const Icon(Icons.person),
                       title: Text(
-                        "Name :   ${userController.userData.userName}".tr,
+                        "Name :   ${infoController.userData.userName}".tr,
                         style: TextStyle(fontSize: ScreenUtil().setSp(15)),
                       ),
                     );
             }),
             const Divider(),
             // 顯示用戶Email
-            ListTile(
-              leading: const Icon(Icons.email),
-              title: Text(
-                userEmail,
-                style: TextStyle(fontSize: ScreenUtil().setSp(15)),
-              ),
-              trailing: ElevatedButton(
-                child: const Icon(FontAwesomeIcons.pencil),
-                onPressed: () => showResetEmailDialog(),
-              ),
-            ),
-
+            Obx(() {
+              return ListTile(
+                  leading: const Icon(Icons.email),
+                  title: Text(
+                    infoController.userData.email.value,
+                    style: TextStyle(fontSize: ScreenUtil().setSp(15)),
+                  ),
+                  trailing:
+                      infoController.userData.loginMethod.value == 'Firebase'
+                          ? ElevatedButton(
+                              child: const Icon(FontAwesomeIcons.pencil),
+                              onPressed: () => showResetEmailDialog(),
+                            )
+                          : null);
+            }),
+            
             const Divider(),
+            //修改動作
             Obx(() => _isEdit.value
                 ? Row(
                     children: [
@@ -195,13 +119,13 @@ class UserPage extends StatelessWidget {
                           _isEdit.value = false;
                           final List<dynamic> updates = [null, null];
                           if (_nameEditingController.text !=
-                              userController.userData.name) {
+                              infoController.userData.name) {
                             updates[0] = _nameEditingController.text;
                           }
-                          if (userController.userData.img != imgData.value) {
+                          if (infoController.userData.img != imgData.value) {
                             updates[1] = base64Decode(imgData.value);
                           }
-                          informationManagement.updateInfo(
+                          infoController.updateInfo(
                             userName: updates[0],
                             userImg: updates[1],
                             newEmail: null,
@@ -212,8 +136,8 @@ class UserPage extends StatelessWidget {
                       TextButton(
                         onPressed: () async {
                           _nameEditingController.text =
-                              userController.userData.userName.value;
-                          imgData.value = userController.userData.userImg.value;
+                              infoController.userData.userName.value;
+                          imgData.value = infoController.userData.userImg.value;
                           _isEdit.value = false;
                         },
                         child: Text("Cancel".tr),

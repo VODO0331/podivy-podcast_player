@@ -1,6 +1,5 @@
-
-
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_audio_player/my_audio_player.dart';
@@ -23,11 +22,14 @@ class BuildLogoutButton extends StatelessWidget {
           ),
           onTap: () async {
             final result = await showLogOutDialog(context);
+            final infoCtr = Get.find<InformationController>();
             if (result) {
               await value.player.stop();
               await Get.deleteAll();
               context.mounted
-                  ? context.read<AuthBloc>().add(const AuthEventLogOut())
+                  ? context
+                      .read<AuthBloc>()
+                      .add(AuthEventLogOut(infoCtr.userData.loginMethod.value))
                   : null;
             }
           },

@@ -1,3 +1,4 @@
+
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,9 +10,10 @@ import 'package:podivy/Page/personal/media/media_page.dart';
 import 'package:podivy/Page/drawer/drawer.dart';
 
 class Tabs extends StatefulWidget {
-  // final InformationController informationController;
+  final String loginMethod;
   const Tabs({
     super.key,
+    required this.loginMethod,
   });
 
   @override
@@ -21,7 +23,6 @@ class Tabs extends StatefulWidget {
 class _TabsState extends State<Tabs> {
   final int totalPage = 2;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  // late final InformationManagement _userController;
   int _currentPage = 0;
   final List<String> _names = ['Home', 'Media'];
 
@@ -36,7 +37,7 @@ class _TabsState extends State<Tabs> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: _getBody(_currentPage),
+      body: _getBody(_currentPage,widget.loginMethod),
       bottomNavigationBar: _getBottomBar(),
       drawer: const MyDrawer(),
     );
@@ -71,11 +72,11 @@ class _TabsState extends State<Tabs> {
     );
   }
 
-  Widget _getBody(int index) {
-    initializationMyFirestoreService();
+  Widget _getBody(int index, String loginMethod) {
+    initializationMyFirestoreService(loginMethod);
     final informationController = Get.find<InformationController>();
     final listManagement = Get.find<ListManagement>();
-    
+
     final followedManagement = Get.find<FollowedManagement>();
     final interestsManagement = Get.find<InterestsManagement>();
     final List<Widget> body = [
@@ -95,8 +96,10 @@ class _TabsState extends State<Tabs> {
         }
       },
       child: MyBackGround(
-          child:  IndexedStack(index: index,children: body,)
-      ),
+          child: IndexedStack(
+        index: index,
+        children: body,
+      )),
     );
   }
 }

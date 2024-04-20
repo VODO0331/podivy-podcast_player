@@ -8,7 +8,6 @@ import 'package:podivy/Page/common/search/search_page.dart';
 // import 'package:podivy/Page/test.dart';
 import 'package:podivy/Page/personal/user_page/user_page.dart';
 import 'package:get/get.dart';
-import 'package:podivy/Page/tabs.dart';
 import '../Page/personal/playerPage/player_page.dart';
 
 class RouterPage {
@@ -18,15 +17,9 @@ class RouterPage {
         page: () => const AuthMiddleWare(),
         children: [
          
-          GetPage(
-            name: AppRoutes.tabs,
-            page: () => const Tabs(),
-            // binding: TabsBindings(),
-            children: [
-               GetPage(name: AppRoutes.player, page: () => const PlayerPage()),
-               
-            ],
-          ),
+        
+          //player 頁面
+          GetPage(name: AppRoutes.player,page: () => const PlayerPage(),),
           //搜尋頁面
           GetPage(name: AppRoutes.search, page: () => SearchPage(), children: [
             GetPage(

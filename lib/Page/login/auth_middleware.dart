@@ -30,9 +30,13 @@ class AuthMiddleWare extends StatelessWidget {
       builder: (context, state) {
         late Widget child;
 
-        // final informationController = Get.find<InformationController>();
         if (state is AuthStateLoggedIn) {
-          child = const Tabs();
+          switch (state) {
+            case AuthStateLoggedInFormEmail():
+              child = const Tabs(loginMethod: 'Firebase');
+            case AuthStateLoggedInFormGoogle():
+              child = const Tabs(loginMethod: 'Google');
+          }
         } else if (state is AuthStateNeedVerification) {
           child = const LoginBackGround(child: VerifyEmailPage());
         } else if (state is AuthStateLoggedOut) {

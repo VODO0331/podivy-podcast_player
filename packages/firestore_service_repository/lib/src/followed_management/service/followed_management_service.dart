@@ -1,3 +1,4 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 
@@ -15,8 +16,8 @@ class FollowedManagement {
   late final CollectionReference<Map<String, dynamic>> _followed;
 
 
-  FollowedManagement(String userId) {
-    _userId = userId;
+  FollowedManagement(AuthService authService) {
+    _userId = authService.currentUser!.id;
     _followed = user.doc(_userId).collection('followed');
   }
   Future<void> addFollowed({

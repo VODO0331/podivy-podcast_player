@@ -51,13 +51,13 @@ class SettingPage extends StatelessWidget {
                           TextButton(
                               onPressed: () async {
                                 //  Get.back();
-                                final infoCtr = Get.find<InformationController>(); 
+                                final infoCtr =
+                                    Get.find<InformationController>();
                                 infoCtr.deleteInfo();
-                               await Get.deleteAll();
+                                await Get.deleteAll();
                                 context.mounted
-                                    ? context
-                                        .read<AuthBloc>()
-                                        .add(const AuthEventLogOut())
+                                    ? context.read<AuthBloc>().add(
+                                        AuthEventLogOut(infoCtr.userData.loginMethod.value))
                                     : null;
                                 Get.offAll(() => const AuthMiddleWare());
 

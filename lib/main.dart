@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:firestore_service_repository/firestore_service_repository.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -16,10 +14,8 @@ import 'package:search_service/search_service_repository.dart';
 
 import './routes/router.dart';
 import 'theme/theme.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AuthService.firebase().initialize();
   Provider.debugCheckInvalidValueType = null;
   await GetStorage.init();
   final storage = GetStorage();
@@ -60,7 +56,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-            create: (context) => AuthBloc(FirebaseAuthProvider())),
+            create: (context) => AuthBloc({
+              'Firebase': AuthService.firebase(),
+              'Google': AuthService.google(),
+            })),
         Provider(
           create: (context) => MyAudioPlayer(),
           dispose: (context, value) => value.dispose(),
@@ -93,7 +92,6 @@ class MyApp extends StatelessWidget {
 class MainBinding implements Bindings {
   @override
   void dependencies() async {
-    await AuthService.firebase().initialize();
     await JustAudioBackground.init(
       androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
       androidNotificationChannelName: 'Audio playback',
@@ -101,7 +99,6 @@ class MainBinding implements Bindings {
     );
     await initHiveForFlutter();
     await ScreenUtil.ensureScreenSize();
-    await initializationMyFirestoreService();
   }
 }
 

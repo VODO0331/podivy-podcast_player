@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' show immutable;
 import '../models/auth_user.dart';
@@ -15,12 +14,21 @@ class AuthStateUnInitialized extends AuthState {
       : super(isLoading: isLoading);
 }
 
-class AuthStateLoggedIn extends AuthState {
+sealed class AuthStateLoggedIn extends AuthState {
   final AuthUser user;
   const AuthStateLoggedIn({
     required bool isLoading,
     required this.user,
   }) : super(isLoading: isLoading);
+}
+class AuthStateLoggedInFormEmail extends AuthStateLoggedIn {
+  const AuthStateLoggedInFormEmail(
+      {required super.isLoading, required super.user});
+}
+
+class AuthStateLoggedInFormGoogle extends AuthStateLoggedIn {
+  const AuthStateLoggedInFormGoogle(
+      {required super.isLoading, required super.user});
 }
 
 class AuthStateNeedVerification extends AuthState {

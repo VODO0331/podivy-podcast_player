@@ -1,3 +1,4 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:search_service/search_service_repository.dart'
     show Episode, Podcaster;
@@ -12,8 +13,8 @@ class ListManagement {
   final CollectionReference<Map<String, dynamic>> _user =
       FirebaseFirestore.instance.collection("user");
   late final CollectionReference<Map<String, dynamic>> _lists;
-  ListManagement(String userId) {
-    _userId = userId;
+  ListManagement(AuthService authService) {
+    _userId =  authService.currentUser!.id;
     _lists = _user.doc(_userId).collection("lists");
     initialization();
   }

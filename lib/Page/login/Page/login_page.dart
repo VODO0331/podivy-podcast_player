@@ -1,6 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/dialogs/error_dialog.dart';
 
@@ -90,27 +90,46 @@ class _LoginPageState extends State<LoginPage> {
   Widget buttonGroup() {
     return Column(
       children: [
-        TextButton(
-          style: textButtonForRecommend,
-          child: Text(
-            'logIn'.tr,
-            style: TextStyle(fontSize: 15.sp, color: Colors.black),
-          ),
-          onPressed: () async {
-            final email = _email.text;
-            final password = _password.text;
-            if (email.trim().isEmpty || password.trim().isEmpty) {
-              await showErrorDialog(
-                context,
-                'Email or password cannot be empty'.tr,
-              );
-            } else {
-              context.read<AuthBloc>().add(AuthEventLogIn(email, password));
-            }
-          },
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      context
+                          .read<AuthBloc>()
+                          .add(const AuthEventLogIn('', '', 'Google'));
+                    },
+                    icon: const Icon(FontAwesomeIcons.google))
+              ],
+            ),
+            TextButton(
+              style: textButtonForRecommend,
+              child: Text(
+                'logIn'.tr,
+                style: TextStyle(fontSize: 15.sp, color: Colors.black),
+              ),
+              onPressed: () async {
+                final email = _email.text;
+                final password = _password.text;
+                if (email.trim().isEmpty || password.trim().isEmpty) {
+                  await showErrorDialog(
+                    context,
+                    'Email or password cannot be empty'.tr,
+                  );
+                } else {
+                  context
+                      .read<AuthBloc>()
+                      .add(AuthEventLogIn(email, password, 'Firebase'));
+                }
+              },
+            ),
+          ],
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton.filled(
                 style: ButtonStyle(
@@ -219,7 +238,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             padding: const EdgeInsets.all(12.0).r,
             width: 500.w,
-            height: 395.h,
+            height: 410.h,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

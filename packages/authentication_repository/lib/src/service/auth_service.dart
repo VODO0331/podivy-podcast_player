@@ -1,6 +1,5 @@
-import 'package:authentication_repository/src/models/auth_provider.dart.dart';
-
-import '../models/auth_user.dart';
+import 'package:authentication_repository/authentication_repository.dart';
+import 'package:authentication_repository/src/models/auth_google_provider.dart';
 
 class AuthService implements AuthProvider {
   final AuthProvider provider;
@@ -8,7 +7,7 @@ class AuthService implements AuthProvider {
   const AuthService(this.provider);
 
   factory AuthService.firebase() => AuthService(FirebaseAuthProvider());
-
+  factory AuthService.google()=>AuthService(GoogleAuthProvider());
   @override
   Future<AuthUser> createUser({
     required String email,
@@ -53,4 +52,7 @@ class AuthService implements AuthProvider {
 
   @override
   Future<void> deleteUser() => provider.deleteUser();
+  
+  @override
+  String get loginMethod => provider.loginMethod;
 }

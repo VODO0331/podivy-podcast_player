@@ -115,7 +115,7 @@ Future<void> showResetEmailTipDialog(String newEmail) => showDialog(
             onPressed: () async {
               await Get.deleteAll();
               context.mounted
-                  ? context.read<AuthBloc>().add(const AuthEventLogOut())
+                  ? context.read<AuthBloc>().add(const AuthEventLogOut("Firebase"))
                   : null;
               Get.offAll(() => const AuthMiddleWare());
             },

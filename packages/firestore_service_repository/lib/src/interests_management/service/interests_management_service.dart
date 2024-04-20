@@ -1,4 +1,5 @@
 
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'constant.dart';
 import '../model/interests.dart';
@@ -12,8 +13,8 @@ class InterestsManagement {
       FirebaseFirestore.instance.collection("user");
   late final CollectionReference<Map<String, dynamic>> _interests;
 
-  InterestsManagement(String userId) {
-    _userId = userId;
+  InterestsManagement(AuthService authService) {
+    _userId = authService.currentUser!.id;
     _interests = _user.doc(_userId).collection("interests");
     addInterests();
   }

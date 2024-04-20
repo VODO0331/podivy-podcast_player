@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/util/toast/verify_email_toast.dart';
@@ -35,9 +36,10 @@ class VerifyEmailPage extends StatelessWidget {
             TextButton(
                 onPressed: () {
                   toastVerify();
+                  
                   context.read<AuthBloc>().add(
-                    const AuthEventSendEmailVerification(),
-                      
+                       const AuthEventSendEmailVerification(
+                            "Firebase"),
                       );
                 },
                 child: Text(
@@ -50,7 +52,7 @@ class VerifyEmailPage extends StatelessWidget {
             TextButton(
                 onPressed: () {
                   context.read<AuthBloc>().add(
-                        const AuthEventLogOut(),
+                       const  AuthEventLogOut("Firebase"),
                       );
                 },
                 child: Text('back'.tr,

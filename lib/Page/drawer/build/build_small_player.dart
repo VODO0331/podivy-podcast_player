@@ -14,7 +14,7 @@ class SmallPlayer extends StatelessWidget {
         : Theme.of(context).colorScheme.secondaryContainer;
     return Center(
       child: GestureDetector(
-        onTap: () => Get.offAndToNamed('/tabs/player'),
+        onTap: () => Get.offAndToNamed('/player'),
         child: Container(
           padding: const EdgeInsets.all(8).r,
           height: 130.r,

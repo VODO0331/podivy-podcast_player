@@ -14,17 +14,19 @@ class AuthEventInitialize extends AuthEvent{
 class AuthEventLogIn extends AuthEvent{
   final String email;
   final String password;
-
-  const AuthEventLogIn(this.email, this.password);
+  final String loginMethod;
+  const AuthEventLogIn(this.email, this.password,this.loginMethod);
 
 }
 
 class AuthEventLogOut extends AuthEvent{
-  const AuthEventLogOut();
+  final String loginMethod;
+  const AuthEventLogOut(this.loginMethod);
 }
 
 class AuthEventSendEmailVerification extends AuthEvent{
-  const AuthEventSendEmailVerification();
+  final String loginMethod;
+  const AuthEventSendEmailVerification(this.loginMethod);
   
 }
 
