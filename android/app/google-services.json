@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "408182649741",
+    "project_id": "podivy-d6342",
+    "storage_bucket": "podivy-d6342.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408182649741:android:b4e705e7b7dfbb9a6603c4",
+        "android_client_info": {
+          "package_name": "com.example.podivy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408182649741-qrtfv1s2ae87ukd6a9hgv4efnutjl0dv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.podivy",
+            "certificate_hash": "3a986d800e1b741285d46f79d72e3d06b755dde2"
+          }
+        },
+        {
+          "client_id": "408182649741-3frvnfms5kfus016aaq5i1j8vu9odk8i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoKtQuQ2h2pfKl3_8WHlbvDIwuSWHePeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408182649741-3frvnfms5kfus016aaq5i1j8vu9odk8i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "408182649741-m3bbtk4a8fshtbp9qms9l4f1of6vvb2i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.podivy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408182649741:android:4c8ce51587cce67d6603c4",
+        "android_client_info": {
+          "package_name": "com.example.podivy.de"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408182649741-r92o0jfo9nlk51fj4muvpm9kvjpeuna2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.podivy.de",
+            "certificate_hash": "7076f3ca120211da49627da571787daf4bbd86e8"
+          }
+        },
+        {
+          "client_id": "408182649741-3frvnfms5kfus016aaq5i1j8vu9odk8i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoKtQuQ2h2pfKl3_8WHlbvDIwuSWHePeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408182649741-3frvnfms5kfus016aaq5i1j8vu9odk8i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "408182649741-m3bbtk4a8fshtbp9qms9l4f1of6vvb2i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.podivy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

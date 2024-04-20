@@ -2,10 +2,16 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services'
 }
 
 def localProperties = new Properties()
+def keystoreProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
@@ -51,17 +57,42 @@ android {
         versionName flutterVersionName
     }
 
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+       signingConfigs {
+       release {
+           keyAlias keystoreProperties['release_keyAlias']
+           keyPassword keystoreProperties['release_keyPassword']
+           storeFile keystoreProperties['release_storeFile'] ? file(keystoreProperties['release_storeFile']) : null
+           storePassword keystoreProperties['release_storePassword']
+       }
+       debug {
+           keyAlias keystoreProperties['debug_keyAlias']
+           keyPassword keystoreProperties['debug_keyPassword']
+           storeFile keystoreProperties['debug_storeFile'] ? file(keystoreProperties['debug_storeFile']) : null
+           storePassword keystoreProperties['debug_storePassword']
+       }
+   }
+   buildTypes {
+        debug {
             signingConfig signingConfigs.debug
+            applicationIdSuffix ".de"
+            resValue "string", "app_name", "Podebug"
+            
         }
-    }
+        release {
+            signingConfig signingConfigs.release
+            applicationIdSuffix ""
+            resValue "string", "app_name", "Podiy"
+
+        }
+   }
+
 }
 
 flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:32.8.1')
+    implementation 'com.google.firebase:firebase-analytics'
+}
