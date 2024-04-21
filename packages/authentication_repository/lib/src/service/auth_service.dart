@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:authentication_repository/src/models/auth_google_provider.dart';
+import 'package:authentication_repository/src/models/auth_provider.dart';
 
 class AuthService implements AuthProvider {
   final AuthProvider provider;

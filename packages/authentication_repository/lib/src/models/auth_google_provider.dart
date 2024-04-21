@@ -6,7 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../exception/auth_error_exception.dart';
-import 'auth_provider.dart.dart' as my_provider;
+import 'auth_provider.dart' as my_provider;
 import 'auth_user.dart';
 
 class GoogleAuthProvider implements my_provider.AuthProvider {
