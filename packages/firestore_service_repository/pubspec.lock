@@ -550,6 +550,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.7"
+  just_audio:
+    dependency: transitive
+    description:
+      name: just_audio
+      sha256: b7cb6bbf3750caa924d03f432ba401ec300fd90936b3f73a9b33d58b1e96286b
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.37"
+  just_audio_background:
+    dependency: transitive
+    description:
+      name: just_audio_background
+      sha256: "3454ffc97edfa1282b7f42759bfa8aa13d9114a24465f4101e0d3ae58a9327fb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1-beta.11"
+  just_audio_platform_interface:
+    dependency: transitive
+    description:
+      name: just_audio_platform_interface
+      sha256: c3dee0014248c97c91fe6299edb73dc4d6c6930a2f4f713579cd692d9e47f4a1
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.2"
+  just_audio_web:
+    dependency: transitive
+    description:
+      name: just_audio_web
+      sha256: "134356b0fe3d898293102b33b5fd618831ffdc72bb7a1b726140abdf22772b70"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.9"
   leak_tracker:
     dependency: transitive
     description:
@@ -606,6 +638,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
+  my_audio_player:
+    dependency: "direct main"
+    description:
+      path: "../audio_player"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   nested:
     dependency: transitive
     description:
@@ -727,7 +766,7 @@ packages:
     source: hosted
     version: "0.27.7"
   search_service:
-    dependency: "direct main"
+    dependency: transitive
     description:
       path: "../graphql_service_repository/search_service_fp"
       relative: true

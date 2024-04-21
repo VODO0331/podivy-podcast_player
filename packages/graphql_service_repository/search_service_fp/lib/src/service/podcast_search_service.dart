@@ -1,12 +1,10 @@
 import 'dart:developer' as dev show log;
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 import 'package:search_service/src/service/query.dart';
 import '../controller/client_global_controller.dart';
 import '../error_exception/search_error_exception.dart';
-
-import '../models/episode.dart';
-import '../models/podcaster.dart';
 
 //functional programming
 const numberOfEpisodesResults = 10;

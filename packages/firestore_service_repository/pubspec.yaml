@@ -18,8 +18,9 @@ dependencies:
   authentication_repository:
       path: ../authentication_repository
 
-  search_service:
-      path: ../graphql_service_repository/search_service_fp
+
+  my_audio_player:
+      path: ../audio_player
   
 dev_dependencies:
   flutter_test:

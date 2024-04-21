@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart' show Episode;
 import 'package:podivy/util/dialogs/list_option.dart';
-import 'package:search_service/search_service_repository.dart';
 
 class Extras extends StatelessWidget {
   final Episode episodeData;

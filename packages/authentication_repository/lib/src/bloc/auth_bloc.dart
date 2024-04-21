@@ -9,7 +9,8 @@ import '../service/auth_service.dart';
 import 'dart:developer' as dev show log;
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc(Map<String, AuthService> providers)
+  final Map<String, AuthService> providers;
+  AuthBloc(this.providers)
       : super(const AuthStateUnInitialized(isLoading: true)) {
     //忘記密碼
     on<AuthEventForgotPassword>((event, emit) async {

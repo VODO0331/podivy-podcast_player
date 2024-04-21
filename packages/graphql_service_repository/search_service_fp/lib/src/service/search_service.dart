@@ -2,9 +2,8 @@ import 'dart:developer' as dev show log;
 
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 import '../controller/client_global_controller.dart';
-import '../models/episode.dart';
-import '../models/podcaster.dart';
 import '../models/search.dart';
 import '../error_exception/search_error_exception.dart';
 

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart' show Podcaster;
 import 'package:podivy/Controller/widget_animation_controller.dart';
 import 'package:podivy/Page/common/podcasterPage/build/build_description.dart';
-import 'package:search_service/search_service_repository.dart';
+
 
 class ProfileInformation extends StatelessWidget {
   final Podcaster podcasterData;

@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 
 import 'podcaster.dart';
 
+
 class Episode {
   final String id;
   final String title;

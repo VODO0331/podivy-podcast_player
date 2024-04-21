@@ -1,6 +1,6 @@
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:get/get.dart';
-import 'package:search_service/search_service_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart' show Podcaster;
 
 Future<void> changeFollowState(
   // FollowedManagement followedController,

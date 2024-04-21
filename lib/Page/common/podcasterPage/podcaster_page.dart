@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart' show Episode,Podcaster;
 import 'package:podivy/Page/common/podcasterPage/build/build_episodes_list.dart';
 import 'package:podivy/Page/common/podcasterPage/build/build_profile_information.dart';
 import 'package:get/get.dart';

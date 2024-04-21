@@ -2,9 +2,9 @@ import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart'show Podcaster,SocialLinks;
 import 'package:podivy/util/change_follow_state.dart';
 
-import 'package:search_service/search_service_repository.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 

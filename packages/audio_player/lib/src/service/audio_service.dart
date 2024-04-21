@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'dart:developer' as dev show log;
 
-import 'package:search_service/search_service_repository.dart';
 
 import '../../exception/player_exception.dart';
+import '../models/models.dart';
 
 class MyAudioPlayer extends ChangeNotifier {
   late AudioPlayer _audioPlayer;

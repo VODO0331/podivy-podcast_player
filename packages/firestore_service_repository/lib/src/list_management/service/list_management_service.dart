@@ -1,7 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:search_service/search_service_repository.dart'
-    show Episode, Podcaster;
+import 'package:my_audio_player/my_audio_player.dart';
 
 import 'dart:developer' as dev show log;
 import '../../../error_exception/cloud_storage_exception.dart';

@@ -3,8 +3,6 @@ import 'package:internationalization_repository/internationalization.dart';
 import 'package:intl/intl.dart';
 
 import '../service/query.dart';
-import 'episode.dart';
-import 'podcaster.dart';
 
 // import 'dart:developer' as dev show log;
 //利用語言分類 改變
@@ -13,8 +11,6 @@ sealed class SearchService {
   final String keywords;
   final int numberOfEpisodesResults;
   final int numberOfPodcastResults;
-  final List<Podcaster>? podcasterList;
-  final List<Episode>? episodeList;
   final QueryOptions queryOptions;
 
   SearchService({
@@ -22,16 +18,12 @@ sealed class SearchService {
     required this.numberOfPodcastResults,
     required this.keywords,
     required this.queryOptions,
-    required this.podcasterList,
-    required this.episodeList,
   });
 }
 
 class SearchServiceForKeyword extends SearchService {
   SearchServiceForKeyword({
     required super.keywords,
-    super.episodeList,
-    super.podcasterList,
     super.numberOfPodcastResults = 6,
     super.numberOfEpisodesResults = 15,
   }) : super(
@@ -55,8 +47,6 @@ class SearchServiceForKeyword extends SearchService {
 class SearchServiceForCategories extends SearchService {
   SearchServiceForCategories({
     required super.keywords,
-    super.podcasterList,
-    super.episodeList,
     super.numberOfPodcastResults = 6,
     super.numberOfEpisodesResults = 15,
   }) : super(

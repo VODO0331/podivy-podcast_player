@@ -2,6 +2,7 @@ import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart' show Podcaster, Episode;
 import 'package:podivy/Page/common/search/build/build_header_delegate.dart';
 import 'package:podivy/Page/common/search/build/build_result_podcast.dart';
 import 'package:podivy/Page/common/search/build/build_result_episode.dart';
