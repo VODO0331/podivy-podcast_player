@@ -1,12 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class ClientGlobalController extends GetxController {
+class ClientGlobalController{
   late final GraphQLClient _client;
   GraphQLClient get client => _client;
-  // ClientGlobalController();
   static ClientGlobalController? _instance;
 
   ClientGlobalController._();

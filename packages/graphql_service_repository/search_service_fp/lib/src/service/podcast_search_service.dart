@@ -9,22 +9,19 @@ import '../models/episode.dart';
 import '../models/podcaster.dart';
 
 //functional programming
+const numberOfEpisodesResults = 10;
 
-Future<Podcaster?> getSinglePodcasterData({required String id,
-  required int numberOfEpisodesResults,}) async {
+
+Future<Podcaster?> getSinglePodcasterData({required String id}) async {
   return await _getData(id: id,numberOfEpisodesResults: numberOfEpisodesResults);
 }
-
-// //完成LatestList 處理
-// Future<List<Podcaster>?> getLatestList(
-//     SearchServiceForLatestList? latestList) async {}
 
 Future<Podcaster> _getData({
   required String id,
   required int numberOfEpisodesResults,
 }) async {
   try {
-    var result = await _queryResult(id: id,numberOfEpisodesResults: numberOfEpisodesResults);
+    var result = await _queryResult(id: id);
 
     if (result.hasException) {
       dev.log(result.exception.toString());
@@ -32,7 +29,7 @@ Future<Podcaster> _getData({
     }
     Map? getPodcast = result.data?['podcast'];
     List? getEpisodes = getPodcast?['episodes']['data'];
-    final Podcaster? data = podcasterInfoProcessing(getPodcast, getEpisodes);
+    final Podcaster? data = _dataProcessing(getPodcast, getEpisodes);
     if (data != null) {
       return data;
     } else {
@@ -44,7 +41,7 @@ Future<Podcaster> _getData({
   }
 }
 
-Podcaster? podcasterInfoProcessing(
+Podcaster? _dataProcessing(
   Map? podcast,
   List? episodes,
 ) {
@@ -95,7 +92,6 @@ Podcaster? podcasterInfoProcessing(
 
 Future<QueryResult> _queryResult({
   required String id,
-  required int numberOfEpisodesResults,
 }) async {
   final ClientGlobalController controller = Get.put(ClientGlobalController());
   final GraphQLClient client = controller.client;

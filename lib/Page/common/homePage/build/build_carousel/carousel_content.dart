@@ -167,7 +167,7 @@ class _CarouselListViewState extends State<CarouselListView> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: getSinglePodcasterData(
-          id: widget.podcastId, numberOfEpisodesResults: 3),
+          id: widget.podcastId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
