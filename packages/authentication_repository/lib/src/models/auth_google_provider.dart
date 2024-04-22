@@ -1,6 +1,6 @@
 import 'dart:developer' as devtool show log;
 import 'package:authentication_repository/firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fb
+import 'package:firebase_auth/firebase_auth.dart' as fba
     show GoogleAuthProvider, FirebaseAuth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,7 +21,7 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
 
   @override
   AuthUser? get currentUser {
-    final user = fb.FirebaseAuth.instance.currentUser;
+    final user = fba.FirebaseAuth.instance.currentUser;
     // final name = user!.displayName;
     if (user != null) {
       return AuthUser.fromFireBase(user);
@@ -32,9 +32,9 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
 
   @override
   Future<void> logOut() async {
-    final user = fb.FirebaseAuth.instance.currentUser;
+    final user = fba.FirebaseAuth.instance.currentUser;
     if (user != null) {
-      await fb.FirebaseAuth.instance.signOut();
+      await fba.FirebaseAuth.instance.signOut();
       await GoogleSignIn().signOut();
     } else {
       throw UserNotFindAuthException();
@@ -50,14 +50,17 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
-
-      final credential = fb.GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
+      if(googleAuth == null){
+        await GoogleSignIn().signOut();
+        return const AuthUser(id: '', email: '', isEmailVerified: false);
+      }
+      final credential = fba.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
       await Future.delayed(const Duration(seconds: 2));
 
-      await fb.FirebaseAuth.instance.signInWithCredential(credential);
+      await fba.FirebaseAuth.instance.signInWithCredential(credential);
 
       return AuthUser(
           id: googleUser!.id, email: googleUser.email, isEmailVerified: true);
@@ -69,7 +72,7 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
 
   @override
   Future<void> sendEmailVerification() async {
-    final user = fb.FirebaseAuth.instance.currentUser;
+    final user = fba.FirebaseAuth.instance.currentUser;
     if (user != null) {
       await user.sendEmailVerification();
     } else {
@@ -95,7 +98,7 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
 
   @override
   Future<void> deleteUser() async {
-    final user = fb.FirebaseAuth.instance.currentUser;
+    final user = fba.FirebaseAuth.instance.currentUser;
     if (user != null) {
       await user.delete();
     } else {

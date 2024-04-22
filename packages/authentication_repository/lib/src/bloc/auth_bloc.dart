@@ -6,7 +6,7 @@ import 'package:bloc/bloc.dart';
 
 import '../service/auth_service.dart';
 
-import 'dart:developer' as dev show log;
+// import 'dart:developer' as dev show log;
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final Map<String, AuthService> providers;
@@ -136,10 +136,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               email: email,
               password: password,
             );
-            emit(AuthStateLoggedInFormGoogle(
-              isLoading: false,
-              user: user,
-            ));
+            if (user.id == '') {
+              emit(const AuthStateLoggedOut(
+                exception: null,
+                isLoading: false,
+              ));
+            } else {
+              emit(AuthStateLoggedInFormGoogle(
+                isLoading: false,
+                user: user,
+              ));
+            }
+
           default:
             emit(
               AuthStateLoggedOut(
@@ -148,7 +156,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               ),
             );
         }
-        dev.log(user.isEmailVerified.toString());
       } on Exception catch (e) {
         emit(
           AuthStateLoggedOut(
