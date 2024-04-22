@@ -11,13 +11,12 @@ import '../models/models.dart';
 class MyAudioPlayer extends ChangeNotifier {
   late AudioPlayer _audioPlayer;
   final ListManagement _listManagement = Get.find<ListManagement>();
-
   final Rxn<List<Episode>?> episodeList = Rxn<List<Episode>?>();
   final Rx<Episode?> _currentEpisodeData = Episode.defaultEpisode().obs;
   final RxnInt _index = RxnInt();
-
   final Rx<Duration> _currentPosition = Duration.zero.obs;
   final Rx<Duration> _currentDuration = Duration.zero.obs;
+
   //Getter
   int? get index => _index.value;
   AudioPlayer get player => _audioPlayer;
@@ -25,6 +24,7 @@ class MyAudioPlayer extends ChangeNotifier {
   Rx<Duration> get duration => _currentDuration;
   Rx<Duration> get position => _currentPosition;
   bool get isIdle => player.playerState.processingState == ProcessingState.idle;
+  
 //constructor
   MyAudioPlayer() {
     _audioPlayer = AudioPlayer();
