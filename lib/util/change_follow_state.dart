@@ -3,24 +3,23 @@ import 'package:get/get.dart';
 import 'package:my_audio_player/my_audio_player.dart' show Podcaster;
 
 Future<void> changeFollowState(
-  // FollowedManagement followedController,
+  // FollowManagement followedController,
   // InterestsManagement? interestsManagement,
   Podcaster podcasterData,
   bool value,
 ) async {
-  final InterestsManagement interestsManagement =
-      Get.find<InterestsManagement>();
-       final followedController = Get.find<FollowedManagement>();
+  final  fsp =
+      Get.find<FirestoreServiceProvider>();
   if (value) {
-    await followedController.deleteFollowed(podcastId: podcasterData.id);
-    await interestsManagement.updateInterests(podcasterData.categories, !value);
+    await fsp.follow.unfollow(podcastId: podcasterData.id);
+    await fsp.interests.updateInterests(podcasterData.categories, !value);
   } else {
-    await followedController.addFollowed(
+    await fsp.follow.addFollowed(
       podcastId: podcasterData.id,
       podcastImg: podcasterData.imageUrl,
       podcastName: podcasterData.title,
       podcastCategory:podcasterData.categories,
     );
-    await interestsManagement.updateInterests(podcasterData.categories, !value);
+    await fsp.interests.updateInterests(podcasterData.categories, !value);
   }
 }

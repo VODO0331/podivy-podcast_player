@@ -1,4 +1,3 @@
-
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,7 +36,7 @@ class _TabsState extends State<Tabs> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: _getBody(_currentPage,widget.loginMethod),
+      body: _getBody(_currentPage, widget.loginMethod),
       bottomNavigationBar: _getBottomBar(),
       drawer: const MyDrawer(),
     );
@@ -74,19 +73,14 @@ class _TabsState extends State<Tabs> {
 
   Widget _getBody(int index, String loginMethod) {
     initializationMyFirestoreService(loginMethod);
-    final informationController = Get.find<InformationController>();
-    final listManagement = Get.find<ListManagement>();
+    final fsp = Get.find<FirestoreServiceProvider>();
 
-    final followedManagement = Get.find<FollowedManagement>();
-    final interestsManagement = Get.find<InterestsManagement>();
     final List<Widget> body = [
       HomePage(
-        infoController: informationController,
-        followedManagement: followedManagement,
-        interestsManagement: interestsManagement,
+        fsp: fsp,
       ),
       MediaPage(
-        listManagement: listManagement,
+        fsp: fsp,
       )
     ];
     return GestureDetector(

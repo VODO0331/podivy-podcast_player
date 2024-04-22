@@ -12,14 +12,14 @@ class ShowDescription extends StatelessWidget {
   final Podcaster podcasterData;
   final double opacity;
   final RxBool isFollowed;
-  final FollowedManagement followedManagement;
+  final FirestoreServiceProvider fsp;
  
   const ShowDescription(
       {super.key,
       required this.podcasterData,
       required this.opacity,
       required this.isFollowed,
-      required this.followedManagement,});
+      required this.fsp,});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class ShowDescription extends StatelessWidget {
                     label: Text("share".tr),
                   ),
                   FutureBuilder(
-                    future: followedManagement.isFollowed(podcasterData.id),
+                    future: fsp.follow.isFollowed(podcasterData.id),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
                         isFollowed.value = snapshot.data!;

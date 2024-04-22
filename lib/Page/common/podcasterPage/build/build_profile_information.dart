@@ -13,8 +13,8 @@ class ProfileInformation extends StatelessWidget {
   ProfileInformation({super.key, required this.podcasterData});
   final _widgetController = Get.put(WidgetController());
   final RxBool isFollowed = false.obs;
-  // final _followedStorageService = Get.find<FollowedManagement>();
-  final _followedStorageService = Get.find<FollowedManagement>();
+  // final _followedStorageService = Get.find<FollowManagement>();
+  final fsp = Get.find<FirestoreServiceProvider>();
 
   // final InterestsManagement _interestsManagement = Get.find();
 
@@ -90,7 +90,7 @@ class ProfileInformation extends StatelessWidget {
                           podcasterData: podcasterData,
                           opacity: _widgetController.opacityAnimation!.value!,
                           isFollowed: isFollowed,
-                          followedManagement: _followedStorageService,
+                          fsp: fsp,
                         ),
                       ),
                       Transform.rotate(

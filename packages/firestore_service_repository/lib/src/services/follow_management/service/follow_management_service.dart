@@ -4,19 +4,19 @@ import 'package:firestore_service_repository/firestore_service_repository.dart';
 
 import 'dart:developer' as dev show log;
 
-import '../../../error_exception/cloud_storage_exception.dart';
+import '../../../../error_exception/cloud_storage_exception.dart';
 
 import '../models/followed.dart';
 import 'constants.dart';
 
-class FollowedManagement {
+class FollowManagement {
    late final String _userId ;
   final CollectionReference<Map<String, dynamic>> user =
       FirebaseFirestore.instance.collection("user");
   late final CollectionReference<Map<String, dynamic>> _followed;
 
 
-  FollowedManagement(AuthService authService) {
+  FollowManagement(AuthService authService) {
     _userId = authService.currentUser!.id;
     _followed = user.doc(_userId).collection('followed');
   }
@@ -41,7 +41,7 @@ class FollowedManagement {
         });
   }
 
-  Future<bool> deleteFollowed({required String podcastId}) async {
+  Future<bool> unfollow({required String podcastId}) async {
     bool result = false;
     await _followed.doc(podcastId).delete().then((value) {
       dev.log("Podcast delete successfully!");

@@ -4,13 +4,12 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'dart:developer' as dev show log;
 
-
 import '../../exception/player_exception.dart';
 import '../models/models.dart';
 
 class MyAudioPlayer extends ChangeNotifier {
   late AudioPlayer _audioPlayer;
-  final ListManagement _listManagement = Get.find<ListManagement>();
+  final  fsp = Get.find<FirestoreServiceProvider>();
   final Rxn<List<Episode>?> episodeList = Rxn<List<Episode>?>();
   final Rx<Episode?> _currentEpisodeData = Episode.defaultEpisode().obs;
   final RxnInt _index = RxnInt();
@@ -24,7 +23,7 @@ class MyAudioPlayer extends ChangeNotifier {
   Rx<Duration> get duration => _currentDuration;
   Rx<Duration> get position => _currentPosition;
   bool get isIdle => player.playerState.processingState == ProcessingState.idle;
-  
+
 //constructor
   MyAudioPlayer() {
     _audioPlayer = AudioPlayer();
@@ -47,7 +46,6 @@ class MyAudioPlayer extends ChangeNotifier {
       setPlayList = value;
       _index.value = newIndex;
       _currentEpisodeData.value = episodeList.value![_index.value!];
-      _listManagement.addToHistory(_currentEpisodeData.value!);
       _play();
     }
 
@@ -58,13 +56,11 @@ class MyAudioPlayer extends ChangeNotifier {
         //如果List 相同、但索引不相同
         _index.value = newIndex;
         _currentEpisodeData.value = episodeList.value![_index.value!];
-        _listManagement.addToHistory(_currentEpisodeData.value!);
         _play();
       } else {
         //如果List相同、索引相同
         if (_currentEpisodeData.value!.id != value[newIndex].id) {
           //如果List相同、索引相同、播放內容不相同
-          _listManagement.addToHistory(_currentEpisodeData.value!);
           _currentEpisodeData.value = episodeList.value![_index.value!];
           _play();
         } else {
@@ -77,26 +73,26 @@ class MyAudioPlayer extends ChangeNotifier {
       setPlayList = value;
       _index.value = newIndex;
       _currentEpisodeData.value = episodeList.value![_index.value!];
-      _listManagement.addToHistory(_currentEpisodeData.value!);
       _play();
     }
+    
   }
 
   Future<void> seek(Duration? position, {int? index}) =>
       _audioPlayer.seek(position, index: index);
 
   Future<void> _play() async {
-    
-    _audioPlayer.playbackEventStream
-        .listen((event) {}, onError: (Object e, StackTrace stack) {
-          dev.log('playbackEventStream error');
-        });
+    _audioPlayer.playbackEventStream.listen((event) {},
+        onError: (Object e, StackTrace stack) {
+      dev.log('playbackEventStream error');
+    });
     try {
       await _audioPlayer.setAudioSource(
         listProcessing(),
         initialIndex: _index.value,
         initialPosition: Duration.zero,
       );
+      fsp.list.addToHistory(_currentEpisodeData.value!);
       await _audioPlayer.play();
     } catch (e) {
       throw CanNotPlayingException();
@@ -107,7 +103,7 @@ class MyAudioPlayer extends ChangeNotifier {
     _audioPlayer.currentIndexStream.listen((index) {
       if (index != null) {
         _currentEpisodeData.value = episodeList.value![index];
-        _listManagement.addToHistory(_currentEpisodeData.value!);
+        fsp.list.addToHistory(_currentEpisodeData.value!);
       }
     });
   }

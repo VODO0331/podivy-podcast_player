@@ -8,14 +8,17 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
-
 class BuildUserAvatar extends StatelessWidget {
   final RxString imgData;
-  final InformationController infoController;
-  final RxBool isEdit ;
-   BuildUserAvatar({super.key, required this.imgData, required this.infoController, required this.isEdit});
+  final FirestoreServiceProvider fsp;
+  final RxBool isEdit;
+  BuildUserAvatar(
+      {super.key,
+      required this.imgData,
+      required this.fsp,
+      required this.isEdit});
   final ImagePicker _imagePicker = Get.put(ImagePicker());
-  
+
   @override
   Widget build(BuildContext context) {
     final Color userAvatar = Get.isDarkMode
@@ -86,7 +89,7 @@ class BuildUserAvatar extends StatelessWidget {
     if (image != null) {
       final Uint8List newImg =
           (Uint8List.fromList(await File(image.path).readAsBytes()));
-      if (base64Encode(newImg) != infoController.userData.img) {
+      if (base64Encode(newImg) != fsp.info.userData.img) {
         return newImg;
       }
     }

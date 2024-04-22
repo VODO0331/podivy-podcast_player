@@ -3,7 +3,7 @@ import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'constant.dart';
 import '../model/interests.dart';
-import '../../../error_exception/cloud_storage_exception.dart';
+import '../../../../error_exception/cloud_storage_exception.dart';
 // import 'dart:developer' as dev show log;
 
 

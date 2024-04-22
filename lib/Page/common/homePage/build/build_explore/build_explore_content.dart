@@ -6,8 +6,8 @@ import 'build_category_bt.dart';
 import 'build_podcast_grid.dart';
 
 class ExploreContent extends StatelessWidget {
-  final InterestsManagement interestsManagement;
-  ExploreContent({Key? key, required this.interestsManagement}) : super(key: key);
+  final FirestoreServiceProvider fsp;
+  ExploreContent({Key? key, required this.fsp}) : super(key: key);
   final RxString selectedType = ''.obs;
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ExploreContent extends StatelessWidget {
             selected: (category) {
               Future.microtask(() => selectedType.value = category);
               
-            }, interestsManagement: interestsManagement,
+            }, fsp: fsp,
           ),
           Expanded(
             child: Obx(() {

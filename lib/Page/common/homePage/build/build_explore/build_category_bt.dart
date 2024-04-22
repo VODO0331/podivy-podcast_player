@@ -7,16 +7,16 @@ import 'package:podivy/util/translator.dart';
 typedef SelectCallBack = void Function(String category);
 
 class CategoryButton extends StatelessWidget {
-  final InterestsManagement interestsManagement;
+  final FirestoreServiceProvider fsp;
   final SelectCallBack selected;
   const CategoryButton(
-      {super.key, required this.selected, required this.interestsManagement});
+      {super.key, required this.selected, required this.fsp});
   
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: interestsManagement.interestsCategory(),
+        stream: fsp.interests.interestsCategory(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
               snapshot.connectionState == ConnectionState.active) {

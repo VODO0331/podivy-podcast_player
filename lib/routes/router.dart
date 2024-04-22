@@ -1,11 +1,9 @@
-import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:podivy/Page/common/settingPage/setting_page.dart';
 import 'package:podivy/Page/personal/followedPage/followed_page.dart';
 import 'package:podivy/Page/personal/media/list/Page/list_page.dart';
 import 'package:podivy/Page/login/auth_middleware.dart';
 import 'package:podivy/Page/common/podcasterPage/podcaster_page.dart';
 import 'package:podivy/Page/common/search/search_page.dart';
-// import 'package:podivy/Page/test.dart';
 import 'package:podivy/Page/personal/user_page/user_page.dart';
 import 'package:get/get.dart';
 import '../Page/personal/playerPage/player_page.dart';
@@ -87,12 +85,4 @@ abstract class AppRoutes {
   static const player = '/player';
 }
 
-class TabsBindings implements Bindings {
-  @override
-  void dependencies() {
-    Get.find<ListManagement>();
-    // Get.lazyPut(() => InformationController());
-    // Get.lazyPut(() => FollowedManagement());
-    // Get.lazyPut(() => InterestsManagement());
-  }
-}
+

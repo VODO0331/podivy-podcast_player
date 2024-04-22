@@ -7,8 +7,8 @@ import 'package:podivy/util/toast/delete_toast.dart';
 import 'package:podivy/widget/background.dart';
 
 class MediaPage extends StatelessWidget {
-   final ListManagement listManagement;
-  const MediaPage({super.key, required this.listManagement});
+   final FirestoreServiceProvider fsp;
+  const MediaPage({super.key, required this.fsp});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class MediaPage extends StatelessWidget {
                   _divider(),
                   Expanded(
                     child: StreamBuilder(
-                      stream: listManagement.readAllList(),
+                      stream: fsp.list.readAllList(),
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.waiting:
@@ -48,7 +48,7 @@ class MediaPage extends StatelessWidget {
                               return MyListView(
                                 lists: allList!,
                                 onDelete: (list) async {
-                                  if(await listManagement.deleteList(list)){
+                                  if(await fsp.list.deleteList(list)){
                                     toastDelete('Deleted List'.tr);
                                   }
                                 },

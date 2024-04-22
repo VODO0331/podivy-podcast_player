@@ -10,10 +10,10 @@ import '../../build/enum_sort.dart';
 
 class BuildList extends StatefulWidget {
   final UserList list;
-  final ListManagement listManagement;
+  final FirestoreServiceProvider fsp;
   const BuildList({
     super.key,
-    required this.listManagement,
+    required this.fsp,
     required this.list,
   });
 
@@ -78,7 +78,7 @@ class _BuildListState extends State<BuildList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: widget.listManagement.readListContent(widget.list),
+      stream: widget.fsp.list.readListContent(widget.list),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
@@ -101,7 +101,7 @@ class _BuildListState extends State<BuildList> {
                           onDelete: (
                             episode,
                           ) async {
-                            if (await widget.listManagement
+                            if (await widget.fsp.list
                                 .deleteEpisodeFromList(widget.list, episode)) {
                               toastDelete('Deleted Episode'.tr);
                             } else {}

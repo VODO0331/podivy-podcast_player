@@ -51,13 +51,14 @@ class SettingPage extends StatelessWidget {
                           TextButton(
                               onPressed: () async {
                                 //  Get.back();
-                                final infoCtr =
-                                    Get.find<InformationController>();
-                                infoCtr.deleteInfo();
+                                final fsp =
+                                    Get.find<FirestoreServiceProvider>();
+                                fsp.info.deleteInfo();
                                 await Get.deleteAll();
                                 context.mounted
                                     ? context.read<AuthBloc>().add(
-                                        AuthEventLogOut(infoCtr.userData.loginMethod.value))
+                                        AuthEventLogOut(fsp
+                                            .info.userData.loginMethod.value))
                                     : null;
                                 Get.offAll(() => const AuthMiddleWare());
 

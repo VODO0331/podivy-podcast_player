@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:my_audio_player/my_audio_player.dart' show Episode;
 import 'package:podivy/util/toast/success_toast.dart';
-import 'dart:developer' as dev show log;
+// import 'dart:developer' as dev show log;
 
 Future listDialog(BuildContext context, Episode episode) async {
-  final ListManagement listManagement = Get.find();
+  final fsp = Get.find<FirestoreServiceProvider>();
   final Rxn<UserList> userList = Rxn();
   return await showDialog(
     context: context,
@@ -19,18 +19,17 @@ Future listDialog(BuildContext context, Episode episode) async {
           height: 200.h,
           width: 300.w,
           child: ListOption(
-            onChanged: (value) {
-              userList.value = value;
-              dev.log(userList.value!.docId);
-            },
-          ),
+              onChanged: (value) {
+                userList.value = value;
+              },
+              fsp: fsp),
         ),
         actions: <Widget>[
           TextButton(
             child: Text('Add To List'.tr),
             onPressed: () async {
-             await addListDialog(context, episode);
-              
+              await addListDialog(context, episode);
+
               Get.back();
             },
           ),
@@ -44,7 +43,7 @@ Future listDialog(BuildContext context, Episode episode) async {
             child: Text('Add'.tr),
             onPressed: () async {
               if (userList.value != null) {
-                if(await listManagement.addEpisodeToList(userList.value!, episode)){
+                if (await fsp.list.addEpisodeToList(userList.value!, episode)) {
                   toastSuccess('Added To List'.tr);
                 }
               }
@@ -62,8 +61,9 @@ typedef ListOptionCallback = void Function(UserList list);
 
 class ListOption extends StatelessWidget {
   final ListOptionCallback onChanged;
-  ListOption({super.key, required this.onChanged});
-  final ListManagement listManagement = Get.find();
+  final FirestoreServiceProvider fsp;
+  ListOption({super.key, required this.onChanged, required this.fsp});
+
   final RxString groupValue = "".obs;
 
   Widget optionBuilder(Iterable<UserList>? allList) {
@@ -95,7 +95,7 @@ class ListOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: listManagement.readAllList(),
+      stream: fsp.list.readAllList(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
@@ -152,7 +152,7 @@ Widget listOptionPrototype() {
 }
 
 Future addListDialog(BuildContext context, Episode episode) async {
-  final ListManagement listManagement = Get.find();
+  final fsp = Get.find<FirestoreServiceProvider>();
   final TextEditingController textEditingController =
       Get.put(TextEditingController());
   return await showDialog(
@@ -185,7 +185,7 @@ Future addListDialog(BuildContext context, Episode episode) async {
           TextButton(
             child: Text('Add'.tr),
             onPressed: () async {
-              if(await listManagement.addList(textEditingController.text, episode)){
+              if (await fsp.list.addList(textEditingController.text, episode)) {
                 toastSuccess('List added'.tr);
               }
               textEditingController.text = "";

@@ -8,8 +8,7 @@ import 'package:podivy/util/toast/unfollow_toast.dart';
 class FollowedPage extends StatelessWidget {
   FollowedPage({super.key});
 
-  final _followedStorageService = Get.find<FollowedManagement>();
-  final _interestsManagement = Get.find<InterestsManagement>();
+  final fsp = Get.find<FirestoreServiceProvider>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +79,7 @@ class FollowedPage extends StatelessWidget {
             ),
           ),
           StreamBuilder(
-            stream: _followedStorageService.allFollowed(),
+            stream: fsp.follow.allFollowed(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
@@ -90,9 +89,9 @@ class FollowedPage extends StatelessWidget {
                     return FollowedList(
                       allFollowed: allFollowed!,
                       onDelete: (followed) async {
-                        if (await _followedStorageService.deleteFollowed(
+                        if (await fsp.follow.unfollow(
                             podcastId: followed.podcastId)) {
-                          await _interestsManagement.updateInterests(
+                          await fsp.interests.updateInterests(
                               followed.categories, false);
                           toastUnfollow();
                         }

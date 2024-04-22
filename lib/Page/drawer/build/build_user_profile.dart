@@ -7,7 +7,7 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 class BuildUserProfile extends StatelessWidget {
   BuildUserProfile({super.key});
-  final InformationController userController = Get.find();
+  final fsp = Get.find<FirestoreServiceProvider>();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,7 +19,7 @@ class BuildUserProfile extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Obx(() {
-              final UserInfo data = userController.userData;
+              final UserInfo data = fsp.info.userData;
 
               if (data.img != '') {
                 return CircleAvatar(
@@ -37,9 +37,9 @@ class BuildUserProfile extends StatelessWidget {
         SizedBox(
             width: 200.r,
             child: Obx(() {
-              // if (userController.userData != null) {/
+              // if (fsp.userData != null) {/
               return Text(
-                userController.userData.name,
+                fsp.info.userData.name,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               );

@@ -9,7 +9,7 @@ class ListPage extends StatelessWidget {
   ListPage({super.key});
   final IconData icon = Get.arguments['icon'];
   final UserList list = Get.arguments['list'];
-  final ListManagement listManagement = Get.find();
+  final  fsp = Get.find<FirestoreServiceProvider>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ListPage extends StatelessWidget {
           : Theme.of(Get.context!).colorScheme.secondaryContainer,
       appBar: listAppBar(
         list: list,
-        listManagement: listManagement,
+        fsp: fsp,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(12, 0, 12, 10).r,
@@ -45,7 +45,7 @@ class ListPage extends StatelessWidget {
             Expanded(
                 child: BuildList(
               list: list,
-              listManagement: listManagement,
+              fsp: fsp,
             )),
           ],
         ),
@@ -56,7 +56,7 @@ class ListPage extends StatelessWidget {
 
 PreferredSizeWidget listAppBar({
   required UserList list,
-  required ListManagement listManagement,
+  required FirestoreServiceProvider fsp,
 }) {
   return AppBar(
     leading: IconButton(

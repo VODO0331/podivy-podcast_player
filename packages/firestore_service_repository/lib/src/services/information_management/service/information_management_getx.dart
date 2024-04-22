@@ -3,16 +3,13 @@
 import 'dart:convert';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
-// import 'package:get/get.dart';
-import '../../../error_exception/cloud_storage_exception.dart';
-import '../../../error_exception/information_storage_exception.dart';
-
+import '../../../../error_exception/cloud_storage_exception.dart';
+import '../../../../error_exception/information_storage_exception.dart';
 import 'dart:developer' as dev show log;
-
+import '../information_management.dart';
 import 'constants.dart';
 
 class InformationManagement {
@@ -48,7 +45,8 @@ class InformationManagement {
   }
 
   Future<void> haveInfo() async {
-    final result = await _userTable.doc(_userId).get().then((value) => value.data());
+    final result =
+        await _userTable.doc(_userId).get().then((value) => value.data());
     if (result == null || result.isEmpty) {
       await initInfo(userName: "Nobody");
     } else {
@@ -64,7 +62,6 @@ class InformationManagement {
 
   //僅在初始化使用
   Future<void> initInfo({required String userName}) async {
-   
     ByteData data =
         await rootBundle.load("assets/images/user_pic/default_user.png");
     final imgData = await _imgCompress(data.buffer.asUint8List());
@@ -77,7 +74,7 @@ class InformationManagement {
     }).then((value) {
       dev.log("info added successfully!");
     }).catchError((error) {
-       dev.log("info added error!");
+      dev.log("info added error!");
       throw CloudNotCreateException();
     });
   }
@@ -85,13 +82,10 @@ class InformationManagement {
   //註銷用戶
   Future<void> deleteInfo() async {
     try {
-      final interests = Get.find<InterestsManagement>();
-      final follow = Get.find<FollowedManagement>();
-      final lists = Get.find<ListManagement>();
-
-      await interests.deleteUser();
-      await follow.deleteUser();
-      await lists.deleteUser();
+      final fsp = Get.find();
+      await fsp.interests.deleteUser();
+      await fsp.follow.deleteUser();
+      await fsp.list.deleteUser();
       await _userTable
           .doc(_userId)
           .delete()

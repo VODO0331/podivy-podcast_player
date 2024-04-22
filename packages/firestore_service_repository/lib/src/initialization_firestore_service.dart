@@ -1,5 +1,5 @@
 import 'package:authentication_repository/authentication_repository.dart';
-import 'package:firestore_service_repository/firestore_service_repository.dart';
+import 'package:firestore_service_repository/src/services/firestore_service_provider.dart';
 
 import 'package:get/get.dart';
 import 'dart:developer' as dev show log;
@@ -17,10 +17,7 @@ Future<void> initializationMyFirestoreService(String loginMethod) async {
     throw CloudInitException();
   }
   
-  Get.put(ListManagement(authService));
-  Get.put(FollowedManagement(authService));
-  Get.put(InterestsManagement(authService));
-  Get.put(InformationController(authService));
+  Get.put(FirestoreServiceProvider(authService));
 } on Exception catch (_) {
   dev.log('firestore init fall');
   throw CloudInitException();

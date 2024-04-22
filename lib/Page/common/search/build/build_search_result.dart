@@ -113,12 +113,12 @@ class _Recommendations extends StatelessWidget {
   // final SearchService searchService;
   _Recommendations({Key? key, required this.recommendCallBack})
       : super(key: key);
-  final InterestsManagement _interestsManagement =
-      Get.find<InterestsManagement>();
+  final  fsp =
+      Get.find<FirestoreServiceProvider>();
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: _interestsManagement.interestsCategory(),
+        stream: fsp.interests.interestsCategory(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
               snapshot.connectionState == ConnectionState.active) {

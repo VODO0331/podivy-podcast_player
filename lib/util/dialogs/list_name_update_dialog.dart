@@ -28,8 +28,8 @@ Future<void> updateListNameDialog(UserList list) async {
             ),
             ElevatedButton(
               onPressed: () async {
-                final ListManagement listManagement = Get.find();
-                if (await listManagement.updateList(
+                final  fsp = Get.find<FirestoreServiceProvider>();
+                if (await fsp.list.updateList(
                     list, textEditingController.text)) {
                   toastSuccess('updated'.tr);
                 }

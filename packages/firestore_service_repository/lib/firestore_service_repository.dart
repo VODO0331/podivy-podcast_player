@@ -2,10 +2,11 @@
 
 library firestore_service_repository;
 
-export 'src/followed_management/followed_management.dart';
-export 'src/information_management/information_management.dart';
-export 'src/interests_management/interests.management.dart';
-export 'src/list_management/list_management.dart';
+export 'src/services/follow_management/follow_management.dart' show Followed;
+export 'src/services/information_management/information_management.dart' show UserInfo;
+export 'src/services/interests_management/interests.management.dart' show Interests;
+export 'src/services/list_management/list_management.dart' show UserList;
+export 'src/services/firestore_service_provider.dart'show FirestoreServiceProvider;
 
 
 export 'src/initialization_firestore_service.dart';

@@ -13,7 +13,7 @@ Future<void> showResetEmailDialog() => showDialog(
       builder: (context) {
         final TextEditingController email =
             Get.put(tag: 'email', TextEditingController());
-        final infoCtr = Get.find<InformationController>();
+        final fsp = Get.find<FirestoreServiceProvider>();
         return AlertDialog(
           title: Text('Change email'.tr),
           content: SizedBox(
@@ -58,7 +58,7 @@ Future<void> showResetEmailDialog() => showDialog(
                       Get.back();
                       return;
                     }
-                    if (await infoCtr.checkEmail(email.text)) {
+                    if (await fsp.info.checkEmail(email.text)) {
                       await AuthService.firebase()
                           .emailReset(newEmail: email.text);
 

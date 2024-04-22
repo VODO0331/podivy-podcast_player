@@ -15,7 +15,7 @@ class PlayerControl extends StatelessWidget {
     super.key,
     // required this.myAudioPlayer,
   });
-  final ListManagement listManagement = Get.find();
+  final listManagement = Get.find<FirestoreServiceProvider>();
 
   @override
   Widget build(BuildContext context) {

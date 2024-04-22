@@ -6,15 +6,14 @@ import 'package:get/get.dart';
 
 import 'carousel_content.dart';
 
-
 class BuildCarousel extends StatelessWidget {
-  final FollowedManagement followedStorageService;
-  const BuildCarousel({super.key, required this.followedStorageService});
-  
+  final FirestoreServiceProvider fsp;
+  const BuildCarousel({super.key, required this.fsp});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: followedStorageService.homePageViewFollowed(),
+      stream: fsp.follow.homePageViewFollowed(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting ||
             snapshot.connectionState == ConnectionState.active) {
@@ -107,5 +106,3 @@ List<Widget> listCarouselItem(Iterable<Followed> data) {
   }
   return list;
 }
-
-

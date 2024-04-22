@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:firestore_service_repository/firestore_service_repository.dart';
@@ -16,18 +15,14 @@ import 'build/build_explore/build_explore_content.dart';
 // import 'dart:developer' as dev show log;
 
 class HomePage extends StatelessWidget {
-  final InformationController infoController;
-  final InterestsManagement interestsManagement;
-  final FollowedManagement followedManagement;
-  const HomePage(
-      {super.key,
-      required this.infoController,
-      required this.followedManagement,
-      required this.interestsManagement});
+  final FirestoreServiceProvider fsp;
+  const HomePage({
+    super.key,
+    required this.fsp,
+  });
 
   @override
   Widget build(BuildContext context) {
-   
     return SafeArea(
       right: false,
       left: false,
@@ -35,7 +30,7 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 30).h,
         child: Column(
           children: [
-            appBar(infoController),
+            appBar(fsp),
             const Divider(
               thickness: 2,
               color: Color.fromARGB(123, 255, 255, 255),
@@ -45,7 +40,7 @@ class HomePage extends StatelessWidget {
                 child: SizedBox(
                   height: 220.r,
                   child: BuildCarousel(
-                    followedStorageService: followedManagement,
+                    fsp: fsp,
                   ),
                 )),
             Image.asset(
@@ -64,9 +59,8 @@ class HomePage extends StatelessWidget {
               endIndent: 30.r,
               color: const Color.fromARGB(255, 255, 255, 255),
             ),
-
             ExploreContent(
-              interestsManagement: interestsManagement,
+              fsp: fsp,
             ),
           ],
         ),
@@ -75,7 +69,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
-Widget appBar(InformationController userController) {
+Widget appBar(FirestoreServiceProvider fsp) {
   return Flex(
     direction: Axis.horizontal,
     children: [
@@ -95,7 +89,7 @@ Widget appBar(InformationController userController) {
                 child: GestureDetector(
                   onTap: () => Get.toNamed('/user'),
                   child: Obx(() {
-                    final UserInfo data = userController.userData;
+                    final UserInfo data = fsp.info.userData;
 
                     if (data.img != "") {
                       return CircleAvatar(

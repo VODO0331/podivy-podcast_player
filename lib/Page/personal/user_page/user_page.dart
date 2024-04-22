@@ -15,7 +15,7 @@ class UserPage extends StatelessWidget {
   final TextEditingController _nameEditingController =
       Get.put(TextEditingController());
   
-  final infoController = Get.find<InformationController>();
+  final fsp = Get.find<FirestoreServiceProvider>();
   final RxBool _isEdit = false.obs;
   final RxString imgData = ''.obs;
 
@@ -55,7 +55,7 @@ class UserPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    imgData.value = infoController.userData.img;
+    imgData.value = fsp.info.userData.img;
     return Scaffold(
       key: UniqueKey(),
       resizeToAvoidBottomInset: false,
@@ -69,13 +69,13 @@ class UserPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15).r,
-              child: BuildUserAvatar(imgData: imgData, infoController: infoController,isEdit: _isEdit,),
+              child: BuildUserAvatar(imgData: imgData, fsp: fsp,isEdit: _isEdit,),
             ),
 
             // 顯示用戶名稱
             Obx(() {
               _nameEditingController.text =
-                  infoController.userData.userName.value;
+                  fsp.info.userData.userName.value;
               return _isEdit.value
                   ? TextField(
                       controller: _nameEditingController,
@@ -86,7 +86,7 @@ class UserPage extends StatelessWidget {
                   : ListTile(
                       leading: const Icon(Icons.person),
                       title: Text(
-                        "Name :   ${infoController.userData.userName}".tr,
+                        "Name :   ${fsp.info.userData.userName}".tr,
                         style: TextStyle(fontSize: ScreenUtil().setSp(15)),
                       ),
                     );
@@ -97,11 +97,11 @@ class UserPage extends StatelessWidget {
               return ListTile(
                   leading: const Icon(Icons.email),
                   title: Text(
-                    infoController.userData.email.value,
+                    fsp.info.userData.email.value,
                     style: TextStyle(fontSize: ScreenUtil().setSp(15)),
                   ),
                   trailing:
-                      infoController.userData.loginMethod.value == 'Firebase'
+                      fsp.info.userData.loginMethod.value == 'Firebase'
                           ? ElevatedButton(
                               child: const Icon(FontAwesomeIcons.pencil),
                               onPressed: () => showResetEmailDialog(),
@@ -119,13 +119,13 @@ class UserPage extends StatelessWidget {
                           _isEdit.value = false;
                           final List<dynamic> updates = [null, null];
                           if (_nameEditingController.text !=
-                              infoController.userData.name) {
+                              fsp.info.userData.name) {
                             updates[0] = _nameEditingController.text;
                           }
-                          if (infoController.userData.img != imgData.value) {
+                          if (fsp.info.userData.img != imgData.value) {
                             updates[1] = base64Decode(imgData.value);
                           }
-                          infoController.updateInfo(
+                          fsp.info.updateInfo(
                             userName: updates[0],
                             userImg: updates[1],
                             newEmail: null,
@@ -136,8 +136,8 @@ class UserPage extends StatelessWidget {
                       TextButton(
                         onPressed: () async {
                           _nameEditingController.text =
-                              infoController.userData.userName.value;
-                          imgData.value = infoController.userData.userImg.value;
+                              fsp.info.userData.userName.value;
+                          imgData.value = fsp.info.userData.userImg.value;
                           _isEdit.value = false;
                         },
                         child: Text("Cancel".tr),
