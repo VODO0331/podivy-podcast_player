@@ -1,9 +1,11 @@
+import 'package:firestore_service_repository/error_exception/list_storage_exception.dart';
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:my_audio_player/my_audio_player.dart' show Episode;
 import 'package:podivy/util/toast/success_toast.dart';
+import 'package:podivy/util/toast/waring.toast.dart';
 // import 'dart:developer' as dev show log;
 
 Future listDialog(BuildContext context, Episode episode) async {
@@ -28,9 +30,7 @@ Future listDialog(BuildContext context, Episode episode) async {
           TextButton(
             child: Text('Create'.tr),
             onPressed: () async {
-             
               await addListDialog(context, episode);
-              
             },
           ),
           TextButton(
@@ -45,6 +45,8 @@ Future listDialog(BuildContext context, Episode episode) async {
               if (userList.value != null) {
                 if (await fsp.list.addEpisodeToList(userList.value!, episode)) {
                   toastSuccess('Added To List'.tr);
+                } else {
+                  toastWaning('Already added to the list'.tr);
                 }
               }
 
@@ -185,8 +187,19 @@ Future addListDialog(BuildContext context, Episode episode) async {
           TextButton(
             child: Text('Add'.tr),
             onPressed: () async {
-              if (await fsp.list.addList(textEditingController.text, episode)) {
-                toastSuccess('List added'.tr);
+              try {
+                if (await fsp.list
+                    .addList(textEditingController.text, episode)) {
+                  toastSuccess('List added'.tr);
+                }
+              } catch (e) {
+                
+                switch (e) {
+                  case ListNameAlreadyUsed():
+                    toastWaning('The name is already in use'.tr);
+                  default:
+                    toastWaning('Error'.tr);
+                }
               }
               textEditingController.text = "";
               Get.back();

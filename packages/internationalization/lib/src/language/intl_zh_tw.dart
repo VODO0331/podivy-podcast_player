@@ -81,6 +81,8 @@ const Map<String, String> zh_Tw = {
   'Deleted List': '已刪除清單',
   'List added': '已添加清單',
   'Added To List': '已添加至清單',
+  'Already added to the list':'已添加過至清單',
+  'The name is already in use':'該名稱已被使用',
   'updated': '已更新',
   'Create':'創建清單',
       //drawer

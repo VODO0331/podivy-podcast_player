@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firestore_service_repository/error_exception/list_storage_exception.dart';
 import 'package:my_audio_player/my_audio_player.dart';
 
 import 'dart:developer' as dev show log;
@@ -13,7 +14,7 @@ class ListManagement {
       FirebaseFirestore.instance.collection("user");
   late final CollectionReference<Map<String, dynamic>> _lists;
   ListManagement(AuthService authService) {
-    _userId =  authService.currentUser!.id;
+    _userId = authService.currentUser!.id;
     _lists = _user.doc(_userId).collection("lists");
     initialization();
   }
@@ -117,31 +118,36 @@ class ListManagement {
   Future<bool> addList(String listTitle, Episode episode) async {
     bool result = false;
     final newList = _lists.doc();
-    await newList.set({
-      documentId: newList.id,
-      listName: listTitle,
-      "createAt": Timestamp.now(),
-    }).then((_) async {
-      await _lists.doc(newList.id).collection('content').doc(episode.id).set({
+
+    if (!await _checkListName(listTitle)) {
+      await newList.set({
         documentId: newList.id,
         listName: listTitle,
-        episodeId: episode.id,
-        podcasterId: episode.podcast.id,
-        podcasterName: episode.podcast.title,
-        episodeImg: episode.imageUrl,
-        episodeName: episode.title,
-        episodeAudio: episode.audioUrl,
-        episodeDescription: episode.description,
-        episodeDate: episode.airDate,
         "createAt": Timestamp.now(),
-      }).then((value) {
-        dev.log("Episode added successfully!");
-        result = true;
-      }).catchError((e) {
-        dev.log(e);
-        throw CloudNotCreateException();
+      }).then((_) async {
+        await _lists.doc(newList.id).collection('content').doc(episode.id).set({
+          documentId: newList.id,
+          listName: listTitle,
+          episodeId: episode.id,
+          podcasterId: episode.podcast.id,
+          podcasterName: episode.podcast.title,
+          episodeImg: episode.imageUrl,
+          episodeName: episode.title,
+          episodeAudio: episode.audioUrl,
+          episodeDescription: episode.description,
+          episodeDate: episode.airDate,
+          "createAt": Timestamp.now(),
+        }).then((value) {
+          dev.log("Episode added successfully!");
+          result = true;
+        }).catchError((e) {
+          dev.log(e);
+          throw CloudNotCreateException();
+        });
       });
-    });
+    } else {
+      throw ListNameAlreadyUsed();
+    }
     return result;
   }
 
@@ -225,6 +231,20 @@ class ListManagement {
     }
   }
 
+  Future<bool> _checkListName(String name) async {
+    bool result = false;
+    await _lists.get().then((value) {
+      for (DocumentSnapshot element in value.docs) {
+        final data = element.data() as Map<String, dynamic>;
+        if (name == data[listName]) {
+          result = true;
+        }
+      }
+    });
+
+    return result;
+  }
+
   Future<void> deleteUser() async {
     await _lists.get().then((snapshot) {
       for (DocumentSnapshot list in snapshot.docs) {
@@ -244,6 +264,4 @@ class ListManagement {
       }
     });
   }
-
- 
 }

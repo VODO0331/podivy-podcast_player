@@ -84,6 +84,8 @@ const Map<String, String> en_Us = {
   'Deleted List': 'Deleted List',
   'List added': 'List added',
   'Added To List': 'Added To List',
+  'Already added to the list':'Already added to the list',
+  'The name is already in use':'The name is already in use',
   'updated': 'updated',
   'Create':'create',
   //drawer

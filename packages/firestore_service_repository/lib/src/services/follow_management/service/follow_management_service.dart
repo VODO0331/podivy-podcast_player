@@ -87,7 +87,6 @@ class FollowManagement {
 
   Stream<Iterable<Followed>> allFollowed() {
     try {
-      dev.log(_followed.path);
       return _followed.snapshots().map((event) {
         List<Followed> followedList = [];
         for (var doc in event.docs) {
