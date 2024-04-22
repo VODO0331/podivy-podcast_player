@@ -24,7 +24,7 @@ class ProfileInformation extends StatelessWidget {
       children: [
         _buildShaderMask(podcasterData.imageUrl!),
         Padding(
-            padding: const EdgeInsets.all(9).r,
+            padding: const EdgeInsets.fromLTRB(9, 40, 9, 9).r,
             child: AnimatedBuilder(
               animation: _widgetController.animationController!,
               builder: (context, child) {

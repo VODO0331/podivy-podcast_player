@@ -1,31 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:podivy/util/toast/generic_toast.dart';
 
-void toastWaning(String text) {
-  BotToast.showCustomText(
-      align: const AlignmentDirectional(0, -0.8),
-      toastBuilder: (cancelFunc) => Container(
-          alignment: Alignment.center,
-          height: 40.r,
-          // width: 120.r,
-          decoration: BoxDecoration(
-              color: Theme.of(Get.context!).colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                  color: Theme.of(Get.context!).colorScheme.background)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.warning_rounded,
-                color: Theme.of(Get.context!).colorScheme.onPrimaryContainer,
-              ),
-              Text(
-                text,
-                style: TextStyle(
-                    color: Theme.of(Get.context!).colorScheme.onPrimaryContainer),
-              ),
-            ],
-          )));
-}
+void toastWaning(String text) =>toastGeneric(
+      text: text,
+      textColor: Theme.of(Get.context!).colorScheme.onErrorContainer,
+      icon: Icons.warning_rounded,
+      iconColor: Theme.of(Get.context!).colorScheme.onErrorContainer,
+      background: Theme.of(Get.context!).colorScheme.errorContainer,
+      border: Theme.of(Get.context!).colorScheme.background);

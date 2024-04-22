@@ -10,7 +10,7 @@ void toastDelete(String text) {
         return Container(
             alignment: Alignment.center,
             height: 40.r,
-            width: 120.r,
+            width: 150.r,
             decoration: BoxDecoration(
                 color: Theme.of(Get.context!).colorScheme.errorContainer,
                 borderRadius: BorderRadius.circular(20),

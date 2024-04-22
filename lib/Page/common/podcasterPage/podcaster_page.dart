@@ -22,8 +22,7 @@ class PodcasterPage extends StatelessWidget {
             : Theme.of(Get.context!).colorScheme.secondaryContainer,
         key: sKey,
         resizeToAvoidBottomInset:false,
-        body: SafeArea(
-          child: FutureBuilder(
+        body: FutureBuilder(
             future: getSinglePodcasterData(
               id: podcasterId
             ),
@@ -57,6 +56,6 @@ class PodcasterPage extends StatelessWidget {
               }
             },
           ),
-        ));
+        );
   }
 }
