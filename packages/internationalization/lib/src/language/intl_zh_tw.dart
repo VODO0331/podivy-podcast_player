@@ -82,7 +82,7 @@ const Map<String, String> zh_Tw = {
   'List added': '已添加清單',
   'Added To List': '已添加至清單',
   'updated': '已更新',
-  ''
+  'Create':'創建清單',
       //drawer
       'setting': '設定',
   'logOut': '登出',
@@ -90,6 +90,7 @@ const Map<String, String> zh_Tw = {
 //player page
   'Player error': '撥放器錯誤',
   'Unable to play or try again later': '無法撥放或請稍後重試',
+
   'Name': '名稱',
   'Edit': '編輯',
   'Count': '數量',

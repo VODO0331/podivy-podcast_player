@@ -26,11 +26,11 @@ Future listDialog(BuildContext context, Episode episode) async {
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('Add To List'.tr),
+            child: Text('Create'.tr),
             onPressed: () async {
+             
               await addListDialog(context, episode);
-
-              Get.back();
+              
             },
           ),
           TextButton(
@@ -160,7 +160,7 @@ Future addListDialog(BuildContext context, Episode episode) async {
     builder: (BuildContext context) {
       return AlertDialog(
         scrollable: true,
-        title: Text('Add To List'.tr),
+        title: Text('Create'.tr),
         content: SizedBox(
           height: 100.h,
           width: 300.w,
@@ -189,6 +189,7 @@ Future addListDialog(BuildContext context, Episode episode) async {
                 toastSuccess('List added'.tr);
               }
               textEditingController.text = "";
+              Get.back();
               Get.back();
             },
           ),

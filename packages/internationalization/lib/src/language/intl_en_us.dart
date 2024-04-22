@@ -85,6 +85,7 @@ const Map<String, String> en_Us = {
   'List added': 'List added',
   'Added To List': 'Added To List',
   'updated': 'updated',
+  'Create':'create',
   //drawer
   'logOut': 'LogOut',
   'Are you sure you want to log out?': 'Are you sure you want to log out?',
