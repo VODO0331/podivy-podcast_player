@@ -10,25 +10,27 @@ import 'constants.dart';
 
 class ListManagement {
   late final String _userId;
-  final CollectionReference<Map<String, dynamic>> _user =
-      FirebaseFirestore.instance.collection("user");
+
   late final CollectionReference<Map<String, dynamic>> _lists;
   ListManagement(AuthService authService) {
     _userId = authService.currentUser!.id;
-    _lists = _user.doc(_userId).collection("lists");
+    _lists = FirebaseFirestore.instance
+        .collection("user")
+        .doc(_userId)
+        .collection("lists");
     initialization();
   }
 
   Future<void> initialization() async {
     if (await _lists.doc("TagList").get().then((value) => !value.exists)) {
-      await _user.doc(_userId).collection("lists").doc('TagList').set({
+      await _lists.doc('TagList').set({
         documentId: "TagList",
         listName: 'TagList',
         "createAt": Timestamp.now(),
       });
     }
     if (await _lists.doc("History").get().then((value) => !value.exists)) {
-      await _user.doc(_userId).collection("lists").doc('History').set({
+      await _lists.doc('History').set({
         documentId: "History",
         listName: 'History',
         "createAt": Timestamp.now(),
@@ -37,9 +39,7 @@ class ListManagement {
   }
 
   Future<void> addToHistory(Episode episode) async {
-    final historyList = _user
-        .doc(_userId)
-        .collection("lists")
+    final historyList = _lists
         .doc('History')
         .collection('content');
     final number = await historyList.count().get().then((value) => value.count);
@@ -162,7 +162,7 @@ class ListManagement {
       result = true;
     }).catchError((e) {
       dev.log(e);
-      throw CloudDeleteException();
+      throw InfoDeleteException();
     });
     return result;
   }

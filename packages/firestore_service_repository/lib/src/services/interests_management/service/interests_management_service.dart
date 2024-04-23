@@ -1,4 +1,3 @@
-
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'constant.dart';
@@ -6,20 +5,20 @@ import '../model/interests.dart';
 import '../../../../error_exception/cloud_storage_exception.dart';
 // import 'dart:developer' as dev show log;
 
-
 class InterestsManagement {
-  late final String _userId ;
-  final CollectionReference<Map<String, dynamic>> _user =
-      FirebaseFirestore.instance.collection("user");
+  final AuthService authService;
   late final CollectionReference<Map<String, dynamic>> _interests;
 
-  InterestsManagement(AuthService authService) {
-    _userId = authService.currentUser!.id;
-    _interests = _user.doc(_userId).collection("interests");
-    addInterests();
+  InterestsManagement(this.authService) {
+    String userId = authService.currentUser!.id;
+    _interests = FirebaseFirestore.instance
+        .collection("user")
+        .doc(userId)
+        .collection("interests");
+    initInterest();
   }
 
-  Future<void> addInterests() async {
+  Future<void> initInterest() async {
     if (await _interests.doc("News").get().then((value) => !value.exists)) {
       List<String> defaultCategory = [
         "News",
@@ -69,12 +68,12 @@ class InterestsManagement {
           interestsList.add(Interests.fromSnapshot(doc));
         }
         return interestsList;
-        
       });
     } catch (_) {
       throw CloudNotGetException();
     }
   }
+
   Future<void> deleteUser() async {
     await _interests.get().then((snapshot) {
       for (DocumentSnapshot interest in snapshot.docs) {
