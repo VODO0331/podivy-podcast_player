@@ -9,7 +9,7 @@ import '../models/models.dart';
 
 class MyAudioPlayer extends ChangeNotifier {
   late AudioPlayer _audioPlayer;
-  final  fsp = Get.find<FirestoreServiceProvider>();
+  final  _fsp = Get.find<FirestoreServiceProvider>();
   final Rxn<List<Episode>?> episodeList = Rxn<List<Episode>?>();
   final Rx<Episode?> _currentEpisodeData = Episode.defaultEpisode().obs;
   final RxnInt _index = RxnInt();
@@ -34,10 +34,6 @@ class MyAudioPlayer extends ChangeNotifier {
   set setPlayList(List<Episode> value) {
     if (listEquals(value, episodeList.value)) return;
     episodeList.value = value;
-  }
-
-  Future<void> init() async {
-    _audioPlayer = AudioPlayer();
   }
 
   void setIndex(int newIndex, List<Episode> value) {
@@ -88,11 +84,11 @@ class MyAudioPlayer extends ChangeNotifier {
     });
     try {
       await _audioPlayer.setAudioSource(
-        listProcessing(),
+        _listProcessing(),
         initialIndex: _index.value,
         initialPosition: Duration.zero,
       );
-      fsp.list.addToHistory(_currentEpisodeData.value!);
+      _fsp.list.addToHistory(_currentEpisodeData.value!);
       await _audioPlayer.play();
     } catch (e) {
       throw CanNotPlayingException();
@@ -103,7 +99,7 @@ class MyAudioPlayer extends ChangeNotifier {
     _audioPlayer.currentIndexStream.listen((index) {
       if (index != null) {
         _currentEpisodeData.value = episodeList.value![index];
-        fsp.list.addToHistory(_currentEpisodeData.value!);
+        _fsp.list.addToHistory(_currentEpisodeData.value!);
       }
     });
   }
@@ -119,7 +115,7 @@ class MyAudioPlayer extends ChangeNotifier {
     });
   }
 
-  ConcatenatingAudioSource listProcessing() {
+  ConcatenatingAudioSource _listProcessing() {
     try {
       final List<AudioSource> resultList = [];
       for (int i = 0; i < episodeList.value!.length; i++) {

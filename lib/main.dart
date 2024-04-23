@@ -9,6 +9,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:internationalization_repository/internationalization.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:my_audio_player/my_audio_player.dart';
+import 'package:podivy/Page/login/auth_middleware.dart';
 import 'package:provider/provider.dart';
 import 'package:search_service/search_service_repository.dart';
 
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
         client: client,
         child: GetMaterialApp(
           builder: BotToastInit(),
+          home: const AuthMiddleWare(),
           navigatorObservers: [BotToastNavigatorObserver()],
           initialBinding: MainBinding(),
           translations: TranslationService(),

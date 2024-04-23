@@ -1,5 +1,7 @@
 import 'package:authentication_repository/authentication_repository.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/login/Page/login_page.dart';
@@ -10,12 +12,58 @@ import 'package:podivy/Page/login/login_background.dart';
 import 'package:podivy/Page/tabs.dart';
 import 'package:podivy/loading/loading_screen.dart';
 
-class AuthMiddleWare extends StatelessWidget {
+class AuthMiddleWare extends StatefulWidget {
   const AuthMiddleWare({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<AuthMiddleWare> createState() => _AuthMiddleWareState();
+}
+
+class _AuthMiddleWareState extends State<AuthMiddleWare> {
+  OverlayEntry? _overlayEntry;
+  @override
+  void initState() {
+    super.initState();
     context.read<AuthBloc>().add(const AuthEventInitialize());
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.none) {
+        _showOverlay();
+      } else {
+        _removeOverlay();
+      }
+    });
+  }
+
+  void _showOverlay() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) =>  Material(
+        color: Colors.black87,
+        child: Center(
+          child: SizedBox(
+            height: 100.h,
+            width: 300.w,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const CircularProgressIndicator(),
+                Text('Connecting to the Internet'.tr,style: TextStyle(fontSize: 15.sp),)
+              ],
+            ),
+            
+          ),
+        ),
+      ),
+    );
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _removeOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state.isLoading) {

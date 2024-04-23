@@ -17,7 +17,7 @@ const Map<String, String> zh_Tw = {
   'send verification': '傳送驗證',
   'enter the new Email': '輸入新Email',
   'Change email': '更換Email',
-  'Verification email sent':'驗證郵件已發送',
+  'Verification email sent': '驗證郵件已發送',
 
   'When you change your email, you will be logged out so you can log in with your new email.':
       '當您更改電子郵件時，您將被登出，以便您可以使用新電子郵件登入.',
@@ -41,7 +41,7 @@ const Map<String, String> zh_Tw = {
   'Please do not use the same email': '請別使用相同email',
   'Invalid email': '無效電子郵件',
   'The password strength is too weak, please re-enter': '密碼不相同，請重新輸入',
-  'Please login again and try again.':'請重新登入後再試',
+  'Please login again and try again.': '請重新登入後再試',
   //home Page
   'Go follow your favorite podcasts': '追隨喜歡的podcast!!',
   //search Page
@@ -81,17 +81,21 @@ const Map<String, String> zh_Tw = {
   'Deleted List': '已刪除清單',
   'List added': '已添加清單',
   'Added To List': '已添加至清單',
-  'Already added to the list':'已添加過至清單',
-  'The name is already in use':'該名稱已被使用',
+  'Already added to the list': '已添加過至清單',
+  'The name is already in use': '該名稱已被使用',
   'updated': '已更新',
-  'Create':'創建清單',
-      //drawer
-      'setting': '設定',
+  'Create': '創建清單',
+  //drawer
+  'setting': '設定',
   'logOut': '登出',
   'Are you sure you want to log out?': '你確定要登出嗎?',
 //player page
   'Player error': '撥放器錯誤',
   'Unable to play or try again later': '無法撥放或請稍後重試',
+
+  'unable to connect to the internet': '無法連接到網路',
+  'Connection failed': '連接失敗',
+  'Connecting to the Internet':'正在連接網路...',
 
   'Name': '名稱',
   'Edit': '編輯',
@@ -101,5 +105,5 @@ const Map<String, String> zh_Tw = {
   'back': '返回',
   'tip': '提醒',
   'change': '更換',
-  'Error':'錯誤',
+  'Error': '錯誤',
 };

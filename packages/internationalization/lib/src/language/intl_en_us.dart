@@ -18,7 +18,7 @@ const Map<String, String> en_Us = {
   'send verification': 'Send verification',
   'enter the new Email': 'enter the new Email',
   'Change email': 'Change email',
-  'Verification email sent':'Verification email sent',
+  'Verification email sent': 'Verification email sent',
 
   'The verification has been sent to the new email address. The email address will be changed after verification...':
       'The verification has been sent to the new email address. The email address will be changed after verification...',
@@ -43,7 +43,7 @@ const Map<String, String> en_Us = {
   'Please do not use the same email': 'Please do not use the same email',
   'The password strength is too weak, please re-enter':
       'The password strength is too weak, please re-enter',
-      'Please login again and try again.':'Please login again and try again.',
+  'Please login again and try again.': 'Please login again and try again.',
   //home Page
   'Go follow your favorite podcasts': 'Go follow your favorite podcasts!!',
   //search Page
@@ -84,10 +84,10 @@ const Map<String, String> en_Us = {
   'Deleted List': 'Deleted List',
   'List added': 'List added',
   'Added To List': 'Added To List',
-  'Already added to the list':'Already added to the list',
-  'The name is already in use':'The name is already in use',
+  'Already added to the list': 'Already added to the list',
+  'The name is already in use': 'The name is already in use',
   'updated': 'updated',
-  'Create':'create',
+  'Create': 'create',
   //drawer
   'logOut': 'LogOut',
   'Are you sure you want to log out?': 'Are you sure you want to log out?',
@@ -95,6 +95,11 @@ const Map<String, String> en_Us = {
   //player page
   'Player error': 'player error',
   'Unable to play or try again later': 'Unable to play or try again later',
+
+  'unable to connect to the internet': 'unable to connect to the internet',
+  'Connection failed': 'Connection failed',
+  'Connecting to the Internet': 'Connecting to the Internet...',
+
   'Name': 'Name',
   'Edit': 'Edit',
   'Count': 'count',
@@ -103,5 +108,5 @@ const Map<String, String> en_Us = {
   'back': 'Back',
   'tip': 'tip',
   'change': 'change',
-  'Error':'Error',
+  'Error': 'Error',
 };
