@@ -24,13 +24,15 @@ class BuildLogoutButton extends StatelessWidget {
             final result = await showLogOutDialog(context);
             final fsp = Get.find<FirestoreServiceProvider>();
             if (result) {
+
               await value.player.stop();
-              await Get.deleteAll();
               context.mounted
                   ? context
                       .read<AuthBloc>()
                       .add(AuthEventLogOut(fsp.info.userData.loginMethod.value))
                   : null;
+               Get.deleteAll();
+              
             }
           },
         ),
