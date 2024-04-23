@@ -46,3 +46,8 @@ class AuthEventForgotPassword extends AuthEvent{
 
   const AuthEventForgotPassword({ this.email});
 }
+class AuthEventDeleteUser extends AuthEvent{
+  final String loginMethod;
+
+  const AuthEventDeleteUser(this.loginMethod);
+}

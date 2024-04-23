@@ -1,4 +1,3 @@
-
 import 'package:authentication_repository/src/bloc/auth_bloc_event.dart';
 import 'package:authentication_repository/src/bloc/auth_bloc_state.dart';
 import 'package:authentication_repository/src/models/auth_user.dart';
@@ -6,7 +5,7 @@ import 'package:bloc/bloc.dart';
 
 import '../service/auth_service.dart';
 
-// import 'dart:developer' as dev show log;
+import 'dart:developer' as dev show log;
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final Map<String, AuthService> providers;
@@ -169,6 +168,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventLogOut>((event, emit) async {
       try {
         await providers[event.loginMethod]!.logOut();
+        emit(
+          const AuthStateLoggedOut(
+            exception: null,
+            isLoading: false,
+          ),
+        );
+      } on Exception catch (e) {
+        emit(AuthStateLoggedOut(
+          exception: e,
+          isLoading: false,
+        ));
+      }
+    });
+    //註銷
+    on<AuthEventDeleteUser>((event, emit) async {
+      try {
+        dev.log(event.loginMethod, name: 'DeleteUser : loginMethod');
+        await providers[event.loginMethod]!.deleteUser();
+
         emit(
           const AuthStateLoggedOut(
             exception: null,

@@ -3,25 +3,26 @@
 import 'dart:convert';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firestore_service_repository/firestore_service_repository.dart';
+// import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import '../../../../error_exception/cloud_storage_exception.dart';
 import '../../../../error_exception/information_storage_exception.dart';
 import 'dart:developer' as dev show log;
-import '../information_management.dart';
 import 'constants.dart';
 
 class InformationManagement {
   late final String _userId;
   late final AuthService authService;
-  final CollectionReference<Map<String, dynamic>> _userTable =
+  final CollectionReference<Map<String, dynamic>> _user =
       FirebaseFirestore.instance.collection("user");
   late final DocumentReference<Map<String, dynamic>> _userDocs;
 
   InformationManagement(this.authService) {
     _userId = authService.currentUser!.id;
-    _userDocs = _userTable.doc(_userId);
+    _userDocs = _user.doc(_userId);
     haveInfo();
   }
 
@@ -45,8 +46,7 @@ class InformationManagement {
   }
 
   Future<void> haveInfo() async {
-    final result =
-        await _userTable.doc(_userId).get().then((value) => value.data());
+    final result = await _user.doc(_userId).get().then((value) => value.data());
     if (result == null || result.isEmpty) {
       await initInfo(userName: "Nobody");
     } else {
@@ -60,7 +60,6 @@ class InformationManagement {
     }
   }
 
-  //僅在初始化使用
   Future<void> initInfo({required String userName}) async {
     ByteData data =
         await rootBundle.load("assets/images/user_pic/default_user.png");
@@ -80,19 +79,17 @@ class InformationManagement {
   }
 
   //註銷用戶
-  Future<void> deleteInfo() async {
-    try {
-      final fsp = Get.find();
-      await fsp.interests.deleteUser();
-      await fsp.follow.deleteUser();
-      await fsp.list.deleteUser();
-      await _userTable
-          .doc(_userId)
-          .delete()
-          .then((value) => dev.log("delete successfully"));
-    } catch (_) {
-      throw CloudDeleteException();
-    }
+  Future<bool> deleteInfo() async {
+    final fsp = Get.find<FirestoreServiceProvider>();
+
+    await fsp.follow.deleteUser();
+    await fsp.interests.deleteUser();
+    await fsp.list.deleteUser();
+
+    await _user.doc(_userId).delete().then((value) {
+      return true;
+    });
+    return false;
   }
 
   Future<bool> updateInfo(
@@ -104,17 +101,14 @@ class InformationManagement {
     if (userName == null && userImg == null && newEmail == null) return result;
     if (userName != null) {
       updates.addAll({personalName: userName});
-      // _userInfo.value.userName.value = userName;
     }
     if (userImg != null) {
       final result = await _imgCompress(userImg);
       updates.addAll({personalImg: result});
-      // _userInfo.value.userImg.value = result;
     }
     if (newEmail != null) {
       updates.addAll({personalEmail: newEmail});
     }
-    // update([_userInfo]);
 
     await _userDocs.update(updates).then((value) {
       result = true;
@@ -139,7 +133,7 @@ class InformationManagement {
   }
 
   Future<bool> checkEmail(String newEmail) async {
-    await _userTable.get().then((value) {
+    await _user.get().then((value) {
       for (DocumentSnapshot element in value.docs) {
         final data = element.data() as Map<String, dynamic>;
         if (newEmail == data[personalEmail]) {

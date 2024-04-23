@@ -101,6 +101,7 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
     final user = fba.FirebaseAuth.instance.currentUser;
     if (user != null) {
       await user.delete();
+      await GoogleSignIn().signOut();
     } else {
       throw UserNotFindAuthException();
     }

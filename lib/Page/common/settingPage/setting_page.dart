@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/common/settingPage/build/theme_setting.dart';
-import 'package:podivy/Page/login/auth_middleware.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -15,7 +14,7 @@ class SettingPage extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Get.offAndToNamed('/');
+              Get.back();
             },
             icon: const Icon(Icons.arrow_back_ios_rounded)),
         title: const Icon(Icons.settings),
@@ -50,19 +49,16 @@ class SettingPage extends StatelessWidget {
                               child: Text('Cancel'.tr)),
                           TextButton(
                               onPressed: () async {
-                                //  Get.back();
+                                Get.back();
                                 final fsp =
                                     Get.find<FirestoreServiceProvider>();
-                                fsp.info.deleteInfo();
+                                final loginMethod =
+                                    fsp.info.userData.loginMethod.value;
+                                await fsp.info.deleteInfo();
+                                Get.context!.read<AuthBloc>().add(
+                                     AuthEventDeleteUser(loginMethod));
                                 await Get.deleteAll();
-                                context.mounted
-                                    ? context.read<AuthBloc>().add(
-                                        AuthEventLogOut(fsp
-                                            .info.userData.loginMethod.value))
-                                    : null;
-                                Get.offAll(() => const AuthMiddleWare());
-
-                                await AuthService.firebase().deleteUser();
+                                Get.back();
                               },
                               child: Text(
                                 'delete'.tr,
