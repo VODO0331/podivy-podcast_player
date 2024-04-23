@@ -6,27 +6,29 @@ import 'dart:developer' as dev show log;
 
 import '../../../../error_exception/cloud_storage_exception.dart';
 
-import '../models/followed.dart';
+import '../models/follow.dart';
 import 'constants.dart';
 
 class FollowManagement {
-   late final String _userId ;
-  final CollectionReference<Map<String, dynamic>> user =
-      FirebaseFirestore.instance.collection("user");
-  late final CollectionReference<Map<String, dynamic>> _followed;
-
+  late final String _userId;
+  late final CollectionReference<Map<String, dynamic>> _follow;
 
   FollowManagement(AuthService authService) {
     _userId = authService.currentUser!.id;
-    _followed = user.doc(_userId).collection('followed');
+    _follow = FirebaseFirestore.instance
+        .collection("user")
+        .doc(_userId)
+        .collection('follow');
   }
-  Future<void> addFollowed({
+ 
+
+  Future<void> addFollow({
     required String podcastId,
     required String? podcastImg,
     required String? podcastName,
     required List? podcastCategory,
   }) async {
-    await _followed
+    await _follow
         .doc(podcastId)
         .set({
           followingPodcastId: podcastId,
@@ -43,22 +45,18 @@ class FollowManagement {
 
   Future<bool> unfollow({required String podcastId}) async {
     bool result = false;
-    await _followed.doc(podcastId).delete().then((value) {
+    await _follow.doc(podcastId).delete().then((value) {
       dev.log("Podcast delete successfully!");
       result = true;
     }).catchError((error) {
       dev.log(error);
-      throw CloudDeleteException();
+      throw FollowDeleteException();
     });
     return result;
   }
 
-  Future<void> updateFollowed() async {
-    return;
-  }
-
-  Future<bool> isFollowed(String podcastId) async {
-    return _followed
+  Future<bool> isFollow(String podcastId) async {
+    return _follow
         .where(followingPodcastId, isEqualTo: podcastId)
         .count()
         .get()
@@ -71,12 +69,15 @@ class FollowManagement {
     });
   }
 
-  Stream<Iterable<Followed>> homePageViewFollowed() {
+  Stream<Iterable<Follow>> homePageViewFollow() {
     try {
-      return _followed.limit(3).snapshots().map((event) {
-        List<Followed> followedList = [];
+      return _follow
+          .limit(3)
+          .snapshots()
+          .map((event) {
+        List<Follow> followedList = [];
         for (var doc in event.docs) {
-          followedList.add(Followed.fromSnapshot(doc));
+          followedList.add(Follow.fromSnapshot(doc));
         }
         return followedList;
       });
@@ -85,12 +86,14 @@ class FollowManagement {
     }
   }
 
-  Stream<Iterable<Followed>> allFollowed() {
+  Stream<Iterable<Follow>> allFollow() {
     try {
-      return _followed.snapshots().map((event) {
-        List<Followed> followedList = [];
+      return _follow
+          .snapshots()
+          .map((event) {
+        List<Follow> followedList = [];
         for (var doc in event.docs) {
-          followedList.add(Followed.fromSnapshot(doc));
+          followedList.add(Follow.fromSnapshot(doc));
         }
         return followedList;
       });
@@ -100,9 +103,9 @@ class FollowManagement {
   }
 
   Future<void> deleteUser() async {
-    await _followed.get().then((snapshot) {
+    await _follow.get().then((snapshot) async {
       for (DocumentSnapshot follow in snapshot.docs) {
-        follow.reference.delete();
+        await follow.reference.delete();
       }
     });
   }

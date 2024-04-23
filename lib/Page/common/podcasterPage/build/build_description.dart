@@ -11,14 +11,14 @@ import 'package:url_launcher/url_launcher.dart';
 class ShowDescription extends StatelessWidget {
   final Podcaster podcasterData;
   final double opacity;
-  final RxBool isFollowed;
+  final RxBool isFollow;
   final FirestoreServiceProvider fsp;
  
   const ShowDescription(
       {super.key,
       required this.podcasterData,
       required this.opacity,
-      required this.isFollowed,
+      required this.isFollow,
       required this.fsp,});
 
   @override
@@ -48,16 +48,16 @@ class ShowDescription extends StatelessWidget {
                     label: Text("share".tr),
                   ),
                   FutureBuilder(
-                    future: fsp.follow.isFollowed(podcasterData.id),
+                    future: fsp.follow.isFollow(podcasterData.id),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        isFollowed.value = snapshot.data!;
+                        isFollow.value = snapshot.data!;
 
                         return Obx(() {
-                          final Rx<IconData> btIcon = isFollowed.value
+                          final Rx<IconData> btIcon = isFollow.value
                               ? Icons.favorite.obs
                               : Icons.favorite_border.obs;
-                          final Rx<Color> btColor = isFollowed.value
+                          final Rx<Color> btColor = isFollow.value
                               ? Colors.red.obs
                               : Colors.grey.obs;
                           return OutlinedButton.icon(
@@ -71,9 +71,9 @@ class ShowDescription extends StatelessWidget {
                             onPressed: () async {
                               await changeFollowState(
                                 podcasterData,
-                                isFollowed.value,
+                                isFollow.value,
                               );
-                              isFollowed.value = !isFollowed.value;
+                              isFollow.value = !isFollow.value;
                             },
                             icon: Icon(
                               btIcon.value,

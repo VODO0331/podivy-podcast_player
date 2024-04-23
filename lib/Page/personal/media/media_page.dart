@@ -29,7 +29,7 @@ class MediaPage extends StatelessWidget {
                     'Media',
                     style: GoogleFonts.borel(
                       fontSize: 40.sp,
-                      color: Get.theme.primaryColor,
+                      color: Theme.of(Get.context!).colorScheme.primary,
                     ),
                   ),
                   _divider(),

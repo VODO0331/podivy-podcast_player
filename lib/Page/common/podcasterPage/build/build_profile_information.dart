@@ -12,7 +12,7 @@ class ProfileInformation extends StatelessWidget {
   final Podcaster podcasterData;
   ProfileInformation({super.key, required this.podcasterData});
   final _widgetController = Get.put(WidgetController());
-  final RxBool isFollowed = false.obs;
+  final RxBool isFollow = false.obs;
   // final _followedStorageService = Get.find<FollowManagement>();
   final fsp = Get.find<FirestoreServiceProvider>();
 
@@ -89,7 +89,7 @@ class ProfileInformation extends StatelessWidget {
                         child: ShowDescription(
                           podcasterData: podcasterData,
                           opacity: _widgetController.opacityAnimation!.value!,
-                          isFollowed: isFollowed,
+                          isFollow: isFollow,
                           fsp: fsp,
                         ),
                       ),

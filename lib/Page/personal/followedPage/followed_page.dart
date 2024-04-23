@@ -5,8 +5,8 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:podivy/Page/personal/followedPage/build/build_followed_list.dart';
 import 'package:podivy/util/toast/unfollow_toast.dart';
 
-class FollowedPage extends StatelessWidget {
-  FollowedPage({super.key});
+class FollowPage extends StatelessWidget {
+  FollowPage({super.key});
 
   final fsp = Get.find<FirestoreServiceProvider>();
   @override
@@ -79,15 +79,15 @@ class FollowedPage extends StatelessWidget {
             ),
           ),
           StreamBuilder(
-            stream: fsp.follow.allFollowed(),
+            stream: fsp.follow.allFollow(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
                 case ConnectionState.active:
                   if (snapshot.hasData) {
-                    final allFollowed = snapshot.data;
-                    return FollowedList(
-                      allFollowed: allFollowed!,
+                    final allFollow = snapshot.data;
+                    return FollowList(
+                      allFollow: allFollow!,
                       onDelete: (followed) async {
                         if (await fsp.follow.unfollow(
                             podcastId: followed.podcastId)) {

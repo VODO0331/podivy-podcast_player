@@ -14,7 +14,7 @@ Future<void> changeFollowState(
     await fsp.follow.unfollow(podcastId: podcasterData.id);
     await fsp.interests.updateInterests(podcasterData.categories, !value);
   } else {
-    await fsp.follow.addFollowed(
+    await fsp.follow.addFollow(
       podcastId: podcasterData.id,
       podcastImg: podcasterData.imageUrl,
       podcastName: podcasterData.title,

@@ -13,7 +13,7 @@ class BuildCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: fsp.follow.homePageViewFollowed(),
+      stream: fsp.follow.homePageViewFollow(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting ||
             snapshot.connectionState == ConnectionState.active) {
@@ -44,7 +44,7 @@ class BuildCarousel extends StatelessWidget {
 }
 
 class MyCarousel extends StatelessWidget {
-  final Iterable<Followed> item;
+  final Iterable<Follow> item;
   MyCarousel({
     Key? key,
     required this.item,
@@ -52,7 +52,7 @@ class MyCarousel extends StatelessWidget {
   final CarouselController controller = Get.put(CarouselController());
   final Rx<double> currentIndex = 0.0.obs;
 
-  final RxBool isFollowed = false.obs;
+  final RxBool isFollow = false.obs;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -97,7 +97,7 @@ class MyCarousel extends StatelessWidget {
   }
 }
 
-List<Widget> listCarouselItem(Iterable<Followed> data) {
+List<Widget> listCarouselItem(Iterable<Follow> data) {
   final List<Widget> list = [];
   for (int i = 0; i < data.length; i++) {
     list.add(CarouselContent(

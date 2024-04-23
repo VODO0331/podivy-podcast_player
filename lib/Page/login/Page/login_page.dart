@@ -97,12 +97,13 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
+                  color: Colors.white,
                     onPressed: () {
                       context
                           .read<AuthBloc>()
                           .add(const AuthEventLogIn('', '', 'Google'));
                     },
-                    icon: const Icon(FontAwesomeIcons.google))
+                    icon: const Icon(FontAwesomeIcons.google,))
               ],
             ),
             TextButton(

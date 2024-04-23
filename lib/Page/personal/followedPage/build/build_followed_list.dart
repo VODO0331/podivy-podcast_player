@@ -4,22 +4,22 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 import '../../../../util/dialogs/delete_dialog.dart';
 
-typedef FollowedCallback = void Function(Followed followed);
+typedef FollowCallback = void Function(Follow followed);
 
-class FollowedList extends StatelessWidget {
-  final Iterable<Followed> allFollowed;
-  final FollowedCallback onDelete;
-  final FollowedCallback onTap;
-  const FollowedList(
+class FollowList extends StatelessWidget {
+  final Iterable<Follow> allFollow;
+  final FollowCallback onDelete;
+  final FollowCallback onTap;
+  const FollowList(
       {super.key,
-      required this.allFollowed,
+      required this.allFollow,
       required this.onDelete,
       required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      itemCount: allFollowed.length,
+      itemCount: allFollow.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           childAspectRatio: 1,
@@ -27,7 +27,7 @@ class FollowedList extends StatelessWidget {
           mainAxisSpacing: 17),
       padding: const EdgeInsets.all(8).r,
       itemBuilder: (context, index) {
-        final followed = allFollowed.elementAt(index);
+        final followed = allFollow.elementAt(index);
 
         return GestureFlipCard(
           animationDuration: const Duration(milliseconds: 400),

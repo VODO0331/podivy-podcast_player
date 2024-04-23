@@ -125,7 +125,7 @@ Widget appBar(FirestoreServiceProvider fsp) {
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 6).r,
                 alignment: Alignment.centerLeft,
                 decoration: BoxDecoration(
-                    color: Get.theme.colorScheme.background,
+                    color: Theme.of(Get.context!).colorScheme.background,
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: const [
                       BoxShadow(
@@ -136,7 +136,7 @@ Widget appBar(FirestoreServiceProvider fsp) {
                     ]),
                 child: Icon(
                   Icons.search,
-                  color: Get.theme.colorScheme.primary,
+                  color: Theme.of(Get.context!).colorScheme.primary,
                 ),
               ),
             )),

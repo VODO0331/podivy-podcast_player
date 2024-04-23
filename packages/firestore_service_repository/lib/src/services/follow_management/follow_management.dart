@@ -1,5 +1,5 @@
-library followed_management;
+library follow_management;
 
 export 'service/follow_management_service.dart' show FollowManagement;
-export 'models/followed.dart';
+export 'models/follow.dart';
 

@@ -2,20 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../service/constants.dart';
 
-class Followed {
+class Follow {
   final String podcastId;
   final String podcastImg;
   final String podcastName;
   final List categories;
 
-  Followed({
+  Follow({
     required this.podcastId,
     required this.podcastImg,
     required this.podcastName,
     required this.categories,
   });
 
-  Followed.fromSnapshot(
+  Follow.fromSnapshot(
       QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
       : podcastId = snapshot.data()[followingPodcastId] as String,
         podcastName = snapshot.data()[followingPodcastName] as String,

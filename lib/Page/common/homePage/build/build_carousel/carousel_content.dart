@@ -12,15 +12,16 @@ class NullCarouselContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Rx<Color> backgroundColor = Get.isDarkMode
+        ? const Color(0xFF181B17).obs
+        : Theme.of(context).colorScheme.primaryContainer.obs;
     return Padding(
       padding: const EdgeInsets.all(8.0).r,
-      child: Container(
+      child: Obx(() => Container(
         padding: const EdgeInsets.all(8).r,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: Get.isDarkMode
-                ? const Color(0xFF181B17)
-                : Theme.of(context).colorScheme.primaryContainer,
+            color: backgroundColor.value,
             borderRadius: BorderRadius.circular(10),
             boxShadow: const [
               BoxShadow(
@@ -33,16 +34,16 @@ class NullCarouselContent extends StatelessWidget {
         child: AnimatedTextKit(animatedTexts: [
           WavyAnimatedText('Go follow your favorite podcasts'.tr)
         ]),
-      ),
+      ),)
     );
   }
 }
 
 class CarouselContent extends StatelessWidget {
-  final Followed followed;
+  final Follow followed;
   CarouselContent({super.key, required this.followed});
   final _loopController = Get.put(LoopController());
-  final RxBool isFollowed = false.obs;
+  final RxBool isFollow = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -166,8 +167,7 @@ class _CarouselListViewState extends State<CarouselListView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getSinglePodcasterData(
-          id: widget.podcastId),
+      future: getSinglePodcasterData(id: widget.podcastId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {

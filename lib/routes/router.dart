@@ -56,7 +56,7 @@ class RouterPage {
           //追隨頁面
           GetPage(
               name: AppRoutes.followed,
-              page: () =>  FollowedPage(),
+              page: () =>  FollowPage(),
               children: [
                 GetPage(
                   name: AppRoutes.podcaster,

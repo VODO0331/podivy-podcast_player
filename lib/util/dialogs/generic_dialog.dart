@@ -14,7 +14,7 @@ Future<T?> showGenericDialog<T>({
     context: context,
     builder: (context) {
       return AlertDialog(
-        backgroundColor: Get.theme.dialogBackgroundColor,
+        backgroundColor: Theme.of(Get.context!).dialogBackgroundColor,
         title: Text(title),
         content: Text(content),
         actions: options.keys.map((optionTile) {
