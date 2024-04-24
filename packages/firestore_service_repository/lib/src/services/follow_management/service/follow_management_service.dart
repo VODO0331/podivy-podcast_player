@@ -55,7 +55,7 @@ class FollowManagement {
     return result;
   }
 
-  Future<bool> isFollow(String podcastId) async {
+  Future<bool> haveFollow(String podcastId) async {
     return _follow
         .where(followingPodcastId, isEqualTo: podcastId)
         .count()

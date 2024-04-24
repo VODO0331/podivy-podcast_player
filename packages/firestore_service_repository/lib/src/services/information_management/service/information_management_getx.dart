@@ -14,16 +14,16 @@ import 'dart:developer' as dev show log;
 import 'constants.dart';
 
 class InformationManagement {
-  late final String _userId;
-  late final AuthService authService;
-  final CollectionReference<Map<String, dynamic>> _user =
-      FirebaseFirestore.instance.collection("user");
+  late final String _authEmail;
+  late final String _loginMethod;
   late final DocumentReference<Map<String, dynamic>> _userDocs;
 
-  InformationManagement(this.authService) {
-    _userId = authService.currentUser!.id;
-    _userDocs = _user.doc(_userId);
-    haveInfo();
+  InformationManagement(AuthService authService) {
+    String userId = authService.currentUser!.id;
+    _authEmail = authService.currentUser!.email;
+    _loginMethod = authService.loginMethod;
+    _userDocs = FirebaseFirestore.instance.collection("user").doc(userId);
+    _haveInfo();
   }
 
   Future<String> _imgCompress(Uint8List img) async {
@@ -45,22 +45,19 @@ class InformationManagement {
     }
   }
 
-  Future<void> haveInfo() async {
-    final result = await _user.doc(_userId).get().then((value) => value.data());
+  Future<void> _haveInfo() async {
+    final result = await _userDocs.get().then((value) => value.data());
     if (result == null || result.isEmpty) {
-      await initInfo(userName: "Nobody");
+      await _initialization(userName: "Nobody");
     } else {
       //檢查firebaseAuth 與 firestore 的email是否相同
-      if (result[personalEmail] != authService.currentUser!.email) {
-        await updateInfo(
-            userName: null,
-            userImg: null,
-            newEmail: authService.currentUser!.email);
+      if (result[personalEmail] != _authEmail) {
+        await updateInfo(userName: null, userImg: null, newEmail: _authEmail);
       }
     }
   }
 
-  Future<void> initInfo({required String userName}) async {
+  Future<void> _initialization({required String userName}) async {
     ByteData data =
         await rootBundle.load("assets/images/user_pic/default_user.png");
     final imgData = await _imgCompress(data.buffer.asUint8List());
@@ -68,8 +65,8 @@ class InformationManagement {
     await _userDocs.set({
       personalName: userName,
       personalImg: imgData,
-      personalEmail: authService.currentUser!.email,
-      userLoginMethod: authService.provider.loginMethod,
+      personalEmail: _authEmail,
+      userLoginMethod: _loginMethod,
     }).then((value) {
       dev.log("info added successfully!");
     }).catchError((error) {
@@ -86,7 +83,7 @@ class InformationManagement {
     await fsp.interests.deleteUser();
     await fsp.list.deleteUser();
 
-    await _user.doc(_userId).delete().then((value) {
+    await _userDocs.delete().then((value) {
       return true;
     });
     return false;
@@ -133,7 +130,8 @@ class InformationManagement {
   }
 
   Future<bool> checkEmail(String newEmail) async {
-    await _user.get().then((value) {
+    
+    await FirebaseFirestore.instance.collection("user").get().then((value) {
       for (DocumentSnapshot element in value.docs) {
         final data = element.data() as Map<String, dynamic>;
         if (newEmail == data[personalEmail]) {

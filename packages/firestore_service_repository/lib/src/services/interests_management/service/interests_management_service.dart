@@ -6,19 +6,18 @@ import '../../../../error_exception/cloud_storage_exception.dart';
 // import 'dart:developer' as dev show log;
 
 class InterestsManagement {
-  final AuthService authService;
   late final CollectionReference<Map<String, dynamic>> _interests;
 
-  InterestsManagement(this.authService) {
+  InterestsManagement(AuthService authService) {
     String userId = authService.currentUser!.id;
     _interests = FirebaseFirestore.instance
         .collection("user")
         .doc(userId)
         .collection("interests");
-    initInterest();
+    _initialization();
   }
 
-  Future<void> initInterest() async {
+  Future<void> _initialization() async {
     if (await _interests.doc("News").get().then((value) => !value.exists)) {
       List<String> defaultCategory = [
         "News",
@@ -56,7 +55,7 @@ class InterestsManagement {
     }
   }
 
-  Stream<Iterable<Interests>> interestsCategory() {
+  Stream<Iterable<Interests>> readInterests() {
     try {
       return _interests
           .orderBy(interestsValue, descending: true)

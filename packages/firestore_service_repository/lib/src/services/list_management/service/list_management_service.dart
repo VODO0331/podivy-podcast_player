@@ -9,19 +9,18 @@ import '../model/list.dart';
 import 'constants.dart';
 
 class ListManagement {
-  late final String _userId;
 
   late final CollectionReference<Map<String, dynamic>> _lists;
   ListManagement(AuthService authService) {
-    _userId = authService.currentUser!.id;
+    String userId = authService.currentUser!.id;
     _lists = FirebaseFirestore.instance
         .collection("user")
-        .doc(_userId)
+        .doc(userId)
         .collection("lists");
-    initialization();
+    _initialization();
   }
 
-  Future<void> initialization() async {
+  Future<void> _initialization() async {
     if (await _lists.doc("TagList").get().then((value) => !value.exists)) {
       await _lists.doc('TagList').set({
         documentId: "TagList",
@@ -39,9 +38,7 @@ class ListManagement {
   }
 
   Future<void> addToHistory(Episode episode) async {
-    final historyList = _lists
-        .doc('History')
-        .collection('content');
+    final historyList = _lists.doc('History').collection('content');
     final number = await historyList.count().get().then((value) => value.count);
     //限制數量
     if (number != null && number >= 10) {

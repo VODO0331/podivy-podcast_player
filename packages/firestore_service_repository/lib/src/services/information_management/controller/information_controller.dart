@@ -12,9 +12,6 @@ class InformationController extends GetxController {
   InformationController(AuthService authService){
     informationManagement = InformationManagement(authService);
   }
-  haveInfo() => informationManagement.haveInfo();
-
-  
 
   deleteInfo() => informationManagement.deleteInfo();
 
@@ -26,6 +23,7 @@ class InformationController extends GetxController {
           .updateInfo(userName: userName, userImg: userImg, newEmail: newEmail);
 
   checkEmail(String newEmail) => informationManagement.checkEmail(newEmail);
+  
   @override
   void onReady() {
     super.onReady();

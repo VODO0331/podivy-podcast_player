@@ -43,7 +43,6 @@ class CarouselContent extends StatelessWidget {
   final Follow followed;
   CarouselContent({super.key, required this.followed});
   final _loopController = Get.put(LoopController());
-  final RxBool isFollow = false.obs;
 
   @override
   Widget build(BuildContext context) {

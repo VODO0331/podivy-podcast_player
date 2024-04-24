@@ -7,8 +7,7 @@ import 'interests_management/interests.management.dart';
 import 'list_management/list_management.dart';
 
 class FirestoreServiceProvider {
-  final AuthService authService;
-  FirestoreServiceProvider(this.authService) {
+  FirestoreServiceProvider(AuthService authService) {
     Get.put(ListManagement(authService));
     Get.put(FollowManagement(authService));
     Get.put(InterestsManagement(authService));

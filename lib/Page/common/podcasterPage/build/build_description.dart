@@ -11,14 +11,14 @@ import 'package:url_launcher/url_launcher.dart';
 class ShowDescription extends StatelessWidget {
   final Podcaster podcasterData;
   final double opacity;
-  final RxBool isFollow;
+  final RxBool haveFollow;
   final FirestoreServiceProvider fsp;
  
   const ShowDescription(
       {super.key,
       required this.podcasterData,
       required this.opacity,
-      required this.isFollow,
+      required this.haveFollow,
       required this.fsp,});
 
   @override
@@ -48,16 +48,16 @@ class ShowDescription extends StatelessWidget {
                     label: Text("share".tr),
                   ),
                   FutureBuilder(
-                    future: fsp.follow.isFollow(podcasterData.id),
+                    future: fsp.follow.haveFollow(podcasterData.id),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        isFollow.value = snapshot.data!;
+                        haveFollow.value = snapshot.data!;
 
                         return Obx(() {
-                          final Rx<IconData> btIcon = isFollow.value
+                          final Rx<IconData> btIcon = haveFollow.value
                               ? Icons.favorite.obs
                               : Icons.favorite_border.obs;
-                          final Rx<Color> btColor = isFollow.value
+                          final Rx<Color> btColor = haveFollow.value
                               ? Colors.red.obs
                               : Colors.grey.obs;
                           return OutlinedButton.icon(
@@ -71,9 +71,9 @@ class ShowDescription extends StatelessWidget {
                             onPressed: () async {
                               await changeFollowState(
                                 podcasterData,
-                                isFollow.value,
+                                haveFollow.value,
                               );
-                              isFollow.value = !isFollow.value;
+                              haveFollow.value = !haveFollow.value;
                             },
                             icon: Icon(
                               btIcon.value,

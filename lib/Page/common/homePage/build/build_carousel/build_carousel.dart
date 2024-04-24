@@ -52,7 +52,6 @@ class MyCarousel extends StatelessWidget {
   final CarouselController controller = Get.put(CarouselController());
   final Rx<double> currentIndex = 0.0.obs;
 
-  final RxBool isFollow = false.obs;
   @override
   Widget build(BuildContext context) {
     return Column(
