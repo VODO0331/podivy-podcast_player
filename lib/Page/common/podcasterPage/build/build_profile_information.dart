@@ -24,92 +24,94 @@ class ProfileInformation extends StatelessWidget {
       children: [
         _buildShaderMask(podcasterData.imageUrl!),
         Padding(
-            padding: const EdgeInsets.fromLTRB(9, 40, 9, 9).r,
+            padding: const EdgeInsets.all(9).r,
             child: AnimatedBuilder(
               animation: _widgetController.animationController!,
               builder: (context, child) {
-                return SizedBox(
-                  height: _widgetController.heightAnimation!.value.h,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            iconSize: 35.r,
-                            onPressed: () {
-                              Get.back();
-                            },
-                            color: Theme.of(context).colorScheme.primary,
-                            icon: const Icon(Icons.arrow_back_rounded),
-                          ),
-                          Image.asset(
-                            Get.isDarkMode
-                                ? 'assets/images/podchaser/white.png'
-                                : 'assets/images/podchaser/black.png',
-                            height: 30.r,
-                            width: 170.r,
-                            cacheHeight: 30.r.toInt(),
-                            cacheWidth: 170.r.toInt(),
-                            fit: BoxFit.cover,
-                          ),
-                          IconButton(
-                            iconSize: 35.r,
-                            onPressed: null,
-                            color: Theme.of(context).colorScheme.primary,
-                            icon: const Icon(Icons.podcasts),
-                          ),
-                        ],
-                      ),
-                      const Divider(),
-                      GestureDetector(
-                        onTap: () {
-                          _widgetController.changeAnimation();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8).r,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              _buildUserAvatar(
-                                podcasterData.imageUrl!,
-                                _widgetController.avatarSizeAnimation!.value,
-                                _widgetController.opacityAnimation!.value!,
-                              ),
-                              Flexible(
-                                child: _buildTitleTextScroll(
-                                  podcasterData.title,
-                                ),
-                              ),
-                            ],
-                          ),
+                return SafeArea(
+                  child: SizedBox(
+                    height: _widgetController.heightAnimation!.value.h,
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              iconSize: 35.r,
+                              onPressed: () {
+                                Get.back();
+                              },
+                              color: Theme.of(context).colorScheme.primary,
+                              icon: const Icon(Icons.arrow_back_rounded),
+                            ),
+                            Image.asset(
+                              Get.isDarkMode
+                                  ? 'assets/images/podchaser/white.png'
+                                  : 'assets/images/podchaser/black.png',
+                              height: 30.r,
+                              width: 170.r,
+                              cacheHeight: 30.r.toInt(),
+                              cacheWidth: 170.r.toInt(),
+                              fit: BoxFit.cover,
+                            ),
+                            IconButton(
+                              iconSize: 35.r,
+                              onPressed: null,
+                              color: Theme.of(context).colorScheme.primary,
+                              icon: const Icon(Icons.podcasts),
+                            ),
+                          ],
                         ),
-                      ),
-                      Expanded(
-                        child: ShowDescription(
-                          podcasterData: podcasterData,
-                          opacity: _widgetController.opacityAnimation!.value!,
-                          haveFollow: haveFollow,
-                          fsp: fsp,
-                        ),
-                      ),
-                      Transform.rotate(
-                        angle: _widgetController.rotateAnimation!.value,
-                        child: GestureDetector(
+                        const Divider(),
+                        GestureDetector(
                           onTap: () {
                             _widgetController.changeAnimation();
                           },
-                          child: Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            size: 30.r,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8).r,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _buildUserAvatar(
+                                  podcasterData.imageUrl!,
+                                  _widgetController.avatarSizeAnimation!.value,
+                                  _widgetController.opacityAnimation!.value!,
+                                ),
+                                Flexible(
+                                  child: _buildTitleTextScroll(
+                                    podcasterData.title,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: ShowDescription(
+                            podcasterData: podcasterData,
+                            opacity: _widgetController.opacityAnimation!.value!,
+                            haveFollow: haveFollow,
+                            fsp: fsp,
+                          ),
+                        ),
+                        Transform.rotate(
+                          angle: _widgetController.rotateAnimation!.value,
+                          child: GestureDetector(
+                            onTap: () {
+                              _widgetController.changeAnimation();
+                            },
+                            child: Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              size: 30.r,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ).asGlass(
+                    tintColor: Theme.of(context).colorScheme.background,
+                    clipBorderRadius: BorderRadius.circular(30),
                   ),
-                ).asGlass(
-                  tintColor: Theme.of(context).colorScheme.background,
-                  clipBorderRadius: BorderRadius.circular(30),
                 );
               },
             ))

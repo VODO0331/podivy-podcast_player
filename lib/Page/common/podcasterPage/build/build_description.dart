@@ -42,7 +42,7 @@ class ShowDescription extends StatelessWidget {
                           ScreenUtil().setWidth(40)),
                     ),
                     onPressed: () {
-                      Share.share('share');
+                      Share.share('share ${podcasterData.title}');
                     },
                     icon: const Icon(Icons.share),
                     label: Text("share".tr),
