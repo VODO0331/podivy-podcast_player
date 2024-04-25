@@ -10,17 +10,15 @@ import '../models/follow.dart';
 import 'constants.dart';
 
 class FollowManagement {
-  late final String _userId;
   late final CollectionReference<Map<String, dynamic>> _follow;
 
   FollowManagement(AuthService authService) {
-    _userId = authService.currentUser!.id;
+    String userId = authService.currentUser!.id;
     _follow = FirebaseFirestore.instance
         .collection("user")
-        .doc(_userId)
+        .doc(userId)
         .collection('follow');
   }
- 
 
   Future<void> addFollow({
     required String podcastId,
@@ -71,10 +69,7 @@ class FollowManagement {
 
   Stream<Iterable<Follow>> homePageViewFollow() {
     try {
-      return _follow
-          .limit(3)
-          .snapshots()
-          .map((event) {
+      return _follow.limit(3).snapshots().map((event) {
         List<Follow> followedList = [];
         for (var doc in event.docs) {
           followedList.add(Follow.fromSnapshot(doc));
@@ -88,9 +83,7 @@ class FollowManagement {
 
   Stream<Iterable<Follow>> allFollow() {
     try {
-      return _follow
-          .snapshots()
-          .map((event) {
+      return _follow.snapshots().map((event) {
         List<Follow> followedList = [];
         for (var doc in event.docs) {
           followedList.add(Follow.fromSnapshot(doc));
