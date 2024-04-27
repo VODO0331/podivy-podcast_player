@@ -2,15 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class ClientGlobalController{
+class ClientController{
   late final GraphQLClient _client;
   GraphQLClient get client => _client;
-  static ClientGlobalController? _instance;
+  static ClientController? _instance;
 
-  ClientGlobalController._();
+  ClientController._();
 
-  factory ClientGlobalController() {
-    _instance ??= ClientGlobalController._();
+  factory ClientController() {
+    _instance ??= ClientController._();
     return _instance!;
   }
   ValueNotifier<GraphQLClient> initialize(String token) {

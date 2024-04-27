@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:my_audio_player/my_audio_player.dart';
 import 'package:search_service/src/service/query.dart';
-import '../controller/client_global_controller.dart';
+import '../controller/client_controller.dart';
 import '../error_exception/search_error_exception.dart';
 
 //functional programming
@@ -91,7 +91,7 @@ Podcaster? _dataProcessing(
 Future<QueryResult> _queryResult({
   required String id,
 }) async {
-  final ClientGlobalController controller = Get.put(ClientGlobalController());
+  final ClientController controller = Get.put(ClientController());
   final GraphQLClient client = controller.client;
   try {
     late QueryResult result;

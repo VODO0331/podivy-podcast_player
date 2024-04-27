@@ -3,7 +3,7 @@ import 'dart:developer' as dev show log;
 import 'package:get/get.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:my_audio_player/my_audio_player.dart';
-import '../controller/client_global_controller.dart';
+import '../controller/client_controller.dart';
 import '../models/search.dart';
 import '../error_exception/search_error_exception.dart';
 
@@ -93,7 +93,7 @@ Future<({List<Podcaster> podcastList, List<Episode> episodeList})> _getData(
 }
 
 Future<QueryResult> _queryResult({required SearchService searchService}) async {
-  final ClientGlobalController controller = Get.put(ClientGlobalController());
+  final ClientController controller = Get.put(ClientController());
   final GraphQLClient client = controller.client;
   
   try {

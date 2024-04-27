@@ -28,7 +28,7 @@ Future<void> main() async {
   await dotenv.load(fileName: '.env');
 
   final ValueNotifier<GraphQLClient> client =
-      ClientGlobalController().initialize(dotenv.get('myDevelopToken'));
+      ClientController().initialize(dotenv.get('myDevelopToken'));
   runApp(MyApp(
     locale: locale,
     isDarkMode: isDarkMode,
