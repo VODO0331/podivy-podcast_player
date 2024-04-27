@@ -1,12 +1,11 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firestore_service_repository/firestore_service_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 
 import 'dart:developer' as dev show log;
 
 import '../../../../error_exception/cloud_storage_exception.dart';
 
-import '../models/follow.dart';
 import 'constants.dart';
 
 class FollowManagement {
@@ -67,12 +66,16 @@ class FollowManagement {
     });
   }
 
-  Stream<Iterable<Follow>> homePageViewFollow() {
+  Stream<Iterable<Podcaster>> homePageViewFollow() {
     try {
       return _follow.limit(3).snapshots().map((event) {
-        List<Follow> followedList = [];
+        List<Podcaster> followedList = [];
         for (var doc in event.docs) {
-          followedList.add(Follow.fromSnapshot(doc));
+          followedList.add(Podcaster(
+              id: doc.data()[followingPodcastId] as String,
+              title: doc.data()[followingPodcastName] as String,
+              imageUrl: doc.data()[followingPodcastImg] as String,
+              categories: doc.data()[followingCategory] as List));
         }
         return followedList;
       });
@@ -81,12 +84,16 @@ class FollowManagement {
     }
   }
 
-  Stream<Iterable<Follow>> allFollow() {
+  Stream<Iterable<Podcaster>> allFollow() {
     try {
       return _follow.snapshots().map((event) {
-        List<Follow> followedList = [];
+        List<Podcaster> followedList = [];
         for (var doc in event.docs) {
-          followedList.add(Follow.fromSnapshot(doc));
+          followedList.add(Podcaster(
+              id: doc.data()[followingPodcastId] as String,
+              title: doc.data()[followingPodcastName] as String,
+              imageUrl: doc.data()[followingPodcastImg] as String,
+              categories: doc.data()[followingCategory] as List));
         }
         return followedList;
       });

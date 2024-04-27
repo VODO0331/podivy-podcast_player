@@ -1,4 +1,3 @@
-import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
@@ -40,8 +39,8 @@ class NullCarouselContent extends StatelessWidget {
 }
 
 class CarouselContent extends StatelessWidget {
-  final Follow followed;
-  CarouselContent({super.key, required this.followed});
+  final Podcaster following;
+  CarouselContent({super.key, required this.following});
   final _loopController = Get.put(LoopController());
 
   @override
@@ -82,8 +81,8 @@ class CarouselContent extends StatelessWidget {
                             //     _loopController.boardAnimation!.value.toString());
                             return Obx(() => GestureDetector(
                                   onTap: () => Get.toNamed(
-                                      '/followed/podcaster',
-                                      arguments: followed.podcastId),
+                                      '/following/podcaster',
+                                      arguments: following.id),
                                   child: Container(
                                     height: 70.r *
                                         _loopController.boardAnimation!.value.r,
@@ -100,7 +99,7 @@ class CarouselContent extends StatelessWidget {
                                     child: FadeInImage.assetNetwork(
                                       placeholder:
                                           "assets/images/generic/search_loading.gif",
-                                      image: followed.podcastImg,
+                                      image: following.imageUrl!,
                                       imageCacheHeight: 219.r.toInt(),
                                       imageCacheWidth: 219.r.toInt(),
                                     ),
@@ -115,7 +114,7 @@ class CarouselContent extends StatelessWidget {
                     height: 20.r,
                   ),
                   Text(
-                    followed.podcastName,
+                    following.title,
                     maxLines: 2,
                     style: TextStyle(fontSize: 12.sp),
                     textAlign: TextAlign.center,
@@ -137,7 +136,7 @@ class CarouselContent extends StatelessWidget {
                       : Theme.of(context).colorScheme.secondaryContainer,
                   borderRadius: BorderRadius.circular(5)),
               child: CarouselListView(
-                podcastId: followed.podcastId,
+                podcastId: following.id,
               ),
             ),
           )
@@ -187,7 +186,7 @@ class _CarouselListViewState extends State<CarouselListView> {
                 textColor: Theme.of(context).colorScheme.onSecondaryContainer,
                 onTap: () async {
                   myAudioPlayer.setIndex(index, data.episodesList!);
-                  await Get.toNamed('/followed/podcaster/player');
+                  await Get.toNamed('/following/podcaster/player');
                 },
               );
             },

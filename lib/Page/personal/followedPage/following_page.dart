@@ -2,7 +2,7 @@ import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
-import 'package:podivy/Page/personal/followedPage/build/build_followed_list.dart';
+import 'package:podivy/Page/personal/followedPage/build/build_following_list.dart';
 import 'package:podivy/util/toast/unfollow_toast.dart';
 
 class FollowPage extends StatelessWidget {
@@ -88,17 +88,17 @@ class FollowPage extends StatelessWidget {
                     final allFollow = snapshot.data;
                     return FollowList(
                       allFollow: allFollow!,
-                      onDelete: (followed) async {
+                      onDelete: (following) async {
                         if (await fsp.follow.unfollow(
-                            podcastId: followed.podcastId)) {
+                            podcastId: following.id)) {
                           await fsp.interests.updateInterests(
-                              followed.categories, false);
+                              following.categories, false);
                           toastUnfollow();
                         }
                       },
-                      onTap: (followed) {
-                        Get.toNamed("/followed/podcaster",
-                            arguments: followed.podcastId);
+                      onTap: (following) {
+                        Get.toNamed("/follow/podcaster",
+                            arguments: following.id);
                       },
                     );
                   } else {

@@ -1,13 +1,13 @@
-import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 
 import '../../../../util/dialogs/delete_dialog.dart';
 
-typedef FollowCallback = void Function(Follow followed);
+typedef FollowCallback = void Function(Podcaster following);
 
 class FollowList extends StatelessWidget {
-  final Iterable<Follow> allFollow;
+  final Iterable<Podcaster> allFollow;
   final FollowCallback onDelete;
   final FollowCallback onTap;
   const FollowList(
@@ -27,12 +27,12 @@ class FollowList extends StatelessWidget {
           mainAxisSpacing: 17),
       padding: const EdgeInsets.all(8).r,
       itemBuilder: (context, index) {
-        final followed = allFollow.elementAt(index);
+        final following = allFollow.elementAt(index);
 
         return GestureFlipCard(
           animationDuration: const Duration(milliseconds: 400),
           frontWidget: GestureDetector(
-            onTap: () =>onTap(followed),
+            onTap: () =>onTap(following),
             child: Card(
               color: Colors.transparent,
               elevation: 10,
@@ -49,7 +49,7 @@ class FollowList extends StatelessWidget {
                 fit: BoxFit.cover,
                 placeholderFit: BoxFit.cover,
                 placeholder: "assets/images/generic/loading.gif",
-                image: followed.podcastImg,
+                image: following.imageUrl!,
               ),
             ),
           ),
@@ -76,7 +76,7 @@ class FollowList extends StatelessWidget {
                 ),
                 onPressed: () async {
                   final shouldDelete = await showDeleteDialog(context);
-                  shouldDelete ? onDelete(followed) : null;
+                  shouldDelete ? onDelete(following) : null;
                 },
               ),
             ),

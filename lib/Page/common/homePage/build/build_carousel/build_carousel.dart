@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
 
 import 'package:get/get.dart';
+import 'package:my_audio_player/my_audio_player.dart';
 
 import 'carousel_content.dart';
 
@@ -44,7 +45,7 @@ class BuildCarousel extends StatelessWidget {
 }
 
 class MyCarousel extends StatelessWidget {
-  final Iterable<Follow> item;
+  final Iterable<Podcaster> item;
   MyCarousel({
     Key? key,
     required this.item,
@@ -96,11 +97,11 @@ class MyCarousel extends StatelessWidget {
   }
 }
 
-List<Widget> listCarouselItem(Iterable<Follow> data) {
+List<Widget> listCarouselItem(Iterable<Podcaster> data) {
   final List<Widget> list = [];
   for (int i = 0; i < data.length; i++) {
     list.add(CarouselContent(
-      followed: data.elementAt(i),
+      following: data.elementAt(i),
     ));
   }
   return list;

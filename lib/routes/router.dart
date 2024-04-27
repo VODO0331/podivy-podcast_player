@@ -1,5 +1,5 @@
 import 'package:podivy/Page/common/settingPage/setting_page.dart';
-import 'package:podivy/Page/personal/followedPage/followed_page.dart';
+import 'package:podivy/Page/personal/followedPage/following_page.dart';
 import 'package:podivy/Page/personal/media/list/Page/list_page.dart';
 import 'package:podivy/Page/login/auth_middleware.dart';
 import 'package:podivy/Page/common/podcasterPage/podcaster_page.dart';
@@ -55,7 +55,7 @@ class RouterPage {
               ]),
           //追隨頁面
           GetPage(
-              name: AppRoutes.followed,
+              name: AppRoutes.follow,
               page: () =>  FollowPage(),
               children: [
                 GetPage(
@@ -81,7 +81,7 @@ abstract class AppRoutes {
   static const setting = '/setting';
   static const user = '/user';
   static const podcaster = '/podcaster';
-  static const followed = '/followed';
+  static const follow = '/follow';
   static const player = '/player';
 }
 

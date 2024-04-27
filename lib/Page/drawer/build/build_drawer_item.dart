@@ -10,7 +10,7 @@ Widget buildDrawerItems() {
           icon: Icons.mic,
           title: 'follow'.tr,
           tileOption: () {
-            Get.offAndToNamed("/followed");
+            Get.offAndToNamed("/follow");
           }),
       DrawerItem(
           icon: Icons.settings,
