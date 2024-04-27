@@ -73,7 +73,7 @@ const Map<String, String> zh_Tw = {
   'Please enter the new name': '請輸入新的名稱',
   //follow
   'Are you sure you want to cancel follow?': '您確定要取消追蹤嗎？',
-  'Unfollowed': '退出追蹤',
+  'Unfollowed': '取消追蹤',
   //add list dialog
   'Add To List': '添加清單',
   'Add': "添加",
@@ -92,16 +92,18 @@ const Map<String, String> zh_Tw = {
 //player page
   'Player error': '撥放器錯誤',
   'Unable to play or try again later': '無法撥放或請稍後重試',
-
   'unable to connect to the internet': '無法連接到網路',
   'Connection failed': '連接失敗',
   'Connecting to the Internet':'正在連接網路...',
-
+  'Description':'介紹',
+  
   'Name': '名稱',
   'Edit': '編輯',
+  'Close':'關閉',
   'Count': '數量',
   'Cancel': '取消',
   'Done': '完成',
+  'Yes': '確定',
   'back': '返回',
   'tip': '提醒',
   'change': '更換',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:html/parser.dart';
 import './generic_dialog.dart';
 
@@ -8,7 +9,7 @@ Future<void> showDescriptionDialog(
 
   return showGenericDialog(
       context: context,
-      title: '介紹',
+      title: 'Description'.tr,
       content: document.body!.text,
-      optionBuilder: () => {'關閉': null});
+      optionBuilder: () => {'Close'.tr: null});
 }

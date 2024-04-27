@@ -95,15 +95,17 @@ const Map<String, String> en_Us = {
   //player page
   'Player error': 'player error',
   'Unable to play or try again later': 'Unable to play or try again later',
-
   'unable to connect to the internet': 'unable to connect to the internet',
   'Connection failed': 'Connection failed',
   'Connecting to the Internet': 'Connecting to the Internet...',
+  'Description':'Description',
 
   'Name': 'Name',
   'Edit': 'Edit',
+  'Close':'Close',
   'Count': 'count',
   'Cancel': 'Cancel',
+  'Yes': 'Yes',
   'Done': 'Done',
   'back': 'Back',
   'tip': 'tip',
