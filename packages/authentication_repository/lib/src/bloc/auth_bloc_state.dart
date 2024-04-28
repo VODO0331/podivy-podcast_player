@@ -14,22 +14,16 @@ class AuthStateUnInitialized extends AuthState {
       : super(isLoading: isLoading);
 }
 
-sealed class AuthStateLoggedIn extends AuthState {
+ class AuthStateLoggedIn extends AuthState {
   final AuthUser user;
   const AuthStateLoggedIn({
+    required String loginMethod,
     required bool isLoading,
     required this.user,
   }) : super(isLoading: isLoading);
 }
-class AuthStateLoggedInFormEmail extends AuthStateLoggedIn {
-  const AuthStateLoggedInFormEmail(
-      {required super.isLoading, required super.user});
-}
 
-class AuthStateLoggedInFormGoogle extends AuthStateLoggedIn {
-  const AuthStateLoggedInFormGoogle(
-      {required super.isLoading, required super.user});
-}
+
 
 class AuthStateNeedVerification extends AuthState {
   const AuthStateNeedVerification({required bool isLoading})

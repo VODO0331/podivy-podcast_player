@@ -8,17 +8,19 @@ class AuthUser {
   final String id;
   final bool isEmailVerified;
   final String email;
-  const AuthUser({
+  final String loginMethod;
+  const AuthUser( {
     required this.id,
     required this.email,
     required this.isEmailVerified,
-    
+    required this.loginMethod,
   });
 
-  factory AuthUser.fromFireBase(User user) => AuthUser(
+  factory AuthUser.fromFireBase(User user, String loginMethod) => AuthUser(
         id: user.uid,
         email: user.email!,
         isEmailVerified: user.emailVerified,
+        loginMethod: loginMethod,
       );
 
 }

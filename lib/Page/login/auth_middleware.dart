@@ -1,5 +1,6 @@
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
@@ -35,7 +36,7 @@ class _AuthMiddleWareState extends State<AuthMiddleWare> {
 
   void _showOverlay() {
     _overlayEntry = OverlayEntry(
-      builder: (context) =>  Material(
+      builder: (context) => Material(
         color: Colors.black87,
         child: Center(
           child: SizedBox(
@@ -45,10 +46,12 @@ class _AuthMiddleWareState extends State<AuthMiddleWare> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 const CircularProgressIndicator(),
-                Text('Connecting to the Internet'.tr,style: TextStyle(fontSize: 15.sp),)
+                Text(
+                  'Connecting to the Internet'.tr,
+                  style: TextStyle(fontSize: 15.sp),
+                )
               ],
             ),
-            
           ),
         ),
       ),
@@ -78,12 +81,8 @@ class _AuthMiddleWareState extends State<AuthMiddleWare> {
         late Widget child;
 
         if (state is AuthStateLoggedIn) {
-          switch (state) {
-            case AuthStateLoggedInFormEmail():
-              child = const Tabs(loginMethod: 'Firebase');
-            case AuthStateLoggedInFormGoogle():
-              child = const Tabs(loginMethod: 'Google');
-          }
+          initializationMyFirestoreService(state.user.loginMethod);
+          child = const Tabs();
         } else if (state is AuthStateNeedVerification) {
           child = const LoginBackGround(child: VerifyEmailPage());
         } else if (state is AuthStateLoggedOut) {

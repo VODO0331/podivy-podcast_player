@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firestore_service_repository/firestore_service_repository.dart';
-// import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
@@ -15,13 +14,11 @@ import 'constants.dart';
 
 class InformationManagement {
   late final String _authEmail;
-  late final String _loginMethod;
   late final DocumentReference<Map<String, dynamic>> _userDocs;
 
   InformationManagement(AuthService authService) {
     String userId = authService.currentUser!.id;
     _authEmail = authService.currentUser!.email;
-    _loginMethod = authService.loginMethod;
     _userDocs = FirebaseFirestore.instance.collection("user").doc(userId);
     _haveInfo();
   }
@@ -66,7 +63,6 @@ class InformationManagement {
       personalName: userName,
       personalImg: imgData,
       personalEmail: _authEmail,
-      userLoginMethod: _loginMethod,
     }).then((value) {
       dev.log("info added successfully!");
     }).catchError((error) {

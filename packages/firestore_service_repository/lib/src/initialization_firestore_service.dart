@@ -19,7 +19,7 @@ Future<void> initializationMyFirestoreService(String loginMethod) async {
   
   Get.put(FirestoreServiceProvider(authService));
 } on Exception catch (_) {
-  dev.log('firestore init fall');
+  dev.log('firestore init fail');
   throw CloudInitException();
 }
 }

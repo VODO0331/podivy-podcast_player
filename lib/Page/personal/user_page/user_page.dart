@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:firestore_service_repository/firestore_service_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:modify_widget_repository/modify_widget_repository.dart';
@@ -14,11 +15,11 @@ class UserPage extends StatelessWidget {
   // final UserInfo userData = Get.arguments;
   final TextEditingController _nameEditingController =
       Get.put(TextEditingController());
-  
+
   final fsp = Get.find<FirestoreServiceProvider>();
+  final authService = Get.find<AuthService>();
   final RxBool _isEdit = false.obs;
   final RxString imgData = ''.obs;
-
 
   Widget _buildAppBar() {
     return Row(
@@ -52,7 +53,6 @@ class UserPage extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     imgData.value = fsp.info.userData.img;
@@ -69,13 +69,16 @@ class UserPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15).r,
-              child: BuildUserAvatar(imgData: imgData, fsp: fsp,isEdit: _isEdit,),
+              child: BuildUserAvatar(
+                imgData: imgData,
+                fsp: fsp,
+                isEdit: _isEdit,
+              ),
             ),
 
             // 顯示用戶名稱
             Obx(() {
-              _nameEditingController.text =
-                  fsp.info.userData.userName.value;
+              _nameEditingController.text = fsp.info.userData.userName.value;
               return _isEdit.value
                   ? TextField(
                       controller: _nameEditingController,
@@ -100,15 +103,14 @@ class UserPage extends StatelessWidget {
                     fsp.info.userData.email.value,
                     style: TextStyle(fontSize: ScreenUtil().setSp(15)),
                   ),
-                  trailing:
-                      fsp.info.userData.loginMethod.value == 'Firebase'
-                          ? ElevatedButton(
-                              child: const Icon(FontAwesomeIcons.pencil),
-                              onPressed: () => showResetEmailDialog(),
-                            )
-                          : null);
+                  trailing: authService.currentUser!.loginMethod == 'Firebase'
+                      ? ElevatedButton(
+                          child: const Icon(FontAwesomeIcons.pencil),
+                          onPressed: () => showResetEmailDialog(),
+                        )
+                      : null);
             }),
-            
+
             const Divider(),
             //修改動作
             Obx(() => _isEdit.value

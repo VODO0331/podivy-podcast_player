@@ -16,7 +16,7 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
     required String password,
     required String repassword,
   }) async {
-    return const AuthUser(id: '', email: '', isEmailVerified: false);
+    return const AuthUser(id: '', email: '', isEmailVerified: false,loginMethod: "Google");
   }
 
   @override
@@ -24,7 +24,7 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
     final user = fba.FirebaseAuth.instance.currentUser;
     // final name = user!.displayName;
     if (user != null) {
-      return AuthUser.fromFireBase(user);
+      return AuthUser.fromFireBase(user,loginMethod);
     } else {
       return null;
     }
@@ -50,9 +50,10 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;
-      if(googleAuth == null){
+      if (googleAuth == null) {
         await GoogleSignIn().signOut();
-        return const AuthUser(id: '', email: '', isEmailVerified: false);
+        return const AuthUser(
+            id: '', email: '', isEmailVerified: false, loginMethod: '');
       }
       final credential = fba.GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -63,7 +64,10 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
       await fba.FirebaseAuth.instance.signInWithCredential(credential);
 
       return AuthUser(
-          id: googleUser!.id, email: googleUser.email, isEmailVerified: true);
+          id: googleUser!.id,
+          email: googleUser.email,
+          isEmailVerified: true,
+          loginMethod: loginMethod);
     } on Exception catch (e) {
       devtool.log(e.toString());
       throw GenericAuthException();

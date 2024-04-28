@@ -1,3 +1,4 @@
+
 import 'package:authentication_repository/src/bloc/auth_bloc_event.dart';
 import 'package:authentication_repository/src/bloc/auth_bloc_state.dart';
 import 'package:authentication_repository/src/models/auth_user.dart';
@@ -76,7 +77,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     //初始化
     on<AuthEventInitialize>((event, emit) async {
       await providers['Firebase']!.initialize();
-      final user = providers['Firebase']!.currentUser;
+      final AuthUser? user = providers['Firebase']!.currentUser ??
+          providers['Google']!.currentUser;
+
       if (user == null) {
         emit(
           const AuthStateLoggedOut(
@@ -87,9 +90,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else if (!user.isEmailVerified) {
         emit(const AuthStateNeedVerification(isLoading: false));
       } else {
-        emit(AuthStateLoggedInFormEmail(
+        emit(AuthStateLoggedIn(
           isLoading: false,
           user: user,
+          loginMethod: user.loginMethod,
         ));
       }
     });
@@ -108,53 +112,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       try {
         late final AuthUser user;
-        switch (loginMethod) {
-          case 'Firebase':
-            user = await providers['Firebase']!.login(
-              email: email,
-              password: password,
-            );
-            if (!user.isEmailVerified) {
-              emit(
-                const AuthStateLoggedOut(
-                  exception: null,
-                  isLoading: false,
-                ),
-              );
-              emit(const AuthStateNeedVerification(
-                isLoading: false,
-              ));
-            } else {
-              emit(AuthStateLoggedInFormEmail(
-                isLoading: false,
-                user: user,
-              ));
-            }
-          case 'Google':
-            user = await providers['Google']!.login(
-              email: email,
-              password: password,
-            );
-            if (user.id == '') {
-              emit(const AuthStateLoggedOut(
-                exception: null,
-                isLoading: false,
-              ));
-            } else {
-              emit(AuthStateLoggedInFormGoogle(
-                isLoading: false,
-                user: user,
-              ));
-            }
-
-          default:
-            emit(
-              AuthStateLoggedOut(
-                exception: Exception(['logMethod error']),
-                isLoading: false,
-              ),
-            );
+        user = await providers[loginMethod]!
+            .login(email: email, password: password);
+        if (loginMethod == 'Firebase' && !user.isEmailVerified) {
+          emit(const AuthStateNeedVerification(
+            isLoading: false,
+          ));
         }
+        emit(AuthStateLoggedIn(
+          isLoading: false,
+          user: user,
+          loginMethod: loginMethod,
+        ));
       } on Exception catch (e) {
         emit(
           AuthStateLoggedOut(

@@ -9,10 +9,8 @@ import 'package:podivy/Page/personal/media/media_page.dart';
 import 'package:podivy/Page/drawer/drawer.dart';
 
 class Tabs extends StatefulWidget {
-  final String loginMethod;
   const Tabs({
     super.key,
-    required this.loginMethod,
   });
 
   @override
@@ -36,7 +34,7 @@ class _TabsState extends State<Tabs> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: _getBody(_currentPage, widget.loginMethod),
+      body: _getBody(_currentPage),
       bottomNavigationBar: _getBottomBar(),
       drawer: const MyDrawer(),
     );
@@ -71,8 +69,7 @@ class _TabsState extends State<Tabs> {
     );
   }
 
-  Widget _getBody(int index, String loginMethod) {
-    initializationMyFirestoreService(loginMethod);
+  Widget _getBody(int index) {
     final fsp = Get.find<FirestoreServiceProvider>();
 
     final List<Widget> body = [

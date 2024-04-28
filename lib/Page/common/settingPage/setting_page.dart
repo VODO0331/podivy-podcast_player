@@ -52,11 +52,14 @@ class SettingPage extends StatelessWidget {
                                 Get.back();
                                 final fsp =
                                     Get.find<FirestoreServiceProvider>();
+                                final authService = Get.find<AuthService>();
                                 final loginMethod =
-                                    fsp.info.userData.loginMethod.value;
+                                    authService.currentUser!.loginMethod;
+
                                 await fsp.info.deleteInfo();
-                                Get.context!.read<AuthBloc>().add(
-                                     AuthEventDeleteUser(loginMethod));
+                                Get.context!
+                                    .read<AuthBloc>()
+                                    .add(AuthEventDeleteUser(loginMethod));
                                 await Get.deleteAll();
                                 Get.back();
                               },
