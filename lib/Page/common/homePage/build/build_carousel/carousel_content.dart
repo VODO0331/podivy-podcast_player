@@ -81,7 +81,7 @@ class CarouselContent extends StatelessWidget {
                             //     _loopController.boardAnimation!.value.toString());
                             return Obx(() => GestureDetector(
                                   onTap: () => Get.toNamed(
-                                      '/following/podcaster',
+                                      '/podcaster',
                                       arguments: following.id),
                                   child: Container(
                                     height: 70.r *
