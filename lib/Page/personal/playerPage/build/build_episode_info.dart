@@ -52,7 +52,7 @@ class BuildEpisodeInfo extends StatelessWidget {
           onTap: () async {
             if (currentEpisodeData.displayDescription != null) {
               await showDescriptionDialog(
-                  context, currentEpisodeData.displayDescription!);
+                  context, currentEpisodeData);
             } else {
               null;
             }

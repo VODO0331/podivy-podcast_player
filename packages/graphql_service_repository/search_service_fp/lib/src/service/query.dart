@@ -79,6 +79,7 @@ query  search(
     \$episodesFirst: Int,
     \$searchTerm: String,
     \$episodesSortBy: EpisodeSortType!
+    \$sortDirection : SortDirection
     \$airDateForm: DateTime
     \$airDateTo: DateTime
   ){
@@ -96,7 +97,7 @@ query  search(
       first: \$episodesFirst, 
       searchTerm: \$searchTerm,
       filters:{airDate:{from: \$airDateForm, to: \$airDateTo}},
-      sort:{sortBy: \$episodesSortBy}){
+      sort:{sortBy: \$episodesSortBy, direction: \$sortDirection}){
         data{
           id
           title
