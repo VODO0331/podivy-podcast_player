@@ -1,4 +1,3 @@
-
 import 'package:authentication_repository/src/bloc/auth_bloc_event.dart';
 import 'package:authentication_repository/src/bloc/auth_bloc_state.dart';
 import 'package:authentication_repository/src/models/auth_user.dart';
@@ -91,10 +90,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(const AuthStateNeedVerification(isLoading: false));
       } else {
         emit(AuthStateLoggedIn(
-          isLoading: false,
-          user: user,
-          loginMethod: user.loginMethod,
-        ));
+            isLoading: false,
+            user: user,
+            provider: providers[user.loginMethod]!));
       }
     });
     //登入
@@ -122,7 +120,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthStateLoggedIn(
           isLoading: false,
           user: user,
-          loginMethod: loginMethod,
+          provider: providers[loginMethod]!,
         ));
       } on Exception catch (e) {
         emit(

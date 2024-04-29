@@ -81,7 +81,9 @@ class _AuthMiddleWareState extends State<AuthMiddleWare> {
         late Widget child;
 
         if (state is AuthStateLoggedIn) {
-          initializationMyFirestoreService(state.user.loginMethod);
+          
+          initializationMyFirestoreService(state.provider);
+          Get.put(state.provider);
           child = const Tabs();
         } else if (state is AuthStateNeedVerification) {
           child = const LoginBackGround(child: VerifyEmailPage());

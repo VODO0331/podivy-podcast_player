@@ -1,6 +1,6 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' show immutable;
-import '../models/auth_user.dart';
 
 @immutable
 abstract class AuthState {
@@ -14,16 +14,15 @@ class AuthStateUnInitialized extends AuthState {
       : super(isLoading: isLoading);
 }
 
- class AuthStateLoggedIn extends AuthState {
+class AuthStateLoggedIn extends AuthState {
   final AuthUser user;
+  final AuthService provider;
   const AuthStateLoggedIn({
-    required String loginMethod,
+    required this.provider,
     required bool isLoading,
     required this.user,
   }) : super(isLoading: isLoading);
 }
-
-
 
 class AuthStateNeedVerification extends AuthState {
   const AuthStateNeedVerification({required bool isLoading})
