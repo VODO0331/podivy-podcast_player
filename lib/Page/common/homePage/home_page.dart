@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 30).h,
         child: Column(
           children: [
-            appBar(fsp),
+            appBar(context),
             const Divider(
               thickness: 2,
               color: Color.fromARGB(123, 255, 255, 255),
@@ -67,80 +67,80 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
 
-Widget appBar(FirestoreServiceProvider fsp) {
-  return Flex(
-    direction: Axis.horizontal,
-    children: [
-      Expanded(
-        flex: 2,
-        child: GestureDetector(
-          onTap: () {
-            Get.toNamed('/user');
-          },
-          child: Stack(alignment: Alignment.centerLeft, children: [
-            SvgPicture.asset(
-              "assets/images/homePage/userBackground.svg",
-              height: 40.h,
-            ),
-            Align(
-                alignment: Alignment.center,
-                child: GestureDetector(
-                  onTap: () => Get.toNamed('/user'),
-                  child: Obx(() {
-                    final UserInfo data = fsp.info.userData;
-
-                    if (data.img != "") {
-                      return CircleAvatar(
-                        backgroundImage: ResizeImage(
-                            MemoryImage(base64Decode(data.img)),
-                            height: 50,
-                            width: 50),
-                        radius: 15.r,
-                      );
-                    } else {
-                      return Center(
-                        child: SizedBox(
-                            height: 20.r,
-                            width: 20.r,
-                            child: const CircularProgressIndicator(
-                              strokeWidth: 1,
-                            )),
-                      );
-                    }
-                  }),
-                ))
-          ]),
-        ),
-      ),
-      Expanded(
-        flex: 7,
-        child: Padding(
-            padding: const EdgeInsets.only(right: 8.0).w,
-            child: GestureDetector(
-              onTap: () => Get.toNamed('/search'),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6).r,
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                    color: Theme.of(Get.context!).colorScheme.background,
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: const [
-                      BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 10,
-                          // spreadRadius: 0.1,
-                          offset: Offset(2, 3))
-                    ]),
-                child: Icon(
-                  Icons.search,
-                  color: Theme.of(Get.context!).colorScheme.primary,
-                ),
+  Widget appBar(BuildContext context) {
+    return Flex(
+      direction: Axis.horizontal,
+      children: [
+        Expanded(
+          flex: 2,
+          child: GestureDetector(
+            onTap: () {
+              Get.toNamed('/user');
+            },
+            child: Stack(alignment: Alignment.centerLeft, children: [
+              SvgPicture.asset(
+                "assets/images/homePage/userBackground.svg",
+                height: 40.h,
               ),
-            )),
-      )
-    ],
-  );
+              Align(
+                  alignment: Alignment.center,
+                  child: GestureDetector(
+                    onTap: () => Get.toNamed('/user'),
+                    child: Obx(() {
+                      final UserInfo data = fsp.info.userData;
+
+                      if (data.img != "") {
+                        return CircleAvatar(
+                          backgroundImage: ResizeImage(
+                              MemoryImage(base64Decode(data.img)),
+                              height: 50,
+                              width: 50),
+                          radius: 15.r,
+                        );
+                      } else {
+                        return Center(
+                          child: SizedBox(
+                              height: 20.r,
+                              width: 20.r,
+                              child: const CircularProgressIndicator(
+                                strokeWidth: 1,
+                              )),
+                        );
+                      }
+                    }),
+                  ))
+            ]),
+          ),
+        ),
+        Expanded(
+          flex: 7,
+          child: Padding(
+              padding: const EdgeInsets.only(right: 8.0).w,
+              child: GestureDetector(
+                onTap: () => Get.toNamed('/search'),
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6).r,
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: const [
+                        BoxShadow(
+                            color: Colors.grey,
+                            blurRadius: 10,
+                            // spreadRadius: 0.1,
+                            offset: Offset(2, 3))
+                      ]),
+                  child: Icon(
+                    Icons.search,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              )),
+        )
+      ],
+    );
+  }
 }
