@@ -53,7 +53,7 @@ class SearchServiceForCategories extends SearchService {
             queryOptions: QueryOptions(
           document: gql(queryForCategories),
           variables: {
-            'categories': keywords,
+            'categories': keywords.replaceAll(" ", "-"),
             'podcastFirst': numberOfPodcastResults,
             'language': TranslationService().currentLanguage,
             'episodesFirst': numberOfEpisodesResults,
@@ -80,7 +80,7 @@ class SearchServiceForExploreContent extends SearchServiceForCategories {
       document: gql(queryForExploreContent),
       variables: {
         'language': TranslationService().currentLanguage,
-        'categories': keywords,
+        'categories': keywords.replaceAll(" ", "-"),
         'podcastFirst': numberOfPodcastResults,
         'includeRemoved':false,
         'podcastsSortBy': 'DATE_OF_FIRST_EPISODE',
