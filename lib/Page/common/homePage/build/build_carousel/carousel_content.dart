@@ -186,7 +186,7 @@ class _CarouselListViewState extends State<CarouselListView> {
                 textColor: Theme.of(context).colorScheme.onSecondaryContainer,
                 onTap: () async {
                   myAudioPlayer.setIndex(index, data.episodesList!);
-                  await Get.toNamed('/following/podcaster/player');
+                  await Get.toNamed('/player');
                 },
               );
             },
