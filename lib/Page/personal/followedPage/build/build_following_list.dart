@@ -19,6 +19,7 @@ class FollowList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      
       itemCount: allFollow.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
@@ -30,10 +31,12 @@ class FollowList extends StatelessWidget {
         final following = allFollow.elementAt(index);
 
         return GestureFlipCard(
+          key: UniqueKey(),
           animationDuration: const Duration(milliseconds: 400),
           frontWidget: GestureDetector(
             onTap: () =>onTap(following),
             child: Card(
+            
               color: Colors.transparent,
               elevation: 10,
               shadowColor: Colors.black,
