@@ -37,7 +37,7 @@ class Episode {
         artUri: Uri.parse( imageUrl),
         extras: {
           'podcasterId':podcast.id,
-          'airDate':airDate,
+          'airDate':'${airDate.year}/${airDate.month}/${airDate.day}',
         }
       );
 }
