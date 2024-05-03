@@ -99,7 +99,7 @@ const Map<String, String> en_Us = {
   'Connection failed': 'Connection failed',
   'Connecting to the Internet': 'Connecting to the Internet...',
   'Description':'Description',
-
+  //user page
   'Name': 'Name',
   'Edit': 'Edit',
   'Close':'Close',

@@ -89,7 +89,7 @@ class UserPage extends StatelessWidget {
                   : ListTile(
                       leading: const Icon(Icons.person),
                       title: Text(
-                        "Name :   ${fsp.info.userData.userName}".tr,
+                        "${"Name".tr} :   ${fsp.info.userData.userName}",
                         style: TextStyle(fontSize: ScreenUtil().setSp(15)),
                       ),
                     );
