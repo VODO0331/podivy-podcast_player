@@ -156,8 +156,8 @@ Widget listOptionPrototype() {
 Future addListDialog(BuildContext context, Episode episode) async {
   final fsp = Get.find<FirestoreServiceProvider>();
   final TextEditingController textEditingController =
-      Get.put(TextEditingController());
-  return await showDialog(
+      Get.put(TextEditingController(),tag: 'listNameAdd:${episode.id}');
+   await showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
@@ -210,4 +210,8 @@ Future addListDialog(BuildContext context, Episode episode) async {
       );
     },
   );
+  if (Get.isRegistered<TextEditingController>(
+     tag: 'listNameAdd:${episode.id}')) {
+    Get.delete<TextEditingController>(tag: 'listNameAdd:${episode.id}');
+  }
 }

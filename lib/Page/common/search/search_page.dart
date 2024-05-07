@@ -19,7 +19,7 @@ class SearchPage extends StatelessWidget {
     SearchServiceForCategories(keywords: '').obs
   );
   final TextEditingController textEditingController =
-      Get.put(TextEditingController());
+      Get.put(TextEditingController(),tag: 'search');
 
   Widget _buildTextField() {
     return TextField(

@@ -14,7 +14,7 @@ class UserPage extends StatelessWidget {
 
   // final UserInfo userData = Get.arguments;
   final TextEditingController _nameEditingController =
-      Get.put(TextEditingController());
+      Get.put(TextEditingController(),tag: 'name');
 
   final fsp = Get.find<FirestoreServiceProvider>();
   final authService = Get.find<AuthService>();
