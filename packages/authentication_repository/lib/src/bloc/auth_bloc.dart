@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:authentication_repository/src/bloc/auth_bloc_event.dart';
 import 'package:authentication_repository/src/bloc/auth_bloc_state.dart';
 import 'package:authentication_repository/src/models/auth_user.dart';
@@ -110,18 +112,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       try {
         late final AuthUser user;
+
         user = await providers[loginMethod]!
             .login(email: email, password: password);
-        if (loginMethod == 'Firebase' && !user.isEmailVerified) {
+        if (user.id == '') {
+          //google未選擇帳號
+          emit(const AuthStateLoggedOut(exception: null, isLoading: false));
+        } else if (loginMethod == 'Firebase' && !user.isEmailVerified) {
+          //使用帳email登入未驗證
           emit(const AuthStateNeedVerification(
             isLoading: false,
           ));
+        } else {
+          emit(AuthStateLoggedIn(
+            isLoading: false,
+            user: user,
+            provider: providers[loginMethod]!,
+          ));
         }
-        emit(AuthStateLoggedIn(
-          isLoading: false,
-          user: user,
-          provider: providers[loginMethod]!,
-        ));
       } on Exception catch (e) {
         emit(
           AuthStateLoggedOut(

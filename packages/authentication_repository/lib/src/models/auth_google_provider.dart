@@ -16,7 +16,8 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
     required String password,
     required String repassword,
   }) async {
-    return const AuthUser(id: '', email: '', isEmailVerified: false,loginMethod: "Google");
+    return const AuthUser(
+        id: '', email: '', isEmailVerified: false, loginMethod: "Google");
   }
 
   @override
@@ -24,7 +25,7 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
     final user = fba.FirebaseAuth.instance.currentUser;
     // final name = user!.displayName;
     if (user != null) {
-      return AuthUser.fromFireBase(user,loginMethod);
+      return AuthUser.fromFireBase(user, loginMethod);
     } else {
       return null;
     }
@@ -52,8 +53,11 @@ class GoogleAuthProvider implements my_provider.AuthProvider {
           await googleUser?.authentication;
       if (googleAuth == null) {
         await GoogleSignIn().signOut();
-        return const AuthUser(
-            id: '', email: '', isEmailVerified: false, loginMethod: '');
+        return AuthUser(
+            id: '',
+            email: '',
+            isEmailVerified: false,
+            loginMethod: loginMethod);
       }
       final credential = fba.GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
