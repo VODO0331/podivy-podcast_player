@@ -32,11 +32,13 @@
 
 請在這裡點擊[下載](https://drive.google.com/file/d/18aOoPdqKiVC0-2FyS1rBeRoaK7h1IpN6/view?usp=sharing) 或是 使用此專案  (閱讀下列須知)
 
-> [!NOTE] 使用APP時
+> [!NOTE]  
+> 使用APP時,  
 > 如果資料無法顯示錯誤可能當月的token的資料提取已達到上限  
 > 可能需要自行編譯執行
 
-> [!IMPORTANT] 執行專案時
+> [!IMPORTANT]  
+> 執行專案時  
 > - 因為這是我一人開發的專案(~~同時也是新手~~)，可能有很多變因可能導致無法執行或出現錯誤  
 > 如果需要幫忙我會盡全力幫忙  
 > - 請按照 **notice.env** 的指示來添加token
