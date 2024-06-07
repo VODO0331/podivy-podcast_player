@@ -13,12 +13,14 @@ import 'build/build_explore/build_explore_content.dart';
 // import 'package:podivy/widget/carousel.dart';
 
 // import 'dart:developer' as dev show log;
-
+typedef OpenDrawerCallBack = void Function();
 class HomePage extends StatelessWidget {
   final FirestoreServiceProvider fsp;
+final OpenDrawerCallBack openDrawer;
   const HomePage({
     super.key,
     required this.fsp,
+    required this.openDrawer,
   });
 
   @override
@@ -76,7 +78,7 @@ class HomePage extends StatelessWidget {
           flex: 2,
           child: GestureDetector(
             onTap: () {
-              Get.toNamed('/user');
+              openDrawer();
             },
             child: Stack(alignment: Alignment.centerLeft, children: [
               SvgPicture.asset(
@@ -84,32 +86,30 @@ class HomePage extends StatelessWidget {
                 height: 40.h,
               ),
               Align(
-                  alignment: Alignment.center,
-                  child: GestureDetector(
-                    onTap: () => Get.toNamed('/user'),
-                    child: Obx(() {
-                      final UserInfo data = fsp.info.userData;
+                alignment: Alignment.center,
+                child: Obx(() {
+                  final UserInfo data = fsp.info.userData;
 
-                      if (data.img != "") {
-                        return CircleAvatar(
-                          backgroundImage: ResizeImage(
-                              MemoryImage(base64Decode(data.img)),
-                              height: 50,
-                              width: 50),
-                          radius: 15.r,
-                        );
-                      } else {
-                        return Center(
-                          child: SizedBox(
-                              height: 20.r,
-                              width: 20.r,
-                              child: const CircularProgressIndicator(
-                                strokeWidth: 1,
-                              )),
-                        );
-                      }
-                    }),
-                  ))
+                  if (data.img != "") {
+                    return CircleAvatar(
+                      backgroundImage: ResizeImage(
+                          MemoryImage(base64Decode(data.img)),
+                          height: 50,
+                          width: 50),
+                      radius: 15.r,
+                    );
+                  } else {
+                    return Center(
+                      child: SizedBox(
+                          height: 20.r,
+                          width: 20.r,
+                          child: const CircularProgressIndicator(
+                            strokeWidth: 1,
+                          )),
+                    );
+                  }
+                }),
+              )
             ]),
           ),
         ),

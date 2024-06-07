@@ -75,6 +75,9 @@ class _TabsState extends State<Tabs> {
     final List<Widget> body = [
       HomePage(
         fsp: fsp,
+        openDrawer: () {
+          _scaffoldKey.currentState?.openDrawer();
+        },
       ),
       MediaPage(
         fsp: fsp,
