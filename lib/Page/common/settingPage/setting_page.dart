@@ -10,6 +10,12 @@ class SettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fsp = Get.find<FirestoreServiceProvider>();
+    final authService = Get.find<AuthService>();
+    final RxBool isDefaultAccount =
+        authService.currentUser!.email == "testpodivy@gmail.com"
+            ? true.obs
+            : false.obs;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -30,49 +36,53 @@ class SettingPage extends StatelessWidget {
               Divider(
                 color: ThemeData().dividerColor,
               ),
-              ListTile(
-                iconColor: Colors.red,
-                textColor: Colors.red,
-                leading: const Icon(Icons.delete_forever),
-                title: Text('Delete User'.tr),
-                onTap: () async {
-                  await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text('Delete User'.tr),
-                        content: Text(
-                            'Are you sure you want to delete your account?'.tr),
-                        actions: [
-                          TextButton(
-                              onPressed: () => Get.back(),
-                              child: Text('Cancel'.tr)),
-                          TextButton(
-                              onPressed: () async {
-                                Get.back();
-                                final fsp =
-                                    Get.find<FirestoreServiceProvider>();
-                                final authService = Get.find<AuthService>();
-                                final loginMethod =
-                                    authService.currentUser!.loginMethod;
-
-                                await fsp.info.deleteInfo();
-                                Get.context!
-                                    .read<AuthBloc>()
-                                    .add(AuthEventDeleteUser(loginMethod));
-                                await Get.deleteAll();
-                                Get.back();
-                              },
-                              child: Text(
-                                'delete'.tr,
-                                style: const TextStyle(color: Colors.red),
-                              ))
-                        ],
-                      );
-                    },
-                  );
-                },
-              )
+              Obx(() => isDefaultAccount.value
+                  ? ListTile(
+                      iconColor: Colors.grey[850],
+                      textColor: Colors.grey[850],
+                      leading: const Icon(Icons.delete_forever),
+                      title: Text('Delete User'.tr),
+                      onTap: null,
+                    )
+                  : ListTile(
+                      iconColor: Colors.red,
+                      textColor: Colors.red,
+                      leading: const Icon(Icons.delete_forever),
+                      title: Text('Delete User'.tr),
+                      onTap: () async {
+                        await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text('Delete User'.tr),
+                              content: Text(
+                                  'Are you sure you want to delete your account?'
+                                      .tr),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Get.back(),
+                                    child: Text('Cancel'.tr)),
+                                TextButton(
+                                    onPressed: () async {
+                                      Get.back();
+                                      final loginMethod =
+                                          authService.currentUser!.loginMethod;
+                                      await fsp.info.deleteInfo();
+                                      Get.context!.read<AuthBloc>().add(
+                                          AuthEventDeleteUser(loginMethod));
+                                      await Get.deleteAll();
+                                      Get.back();
+                                    },
+                                    child: Text(
+                                      'delete'.tr,
+                                      style: const TextStyle(color: Colors.red),
+                                    ))
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ))
             ],
           ),
         ),
