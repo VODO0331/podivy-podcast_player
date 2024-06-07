@@ -23,6 +23,7 @@
 2. 登入驗證系統使用**Firebase**
 3. 資料庫使用**FireStore**
 4. 資料來源來自[podchaser](https://www.podchaser.com/)
+5. 用 **GraphQL** 來提取API資料
    
 
 ## 如何使用
