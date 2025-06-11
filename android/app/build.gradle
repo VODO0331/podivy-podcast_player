@@ -81,7 +81,7 @@ android {
         release {
             signingConfig signingConfigs.release
             applicationIdSuffix ""
-            resValue "string", "app_name", "Podiy"
+            resValue "string", "app_name", "Podivy"
 
         }
    }

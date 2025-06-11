@@ -1,12 +1,13 @@
 {
-    "cmake.configureOnOpen": true,
-    "cSpell.words": [
-        "episodedirection",
-        "episodesort",
-        "mobiledata",
-        "PODCHASER",
-        "ryanheise",
-        "webp"
-    ],
-    "cmake.sourceDirectory": "S:/podivy/linux"
+  "cmake.configureOnOpen": true,
+  "cSpell.words": [
+    "episodedirection",
+    "episodesort",
+    "mobiledata",
+    "PODCHASER",
+    "ryanheise",
+    "webp"
+  ],
+  "cmake.sourceDirectory": "S:/podivy/linux",
+  "dart.flutterSdkPath": ".fvm/versions/3.19.3"
 }

@@ -1,5 +1,4 @@
 allprojects {
-    ext.kotlin_vesion = '1.9.0'
     repositories {
         google()
         mavenCentral()

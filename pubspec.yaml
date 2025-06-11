@@ -47,6 +47,7 @@ dependencies:
   provider: ^6.1.2
   flutter_dotenv: ^5.1.0
   connectivity_plus: ^5.0.2
+  printing: ^5.11.1
 
   modify_widget_repository:
     path: packages/modify_widget_repository

@@ -45,3 +45,6 @@ app.*.map.json
 
 .env
 android/key.properties
+
+# FVM Version Cache
+.fvm/

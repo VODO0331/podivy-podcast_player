@@ -5,7 +5,7 @@ import 'package:modify_widget_repository/modify_widget_repository.dart';
 import 'package:get/get.dart';
 import 'package:my_audio_player/my_audio_player.dart';
 
-import 'carousel_content.dart';
+import 'carousel_content.dart'  ;
 
 class BuildCarousel extends StatelessWidget {
   final FirestoreServiceProvider fsp;
