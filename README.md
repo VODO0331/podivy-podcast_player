@@ -31,7 +31,7 @@
 帳號: **testpodivy@gmail.com**  
 密碼: **test123**    
 
-請在這裡點擊[下載](https://drive.google.com/file/d/1CbESyosgi2ldRd9zFxaJb3UYcsGgOSr2/view?usp=drive_link) 或是 使用此專案  (閱讀下列須知)
+使用此專案  (閱讀下列須知)
 
 > [!NOTE]  
 > 使用APP時,  
